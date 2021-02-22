@@ -1,0 +1,43 @@
+name: Deploy Backend to Azure Web App
+
+on:
+  push:
+    paths:
+      - "backend/**"
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: backend
+
+env:
+  DOTNET_ROOT: "/opt/dotnet"
+  dotnet-version: 5.0.x
+  appName: ${{ secrets.AzureAppService_AppName }}-backend
+
+jobs:
+  backend-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.node-version }}
+
+      - name: Build with dotnet
+        run: |
+          dotnet build
+          dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/${{ env.appName }}
+        working-directory: backend/Web
+
+      - name: Deploy Backend to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.appName }}
+          slot-name: "production"
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_Backend }}
+          package: ${{ env.DOTNET_ROOT }}/${{ env.appName }}
