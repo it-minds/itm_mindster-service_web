@@ -21,6 +21,7 @@ class Action
   Title
   Description
   AdminNote
+  ServiceId
 }
 
 class Application
