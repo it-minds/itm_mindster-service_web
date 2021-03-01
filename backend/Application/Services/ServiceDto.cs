@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Common.Mappings;
+using AutoMapper;
+using Domain.Entities;
 using Domain.Enums;
 
-namespace Domain.Entities
+namespace Application.Services
 {
-  public class Service
+  public class ServiceDto : IAutoMap<Domain.Entities.Service>
   {
-    public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public virtual ICollection<Action> Actions { get; set; }
     public ServiceStates State { get; set; }
+
+    public void Mapping(Profile profile)
+    {
+      profile.CreateMap<Service, ServiceDto>();
+    }
+
   }
 }

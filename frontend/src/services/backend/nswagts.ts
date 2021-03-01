@@ -499,6 +499,62 @@ export class HealthClient extends ClientBase implements IHealthClient {
     }
 }
 
+export interface IServiceClient {
+    createService(command: CreateServiceCommand): Promise<number>;
+}
+
+export class ServiceClient extends ClientBase implements IServiceClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(configuration: AuthBase, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
+        this.http = http ? http : <any>window;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    createService(command: CreateServiceCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Service";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateService(_response));
+        });
+    }
+
+    protected processCreateService(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+}
+
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
     child?: ExampleChildDto | null;
 
@@ -727,6 +783,93 @@ export class ExampleParentDto implements IExampleParentDto {
 
 export interface IExampleParentDto {
     name?: string | null;
+}
+
+export class CreateServiceCommand implements ICreateServiceCommand {
+    service?: ServiceDto | null;
+
+    constructor(data?: ICreateServiceCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.service = data.service && !(<any>data.service).toJSON ? new ServiceDto(data.service) : <ServiceDto>this.service; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.service = _data["service"] ? ServiceDto.fromJS(_data["service"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateServiceCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateServiceCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["service"] = this.service ? this.service.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateServiceCommand {
+    service?: IServiceDto | null;
+}
+
+export class ServiceDto implements IServiceDto {
+    title?: string | null;
+    description?: string | null;
+    state?: ServiceStates;
+
+    constructor(data?: IServiceDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ServiceDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["state"] = this.state !== undefined ? this.state : <any>null;
+        return data; 
+    }
+}
+
+export interface IServiceDto {
+    title?: string | null;
+    description?: string | null;
+    state?: ServiceStates;
+}
+
+export enum ServiceStates {
+    Pending = 0,
+    Approved = 1,
+    Rejected = 2,
 }
 
 export enum CommandErrorCode {
