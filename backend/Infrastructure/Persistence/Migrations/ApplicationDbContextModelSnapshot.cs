@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -44,7 +44,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Action");
+                    b.ToTable("Actions");
                 });
 
             modelBuilder.Entity("Domain.Entities.ExampleChild", b =>

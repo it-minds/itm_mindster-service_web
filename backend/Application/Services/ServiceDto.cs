@@ -10,7 +10,7 @@ using Domain.Enums;
 
 namespace Application.Services
 {
-  public class ServiceDto : IAutoMap<Domain.Entities.Service>
+  public class ServiceDto : IAutoMap<Service>
   {
     public string Title { get; set; }
     public string Description { get; set; }

@@ -74,7 +74,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Action",
+                name: "Actions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -86,9 +86,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Action", x => x.Id);
+                    table.PrimaryKey("PK_Actions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Action_Services_ServiceId",
+                        name: "FK_Actions_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
                         principalColumn: "Id",
@@ -96,8 +96,8 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Action_ServiceId",
-                table: "Action",
+                name: "IX_Actions_ServiceId",
+                table: "Actions",
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
@@ -109,7 +109,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Action");
+                name: "Actions");
 
             migrationBuilder.DropTable(
                 name: "ExampleChildren");
