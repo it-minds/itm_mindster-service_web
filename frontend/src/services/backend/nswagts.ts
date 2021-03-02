@@ -127,6 +127,7 @@ export class ClientBase {
 
 export interface IActionClient {
     createAction(command: CreateActionCommand): Promise<number>;
+    getAllActions(): Promise<ActionIdDto[]>;
 }
 
 export class ActionClient extends ClientBase implements IActionClient {
@@ -178,6 +179,46 @@ export class ActionClient extends ClientBase implements IActionClient {
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    getAllActions(): Promise<ActionIdDto[]> {
+        let url_ = this.baseUrl + "/api/Action";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllActions(_response));
+        });
+    }
+
+    protected processGetAllActions(response: Response): Promise<ActionIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ActionIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ActionIdDto[]>(<any>null);
     }
 }
 
@@ -736,6 +777,39 @@ export interface IActionDto {
     serviceId?: number;
 }
 
+export class ActionIdDto extends ActionDto implements IActionIdDto {
+    id?: number;
+
+    constructor(data?: IActionIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ActionIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActionIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IActionIdDto extends IActionDto {
+    id?: number;
+}
+
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
     child?: ExampleChildDto | null;
 
@@ -1007,6 +1081,7 @@ export class ServiceDto implements IServiceDto {
     title?: string | null;
     description?: string | null;
     state?: ServiceStates;
+    actions?: ActionIdDto[] | null;
 
     constructor(data?: IServiceDto) {
         if (data) {
@@ -1022,6 +1097,11 @@ export class ServiceDto implements IServiceDto {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+            if (Array.isArray(_data["actions"])) {
+                this.actions = [] as any;
+                for (let item of _data["actions"])
+                    this.actions!.push(ActionIdDto.fromJS(item));
+            }
         }
     }
 
@@ -1037,6 +1117,11 @@ export class ServiceDto implements IServiceDto {
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["state"] = this.state !== undefined ? this.state : <any>null;
+        if (Array.isArray(this.actions)) {
+            data["actions"] = [];
+            for (let item of this.actions)
+                data["actions"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -1045,6 +1130,7 @@ export interface IServiceDto {
     title?: string | null;
     description?: string | null;
     state?: ServiceStates;
+    actions?: ActionIdDto[] | null;
 }
 
 export enum ServiceStates {

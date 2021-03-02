@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Actions;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
@@ -33,13 +34,18 @@ namespace Application.Services.Queries
       {
         
         var service = await _context.Services.FindAsync(request.Id);
+        var actions = await _context.Actions
+          .ProjectTo<ActionIdDto>(_mapper.ConfigurationProvider)
+          .ToListAsync(cancellationToken);
+        var sActions = actions.Where(e => e.ServiceId == request.Id).ToList();
 
         ServiceIdDto serviceDto = new ServiceIdDto
         {
           Id = service.Id,
           Description = service.Description,
           State = service.State,
-          Title = service.Title
+          Title = service.Title,
+          Actions = sActions
         };
 
         if (serviceDto == null)
