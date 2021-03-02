@@ -10,6 +10,8 @@ namespace Application.Actions
 {
   public class ActionDto : IAutoMap<Action>
   {
-   
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string AdminNote { get; set; }
   }
 }
