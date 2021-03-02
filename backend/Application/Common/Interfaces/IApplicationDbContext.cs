@@ -11,6 +11,8 @@ namespace Application.Common.Interfaces
 
     DbSet<ExampleChild> ExampleChildren { get; set; }
     DbSet<ExampleParent> ExampleParents { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Service> Services { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
   }
 }
