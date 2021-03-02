@@ -3,12 +3,18 @@ using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace Application.Actions.Commands.CreateAction
 {
   public class CreateActionCommand : IRequest<int>
   {
-    public ActionDto Action;
+    [JsonIgnore]
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string AdminNote { get; set; }
+
 
     public class CreateActionCommandHandler : IRequestHandler<CreateActionCommand, int>
     {
@@ -23,10 +29,10 @@ namespace Application.Actions.Commands.CreateAction
       {
         var action = new Action
         {
-          Title = request.Action.Title,
-          Description = request.Action.Description,
-          AdminNote = request.Action.AdminNote,
-          ServiceId = request.Action.ServiceId
+          Title = request.Title,
+          Description = request.Description,
+          AdminNote = request.AdminNote,
+          ServiceId = request.Id
         };
 
         _context.Actions.Add(action);

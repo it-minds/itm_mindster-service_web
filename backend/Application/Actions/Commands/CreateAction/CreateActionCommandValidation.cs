@@ -10,14 +10,10 @@ namespace Application.Actions.Commands.CreateAction
   public class CreateActionCommandValidation : AbstractValidator<CreateActionCommand>
   {
     public CreateActionCommandValidation()
-    {
-      RuleFor(e => e.Action)
-        .NotNull();
-      RuleFor(e => e.Action.Title)
+    {                 
+      RuleFor(e => e.Title)
         .MaximumLength(200)
         .NotEmpty();
-      RuleFor(e => e.Action.ServiceId)
-        .NotNull();
     }
   }
 }

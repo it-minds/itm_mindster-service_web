@@ -125,62 +125,6 @@ export class ClientBase {
   }
 }
 
-export interface IActionClient {
-    createAction(command: CreateActionCommand): Promise<number>;
-}
-
-export class ActionClient extends ClientBase implements IActionClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(configuration: AuthBase, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super(configuration);
-        this.http = http ? http : <any>window;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-    }
-
-    createAction(command: CreateActionCommand): Promise<number> {
-        let url_ = this.baseUrl + "/api/Action";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(command);
-
-        let options_ = <RequestInit>{
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAction(_response));
-        });
-    }
-
-    protected processCreateAction(response: Response): Promise<number> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<number>(<any>null);
-    }
-}
-
 export interface IAuthClient {
     login(): Promise<string>;
     checkAuth(): Promise<boolean>;
@@ -557,6 +501,7 @@ export class HealthClient extends ClientBase implements IHealthClient {
 
 export interface IServiceClient {
     createService(command: CreateServiceCommand): Promise<number>;
+    createAction(id: number, command: CreateActionCommand): Promise<number>;
 }
 
 export class ServiceClient extends ClientBase implements IServiceClient {
@@ -609,91 +554,49 @@ export class ServiceClient extends ClientBase implements IServiceClient {
         }
         return Promise.resolve<number>(<any>null);
     }
-}
 
-export class CreateActionCommand implements ICreateActionCommand {
-    action?: ActionDto | null;
+    createAction(id: number, command: CreateActionCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Service/{id}/Actions";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
 
-    constructor(data?: ICreateActionCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             }
-            this.action = data.action && !(<any>data.action).toJSON ? new ActionDto(data.action) : <ActionDto>this.action; 
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAction(_response));
+        });
+    }
+
+    protected processCreateAction(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
         }
+        return Promise.resolve<number>(<any>null);
     }
-
-    init(_data?: any) {
-        if (_data) {
-            this.action = _data["action"] ? ActionDto.fromJS(_data["action"]) : <any>null;
-        }
-    }
-
-    static fromJS(data: any): CreateActionCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateActionCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["action"] = this.action ? this.action.toJSON() : <any>null;
-        return data; 
-    }
-}
-
-export interface ICreateActionCommand {
-    action?: IActionDto | null;
-}
-
-export class ActionDto implements IActionDto {
-    title?: string | null;
-    description?: string | null;
-    adminNote?: string | null;
-    serviceId?: number;
-
-    constructor(data?: IActionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
-            this.serviceId = _data["serviceId"] !== undefined ? _data["serviceId"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ActionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ActionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
-        data["serviceId"] = this.serviceId !== undefined ? this.serviceId : <any>null;
-        return data; 
-    }
-}
-
-export interface IActionDto {
-    title?: string | null;
-    description?: string | null;
-    adminNote?: string | null;
-    serviceId?: number;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
@@ -1011,6 +914,50 @@ export enum ServiceStates {
     Pending = 0,
     Approved = 1,
     Rejected = 2,
+}
+
+export class CreateActionCommand implements ICreateActionCommand {
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
+
+    constructor(data?: ICreateActionCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateActionCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateActionCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateActionCommand {
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
 }
 
 export enum CommandErrorCode {
