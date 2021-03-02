@@ -1,11 +1,12 @@
 import Demo from "components/Demo/Demo";
+import ServiceTable from "components/ServiceTable/ServiceTable";
 import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 
 const IndexPage: NextPage = () => {
-  return <Demo />;
+  return <ServiceTable></ServiceTable>;
 };
 
 export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {

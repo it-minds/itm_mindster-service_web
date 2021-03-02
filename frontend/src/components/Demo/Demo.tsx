@@ -66,6 +66,7 @@ const Demo: FC = () => {
           <div key={dat.id}>
             {t("example.dataLine", {
               id: dat.id,
+              
               type: dat.type
             })}
           </div>
