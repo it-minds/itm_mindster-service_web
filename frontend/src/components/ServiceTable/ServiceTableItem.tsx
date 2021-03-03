@@ -1,20 +1,79 @@
-import { Button, Center, Heading, propNames, Tbody, Td, Tr, Wrap } from "@chakra-ui/react";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Button,
+  Center,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  propNames,
+  Tbody,
+  Td,
+  Tr,
+  useDisclosure,
+  Wrap
+} from "@chakra-ui/react";
+import Demo from "components/Demo/Demo";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { IServiceIdDto, ServiceIdDto, ServiceStates } from "services/backend/nswagts";
+
+import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {
-  tableData: ServiceIdDto[];
+  service: ServiceIdDto;
 }
 const ServiceTableItem: FC<ServiceTableItemProps> = props => {
-  const tableData = props.tableData;
+  const Service = props.service;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const tableItems = tableData.map((Service: IServiceIdDto) => (
-    <Tr key={Service.id}>
+  return (
+    <Tr key={Service.id} onClick={onOpen}>
       <Td>{Service.id}</Td>
       <Td>{Service.title}</Td>
       <Td>{Service.description}</Td>
-      <Td>{Service.state}</Td>
+      <Td>{ServiceStates[Service.state]}</Td>
+      <Td>
+        Action
+        <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="xl">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Actions {Service.id}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Heading>Service {Service.id}</Heading>
+              <ActionTable tableData={Service.actions}></ActionTable>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Td>
     </Tr>
-  ));
-  return <Tbody>{tableItems}</Tbody>;
+  );
 };
 export default ServiceTableItem;
+/**
+<Accordion allowMultiple>
+  <AccordionItem>
+    <h2>
+      <AccordionButton>
+        <Td>Actions</Td>
+      </AccordionButton>
+    </h2>
+    <AccordionPanel pb={4}>
+      <ActionTable tableData={Service.actions}></ActionTable>
+    </AccordionPanel>
+  </AccordionItem>
+</Accordion>;
+ */
