@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Services;
 using Application.Services.Commands.CreateService;
@@ -26,6 +27,11 @@ namespace Web.Controllers
     {
       command.Id = id;
       return await Mediator.Send(command);
+    }
+    [HttpGet]
+    public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices()
+    {
+      return await Mediator.Send(new GetServicesQuery());
     }
   }
 }
