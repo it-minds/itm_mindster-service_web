@@ -36,7 +36,6 @@ const ActionTable: FC<ActionTableProps> = props => {
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Admin Note</Th>
-            <Th>Service Id</Th>
           </Tr>
         </Thead>
         <Tbody>{tableBody}</Tbody>

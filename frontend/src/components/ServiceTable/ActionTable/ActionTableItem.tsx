@@ -13,7 +13,6 @@ const ActionTableItem: FC<ActionTableItemProps> = props => {
       <Td>{action.title}</Td>
       <Td>{action.description}</Td>
       <Td>{action.adminNote}</Td>
-      <Td>{action.serviceId}</Td>
     </Tr>
   );
 };

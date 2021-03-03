@@ -40,25 +40,22 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
       <Td>{Service.title}</Td>
       <Td>{Service.description}</Td>
       <Td>{ServiceStates[Service.state]}</Td>
-      <Td>
-        Action
-        <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="xl">
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Actions {Service.id}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Heading>Service {Service.id}</Heading>
-              <ActionTable tableData={Service.actions}></ActionTable>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </Td>
+
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Actions of Service {Service.id}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ActionTable tableData={Service.actions}></ActionTable>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Tr>
   );
 };
