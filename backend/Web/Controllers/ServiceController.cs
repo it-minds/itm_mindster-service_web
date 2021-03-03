@@ -18,7 +18,7 @@ namespace Web.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceIdDto>> GetServiceById([FromRoute] int id)
     {
-      return await Mediator.Send(new GetServiceByIdQuery() {Id = id});
+      return await Mediator.Send(new GetServiceByIdQuery {Id = id});
     }
 
     [HttpPost("{id}/Actions")]
