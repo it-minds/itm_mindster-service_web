@@ -1,23 +1,8 @@
-import {
-  Button,
-  Center,
-  Heading,
-  propNames,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  Wrap
-} from "@chakra-ui/react";
+import { Center, Heading, Table, Tbody, Th, Thead, Tr, Wrap } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
-import { Locale } from "i18n/Locale";
-import { GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { I18nProps } from "next-rosetta";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { ActionIdDto, ServiceDto, ServiceIdDto } from "services/backend/nswagts";
+import { ServiceIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 import ServiceTableItem from "./ServiceTableItem";
@@ -25,7 +10,6 @@ import ServiceTableItem from "./ServiceTableItem";
 const ServiceTable: FC = () => {
   const [tableData, setData] = useState<ServiceIdDto[]>([]);
   const { t } = useLocales();
-  const router = useRouter();
 
   const fetchData = useCallback(async () => {
     try {

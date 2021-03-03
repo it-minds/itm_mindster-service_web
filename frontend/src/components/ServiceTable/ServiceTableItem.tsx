@@ -1,13 +1,5 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Button,
-  Center,
-  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,16 +7,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  propNames,
-  Tbody,
   Td,
   Tr,
-  useDisclosure,
-  Wrap
+  useDisclosure
 } from "@chakra-ui/react";
-import Demo from "components/Demo/Demo";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { IServiceIdDto, ServiceIdDto, ServiceStates } from "services/backend/nswagts";
+import React, { FC } from "react";
+import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
 import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {

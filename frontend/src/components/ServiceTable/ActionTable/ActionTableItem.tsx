@@ -1,6 +1,6 @@
-import { Tbody, Td, Tr, Wrap } from "@chakra-ui/react";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { ActionIdDto, IActionIdDto } from "services/backend/nswagts";
+import { Td, Tr } from "@chakra-ui/react";
+import React, { FC } from "react";
+import { ActionIdDto } from "services/backend/nswagts";
 interface ActionTableItemProps {
   action: ActionIdDto;
 }

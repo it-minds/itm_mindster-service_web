@@ -1,18 +1,6 @@
-import {
-  Button,
-  Center,
-  Heading,
-  propNames,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  Wrap
-} from "@chakra-ui/react";
-import { useLocales } from "hooks/useLocales";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { ActionIdDto, IActionIdDto, ServiceIdDto } from "services/backend/nswagts";
+import { Center, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import React, { FC } from "react";
+import { ActionIdDto } from "services/backend/nswagts";
 
 import ActionTableItem from "./ActionTableItem";
 interface ActionTableProps {
@@ -20,8 +8,6 @@ interface ActionTableProps {
 }
 const ActionTable: FC<ActionTableProps> = props => {
   const tableData = props.tableData;
-
-  const { t } = useLocales();
 
   const tableBody = tableData.map((Action: ActionIdDto) => (
     <ActionTableItem key={Action.id} action={Action}></ActionTableItem>
