@@ -14,11 +14,13 @@ namespace Web.Controllers
     {
       return await Mediator.Send(command);
     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<ServiceIdDto>> GetServiceById([FromRoute] int id)
     {
-      return await Mediator.Send(new GetServiceByIdQuery() { Id = id });
-      
+      return await Mediator.Send(new GetServiceByIdQuery() {Id = id});
+    }
+
     [HttpPost("{id}/Actions")]
     public async Task<ActionResult<int>> CreateAction([FromRoute] int id, CreateActionCommand command)
     {

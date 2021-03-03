@@ -11,11 +11,13 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Application.Services.Queries
 {
   public class GetServiceByIdQuery : IRequest<ServiceIdDto>
   {
+    [JsonIgnore]
     public int Id { get; set; }
     public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, ServiceIdDto>
     {
@@ -32,12 +34,11 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-        
         var service = await _context.Services.FindAsync(request.Id);
         var actions = await _context.Actions
+          .Where(e => e.ServiceId == request.Id)
           .ProjectTo<ActionIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
-        var sActions = actions.Where(e => e.ServiceId == request.Id).ToList();
 
         ServiceIdDto serviceDto = new ServiceIdDto
         {
@@ -45,7 +46,7 @@ namespace Application.Services.Queries
           Description = service.Description,
           State = service.State,
           Title = service.Title,
-          Actions = sActions
+          Actions = actions
         };
 
         if (serviceDto == null)

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Newtonsoft.Json;
+
 
 namespace Application.Actions.Commands.CreateAction
 {
