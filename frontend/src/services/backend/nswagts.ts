@@ -652,8 +652,8 @@ export class ServiceClient extends ClientBase implements IServiceClient {
         return Promise.resolve<number>(<any>null);
     }
 
-    getServiceById(id: number): Promise<ServiceIdDto> {
-        let url_ = this.baseUrl + "/api/Service/{id}";
+    createAction(id: number, command: CreateActionCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Service/{id}/Actions";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1083,6 +1083,7 @@ export class ServiceDto implements IServiceDto {
     state?: ServiceStates;
     actions?: ActionIdDto[] | null;
 
+
     constructor(data?: IServiceDto) {
         if (data) {
             for (var property in data) {
@@ -1156,6 +1157,7 @@ export class ServiceIdDto extends ServiceDto implements IServiceIdDto {
     static fromJS(data: any): ServiceIdDto {
         data = typeof data === 'object' ? data : {};
         let result = new ServiceIdDto();
+
         result.init(data);
         return result;
     }
@@ -1164,6 +1166,7 @@ export class ServiceIdDto extends ServiceDto implements IServiceIdDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
         super.toJSON(data);
+
         return data; 
     }
 }

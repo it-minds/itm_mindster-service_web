@@ -16,7 +16,7 @@ namespace Application.Actions.Commands.CreateAction
       RuleFor(e => e.Action.Title)
         .MaximumLength(200)
         .NotEmpty();
-      RuleFor(e => e.Action.ServiceId)
+      RuleFor(e => e.Id)
         .NotNull();
     }
   }
