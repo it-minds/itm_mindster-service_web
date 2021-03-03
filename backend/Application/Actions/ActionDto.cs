@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Enums;
+using Application.Common.Mappings;
+using Action = Domain.Entities.Action;
 
-namespace Domain.Entities
+namespace Application.Actions
 {
-  public class Service
+  public class ActionDto : IAutoMap<Action>
   {
-    public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public virtual ICollection<Action> Actions { get; set; }
-    public ServiceStates State { get; set; }
+    public string AdminNote { get; set; }
   }
 }
