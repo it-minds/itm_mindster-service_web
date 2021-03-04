@@ -11,6 +11,7 @@ import {
   Tr,
   useDisclosure
 } from "@chakra-ui/react";
+import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
 import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
@@ -21,9 +22,16 @@ interface ServiceTableItemProps {
 const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   const Service = props.service;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { menuBg, hoverBg, activeBg } = useColors();
 
   return (
-    <Tr key={Service.id} onClick={onOpen}>
+    <Tr
+      key={Service.id}
+      onClick={onOpen}
+      cursor="pointer"
+      _hover={{
+        bgColor: hoverBg
+      }}>
       <Td>{Service.id}</Td>
       <Td>{Service.title}</Td>
       <Td>{Service.description}</Td>

@@ -4,7 +4,7 @@ export const table: Locale = {
   locale: "English (US)",
 
   example: {
-    title: "Hello World",
+    title: "Service Table",
     byLine: "When data is loading it is displayed below",
     dataLine: "Child {{id}} of type {{type}}",
 
