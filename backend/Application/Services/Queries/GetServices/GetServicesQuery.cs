@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Actions;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -36,7 +31,7 @@ namespace Application.Services.Queries
           .Include(x => x.Actions)
           .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
-        
+
         return services;
       }
     }

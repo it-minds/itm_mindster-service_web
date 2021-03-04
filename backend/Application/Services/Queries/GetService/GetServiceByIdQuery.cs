@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Actions;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Application.Services.Queries
 {
   public class GetServiceByIdQuery : IRequest<ServiceIdDto>
   {
+    [JsonIgnore]
     public int Id { get; set; }
     public class GetServiceByIdQueryHandler : IRequestHandler<GetServiceByIdQuery, ServiceIdDto>
     {
@@ -32,18 +30,18 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-        var services = await _context.Services.Include(e => e.Actions)
-          .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider).ToListAsync();
+        var services = await _context.Services
+          .Where(e => e.Id == request.Id)
+          .Include(e => e.Actions)
+          .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider)
+          .ToListAsync(cancellationToken);
 
-        var service = services.Find(x => x.Id == request.Id);
-
-        
-        if (service == null)
+        if (services.Count == 0)
         {
-          throw new NotFoundException(nameof(service), request.Id);
+          throw new NotFoundException(nameof(services), request.Id);
         }
         
-        return service ;
+        return services[0];
       }
     }
   }
