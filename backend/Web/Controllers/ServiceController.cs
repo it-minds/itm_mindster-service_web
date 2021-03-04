@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
-using Application.Actions.Commands.CreateAction;
+using Application.Services;
 using Application.Services.Commands.CreateService;
+using Application.Services.Queries;
+using Application.Actions.Commands.CreateAction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
@@ -12,6 +14,13 @@ namespace Web.Controllers
     {
       return await Mediator.Send(command);
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ServiceIdDto>> GetServiceById([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetServiceByIdQuery {Id = id});
+    }
+
     [HttpPost("{id}/Actions")]
     public async Task<ActionResult<int>> CreateAction([FromRoute] int id, CreateActionCommand command)
     {

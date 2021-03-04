@@ -5,6 +5,7 @@ using Domain.Entities;
 using MediatR;
 using Newtonsoft.Json;
 
+
 namespace Application.Actions.Commands.CreateAction
 {
   public class CreateActionCommand : IRequest<int>
@@ -12,7 +13,6 @@ namespace Application.Actions.Commands.CreateAction
     [JsonIgnore]
     public int Id { get; set; }
     public ActionDto Action;
-
 
     public class CreateActionCommandHandler : IRequestHandler<CreateActionCommand, int>
     {

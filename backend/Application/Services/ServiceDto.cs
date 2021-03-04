@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Actions;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
@@ -15,11 +16,5 @@ namespace Application.Services
     public string Title { get; set; }
     public string Description { get; set; }
     public ServiceStates State { get; set; }
-
-    public void Mapping(Profile profile)
-    {
-      profile.CreateMap<Service, ServiceDto>();
-    }
-
   }
 }
