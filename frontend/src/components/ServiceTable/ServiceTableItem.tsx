@@ -7,6 +7,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Tag,
+  TagLabel,
   Td,
   Tr,
   useDisclosure
@@ -24,6 +26,8 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { menuBg, hoverBg, activeBg } = useColors();
 
+  const stateColors = ["yellow", "green", "red"];
+
   return (
     <Tr
       key={Service.id}
@@ -35,7 +39,11 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
       <Td>{Service.id}</Td>
       <Td>{Service.title}</Td>
       <Td>{Service.description}</Td>
-      <Td>{ServiceStates[Service.state]}</Td>
+      <Td>
+        <Tag size="md" variant="subtle" colorScheme={stateColors[Service.state]}>
+          <TagLabel>{ServiceStates[Service.state]}</TagLabel>
+        </Tag>
+      </Td>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
