@@ -4,7 +4,6 @@ import {
   Center,
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
   Heading,
   Input,
@@ -12,16 +11,19 @@ import {
   Wrap
 } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
+import { useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateActionCommand, CreateServiceCommand } from "services/backend/nswagts";
+import { CreateActionCommand } from "services/backend/nswagts";
 
 const ActionForm: FC = () => {
   const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");
-  const [serviceId, setServiceId] = useState(4);
+  const router = useRouter();
+  const { id } = router.query;
+  const serviceId: number = +id;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +35,6 @@ const ActionForm: FC = () => {
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
     console.log(title);
-    console.log(description);
     await serviceClient.createAction(
       serviceId,
       new CreateActionCommand({
@@ -49,7 +50,7 @@ const ActionForm: FC = () => {
   return (
     <Center>
       <Wrap width="700px" justify="center">
-        <Heading>Add new action to service: {serviceId}</Heading>
+        <Heading>Add new action to service: {id} </Heading>
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6} borderWidth={1} borderRadius={8} boxShadow="lg">
             <form onSubmit={onSubmit}>

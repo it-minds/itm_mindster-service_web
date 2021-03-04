@@ -42,6 +42,7 @@ const ServiceTable: FC = () => {
               <Th>Title</Th>
               <Th>Description</Th>
               <Th>State</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>{tableBody}</Tbody>

@@ -1,5 +1,11 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,6 +20,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
+import Link from "next/link";
 import React, { FC } from "react";
 import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
@@ -31,8 +38,8 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   return (
     <Tr
       key={Service.id}
-      onClick={onOpen}
-      cursor="pointer"
+      //onClick={onOpen}
+      //cursor="pointer"
       _hover={{
         bgColor: hoverBg
       }}>
@@ -43,6 +50,19 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
         <Tag size="md" variant="subtle" colorScheme={stateColors[Service.state]}>
           <TagLabel>{ServiceStates[Service.state]}</TagLabel>
         </Tag>
+      </Td>
+      <Td>
+        <Menu size="full">
+          <MenuButton size="sm" as={IconButton} icon={<HamburgerIcon></HamburgerIcon>}>
+            Actions
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={onOpen}>View Actions</MenuItem>
+            <MenuItem>
+              <Link href={`/Service/${Service.id}`}>Add new action</Link>
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Td>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
