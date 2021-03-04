@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Actions;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
@@ -34,28 +30,18 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-        var service = await _context.Services.FindAsync(request.Id);
-        var actions = await _context.Actions
-          .Where(e => e.ServiceId == request.Id)
-          .ProjectTo<ActionIdDto>(_mapper.ConfigurationProvider)
+        var services = await _context.Services
+          .Where(e => e.Id == request.Id)
+          .Include(e => e.Actions)
+          .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
 
-        ServiceIdDto serviceDto = new ServiceIdDto
+        if (services.Count == 0)
         {
-          Id = service.Id,
-          Description = service.Description,
-          State = service.State,
-          Title = service.Title,
-          Actions = actions
-        };
-
-        if (serviceDto == null)
-        {
-          throw new NotFoundException(nameof(service), request.Id);
+          throw new NotFoundException(nameof(services), request.Id);
         }
-
-
-        return serviceDto ;
+        
+        return services[0];
       }
     }
   }
