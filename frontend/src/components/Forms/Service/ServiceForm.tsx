@@ -57,7 +57,7 @@ const ServiceForm: FC = () => {
                   placeholder="Title of your service"
                   onChange={event => setTitle(event.target.value)}></Input>
               </FormControl>
-              <FormControl mt="5">
+              <FormControl mt="6">
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Description of service"
@@ -65,7 +65,7 @@ const ServiceForm: FC = () => {
                   onChange={event => setDescription(event.target.value)}
                 />
               </FormControl>
-              <Button variant="outline" width="full" mt={5} type="submit">
+              <Button variant="outline" width="full" mt={6} type="submit">
                 Submit
               </Button>
             </form>
