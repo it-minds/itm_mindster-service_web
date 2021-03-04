@@ -30,18 +30,17 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-        var services = await _context.Services
+        var service = await _context.Services
           .Where(e => e.Id == request.Id)
           .Include(e => e.Actions)
-          .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider)
-          .ToListAsync(cancellationToken);
+          .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
 
-        if (services.Count == 0)
+        if (service == null)
         {
-          throw new NotFoundException(nameof(services), request.Id);
+          throw new NotFoundException(nameof(service), request.Id);
         }
         
-        return services[0];
+        return service;
       }
     }
   }

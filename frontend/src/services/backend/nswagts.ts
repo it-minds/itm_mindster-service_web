@@ -501,7 +501,6 @@ export class HealthClient extends ClientBase implements IHealthClient {
 
 export interface IServiceClient {
     createService(command: CreateServiceCommand): Promise<number>;
-    getAllServices(): Promise<ServiceIdDto[]>;
     getServiceById(id: number): Promise<ServiceIdDto>;
     createAction(id: number, command: CreateActionCommand): Promise<number>;
 }
