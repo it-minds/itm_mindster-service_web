@@ -24,7 +24,7 @@ interface ServiceTableItemProps {
 const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   const Service = props.service;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { menuBg, hoverBg, activeBg } = useColors();
+  const { hoverBg } = useColors();
 
   const stateColors = ["yellow", "green", "red"];
 
@@ -64,17 +64,3 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   );
 };
 export default ServiceTableItem;
-/**
-<Accordion allowMultiple>
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Td>Actions</Td>
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      <ActionTable tableData={Service.actions}></ActionTable>
-    </AccordionPanel>
-  </AccordionItem>
-</Accordion>;
- */
