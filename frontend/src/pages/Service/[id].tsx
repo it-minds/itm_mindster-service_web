@@ -7,7 +7,7 @@ import { ServiceIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 const IndexPage: NextPage = () => {
-  return <ActionForm />;
+  return <ActionForm serviceId={1} />;
 };
 
 export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {

@@ -22,7 +22,7 @@ const ServiceForm: FC = () => {
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = event => {
+  const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     addService();
   };
