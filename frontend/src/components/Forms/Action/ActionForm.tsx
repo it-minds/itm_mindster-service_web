@@ -16,14 +16,16 @@ import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateActionCommand } from "services/backend/nswagts";
 
-const ActionForm: FC = () => {
+interface fromProps {
+  serviceId: number;
+}
+
+const ActionForm: FC<fromProps> = props => {
   const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");
-  const router = useRouter();
-  const { id } = router.query;
-  const serviceId: number = +id;
+  const id = props.serviceId;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +38,7 @@ const ActionForm: FC = () => {
     const serviceClient = await genServiceClient();
     console.log(title);
     await serviceClient.createAction(
-      serviceId,
+      id,
       new CreateActionCommand({
         action: {
           title: title,
@@ -49,10 +51,9 @@ const ActionForm: FC = () => {
 
   return (
     <Center>
-      <Wrap width="700px" justify="center">
-        <Heading>Add new action to service: {id} </Heading>
+      <Wrap width="full" justify="center">
         <Flex width="full" align="center" justifyContent="center">
-          <Box width="full" p={6} borderWidth={1} borderRadius={8} boxShadow="lg">
+          <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
               <FormControl isRequired>
                 <FormLabel>Title:</FormLabel>
