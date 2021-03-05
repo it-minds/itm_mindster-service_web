@@ -44,10 +44,9 @@ const ServiceForm: FC = () => {
 
   return (
     <Center>
-      <Wrap width="700px" justify="center">
-        <Heading>Add new Service</Heading>
+      <Wrap width="full" justify="center">
         <Flex width="full" align="center" justifyContent="center">
-          <Box width="full" p={6} borderWidth={1} borderRadius={8} boxShadow="lg">
+          <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
               <FormControl isRequired>
                 <FormLabel>Title:</FormLabel>
