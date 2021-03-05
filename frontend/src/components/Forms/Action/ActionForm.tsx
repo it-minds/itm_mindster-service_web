@@ -5,15 +5,12 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   Spinner,
   Textarea,
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import { useLocales } from "hooks/useLocales";
-import { useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateActionCommand } from "services/backend/nswagts";
@@ -23,7 +20,6 @@ interface fromProps {
   fetchData: () => Promise<void>;
 }
 const ActionForm: FC<fromProps> = props => {
-  const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");

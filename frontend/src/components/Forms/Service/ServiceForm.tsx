@@ -11,18 +11,14 @@ import {
   Center,
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
-  Heading,
   Input,
   Spinner,
-  Text,
   Textarea,
   useDisclosure,
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useRef, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
@@ -32,7 +28,6 @@ interface formProps {
 }
 
 const ServiceForm: FC<formProps> = props => {
-  const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
