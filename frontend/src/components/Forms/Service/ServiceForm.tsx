@@ -8,7 +8,9 @@ import {
   FormLabel,
   Heading,
   Input,
+  Spinner,
   Textarea,
+  useToast,
   Wrap
 } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
@@ -21,8 +23,10 @@ const ServiceForm: FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const onSubmit = (event: { preventDefault: () => void }) => {
+    setIsLoading(true);
     event.preventDefault();
     addService();
   };
@@ -40,6 +44,13 @@ const ServiceForm: FC = () => {
         }
       })
     );
+    setIsLoading(false);
+    toast({
+      description: "Service was added",
+      status: "success",
+      duration: 5000,
+      isClosable: true
+    });
   }, [title, description]);
 
   return (
@@ -64,9 +75,15 @@ const ServiceForm: FC = () => {
                   onChange={event => setDescription(event.target.value)}
                 />
               </FormControl>
-              <Button variant="outline" width="full" mt={6} type="submit">
-                Submit
-              </Button>
+              {isLoading ? (
+                <Button variant="outline" width="full" mt={6}>
+                  <Spinner></Spinner>
+                </Button>
+              ) : (
+                <Button variant="outline" width="full" mt={6} type="submit">
+                  Submit
+                </Button>
+              )}
             </form>
           </Box>
         </Flex>

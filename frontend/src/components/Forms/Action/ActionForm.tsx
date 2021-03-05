@@ -7,7 +7,9 @@ import {
   FormLabel,
   Heading,
   Input,
+  Spinner,
   Textarea,
+  useToast,
   Wrap
 } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
@@ -26,17 +28,18 @@ const ActionForm: FC<fromProps> = props => {
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");
   const id = props.serviceId;
+  const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (event: { preventDefault: () => void }) => {
+    setIsLoading(true);
     event.preventDefault();
     addAction();
   };
 
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
-    console.log(title);
     await serviceClient.createAction(
       id,
       new CreateActionCommand({
@@ -47,6 +50,13 @@ const ActionForm: FC<fromProps> = props => {
         }
       })
     );
+    setIsLoading(false);
+    toast({
+      description: "Action was added",
+      status: "success",
+      duration: 5000,
+      isClosable: true
+    });
   }, [title, description, adminNote]);
 
   return (
@@ -79,9 +89,15 @@ const ActionForm: FC<fromProps> = props => {
                   placeholder="admin note"
                   onChange={event => setAdminNote(event.target.value)}></Input>
               </FormControl>
-              <Button variant="outline" width="full" mt={6} type="submit">
-                Submit
-              </Button>
+              {isLoading ? (
+                <Button variant="outline" width="full" mt={6}>
+                  <Spinner></Spinner>
+                </Button>
+              ) : (
+                <Button variant="outline" width="full" mt={6} type="submit">
+                  Submit
+                </Button>
+              )}
             </form>
           </Box>
         </Flex>
