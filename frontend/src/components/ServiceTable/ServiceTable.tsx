@@ -56,7 +56,7 @@ const ServiceTable: FC = () => {
   }, [fetchData]);
 
   const tableBody = tableData.map((Service: ServiceIdDto) => (
-    <ServiceTableItem key={Service.id} service={Service}></ServiceTableItem>
+    <ServiceTableItem fetchData={fetchData} key={Service.id} service={Service}></ServiceTableItem>
   ));
 
   return (
@@ -87,7 +87,7 @@ const ServiceTable: FC = () => {
                   <ModalHeader>Create a new service</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <ServiceForm></ServiceForm>
+                    <ServiceForm fetchData={fetchData}></ServiceForm>
                   </ModalBody>
                   <ModalFooter>
                     <Button colorScheme="blue" mr={3} onClick={onClose}>

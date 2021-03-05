@@ -20,8 +20,8 @@ import { CreateActionCommand } from "services/backend/nswagts";
 
 interface fromProps {
   serviceId: number;
+  fetchData: () => Promise<void>;
 }
-
 const ActionForm: FC<fromProps> = props => {
   const { t } = useLocales();
   const [title, setTitle] = useState("");
@@ -57,6 +57,7 @@ const ActionForm: FC<fromProps> = props => {
       duration: 5000,
       isClosable: true
     });
+    props.fetchData();
   }, [title, description, adminNote]);
 
   return (

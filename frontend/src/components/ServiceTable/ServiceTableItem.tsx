@@ -27,6 +27,7 @@ import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {
   service: ServiceIdDto;
+  fetchData: () => Promise<void>;
 }
 const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   const Service = props.service;
@@ -85,7 +86,7 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
           <ModalHeader>Add new action to service: {Service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm serviceId={Service.id}></ActionForm>
+            <ActionForm fetchData={props.fetchData} serviceId={Service.id}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={() => setFormOpen(false)}>

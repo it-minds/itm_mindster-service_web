@@ -27,7 +27,11 @@ import React, { FC, useCallback, useRef, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
 
-const ServiceForm: FC = () => {
+interface formProps {
+  fetchData: () => Promise<void>;
+}
+
+const ServiceForm: FC<formProps> = props => {
   const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -63,6 +67,7 @@ const ServiceForm: FC = () => {
       duration: 5000,
       isClosable: true
     });
+    props.fetchData();
   }, [title, description]);
 
   return (
