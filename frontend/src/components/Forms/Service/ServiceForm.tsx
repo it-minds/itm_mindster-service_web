@@ -1,4 +1,11 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   Center,
@@ -9,12 +16,14 @@ import {
   Heading,
   Input,
   Spinner,
+  Text,
   Textarea,
+  useDisclosure,
   useToast,
   Wrap
 } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useRef, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
 
@@ -23,10 +32,13 @@ const ServiceForm: FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
   const toast = useToast();
 
   const onSubmit = (event: { preventDefault: () => void }) => {
     setIsLoading(true);
+    onClose();
     event.preventDefault();
     addService();
   };
@@ -80,9 +92,49 @@ const ServiceForm: FC = () => {
                   <Spinner></Spinner>
                 </Button>
               ) : (
-                <Button variant="outline" width="full" mt={6} type="submit">
-                  Submit
-                </Button>
+                <>
+                  <Button
+                    onClick={() => {
+                      title == "" ? alert("title empty") : onOpen();
+                    }}
+                    variant="outline"
+                    width="full"
+                    mt={6}>
+                    Submit
+                  </Button>
+                  <AlertDialog
+                    motionPreset="slideInBottom"
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                    isOpen={isOpen}
+                    isCentered>
+                    <AlertDialogOverlay />
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
+                      <AlertDialogCloseButton />
+                      <AlertDialogBody>
+                        Are you sure you want sumbit this service?
+                        <FormControl>
+                          <FormLabel>Title:</FormLabel>
+                          <Input type="text" isReadOnly={true} value={title}></Input>
+                        </FormControl>
+                        <FormControl mt="6">
+                          <FormLabel>Description:</FormLabel>
+                          <Textarea isReadOnly={true} value={description} />
+                        </FormControl>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          No
+                        </Button>
+                        <Button onClick={onSubmit} type="submit" colorScheme="red" ml={3}>
+                          Yes
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               )}
             </form>
           </Box>
