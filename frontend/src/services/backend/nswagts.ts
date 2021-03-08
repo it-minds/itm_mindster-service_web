@@ -501,6 +501,7 @@ export class HealthClient extends ClientBase implements IHealthClient {
 
 export interface IServiceClient {
     createService(command: CreateServiceCommand): Promise<number>;
+    getAllServices(): Promise<ServiceIdDto[]>;
     getServiceById(id: number): Promise<ServiceIdDto>;
     createAction(id: number, command: CreateActionCommand): Promise<number>;
 }
@@ -554,6 +555,46 @@ export class ServiceClient extends ClientBase implements IServiceClient {
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    getAllServices(): Promise<ServiceIdDto[]> {
+        let url_ = this.baseUrl + "/api/Service";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllServices(_response));
+        });
+    }
+
+    protected processGetAllServices(response: Response): Promise<ServiceIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ServiceIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ServiceIdDto[]>(<any>null);
     }
 
     getServiceById(id: number): Promise<ServiceIdDto> {
