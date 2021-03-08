@@ -21,8 +21,7 @@ import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {
   service: ServiceIdDto;
 }
-const ServiceTableItem: FC<ServiceTableItemProps> = props => {
-  const Service = props.service;
+const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { menuBg, hoverBg, activeBg } = useColors();
 
@@ -30,28 +29,28 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
 
   return (
     <Tr
-      key={Service.id}
+      key={service.id}
       onClick={onOpen}
       cursor="pointer"
       _hover={{
         bgColor: hoverBg
       }}>
-      <Td>{Service.id}</Td>
-      <Td>{Service.title}</Td>
-      <Td>{Service.description}</Td>
+      <Td>{service.id}</Td>
+      <Td>{service.title}</Td>
+      <Td>{service.description}</Td>
       <Td>
-        <Tag size="md" variant="subtle" colorScheme={stateColors[Service.state]}>
-          <TagLabel>{ServiceStates[Service.state]}</TagLabel>
+        <Tag size="md" variant="subtle" colorScheme={stateColors[service.state]}>
+          <TagLabel>{ServiceStates[service.state]}</TagLabel>
         </Tag>
       </Td>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Actions of Service {Service.id}</ModalHeader>
+          <ModalHeader>Actions of Service {service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionTable tableData={Service.actions}></ActionTable>
+            <ActionTable tableData={service.actions}></ActionTable>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -64,17 +63,3 @@ const ServiceTableItem: FC<ServiceTableItemProps> = props => {
   );
 };
 export default ServiceTableItem;
-/**
-<Accordion allowMultiple>
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Td>Actions</Td>
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      <ActionTable tableData={Service.actions}></ActionTable>
-    </AccordionPanel>
-  </AccordionItem>
-</Accordion>;
- */

@@ -27,10 +27,6 @@ const ServiceTable: FC = () => {
     fetchData();
   }, [fetchData]);
 
-  const tableBody = tableData.map((Service: ServiceIdDto) => (
-    <ServiceTableItem key={Service.id} service={Service}></ServiceTableItem>
-  ));
-
   return (
     <Center>
       <Wrap width="700px" justify="center">
@@ -44,7 +40,11 @@ const ServiceTable: FC = () => {
               <Th>State</Th>
             </Tr>
           </Thead>
-          <Tbody>{tableBody}</Tbody>
+          <Tbody>
+            {tableData.map((Service: ServiceIdDto) => (
+              <ServiceTableItem key={Service.id} service={Service}></ServiceTableItem>
+            ))}
+          </Tbody>
         </Table>
       </Wrap>
     </Center>
