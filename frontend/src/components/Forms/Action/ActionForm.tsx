@@ -19,11 +19,10 @@ interface fromProps {
   serviceId: number;
   fetchData: () => Promise<void>;
 }
-const ActionForm: FC<fromProps> = props => {
+const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");
-  const id = props.serviceId;
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +36,7 @@ const ActionForm: FC<fromProps> = props => {
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
     await serviceClient.createAction(
-      id,
+      serviceId,
       new CreateActionCommand({
         action: {
           title: title,
@@ -53,7 +52,7 @@ const ActionForm: FC<fromProps> = props => {
       duration: 5000,
       isClosable: true
     });
-    props.fetchData();
+    fetchData();
   }, [title, description, adminNote]);
 
   return (

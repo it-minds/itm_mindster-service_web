@@ -29,7 +29,7 @@ interface ServiceTableItemProps {
   service: ServiceIdDto;
   fetchData: () => Promise<void>;
 }
-const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
+const ServiceTableItem: FC<ServiceTableItemProps> = ({ service, fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formOpen, setFormOpen] = useState(false);
   const { hoverBg } = useColors();
@@ -82,10 +82,10 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
         size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new action to service: {Service.id}</ModalHeader>
+          <ModalHeader>Add new action to service: {service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm fetchData={props.fetchData} serviceId={Service.id}></ActionForm>
+            <ActionForm fetchData={fetchData} serviceId={service.id}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={() => setFormOpen(false)}>

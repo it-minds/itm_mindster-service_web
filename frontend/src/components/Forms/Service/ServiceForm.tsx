@@ -27,7 +27,7 @@ interface formProps {
   fetchData: () => Promise<void>;
 }
 
-const ServiceForm: FC<formProps> = props => {
+const ServiceForm: FC<formProps> = ({ fetchData }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +63,7 @@ const ServiceForm: FC<formProps> = props => {
       duration: 5000,
       isClosable: true
     });
-    props.fetchData();
+    fetchData();
   }, [title, description]);
 
   return (
