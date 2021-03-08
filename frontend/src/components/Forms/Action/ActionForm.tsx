@@ -27,32 +27,46 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (event: { preventDefault: () => void }) => {
-    setIsLoading(true);
-    event.preventDefault();
-    addAction();
-  };
+  const onSubmit = useCallback(
+    async event => {
+      setIsLoading(true);
+      event.preventDefault();
+      addAction();
+    },
+    [title, description, adminNote]
+  );
 
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
-    await serviceClient.createAction(
-      serviceId,
-      new CreateActionCommand({
-        action: {
-          title: title,
-          description: description,
-          adminNote: adminNote
-        }
-      })
-    );
-    setIsLoading(false);
-    toast({
-      description: "Action was added",
-      status: "success",
-      duration: 5000,
-      isClosable: true
-    });
+
+    try {
+      await serviceClient.createAction(
+        serviceId,
+        new CreateActionCommand({
+          action: {
+            title: title,
+            description: description,
+            adminNote: adminNote
+          }
+        })
+      );
+      toast({
+        description: "Action was added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostAction responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
     fetchData();
+
+    setIsLoading(false);
   }, [title, description, adminNote]);
 
   return (
