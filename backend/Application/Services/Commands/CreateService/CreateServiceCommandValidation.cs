@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace Application.Services.Commands.CreateService
 {
-  class CreateServiceCommandValidation : AbstractValidator<CreateServiceCommand>
+  public class CreateServiceCommandValidation : AbstractValidator<CreateServiceCommand>
   {
     public CreateServiceCommandValidation()
     {
