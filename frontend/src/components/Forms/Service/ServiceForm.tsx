@@ -36,13 +36,14 @@ const ServiceForm: FC<formProps> = props => {
   const toast = useToast();
 
   const onSubmit = (event: { preventDefault: () => void }) => {
-    setIsLoading(true);
-    onClose();
     event.preventDefault();
-    addService();
+    onOpen();
   };
 
   const addService = useCallback(async () => {
+    setIsLoading(true);
+    onClose();
+
     const serviceClient = await genServiceClient();
     console.log(title);
     console.log(description);
@@ -93,13 +94,7 @@ const ServiceForm: FC<formProps> = props => {
                 </Button>
               ) : (
                 <>
-                  <Button
-                    onClick={() => {
-                      title == "" ? alert("title empty") : onOpen();
-                    }}
-                    variant="outline"
-                    width="full"
-                    mt={6}>
+                  <Button variant="outline" width="full" mt={6} type="submit">
                     Submit
                   </Button>
                   <AlertDialog
@@ -128,7 +123,7 @@ const ServiceForm: FC<formProps> = props => {
                         <Button ref={cancelRef} onClick={onClose}>
                           No
                         </Button>
-                        <Button onClick={onSubmit} type="submit" colorScheme="red" ml={3}>
+                        <Button onClick={addService} type="submit" colorScheme="red" ml={3}>
                           Yes
                         </Button>
                       </AlertDialogFooter>
