@@ -127,6 +127,7 @@ export class ClientBase {
 
 export interface IApplicationClient {
     createApplication(command: CreateApplicationCommand): Promise<number>;
+    updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -178,6 +179,47 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Application/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateApplication(_response));
+        });
+    }
+
+    protected processUpdateApplication(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
@@ -811,6 +853,43 @@ export class ApplicationDto implements IApplicationDto {
 export interface IApplicationDto {
     title?: string | null;
     description?: string | null;
+}
+
+export class UpdateApplicationCommand implements IUpdateApplicationCommand {
+    application?: ApplicationDto | null;
+
+    constructor(data?: IUpdateApplicationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.application = data.application && !(<any>data.application).toJSON ? new ApplicationDto(data.application) : <ApplicationDto>this.application; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.application = _data["application"] ? ApplicationDto.fromJS(_data["application"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateApplicationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateApplicationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["application"] = this.application ? this.application.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IUpdateApplicationCommand {
+    application?: IApplicationDto | null;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
