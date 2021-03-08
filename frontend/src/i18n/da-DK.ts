@@ -4,7 +4,7 @@ export const table: Locale = {
   locale: "Dansk",
 
   example: {
-    title: "Hej Verden",
+    title: "Service tabel",
     byLine: "Når dataen er indhentet vises den her",
     dataLine: "{{type}} Barn {{id}} ",
 
