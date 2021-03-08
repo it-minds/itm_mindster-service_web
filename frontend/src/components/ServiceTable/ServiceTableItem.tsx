@@ -1,4 +1,3 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
   IconButton,
@@ -19,6 +18,7 @@ import {
   Tr,
   useDisclosure
 } from "@chakra-ui/react";
+import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import ActionForm from "components/Forms/Action/ActionForm";
 import { useColors } from "hooks/useColors";
 import React, { FC, useState } from "react";
@@ -51,7 +51,7 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
       </Td>
       <Td>
         <Menu size="full">
-          <MenuButton size="sm" as={IconButton} icon={<HamburgerIcon></HamburgerIcon>}></MenuButton>
+          <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
           <MenuList>
             <MenuItem onClick={onOpen}>View Actions</MenuItem>
             <MenuItem onClick={() => setFormOpen(!formOpen)}>Add action</MenuItem>

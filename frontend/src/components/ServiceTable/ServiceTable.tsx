@@ -1,4 +1,3 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
   Center,
@@ -23,6 +22,7 @@ import {
   useDisclosure,
   Wrap
 } from "@chakra-ui/react";
+import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import ServiceForm from "components/Forms/Service/ServiceForm";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useEffect, useState } from "react";
@@ -67,10 +67,7 @@ const ServiceTable: FC = () => {
               <Th>State</Th>
               <Th>
                 <Menu size="full">
-                  <MenuButton
-                    size="sm"
-                    as={IconButton}
-                    icon={<HamburgerIcon></HamburgerIcon>}></MenuButton>
+                  <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
                   <MenuList>
                     <MenuItem onClick={onOpen}>Add new service</MenuItem>
                   </MenuList>
