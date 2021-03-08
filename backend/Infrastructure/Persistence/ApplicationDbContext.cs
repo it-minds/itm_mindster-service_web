@@ -27,6 +27,7 @@ namespace Infrastructure.Persistence
     public DbSet<User> Users { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Action> Actions { get; set; }
+    public DbSet<ApplicationEntity> Applications { get; set; }
 
 
 
