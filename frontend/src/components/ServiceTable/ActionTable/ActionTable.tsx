@@ -6,13 +6,7 @@ import ActionTableItem from "./ActionTableItem";
 interface ActionTableProps {
   tableData: ActionIdDto[];
 }
-const ActionTable: FC<ActionTableProps> = props => {
-  const tableData = props.tableData;
-
-  const tableBody = tableData.map((Action: ActionIdDto) => (
-    <ActionTableItem key={Action.id} action={Action}></ActionTableItem>
-  ));
-
+const ActionTable: FC<ActionTableProps> = ({ tableData }) => {
   return (
     <Center>
       <Table variant="simple">
@@ -24,7 +18,11 @@ const ActionTable: FC<ActionTableProps> = props => {
             <Th>Admin Note</Th>
           </Tr>
         </Thead>
-        <Tbody>{tableBody}</Tbody>
+        <Tbody>
+          {tableData.map((Action: ActionIdDto) => (
+            <ActionTableItem key={Action.id} action={Action}></ActionTableItem>
+          ))}
+        </Tbody>
       </Table>
     </Center>
   );

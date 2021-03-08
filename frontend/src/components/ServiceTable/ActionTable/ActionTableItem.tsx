@@ -4,9 +4,7 @@ import { ActionIdDto } from "services/backend/nswagts";
 interface ActionTableItemProps {
   action: ActionIdDto;
 }
-const ActionTableItem: FC<ActionTableItemProps> = props => {
-  const action = props.action;
-
+const ActionTableItem: FC<ActionTableItemProps> = ({ action }) => {
   return (
     <Tr>
       <Td>{action.id}</Td>
