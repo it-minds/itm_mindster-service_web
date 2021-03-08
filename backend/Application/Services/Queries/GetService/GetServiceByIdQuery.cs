@@ -30,7 +30,6 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-
         var service = await _context.Services
           .Where(e => e.Id == request.Id)
           .Include(e => e.Actions)

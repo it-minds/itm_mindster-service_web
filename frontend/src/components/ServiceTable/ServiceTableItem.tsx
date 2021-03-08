@@ -32,6 +32,7 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formOpen, setFormOpen] = useState(false);
   const { hoverBg } = useColors();
+
   const stateColors = ["yellow", "green", "red"];
 
   return (

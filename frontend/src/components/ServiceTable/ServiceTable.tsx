@@ -30,7 +30,6 @@ import { genServiceClient } from "services/backend/apiClients";
 import { ServiceIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
-import ActionTable from "./ActionTable/ActionTable";
 import ServiceTableItem from "./ServiceTableItem";
 
 const ServiceTable: FC = () => {
