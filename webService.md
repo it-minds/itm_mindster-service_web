@@ -1,4 +1,3 @@
-
 # Domain
 
 ```plantuml
@@ -32,6 +31,4 @@ class Application
 
 
 Service "1"-->"0..*" Action
-
-
 ```

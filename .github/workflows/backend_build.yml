@@ -1,12 +1,6 @@
 name: Full Backend Build, Format, and Test
 
 on:
-  push:
-    paths:
-      - "backend/**"
-    branches:
-      - main
-
   pull_request:
     paths:
       - "backend/**"
@@ -38,26 +32,3 @@ jobs:
           dotnet restore
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
-
-  codeql:
-    name: CodeQL
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          working-directory: backend
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v1
-        with:
-          working-directory: backend
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
-        with:
-          working-directory: backend
