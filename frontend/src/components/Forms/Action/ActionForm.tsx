@@ -13,7 +13,6 @@ import {
   Wrap
 } from "@chakra-ui/react";
 import { useLocales } from "hooks/useLocales";
-import { useRouter } from "next/router";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateActionCommand } from "services/backend/nswagts";
@@ -22,41 +21,53 @@ interface fromProps {
   serviceId: number;
 }
 
-const ActionForm: FC<fromProps> = props => {
+const ActionForm: FC<fromProps> = ({ serviceId }) => {
   const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [adminNote, setAdminNote] = useState("");
-  const id = props.serviceId;
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (event: { preventDefault: () => void }) => {
-    setIsLoading(true);
-    event.preventDefault();
-    addAction();
-  };
+  const onSubmit = useCallback(
+    async event => {
+      setIsLoading(true);
+      event.preventDefault();
+      addAction();
+    },
+    [title, description, adminNote]
+  );
 
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
-    await serviceClient.createAction(
-      id,
-      new CreateActionCommand({
-        action: {
-          title: title,
-          description: description,
-          adminNote: adminNote
-        }
-      })
-    );
+    try {
+      await serviceClient.createAction(
+        serviceId,
+        new CreateActionCommand({
+          action: {
+            title: title,
+            description: description,
+            adminNote: adminNote
+          }
+        })
+      );
+      toast({
+        description: "Action was added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostAction responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
+
     setIsLoading(false);
-    toast({
-      description: "Action was added",
-      status: "success",
-      duration: 5000,
-      isClosable: true
-    });
   }, [title, description, adminNote]);
 
   return (

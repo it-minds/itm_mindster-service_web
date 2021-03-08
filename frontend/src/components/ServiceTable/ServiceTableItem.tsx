@@ -81,10 +81,10 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
         size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new action to service: {Service.id}</ModalHeader>
+          <ModalHeader>Add new action to service: {service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm serviceId={Service.id}></ActionForm>
+            <ActionForm serviceId={service.id}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={() => setFormOpen(false)}>

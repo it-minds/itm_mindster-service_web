@@ -1,8 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 
@@ -32,6 +34,11 @@ namespace Application.Actions.Commands.CreateAction
           AdminNote = request.Action.AdminNote,
           ServiceId = request.Id
         };
+
+        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken))
+        {
+          throw new NotFoundException(nameof(Service), request.Id);
+        }
 
         _context.Actions.Add(action);
 

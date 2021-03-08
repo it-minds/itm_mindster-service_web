@@ -25,32 +25,43 @@ const ServiceForm: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
-  const onSubmit = (event: { preventDefault: () => void }) => {
-    setIsLoading(true);
-    event.preventDefault();
-    addService();
-  };
+  const onSubmit = useCallback(
+    async event => {
+      setIsLoading(true);
+      event.preventDefault();
+      addService();
+    },
+    [title, description]
+  );
 
   const addService = useCallback(async () => {
     const serviceClient = await genServiceClient();
-    console.log(title);
-    console.log(description);
-    await serviceClient.createService(
-      new CreateServiceCommand({
-        service: {
-          title: title,
-          description: description,
-          state: 0
-        }
-      })
-    );
+    try {
+      await serviceClient.createService(
+        new CreateServiceCommand({
+          service: {
+            title: title,
+            description: description,
+            state: 0
+          }
+        })
+      );
+      toast({
+        description: "Service was added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostService responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
+
     setIsLoading(false);
-    toast({
-      description: "Service was added",
-      status: "success",
-      duration: 5000,
-      isClosable: true
-    });
   }, [title, description]);
 
   return (
