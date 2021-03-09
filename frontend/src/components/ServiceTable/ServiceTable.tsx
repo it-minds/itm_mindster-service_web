@@ -1,29 +1,5 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  Center,
-  Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure,
-  Wrap
-} from "@chakra-ui/react";
-import ServiceForm from "components/Forms/Service/ServiceForm";
+import { Center, Heading, Table, Tbody, Th, Thead, Tr, Wrap } from "@chakra-ui/react";
+import ServiceTableMenu from "components/ServiceTable/ServiceTableMenus/ServiceTableMenu";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
@@ -34,7 +10,6 @@ import ServiceTableItem from "./ServiceTableItem";
 
 const ServiceTable: FC = () => {
   const [tableData, setData] = useState<ServiceIdDto[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { t } = useLocales();
 
@@ -54,10 +29,6 @@ const ServiceTable: FC = () => {
     fetchData();
   }, [fetchData]);
 
-  const tableBody = tableData.map((Service: ServiceIdDto) => (
-    <ServiceTableItem fetchData={fetchData} key={Service.id} service={Service}></ServiceTableItem>
-  ));
-
   return (
     <Center>
       <Wrap width="700px" justify="center">
@@ -70,34 +41,18 @@ const ServiceTable: FC = () => {
               <Th>Description</Th>
               <Th>State</Th>
               <Th>
-                <Menu size="full">
-                  <MenuButton
-                    size="sm"
-                    as={IconButton}
-                    icon={<HamburgerIcon></HamburgerIcon>}></MenuButton>
-                  <MenuList>
-                    <MenuItem onClick={onOpen}>Add new service</MenuItem>
-                  </MenuList>
-                </Menu>
+                <ServiceTableMenu fetchData={fetchData}></ServiceTableMenu>
               </Th>
-              <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Create a new service</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <ServiceForm fetchData={fetchData}></ServiceForm>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
             </Tr>
           </Thead>
-          <Tbody>{tableBody}</Tbody>
+          <Tbody>
+            {tableData.map((Service: ServiceIdDto) => (
+              <ServiceTableItem
+                key={Service.id}
+                service={Service}
+                fetchData={fetchData}></ServiceTableItem>
+            ))}
+          </Tbody>
         </Table>
       </Wrap>
     </Center>
