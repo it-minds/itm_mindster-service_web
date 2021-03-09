@@ -1,29 +1,5 @@
-import {
-  Button,
-  Center,
-  Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Table,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure,
-  Wrap
-} from "@chakra-ui/react";
-import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
-import ServiceForm from "components/Forms/Service/ServiceForm";
+import { Center, Heading, Table, Tbody, Th, Thead, Tr, Wrap } from "@chakra-ui/react";
+import ServiceTableMenu from "components/ServiceTable/ServiceTableMenus/ServiceTableMenu";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
@@ -34,7 +10,6 @@ import ServiceTableItem from "./ServiceTableItem";
 
 const ServiceTable: FC = () => {
   const [tableData, setData] = useState<ServiceIdDto[]>([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { t } = useLocales();
 
@@ -66,28 +41,8 @@ const ServiceTable: FC = () => {
               <Th>Description</Th>
               <Th>State</Th>
               <Th>
-                <Menu size="full">
-                  <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
-                  <MenuList>
-                    <MenuItem onClick={onOpen}>Add new service</MenuItem>
-                  </MenuList>
-                </Menu>
+                <ServiceTableMenu></ServiceTableMenu>
               </Th>
-              <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Create a new service</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <ServiceForm></ServiceForm>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
             </Tr>
           </Thead>
           <Tbody>

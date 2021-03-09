@@ -4,25 +4,23 @@ import {
   Center,
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
-  Heading,
   Input,
   Spinner,
   Textarea,
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
 
 const ServiceForm: FC = () => {
-  const { t } = useLocales();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  console.log("DID A RERENDER");
+
   const toast = useToast();
 
   const onSubmit = useCallback(
