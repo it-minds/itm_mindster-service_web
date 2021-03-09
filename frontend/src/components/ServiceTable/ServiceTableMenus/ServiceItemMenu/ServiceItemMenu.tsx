@@ -23,9 +23,10 @@ import ViewActionTableTrigger from "./ViewActionTableTrigger";
 
 type Props = {
   service: ServiceIdDto;
+  fetchData: () => Promise<void>;
 };
 
-const ServiceItemMenu: FC<Props> = ({ service }) => {
+const ServiceItemMenu: FC<Props> = ({ service, fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -44,7 +45,7 @@ const ServiceItemMenu: FC<Props> = ({ service }) => {
           <ModalHeader>Add new action to service: {service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm serviceId={service.id}></ActionForm>
+            <ActionForm fetchData={fetchData} serviceId={service.id}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

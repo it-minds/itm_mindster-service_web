@@ -10,7 +10,6 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import ActionForm from "components/Forms/Action/ActionForm";
 import React, { FC } from "react";
 
 interface AddActionProps {
@@ -29,9 +28,7 @@ const AddActionTriggerBtn: FC<AddActionProps> = ({ serviceId }) => {
         <ModalContent>
           <ModalHeader>Add new action to service: {serviceId}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <ActionForm serviceId={serviceId}></ActionForm>
-          </ModalBody>
+          <ModalBody>{/* <ActionForm serviceId={serviceId}></ActionForm> */}</ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close

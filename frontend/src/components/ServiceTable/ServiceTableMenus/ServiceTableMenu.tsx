@@ -20,7 +20,11 @@ import React, { FC } from "react";
 import ServiceForm from "../../Forms/Service/ServiceForm";
 import AddActionTriggerBtn from "./ServiceItemMenu/AddActionTriggerBtn";
 
-const ServiceTableMenu: FC = () => {
+type Props = {
+  fetchData: () => Promise<void>;
+};
+
+const ServiceTableMenu: FC<Props> = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -29,7 +33,6 @@ const ServiceTableMenu: FC = () => {
         <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
         <MenuList>
           <MenuItem onClick={onOpen}>Add new service</MenuItem>
-          <AddActionTriggerBtn serviceId={1}></AddActionTriggerBtn>
         </MenuList>
       </Menu>
 
@@ -39,7 +42,7 @@ const ServiceTableMenu: FC = () => {
           <ModalHeader>Create a new service</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ServiceForm></ServiceForm>
+            <ServiceForm fetchData={fetchData}></ServiceForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
