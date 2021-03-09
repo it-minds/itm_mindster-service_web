@@ -1,12 +1,12 @@
-using Domain.Enums;
-using FluentAssertions;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Services;
 using Application.Services.Commands.CreateService;
+using Domain.Enums;
+using FluentAssertions;
 using Xunit;
 
-namespace Application.UnitTests.ExampleChildren.Commands.CreateExampleChild
+namespace Application.UnitTests.Services.Commands.CreateService
 {
   public class CreateServiceCommandTest : CommandTestBase
   {
