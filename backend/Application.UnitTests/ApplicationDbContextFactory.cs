@@ -85,6 +85,12 @@ namespace Application.UnitTests
         }
 
         );
+      context.Applications.AddRange(
+        new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
+        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
+        new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" }
+
+        );
       context.SaveChanges();
     }
 
