@@ -1,37 +1,14 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Tag,
-  TagLabel,
-  Td,
-  Tr,
-  useDisclosure
-} from "@chakra-ui/react";
-import ActionForm from "components/Forms/Action/ActionForm";
+import { Tag, TagLabel, Td, Tr } from "@chakra-ui/react";
+import ServiceItemMenu from "components/ServiceTable/ServiceTableMenus/ServiceItemMenu/ServiceItemMenu";
 import { useColors } from "hooks/useColors";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
-import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {
   service: ServiceIdDto;
   fetchData: () => Promise<void>;
 }
 const ServiceTableItem: FC<ServiceTableItemProps> = ({ service, fetchData }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [formOpen, setFormOpen] = useState(false);
   const { hoverBg } = useColors();
 
   const stateColors = ["yellow", "green", "red"];
@@ -51,50 +28,8 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service, fetchData }) => 
         </Tag>
       </Td>
       <Td>
-        <Menu size="full">
-          <MenuButton size="sm" as={IconButton} icon={<HamburgerIcon></HamburgerIcon>}></MenuButton>
-          <MenuList>
-            <MenuItem onClick={onOpen}>View Actions</MenuItem>
-            <MenuItem onClick={() => setFormOpen(!formOpen)}>Add action</MenuItem>
-          </MenuList>
-        </Menu>
+        <ServiceItemMenu fetchData={fetchData} service={service}></ServiceItemMenu>
       </Td>
-
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Actions of Service {service.id}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ActionTable tableData={service.actions}></ActionTable>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      <Modal
-        isOpen={formOpen}
-        onClose={() => setFormOpen(false)}
-        scrollBehavior="inside"
-        size="5xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add new action to service: {service.id}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ActionForm fetchData={fetchData} serviceId={service.id}></ActionForm>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={() => setFormOpen(false)}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </Tr>
   );
 };

@@ -13,16 +13,22 @@ import {
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateActionCommand } from "services/backend/nswagts";
+import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
 
 interface fromProps {
   serviceId: number;
   fetchData: () => Promise<void>;
 }
+
 const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [adminNote, setAdminNote] = useState("");
+  const [localActionDataForm, setLocalActionDataForm] = useState<ActionDto>(
+    new ActionDto({
+      title: "",
+      description: "",
+      adminNote: ""
+    })
+  );
+
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +39,7 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
       event.preventDefault();
       addAction();
     },
-    [title, description, adminNote]
+    [localActionDataForm]
   );
 
   const addAction = useCallback(async () => {
@@ -44,9 +50,9 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
         serviceId,
         new CreateActionCommand({
           action: {
-            title: title,
-            description: description,
-            adminNote: adminNote
+            title: localActionDataForm.title,
+            description: localActionDataForm.description,
+            adminNote: localActionDataForm.adminNote
           }
         })
       );
@@ -67,7 +73,14 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
     fetchData();
 
     setIsLoading(false);
-  }, [title, description, adminNote]);
+  }, [localActionDataForm]);
+
+  const updateLocalForm = useCallback((value: unknown, key: keyof ActionDto) => {
+    setLocalActionDataForm(form => {
+      (form[key] as unknown) = value;
+      return new ActionDto(form);
+    });
+  }, []);
 
   return (
     <Center>
@@ -75,29 +88,27 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Title:</FormLabel>
                 <Input
-                  type="text"
-                  value={title}
+                  value={localActionDataForm.title}
                   placeholder="Title of your action"
-                  onChange={event => setTitle(event.target.value)}></Input>
+                  onChange={event => updateLocalForm(event.target.value, "title")}></Input>
               </FormControl>
               <FormControl mt="6">
-                <FormLabel>Description:</FormLabel>
+                <FormLabel>Description: </FormLabel>
                 <Textarea
                   placeholder="Description of action"
-                  value={description}
-                  onChange={event => setDescription(event.target.value)}
+                  value={localActionDataForm.description}
+                  onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Admin note:</FormLabel>
+                <FormLabel>Admin note: </FormLabel>
                 <Input
-                  type="text"
-                  value={adminNote}
+                  value={localActionDataForm.adminNote}
                   placeholder="admin note"
-                  onChange={event => setAdminNote(event.target.value)}></Input>
+                  onChange={event => updateLocalForm(event.target.value, "adminNote")}></Input>
               </FormControl>
               {isLoading ? (
                 <Button variant="outline" width="full" mt={6}>

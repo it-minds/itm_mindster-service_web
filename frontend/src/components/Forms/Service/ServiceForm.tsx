@@ -117,10 +117,10 @@ const ServiceForm: FC<formProps> = ({ fetchData }) => {
                     <AlertDialogOverlay />
 
                     <AlertDialogContent>
-                      <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
+                      <AlertDialogHeader>Confirm submission</AlertDialogHeader>
                       <AlertDialogCloseButton />
                       <AlertDialogBody>
-                        Are you sure you want sumbit this service?
+                        Are you sure you want submit this service?
                         <FormControl>
                           <FormLabel>Title:</FormLabel>
                           <Input type="text" isReadOnly={true} value={title}></Input>
