@@ -13,48 +13,74 @@ import {
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateActionCommand } from "services/backend/nswagts";
+import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
 
 interface fromProps {
   serviceId: number;
   fetchData: () => Promise<void>;
 }
-const ActionForm: FC<fromProps> = props => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [adminNote, setAdminNote] = useState("");
-  const id = props.serviceId;
+
+const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
+  const [localActionDataForm, setLocalActionDataForm] = useState<ActionDto>(
+    new ActionDto({
+      title: "",
+      description: "",
+      adminNote: ""
+    })
+  );
+
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (event: { preventDefault: () => void }) => {
-    setIsLoading(true);
-    event.preventDefault();
-    addAction();
-  };
+  const onSubmit = useCallback(
+    async event => {
+      setIsLoading(true);
+      event.preventDefault();
+      addAction();
+    },
+    [localActionDataForm]
+  );
 
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
-    await serviceClient.createAction(
-      id,
-      new CreateActionCommand({
-        action: {
-          title: title,
-          description: description,
-          adminNote: adminNote
-        }
-      })
-    );
+
+    try {
+      await serviceClient.createAction(
+        serviceId,
+        new CreateActionCommand({
+          action: {
+            title: localActionDataForm.title,
+            description: localActionDataForm.description,
+            adminNote: localActionDataForm.adminNote
+          }
+        })
+      );
+      toast({
+        description: "Action was added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostAction responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
+    fetchData();
+
     setIsLoading(false);
-    toast({
-      description: "Action was added",
-      status: "success",
-      duration: 5000,
-      isClosable: true
+  }, [localActionDataForm]);
+
+  const updateLocalForm = useCallback((value: unknown, key: keyof ActionDto) => {
+    setLocalActionDataForm(form => {
+      (form[key] as unknown) = value;
+      return new ActionDto(form);
     });
-    props.fetchData();
-  }, [title, description, adminNote]);
+  }, []);
 
   return (
     <Center>
@@ -62,29 +88,27 @@ const ActionForm: FC<fromProps> = props => {
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Title:</FormLabel>
                 <Input
-                  type="text"
-                  value={title}
+                  value={localActionDataForm.title}
                   placeholder="Title of your action"
-                  onChange={event => setTitle(event.target.value)}></Input>
+                  onChange={event => updateLocalForm(event.target.value, "title")}></Input>
               </FormControl>
               <FormControl mt="6">
-                <FormLabel>Description:</FormLabel>
+                <FormLabel>Description: </FormLabel>
                 <Textarea
                   placeholder="Description of action"
-                  value={description}
-                  onChange={event => setDescription(event.target.value)}
+                  value={localActionDataForm.description}
+                  onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Admin note:</FormLabel>
+                <FormLabel>Admin note: </FormLabel>
                 <Input
-                  type="text"
-                  value={adminNote}
+                  value={localActionDataForm.adminNote}
                   placeholder="admin note"
-                  onChange={event => setAdminNote(event.target.value)}></Input>
+                  onChange={event => updateLocalForm(event.target.value, "adminNote")}></Input>
               </FormControl>
               {isLoading ? (
                 <Button variant="outline" width="full" mt={6}>
