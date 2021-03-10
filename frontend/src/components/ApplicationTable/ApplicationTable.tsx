@@ -5,6 +5,7 @@ import { ApplicationIdDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 import ApplicationTableItem from "./ApplicationTableItem";
+import ApplicationTableMenu from "./ApplicationTableMenus/ApplicationTableMenu";
 
 const ApplicationTable: FC = () => {
   const [tableData, setData] = useState<ApplicationIdDto[]>([]);
@@ -35,6 +36,9 @@ const ApplicationTable: FC = () => {
               <Th>Id</Th>
               <Th>Title</Th>
               <Th>Description</Th>
+              <Th>
+                <ApplicationTableMenu fetchData={fetchData}></ApplicationTableMenu>
+              </Th>
             </Tr>
           </Thead>
           <Tbody>
