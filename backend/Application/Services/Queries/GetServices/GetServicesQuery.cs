@@ -7,7 +7,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Services.Queries
+namespace Application.Services.Queries.GetServices
 {
   public class GetServicesQuery : IRequest<List<ServiceIdDto>>
   {

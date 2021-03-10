@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
+using Application.Applications.Queries.GetApplications;
 using Application.Services.Commands.CreateService;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +26,11 @@ namespace Web.Controllers
       await Mediator.Send(command);
 
       return NoContent();
+    }
+    [HttpGet]
+    public async Task<ActionResult<List<ApplicationIdDto>>> GetAllApplications()
+    {
+      return await Mediator.Send(new GetApplicationsQuery());
     }
   }
 }

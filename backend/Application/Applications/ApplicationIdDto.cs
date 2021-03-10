@@ -8,7 +8,7 @@ using Domain.Entities;
 
 namespace Application.Applications
 {
-  class ApplicationIdDto : ApplicationDto
+  public class ApplicationIdDto : ApplicationDto
   {
     public int Id { get; set; }
 
