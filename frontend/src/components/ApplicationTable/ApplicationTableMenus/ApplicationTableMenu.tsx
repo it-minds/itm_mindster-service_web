@@ -12,11 +12,14 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
+import { genApplicationClient } from "services/backend/apiClients";
+import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
 
 type Props = {
   fetchData: () => Promise<void>;
@@ -24,6 +27,32 @@ type Props = {
 
 const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
+  const addApplication = useCallback(async (form: ApplicationDto) => {
+    const applicationClient = await genApplicationClient();
+    try {
+      await applicationClient.createApplication(
+        new CreateApplicationCommand({
+          application: form
+        })
+      );
+      toast({
+        description: "Application was added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostApplication responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -40,7 +69,7 @@ const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
           <ModalHeader>Create a new application</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ApplicationForm fetchData={fetchData}></ApplicationForm>
+            <ApplicationForm submitCallback={addApplication}></ApplicationForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

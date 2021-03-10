@@ -16,65 +16,53 @@ import {
   Spinner,
   Textarea,
   useDisclosure,
-  useToast,
   Wrap
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useRef, useState } from "react";
-import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
-import { CreateApplicationCommand, CreateServiceCommand } from "services/backend/nswagts";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import { ApplicationDto, ApplicationIdDto } from "services/backend/nswagts";
 
 type Props = {
-  fetchData: () => Promise<void>;
+  submitCallback: (AppMetaDataForm: ApplicationDto) => void;
+  AppMetaData?: ApplicationIdDto;
 };
 
-const ApplicationForm: FC<Props> = ({ fetchData }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+const ApplicationForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [localFormData, setLocalFormData] = useState<ApplicationDto>(
+    new ApplicationDto({
+      title: "",
+      description: ""
+    })
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const toast = useToast();
+
+  useEffect(() => {
+    if (AppMetaData) {
+      setLocalFormData(AppMetaData);
+    }
+  }, [AppMetaData]);
 
   const onSubmit = useCallback(
     async event => {
       event.preventDefault();
       onOpen();
     },
-    [title, description]
+    [localFormData]
   );
-
-  const addApplication = useCallback(async () => {
+  const handleSubmit = useCallback(async () => {
     setIsLoading(true);
     onClose();
-
-    const applicationClient = await genApplicationClient();
-    try {
-      await applicationClient.createApplication(
-        new CreateApplicationCommand({
-          application: {
-            title: title,
-            description: description
-          }
-        })
-      );
-      toast({
-        description: "Application was added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `PostApplication responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    }
-
+    await submitCallback(localFormData);
     setIsLoading(false);
-    fetchData();
-  }, [title, description]);
+  }, [localFormData]);
+
+  const updateLocalForm = useCallback((value: unknown, key: keyof ApplicationDto) => {
+    setLocalFormData(form => {
+      (form[key] as unknown) = value;
+      return new ApplicationDto(form);
+    });
+  }, []);
 
   return (
     <Center>
@@ -86,16 +74,16 @@ const ApplicationForm: FC<Props> = ({ fetchData }) => {
                 <FormLabel>Title:</FormLabel>
                 <Input
                   type="text"
-                  value={title}
+                  value={localFormData.title}
                   placeholder="Title of your application"
-                  onChange={event => setTitle(event.target.value)}></Input>
+                  onChange={event => updateLocalForm(event.target.value, "title")}></Input>
               </FormControl>
               <FormControl mt="6">
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Description of application"
-                  value={description}
-                  onChange={event => setDescription(event.target.value)}
+                  value={localFormData.description}
+                  onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
               {isLoading ? (
@@ -103,44 +91,42 @@ const ApplicationForm: FC<Props> = ({ fetchData }) => {
                   <Spinner></Spinner>
                 </Button>
               ) : (
-                <>
-                  <Button variant="outline" width="full" mt={6} type="submit">
-                    Submit
-                  </Button>
-                  <AlertDialog
-                    motionPreset="slideInBottom"
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                    isOpen={isOpen}
-                    isCentered>
-                    <AlertDialogOverlay />
-
-                    <AlertDialogContent>
-                      <AlertDialogHeader>Confirm submission</AlertDialogHeader>
-                      <AlertDialogCloseButton />
-                      <AlertDialogBody>
-                        Are you sure you want submit this application?
-                        <FormControl>
-                          <FormLabel>Title:</FormLabel>
-                          <Input type="text" isReadOnly={true} value={title}></Input>
-                        </FormControl>
-                        <FormControl mt="6">
-                          <FormLabel>Description:</FormLabel>
-                          <Textarea isReadOnly={true} value={description} />
-                        </FormControl>
-                      </AlertDialogBody>
-                      <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
-                          No
-                        </Button>
-                        <Button onClick={addApplication} type="submit" colorScheme="red" ml={3}>
-                          Yes
-                        </Button>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </>
+                <Button variant="outline" width="full" mt={6} type="submit">
+                  Submit
+                </Button>
               )}
+              <AlertDialog
+                motionPreset="slideInBottom"
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+                isOpen={isOpen}
+                isCentered>
+                <AlertDialogOverlay />
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>Confirm submission</AlertDialogHeader>
+                  <AlertDialogCloseButton />
+                  <AlertDialogBody>
+                    Are you sure you want submit this application?
+                    <FormControl>
+                      <FormLabel>Title:</FormLabel>
+                      <Input type="text" isReadOnly={true} value={localFormData.title}></Input>
+                    </FormControl>
+                    <FormControl mt="6">
+                      <FormLabel>Description:</FormLabel>
+                      <Textarea isReadOnly={true} value={localFormData.description} />
+                    </FormControl>
+                  </AlertDialogBody>
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose}>
+                      No
+                    </Button>
+                    <Button onClick={() => handleSubmit()} type="submit" colorScheme="red" ml={3}>
+                      Yes
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </form>
           </Box>
         </Flex>
