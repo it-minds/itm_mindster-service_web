@@ -1,4 +1,5 @@
 import { Center, Heading, Table, Tbody, Th, Thead, Tr, Wrap } from "@chakra-ui/react";
+import ServiceTableMenu from "components/ServiceTable/ServiceTableMenus/ServiceTableMenu";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
@@ -9,6 +10,7 @@ import ServiceTableItem from "./ServiceTableItem";
 
 const ServiceTable: FC = () => {
   const [tableData, setData] = useState<ServiceIdDto[]>([]);
+
   const { t } = useLocales();
 
   const fetchData = useCallback(async () => {
@@ -38,6 +40,9 @@ const ServiceTable: FC = () => {
               <Th>Title</Th>
               <Th>Description</Th>
               <Th>State</Th>
+              <Th>
+                <ServiceTableMenu></ServiceTableMenu>
+              </Th>
             </Tr>
           </Thead>
           <Tbody>

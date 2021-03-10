@@ -1,37 +1,20 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Tag,
-  TagLabel,
-  Td,
-  Tr,
-  useDisclosure
-} from "@chakra-ui/react";
+import { Tag, TagLabel, Td, Tr } from "@chakra-ui/react";
+import ServiceItemMenu from "components/ServiceTable/ServiceTableMenus/ServiceItemMenu/ServiceItemMenu";
 import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
 import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
-import ActionTable from "./ActionTable/ActionTable";
 interface ServiceTableItemProps {
   service: ServiceIdDto;
 }
 const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { menuBg, hoverBg, activeBg } = useColors();
+  const { hoverBg } = useColors();
 
   const stateColors = ["yellow", "green", "red"];
 
   return (
     <Tr
       key={service.id}
-      onClick={onOpen}
-      cursor="pointer"
       _hover={{
         bgColor: hoverBg
       }}>
@@ -43,22 +26,9 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
           <TagLabel>{ServiceStates[service.state]}</TagLabel>
         </Tag>
       </Td>
-
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Actions of Service {service.id}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ActionTable tableData={service.actions}></ActionTable>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <Td>
+        <ServiceItemMenu service={service}></ServiceItemMenu>
+      </Td>
     </Tr>
   );
 };
