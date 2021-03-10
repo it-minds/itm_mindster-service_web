@@ -19,37 +19,35 @@ import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import React, { FC, useCallback } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import {
-  ApplicationDto,
-  ApplicationIdDto,
-  CreateApplicationCommand
-} from "services/backend/nswagts";
+import { ApplicationIdDto, UpdateApplicationCommand } from "services/backend/nswagts";
 
 type Props = {
   fetchData: () => Promise<void>;
+  application: ApplicationIdDto;
 };
 
-const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
+const ApplicationItemMenu: FC<Props> = ({ fetchData, application }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const addApplication = useCallback(async (form: ApplicationDto) => {
+  const updateApplication = useCallback(async metaData => {
     const applicationClient = await genApplicationClient();
     try {
-      await applicationClient.createApplication(
-        new CreateApplicationCommand({
-          application: form
+      await applicationClient.updateApplication(
+        metaData.id,
+        new UpdateApplicationCommand({
+          application: metaData
         })
       );
       toast({
-        description: "Application was added",
+        description: "Application was updated",
         status: "success",
         duration: 5000,
         isClosable: true
       });
     } catch (error) {
       toast({
-        description: `PostApplication responded: ${error}`,
+        description: `PutApplication responded: ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true
@@ -63,19 +61,19 @@ const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
       <Menu size="full">
         <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
         <MenuList>
-          <MenuItem onClick={onOpen}>Add new application</MenuItem>
+          <MenuItem onClick={onOpen}>update application</MenuItem>
         </MenuList>
       </Menu>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create a new application</ModalHeader>
+          <ModalHeader>Update application</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ApplicationForm
-              AppMetaData={new ApplicationIdDto({ title: "test", description: "monkey", id: 1 })}
-              submitCallback={addApplication}></ApplicationForm>
+              AppMetaData={application}
+              submitCallback={updateApplication}></ApplicationForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -87,4 +85,4 @@ const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
     </div>
   );
 };
-export default ApplicationTableMenu;
+export default ApplicationItemMenu;

@@ -1,12 +1,12 @@
 import { Td, Tr } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
-import { ServiceIdDto } from "services/backend/nswagts";
+import { ApplicationIdDto } from "services/backend/nswagts";
 
-import ApplicationTableMenu from "./ApplicationTableMenus/ApplicationTableMenu";
+import ApplicationItemMenu from "./ApplicationTableMenus/ApplicationItemMenu";
 
 type Props = {
-  application: ServiceIdDto;
+  application: ApplicationIdDto;
   fetchData: () => Promise<void>;
 };
 const ApplicationTableItem: FC<Props> = ({ application, fetchData }) => {
@@ -22,7 +22,7 @@ const ApplicationTableItem: FC<Props> = ({ application, fetchData }) => {
       <Td>{application.title}</Td>
       <Td>{application.description}</Td>
       <Td>
-        <ApplicationTableMenu fetchData={fetchData}></ApplicationTableMenu>
+        <ApplicationItemMenu fetchData={fetchData} application={application}></ApplicationItemMenu>
       </Td>
     </Tr>
   );
