@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from "next";
 
 import { api } from "./api";
-import { AuthClient, ExampleChildClient, ServiceClient } from "./nswagts";
+import { ApplicationClient, AuthClient, ExampleChildClient, ServiceClient } from "./nswagts";
 
 export const genExampleClient = (
   context?: GetServerSidePropsContext
@@ -12,3 +12,7 @@ export const genServiceClient = (context?: GetServerSidePropsContext): Promise<S
 
 export const genAuthenticationClient = (context?: GetServerSidePropsContext): Promise<AuthClient> =>
   api(AuthClient, context);
+
+export const genApplicationClient = (
+  context?: GetServerSidePropsContext
+): Promise<ApplicationClient> => api(ApplicationClient, context);

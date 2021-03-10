@@ -44,7 +44,7 @@ namespace Application.UnitTests.Services.Queries.GetService
       result.Actions.First().Title.Should().Be(entity.Actions.First().Title);
     }
     [Fact]
-    public async Task Handle_GivenInValidServiceId_ThrowsException()
+    public void Handle_GivenInValidServiceId_ThrowsException()
     {
       var query = new GetServiceByIdQuery
       {
