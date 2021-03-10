@@ -1,3 +1,4 @@
+
 import ActionForm from "components/Forms/Action/ActionForm";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";

@@ -54,6 +54,7 @@ const ServiceItemMenu: FC<Props> = ({ service, fetchData }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
     </div>
   );
 };
