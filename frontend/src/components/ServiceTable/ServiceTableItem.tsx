@@ -8,6 +8,7 @@ interface ServiceTableItemProps {
   service: ServiceIdDto;
   fetchData: () => Promise<void>;
 }
+
 const ServiceTableItem: FC<ServiceTableItemProps> = ({ service, fetchData }) => {
   const { hoverBg } = useColors();
 

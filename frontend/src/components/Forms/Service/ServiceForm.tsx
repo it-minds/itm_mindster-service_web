@@ -33,20 +33,11 @@ const ServiceForm: FC<formProps> = ({ fetchData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
-  const toast = useToast();
 
-  const onSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-      onOpen();
-    },
-    [title, description]
-  );
+  const toast = useToast();
 
   const addService = useCallback(async () => {
     setIsLoading(true);
-    onClose();
-
     const serviceClient = await genServiceClient();
     try {
       await serviceClient.createService(
@@ -64,6 +55,8 @@ const ServiceForm: FC<formProps> = ({ fetchData }) => {
         duration: 5000,
         isClosable: true
       });
+      await fetchData();
+      onClose();
     } catch (error) {
       toast({
         description: `PostService responded: ${error}`,
@@ -72,10 +65,13 @@ const ServiceForm: FC<formProps> = ({ fetchData }) => {
         isClosable: true
       });
     }
-
     setIsLoading(false);
-    fetchData();
   }, [title, description]);
+
+  const onSubmit = useCallback(event => {
+    event.preventDefault();
+    onOpen();
+  }, []);
 
   return (
     <Center>
