@@ -1,24 +1,16 @@
 import {
-  Button,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  useDisclosure
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  VStack
 } from "@chakra-ui/react";
 import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
-import ActionForm from "components/Forms/Action/ActionForm";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
 
+import AddActionTriggerBtn from "./AddActionTriggerBtn";
 import ViewActionTableTrigger from "./ViewActionTableTrigger";
 
 type Props = {
@@ -27,33 +19,29 @@ type Props = {
 };
 
 const ServiceItemMenu: FC<Props> = ({ service, fetchData }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setOpen] = useState(false);
 
   return (
     <div>
-      <Menu size="full">
-        <MenuButton size="sm" as={IconButton} icon={<BsThreeDots />}></MenuButton>
-        <MenuList>
-          <MenuItem onClick={onOpen}>Add action</MenuItem>
-          <ViewActionTableTrigger service={service}></ViewActionTableTrigger>
-        </MenuList>
-      </Menu>
-
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add new action to service: {service.id}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ActionForm fetchData={fetchData} serviceId={service.id}></ActionForm>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <Popover placement="bottom-start">
+        <PopoverTrigger>
+          <IconButton
+            onClick={() => setOpen(!isOpen)}
+            aria-label="Service Menu"
+            size="sm"
+            icon={<BsThreeDots />}></IconButton>
+        </PopoverTrigger>
+        <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
+          <PopoverBody mb="2" mt="2" padding="0">
+            <VStack minWidth="200" spacing="0">
+              <ViewActionTableTrigger service={service}></ViewActionTableTrigger>
+              <AddActionTriggerBtn
+                serviceId={service.id}
+                fetchData={fetchData}></AddActionTriggerBtn>
+            </VStack>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

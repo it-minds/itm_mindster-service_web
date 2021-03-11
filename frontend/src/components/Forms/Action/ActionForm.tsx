@@ -44,7 +44,6 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
 
   const addAction = useCallback(async () => {
     const serviceClient = await genServiceClient();
-
     try {
       await serviceClient.createAction(
         serviceId,
@@ -70,6 +69,7 @@ const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
         isClosable: true
       });
     }
+
     fetchData();
 
     setIsLoading(false);
