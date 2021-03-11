@@ -41,13 +41,16 @@ const ServiceTable: FC = () => {
               <Th>Description</Th>
               <Th>State</Th>
               <Th>
-                <ServiceTableMenu></ServiceTableMenu>
+                <ServiceTableMenu fetchData={fetchData}></ServiceTableMenu>
               </Th>
             </Tr>
           </Thead>
           <Tbody>
             {tableData.map((Service: ServiceIdDto) => (
-              <ServiceTableItem key={Service.id} service={Service}></ServiceTableItem>
+              <ServiceTableItem
+                key={Service.id}
+                service={Service}
+                fetchData={fetchData}></ServiceTableItem>
             ))}
           </Tbody>
         </Table>

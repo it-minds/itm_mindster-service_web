@@ -12,7 +12,6 @@ export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context =
 
   const { table = {} } = await import(`../../i18n/${locale}`);
 
-  console.log(table);
   return { props: { table } };
 };
 

@@ -17,9 +17,10 @@ import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
 
 interface fromProps {
   serviceId: number;
+  fetchData: () => Promise<void>;
 }
 
-const ActionForm: FC<fromProps> = ({ serviceId }) => {
+const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
   const [localActionDataForm, setLocalActionDataForm] = useState<ActionDto>(
     new ActionDto({
       title: "",
@@ -68,6 +69,8 @@ const ActionForm: FC<fromProps> = ({ serviceId }) => {
         isClosable: true
       });
     }
+
+    fetchData();
 
     setIsLoading(false);
   }, [localActionDataForm]);

@@ -1,4 +1,11 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   Center,
@@ -8,31 +15,29 @@ import {
   Input,
   Spinner,
   Textarea,
+  useDisclosure,
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useRef, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
 
-const ServiceForm: FC = () => {
+interface formProps {
+  fetchData: () => Promise<void>;
+}
+
+const ServiceForm: FC<formProps> = ({ fetchData }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  console.log("DID A RERENDER");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
 
   const toast = useToast();
 
-  const onSubmit = useCallback(
-    async event => {
-      setIsLoading(true);
-      event.preventDefault();
-      addService();
-    },
-    [title, description]
-  );
-
   const addService = useCallback(async () => {
+    setIsLoading(true);
     const serviceClient = await genServiceClient();
     try {
       await serviceClient.createService(
@@ -50,6 +55,8 @@ const ServiceForm: FC = () => {
         duration: 5000,
         isClosable: true
       });
+      await fetchData();
+      onClose();
     } catch (error) {
       toast({
         description: `PostService responded: ${error}`,
@@ -58,9 +65,13 @@ const ServiceForm: FC = () => {
         isClosable: true
       });
     }
-
     setIsLoading(false);
   }, [title, description]);
+
+  const onSubmit = useCallback(event => {
+    event.preventDefault();
+    onOpen();
+  }, []);
 
   return (
     <Center>
@@ -89,9 +100,43 @@ const ServiceForm: FC = () => {
                   <Spinner></Spinner>
                 </Button>
               ) : (
-                <Button variant="outline" width="full" mt={6} type="submit">
-                  Submit
-                </Button>
+                <>
+                  <Button variant="outline" width="full" mt={6} type="submit">
+                    Submit
+                  </Button>
+                  <AlertDialog
+                    motionPreset="slideInBottom"
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                    isOpen={isOpen}
+                    isCentered>
+                    <AlertDialogOverlay />
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>Confirm submission</AlertDialogHeader>
+                      <AlertDialogCloseButton />
+                      <AlertDialogBody>
+                        Are you sure you want submit this service?
+                        <FormControl>
+                          <FormLabel>Title:</FormLabel>
+                          <Input type="text" isReadOnly={true} value={title}></Input>
+                        </FormControl>
+                        <FormControl mt="6">
+                          <FormLabel>Description:</FormLabel>
+                          <Textarea isReadOnly={true} value={description} />
+                        </FormControl>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                          No
+                        </Button>
+                        <Button onClick={addService} type="submit" colorScheme="red" ml={3}>
+                          Yes
+                        </Button>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </>
               )}
             </form>
           </Box>

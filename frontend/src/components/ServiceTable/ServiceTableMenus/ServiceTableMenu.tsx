@@ -11,7 +11,11 @@ import React, { FC, useState } from "react";
 
 import AddServiceTriggerBtn from "./AddServiceTriggerBtn";
 
-const ServiceTableMenu: FC = () => {
+type Props = {
+  fetchData: () => Promise<void>;
+};
+
+const ServiceTableMenu: FC<Props> = ({ fetchData }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -26,8 +30,9 @@ const ServiceTableMenu: FC = () => {
         </PopoverTrigger>
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
-            <VStack minWidth="200" spacing="0"></VStack>
-            <AddServiceTriggerBtn></AddServiceTriggerBtn>
+            <VStack minWidth="200" spacing="0">
+              <AddServiceTriggerBtn fetchData={fetchData}></AddServiceTriggerBtn>
+            </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>

@@ -6,8 +6,10 @@ import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
 
 interface ServiceTableItemProps {
   service: ServiceIdDto;
+  fetchData: () => Promise<void>;
 }
-const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
+
+const ServiceTableItem: FC<ServiceTableItemProps> = ({ service, fetchData }) => {
   const { hoverBg } = useColors();
 
   const stateColors = ["yellow", "green", "red"];
@@ -27,7 +29,7 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
         </Tag>
       </Td>
       <Td>
-        <ServiceItemMenu service={service}></ServiceItemMenu>
+        <ServiceItemMenu fetchData={fetchData} service={service}></ServiceItemMenu>
       </Td>
     </Tr>
   );

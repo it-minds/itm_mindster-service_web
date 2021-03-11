@@ -4,7 +4,7 @@ import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 
 const IndexPage: NextPage = () => {
-  return <ServiceTable></ServiceTable>;
+  return <ServiceTable />;
 };
 
 export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
 
   // const paths = data.map((Service: ServiceIdDto) => `/Service/${Service.id}`);
 
-  // GetstaticPaths currently doenst work as i want it. The above code gives the
+  // GetStaticPaths currently doesn't work as i want it. The above code gives the
   // following error
   //   {"message":"isomorphicEnvSettings - isBrowser","args":[false]}
   // {"message":"todoItemClient.get Error","args":[{"message":"request to https://localhost:5001/api/Service failed, reason: unable to verify the first certificate","type":"system","errno":"UNABLE_TO_VERIFY_LEAF_SIGNATURE","code":"UNABLE_TO_VERIFY_LEAF_SIGNATURE"}]}

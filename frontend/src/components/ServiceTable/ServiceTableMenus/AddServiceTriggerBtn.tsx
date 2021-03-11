@@ -12,7 +12,11 @@ import {
 import ServiceForm from "components/Forms/Service/ServiceForm";
 import React, { FC } from "react";
 
-const AddServiceTriggerBtn: FC = () => {
+type Props = {
+  fetchData: () => Promise<void>;
+};
+
+const AddServiceTriggerBtn: FC<Props> = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -27,7 +31,7 @@ const AddServiceTriggerBtn: FC = () => {
           <ModalHeader>Create a new service</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ServiceForm></ServiceForm>
+            <ServiceForm fetchData={fetchData}></ServiceForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
