@@ -7,9 +7,8 @@ import ApplicationItemMenu from "./ApplicationTableMenus/ApplicationItemMenus/Ap
 
 type Props = {
   application: ApplicationIdDto;
-  fetchData: () => Promise<void>;
 };
-const ApplicationTableItem: FC<Props> = ({ application, fetchData }) => {
+const ApplicationTableItem: FC<Props> = ({ application }) => {
   const { hoverBg } = useColors();
 
   return (
@@ -22,7 +21,7 @@ const ApplicationTableItem: FC<Props> = ({ application, fetchData }) => {
       <Td>{application.title}</Td>
       <Td>{application.description}</Td>
       <Td>
-        <ApplicationItemMenu fetchData={fetchData} application={application}></ApplicationItemMenu>
+        <ApplicationItemMenu application={application}></ApplicationItemMenu>
       </Td>
     </Tr>
   );

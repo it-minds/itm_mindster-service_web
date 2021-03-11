@@ -11,11 +11,7 @@ import React, { FC, useState } from "react";
 
 import AddApplicationTriggerBtn from "./AddApplicationTriggerBtn";
 
-type Props = {
-  fetchData: () => Promise<void>;
-};
-
-const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
+const ApplicationTableMenu: FC = () => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -31,7 +27,7 @@ const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
             <VStack minWidth="200" spacing="0"></VStack>
-            <AddApplicationTriggerBtn fetchData={fetchData}></AddApplicationTriggerBtn>
+            <AddApplicationTriggerBtn></AddApplicationTriggerBtn>
           </PopoverBody>
         </PopoverContent>
       </Popover>

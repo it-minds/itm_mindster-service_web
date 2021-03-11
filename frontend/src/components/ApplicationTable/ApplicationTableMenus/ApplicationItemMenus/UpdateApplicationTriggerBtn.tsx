@@ -11,17 +11,18 @@ import {
   useToast
 } from "@chakra-ui/react";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
-import React, { FC, useCallback } from "react";
+import { ApplicationContext } from "contexts/ApplicationContext";
+import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationIdDto, UpdateApplicationCommand } from "services/backend/nswagts";
 
 type Props = {
-  fetchData: () => Promise<void>;
   application: ApplicationIdDto;
 };
 
-const UpdateApplicationTriggerBtn: FC<Props> = ({ fetchData, application }) => {
+const UpdateApplicationTriggerBtn: FC<Props> = ({ application }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { fetchData } = useContext(ApplicationContext);
   const toast = useToast();
 
   const updateApplication = useCallback(async metaData => {

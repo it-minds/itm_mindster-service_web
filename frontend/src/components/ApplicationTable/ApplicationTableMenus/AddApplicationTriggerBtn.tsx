@@ -11,16 +11,14 @@ import {
   useToast
 } from "@chakra-ui/react";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
-import React, { FC, useCallback } from "react";
+import { ApplicationContext } from "contexts/ApplicationContext";
+import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
 
-type Props = {
-  fetchData: () => Promise<void>;
-};
-
-const AddApplicationTriggerBtn: FC<Props> = ({ fetchData }) => {
+const AddApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { fetchData } = useContext(ApplicationContext);
   const toast = useToast();
 
   const addApplication = useCallback(async (form: ApplicationDto) => {

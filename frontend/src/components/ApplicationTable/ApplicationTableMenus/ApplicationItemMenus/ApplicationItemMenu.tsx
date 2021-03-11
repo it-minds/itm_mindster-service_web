@@ -13,11 +13,10 @@ import { ApplicationIdDto } from "services/backend/nswagts";
 import UpdateApplicationTriggerBtn from "./UpdateApplicationTriggerBtn";
 
 type Props = {
-  fetchData: () => Promise<void>;
   application: ApplicationIdDto;
 };
 
-const ApplicationItemMenu: FC<Props> = ({ fetchData, application }) => {
+const ApplicationItemMenu: FC<Props> = ({ application }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -33,9 +32,7 @@ const ApplicationItemMenu: FC<Props> = ({ fetchData, application }) => {
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
             <VStack minWidth="200" spacing="0"></VStack>
-            <UpdateApplicationTriggerBtn
-              fetchData={fetchData}
-              application={application}></UpdateApplicationTriggerBtn>
+            <UpdateApplicationTriggerBtn application={application}></UpdateApplicationTriggerBtn>
           </PopoverBody>
         </PopoverContent>
       </Popover>
