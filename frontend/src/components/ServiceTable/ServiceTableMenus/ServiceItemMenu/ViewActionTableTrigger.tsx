@@ -1,6 +1,5 @@
 import {
   Button,
-  MenuItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -23,12 +22,14 @@ const ViewActionTableTrigger: FC<Props> = ({ service }) => {
 
   return (
     <>
-      <MenuItem onClick={onOpen}>View actions</MenuItem>
+      <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
+        View Action
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add new action to service: {service.id}</ModalHeader>
+          <ModalHeader>Actions of service: {service.id}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ActionTable tableData={service.actions}></ActionTable>

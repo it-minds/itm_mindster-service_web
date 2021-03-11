@@ -67,15 +67,11 @@ const ServiceForm: FC<formProps> = ({ fetchData }) => {
     }
     setIsLoading(false);
   }, [title, description]);
-    
-  const onSubmit = useCallback(
-    async event => {
-      event.preventDefault();
-      onOpen();      
-      addService();
-    },
-    [addService]
-  );
+
+  const onSubmit = useCallback(event => {
+    event.preventDefault();
+    onOpen();
+  }, []);
 
   return (
     <Center>
