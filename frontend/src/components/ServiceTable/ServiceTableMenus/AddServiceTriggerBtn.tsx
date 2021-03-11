@@ -9,30 +9,29 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import ActionTable from "components/ServiceTable/ActionTable/ActionTable";
+import ServiceForm from "components/Forms/Service/ServiceForm";
 import React, { FC } from "react";
-import { ServiceIdDto } from "services/backend/nswagts";
 
 type Props = {
-  service: ServiceIdDto;
+  fetchData: () => Promise<void>;
 };
 
-const ViewActionTableTrigger: FC<Props> = ({ service }) => {
+const AddServiceTriggerBtn: FC<Props> = ({ fetchData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
-        View Action
+        Add service
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Actions of service: {service.id}</ModalHeader>
+          <ModalHeader>Create a new service</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionTable tableData={service.actions}></ActionTable>
+            <ServiceForm fetchData={fetchData}></ServiceForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -45,4 +44,4 @@ const ViewActionTableTrigger: FC<Props> = ({ service }) => {
   );
 };
 
-export default ViewActionTableTrigger;
+export default AddServiceTriggerBtn;
