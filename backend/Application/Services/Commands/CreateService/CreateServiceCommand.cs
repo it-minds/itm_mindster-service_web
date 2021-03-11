@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Services.Commands.CreateService
@@ -24,7 +25,7 @@ namespace Application.Services.Commands.CreateService
 
       public async Task<int> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
       {
-        var service = new Domain.Entities.Service()
+        var service = new Service()
         {
           Title = request.Service.Title,
           Description = request.Service.Description,
