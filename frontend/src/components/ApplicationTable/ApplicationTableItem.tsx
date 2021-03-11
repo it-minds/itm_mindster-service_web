@@ -3,7 +3,7 @@ import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";
 
-import ApplicationItemMenu from "./ApplicationTableMenus/ApplicationItemMenu";
+import ApplicationItemMenu from "./ApplicationTableMenus/ApplicationItemMenus/ApplicationItemMenu";
 
 type Props = {
   application: ApplicationIdDto;

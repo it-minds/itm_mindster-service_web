@@ -8,14 +8,16 @@ import {
 } from "@chakra-ui/react";
 import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import React, { FC, useState } from "react";
+import { ApplicationIdDto } from "services/backend/nswagts";
 
-import AddApplicationTriggerBtn from "./AddApplicationTriggerBtn";
+import UpdateApplicationTriggerBtn from "./UpdateApplicationTriggerBtn";
 
 type Props = {
   fetchData: () => Promise<void>;
+  application: ApplicationIdDto;
 };
 
-const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
+const ApplicationItemMenu: FC<Props> = ({ fetchData, application }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -31,11 +33,13 @@ const ApplicationTableMenu: FC<Props> = ({ fetchData }) => {
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
             <VStack minWidth="200" spacing="0"></VStack>
-            <AddApplicationTriggerBtn fetchData={fetchData}></AddApplicationTriggerBtn>
+            <UpdateApplicationTriggerBtn
+              fetchData={fetchData}
+              application={application}></UpdateApplicationTriggerBtn>
           </PopoverBody>
         </PopoverContent>
       </Popover>
     </div>
   );
 };
-export default ApplicationTableMenu;
+export default ApplicationItemMenu;
