@@ -14,10 +14,9 @@ import React, { FC } from "react";
 
 interface AddActionProps {
   serviceId: number;
-  fetchData: () => Promise<void>;
 }
 
-const AddActionTriggerBtn: FC<AddActionProps> = ({ serviceId, fetchData }) => {
+const AddActionTriggerBtn: FC<AddActionProps> = ({ serviceId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -32,7 +31,7 @@ const AddActionTriggerBtn: FC<AddActionProps> = ({ serviceId, fetchData }) => {
           <ModalHeader>Add new action to service: {serviceId}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm serviceId={serviceId} fetchData={fetchData}></ActionForm>
+            <ActionForm serviceId={serviceId}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
