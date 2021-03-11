@@ -892,6 +892,7 @@ export interface IUpdateApplicationCommand {
     application?: IApplicationDto | null;
 }
 
+
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
     child?: ExampleChildDto | null;
 
