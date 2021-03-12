@@ -40,7 +40,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
       entity.ServiceId.Should().Be(command.Id);
     }
     [Fact]
-    public void WithInValidServiceId_ThrowsException()
+    public async Task WithInValidServiceId_ThrowsException()
     {
       var command = new CreateActionCommand()
       {
