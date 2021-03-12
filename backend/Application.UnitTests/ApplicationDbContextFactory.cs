@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Moq;
 using System;
+using System.Collections.Generic;
+using Action = Domain.Entities.Action;
 
 namespace Application.UnitTests
 {
@@ -49,6 +51,46 @@ namespace Application.UnitTests
           new ExampleChild { Id = 4, ParentId = 2, Name = "Sugar", Type = ExampleEnum.Middle },
           new ExampleChild { Id = 5, ParentId = 2, Name = "Coffee", Type = ExampleEnum.Oldest }
       );
+      context.Services.AddRange(
+        new Service{ Id = 1, Title = "First", Description = "Desc for 1", State = ServiceStates.Approved,
+          Actions = new List<Action>
+          {
+            new Action {Id = 1, Title = "Title for 1", Description = "1 desc", ServiceId = 1, AdminNote = "Admin says 1"},
+            new Action {Id = 2, Title = "Title for 2", Description = "2 desc", ServiceId = 1, AdminNote = "Admin says 2"}
+          }
+        },
+        new Service
+        {
+          Id = 2,
+          Title = "Second",
+          Description = "Desc for 2",
+          State = ServiceStates.Pending,
+          Actions = new List<Action>
+          {
+            new Action {Id = 3, Title = "Title for 3", Description = "3 desc", ServiceId = 2, AdminNote = "Admin says 3"},
+            new Action {Id = 4, Title = "Title for 4", Description = "4 desc", ServiceId = 2, AdminNote = "Admin says 4"}
+          }
+        },
+        new Service
+        {
+          Id = 3,
+          Title = "Third",
+          Description = "Desc for 3",
+          State = ServiceStates.Rejected,
+          Actions = new List<Action>
+          {
+            new Action {Id = 5, Title = "Title for 5", Description = "5 desc", ServiceId = 3, AdminNote = "Admin says 5"},
+            new Action {Id = 6, Title = "Title for 6", Description = "6 desc", ServiceId = 3, AdminNote = "Admin says 6"}
+          }
+        }
+
+        );
+      context.Applications.AddRange(
+        new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
+        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
+        new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" }
+
+        );
       context.SaveChanges();
     }
 
