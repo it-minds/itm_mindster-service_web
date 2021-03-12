@@ -17,6 +17,7 @@ namespace Web.Controllers
     {
       return await Mediator.Send(command);
     }
+
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateApplication([FromRoute] int id, UpdateApplicationCommand command)
     {
@@ -25,5 +26,6 @@ namespace Web.Controllers
 
       return NoContent();
     }
+
   }
 }
