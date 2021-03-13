@@ -15,11 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Services\" />
-    <Folder Include="Services\Queries\GetServices\" />
+    <ProjectReference Include="..\AuthService\AuthService.csproj" />
   </ItemGroup>
 
 </Project>

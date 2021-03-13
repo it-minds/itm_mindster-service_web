@@ -1,4 +1,6 @@
 using Application.Common.Interfaces;
+using AuthService.Interfaces;
+using Infrastructure.AuthService;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +29,7 @@ namespace Infrastructure
         services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
         services.AddTransient<IDateTimeOffsetService, DateTimeOffsetService>();
+        services.AddTransient<IAuthClient, AuthClient>();
       }
 
 

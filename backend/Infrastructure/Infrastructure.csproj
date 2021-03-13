@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\AuthService\AuthService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,4 +21,3 @@
   </ItemGroup>
 
 </Project>
-
