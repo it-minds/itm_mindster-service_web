@@ -14,6 +14,7 @@
 namespace Infrastructure.AuthService
 {
   using global::AuthService.Interfaces;
+  using global::AuthService.Models;
   using System = global::System;
 
 

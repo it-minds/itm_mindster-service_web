@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using AuthService.Interfaces;
+using AuthService.Models;
 using Domain.Entities;
 using MediatR;
 
