@@ -11,7 +11,7 @@
   "codeGenerators": {
     "openApiToCSharpClient": {
       "clientBaseClass": "BaseClient",
-      "configurationClass": null,
+      "configurationClass": "BaseConfig",
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "clientBaseInterface": "BaseInterface",
@@ -23,7 +23,7 @@
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
-      "useHttpRequestMessageCreationMethod": false,
+      "useHttpRequestMessageCreationMethod": true,
       "useBaseUrl": true,
       "generateBaseUrlProperty": false,
       "generateSyncMethods": false,
@@ -90,7 +90,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "./Client.g.cs",
+      "output": "Client.g.cs",
       "newLineBehavior": "Auto"
     }
   }

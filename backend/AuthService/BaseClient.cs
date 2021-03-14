@@ -1,13 +1,26 @@
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace AuthService.Client
 {
-  public partial class BaseClient : BaseInterface
+    public partial class BaseClient : BaseInterface
   {
-    public string BaseUrl { get; set; }
+    private readonly BaseConfig _config;
+    public string BaseUrl { get => _config.BaseUrl; }
 
-    public BaseClient() {
-      // Testing Build.
-      // TODO: Replace with options from appsettings / environment
-      BaseUrl = "https://example.com";
+    public BaseClient(BaseConfig config) {
+      _config = config;
+    }
+
+    public Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
+    {
+      var request = new HttpRequestMessage();
+
+      request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.Auth);
+
+      return new Task<HttpRequestMessage>( () => request );
     }
   }
 }

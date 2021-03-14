@@ -21,7 +21,6 @@ namespace Application.Applications.Commands.CreateApplication
       {
         _context = context;
         _authClient = authClient;
-        authClient.BaseUrl = ""; // TODO use options to get this URL.
       }
 
       public async Task<int> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
