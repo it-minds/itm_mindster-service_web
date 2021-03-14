@@ -35,8 +35,6 @@ jobs:
       - name: Restore dependencies
         run: |
           dotnet restore
-          cd AuthService
-          dotnet build --no-restore
-          cd ..
+          dotnet build AuthService --no-restore
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
