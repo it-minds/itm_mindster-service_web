@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
-using AuthService.Interfaces;
-using AuthService.Models;
+using AuthService.Client;
 using Domain.Entities;
 using MediatR;
 
@@ -41,7 +36,7 @@ namespace Application.Applications.Commands.CreateApplication
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var result = await _authClient.AppAsync(new Body {
+        var result = await _authClient.AppAsync(new Test {
           AppIdentifer = application.Title
         }, cancellationToken);
         // result.AppSecret; // TODO return AppSecret. Can never be retrieved again from external service

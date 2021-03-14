@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using AuthService.Interfaces;
-using AuthService.Models;
+using AuthService.Client;
 
 namespace Application.UnitTests
 {
@@ -9,7 +8,7 @@ namespace Application.UnitTests
   {
     public string BaseUrl { get; set; }
 
-    public async Task<Response> AppAsync(Body body)
+    public async Task<Response> AppAsync(Test body)
     {
       return new Response
       {
@@ -18,7 +17,7 @@ namespace Application.UnitTests
       };
     }
 
-    public async Task<Response> AppAsync(Body body, CancellationToken cancellationToken)
+    public async Task<Response> AppAsync(Test body, CancellationToken cancellationToken)
     {
       return await AppAsync(body);
     }
@@ -43,12 +42,12 @@ namespace Application.UnitTests
       return PublickeyAsync(aid);
     }
 
-    public Task<Response2> TokenAsync(string aid, string x_token, Body2 body)
+    public Task<Response2> TokenAsync(string aid, string x_token, Body body)
     {
       throw new System.NotImplementedException();
     }
 
-    public Task<Response2> TokenAsync(string aid, string x_token, Body2 body, CancellationToken cancellationToken)
+    public Task<Response2> TokenAsync(string aid, string x_token, Body body, CancellationToken cancellationToken)
     {
       return TokenAsync(aid, x_token, body);
     }

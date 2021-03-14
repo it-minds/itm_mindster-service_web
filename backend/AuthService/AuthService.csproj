@@ -4,4 +4,26 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.10.7" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.10.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="NSwag" BeforeTargets="Compile;Build">
+     <Exec
+      ConsoleToMSBuild="true"
+      ContinueOnError="true"
+      Command="$(NSwagExe_Net50) run nswag.json">
+      <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode"/>
+      <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
+    </Exec>
+
+    <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low"/>
+    <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'"/>
+  </Target>
+
 </Project>

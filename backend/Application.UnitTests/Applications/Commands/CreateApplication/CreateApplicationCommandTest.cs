@@ -2,10 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
-using Application.Services;
-using Application.Services.Commands.CreateService;
-using AuthService.Interfaces;
-using Domain.Enums;
+using AuthService.Client;
 using FluentAssertions;
 using Xunit;
 
