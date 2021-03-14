@@ -14,13 +14,13 @@ namespace AuthService.Client
       _config = config;
     }
 
-    public Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
+    public async Task<HttpRequestMessage> CreateHttpRequestMessageAsync(CancellationToken cancellationToken)
     {
       var request = new HttpRequestMessage();
 
       request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.Auth);
 
-      return new Task<HttpRequestMessage>( () => request );
+      return request;
     }
   }
 }

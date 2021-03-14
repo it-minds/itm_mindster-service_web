@@ -1,6 +1,7 @@
 using Application;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Hubs;
+using AuthService;
 using AuthService.Client;
 using FluentValidation.AspNetCore;
 using Infrastructure;
@@ -50,6 +51,7 @@ namespace Web
                   });
       });
 
+      services.AddAuthService();
       services.AddApplication();
       services.AddInfrastructure(Configuration, Environment);
 
