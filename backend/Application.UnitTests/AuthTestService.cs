@@ -2,6 +2,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AuthService.Client;
 
+#pragma warning disable 1998
+
 namespace Application.UnitTests
 {
   public class AuthTestService : IAuthClient
@@ -53,3 +55,5 @@ namespace Application.UnitTests
     }
   }
 }
+
+#pragma warning restore 1998

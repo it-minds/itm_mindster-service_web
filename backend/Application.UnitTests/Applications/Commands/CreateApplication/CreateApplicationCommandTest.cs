@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
-using AuthService.Client;
 using FluentAssertions;
 using Xunit;
 
@@ -10,12 +9,6 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
 {
   public class CreateApplicationCommandTest : CommandTestBase
   {
-    private readonly IAuthClient _authCient;
-
-    public CreateApplicationCommandTest() {
-      _authCient = new AuthTestService();
-    }
-
     [Fact]
     public async Task Hande_ShouldPersistApplication()
     {
@@ -27,7 +20,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
           Description = "Desc for test app"
         }
       };
-      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, _authCient);
+      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient);
 
       var result = await handler.Handle(command, CancellationToken.None);
 
