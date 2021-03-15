@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     name: Full build validation
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Cancel Previous Runs
@@ -35,6 +35,5 @@ jobs:
       - name: Restore dependencies
         run: |
           dotnet restore
-          dotnet build AuthService --no-restore
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
