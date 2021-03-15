@@ -14,7 +14,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="NSwag" BeforeTargets="PrepareForBuild;BeforeBuild;Compile;Build">
+  <Target Name="NSwag" BeforeTargets="PrepareForBuild;BeforeBuild;Build">
     <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net50) run nswag.json">
       <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
       <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
