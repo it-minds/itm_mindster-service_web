@@ -35,7 +35,7 @@ namespace Application.Applications.Commands.CreateApplication
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var result = await _authClient.AppAsync(new Test {
+        var result = await _authClient.AppAsync(new ApplicationInput {
           AppIdentifer = application.Title
         }, cancellationToken);
         // result.AppSecret; // TODO return AppSecret. Can never be retrieved again from external service

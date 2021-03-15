@@ -10,16 +10,16 @@ namespace Application.UnitTests
   {
     public string BaseUrl { get; set; }
 
-    public async Task<Response> AppAsync(Test body)
+    public async Task<ApplicationOutput> AppAsync(ApplicationInput body)
     {
-      return new Response
+      return new ApplicationOutput
       {
         AppIdentifer = body.AppIdentifer,
         AppSecret = "MySecret"
       };
     }
 
-    public async Task<Response> AppAsync(Test body, CancellationToken cancellationToken)
+    public async Task<ApplicationOutput> AppAsync(ApplicationInput body, CancellationToken cancellationToken)
     {
       return await AppAsync(body);
     }
@@ -44,12 +44,12 @@ namespace Application.UnitTests
       return PublickeyAsync(aid);
     }
 
-    public Task<Response2> TokenAsync(string aid, string x_token, Body body)
+    public Task<TokenOutput> TokenAsync(string aid, string x_token, TokenInput body)
     {
       throw new System.NotImplementedException();
     }
 
-    public Task<Response2> TokenAsync(string aid, string x_token, Body body, CancellationToken cancellationToken)
+    public Task<TokenOutput> TokenAsync(string aid, string x_token, TokenInput body, CancellationToken cancellationToken)
     {
       return TokenAsync(aid, x_token, body);
     }
