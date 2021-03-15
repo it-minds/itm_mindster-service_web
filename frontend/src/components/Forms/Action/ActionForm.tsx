@@ -11,16 +11,17 @@ import {
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import { ServiceContext } from "contexts/ServiceContext";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
 
 interface fromProps {
   serviceId: number;
-  fetchData: () => Promise<void>;
 }
 
-const ActionForm: FC<fromProps> = ({ serviceId, fetchData }) => {
+const ActionForm: FC<fromProps> = ({ serviceId }) => {
+  const { fetchData } = useContext(ServiceContext);
   const [localActionDataForm, setLocalActionDataForm] = useState<ActionDto>(
     new ActionDto({
       title: "",

@@ -8,10 +8,15 @@ import {
 } from "@chakra-ui/react";
 import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import React, { FC, useState } from "react";
+import { ApplicationIdDto } from "services/backend/nswagts";
 
-import AddServiceTriggerBtn from "./AddServiceTriggerBtn";
+import UpdateApplicationTriggerBtn from "./UpdateApplicationTriggerBtn";
 
-const ServiceTableMenu: FC = () => {
+type Props = {
+  application: ApplicationIdDto;
+};
+
+const ApplicationItemMenu: FC<Props> = ({ application }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -26,13 +31,12 @@ const ServiceTableMenu: FC = () => {
         </PopoverTrigger>
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
-            <VStack minWidth="200" spacing="0">
-              <AddServiceTriggerBtn></AddServiceTriggerBtn>
-            </VStack>
+            <VStack minWidth="200" spacing="0"></VStack>
+            <UpdateApplicationTriggerBtn application={application}></UpdateApplicationTriggerBtn>
           </PopoverBody>
         </PopoverContent>
       </Popover>
     </div>
   );
 };
-export default ServiceTableMenu;
+export default ApplicationItemMenu;

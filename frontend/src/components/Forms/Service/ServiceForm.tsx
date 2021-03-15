@@ -19,19 +19,17 @@ import {
   useToast,
   Wrap
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useRef, useState } from "react";
+import { ServiceContext } from "contexts/ServiceContext";
+import React, { FC, useCallback, useContext, useRef, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand } from "services/backend/nswagts";
 
-interface formProps {
-  fetchData: () => Promise<void>;
-}
-
-const ServiceForm: FC<formProps> = ({ fetchData }) => {
+const ServiceForm: FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { fetchData } = useContext(ServiceContext);
   const cancelRef = useRef();
 
   const toast = useToast();
