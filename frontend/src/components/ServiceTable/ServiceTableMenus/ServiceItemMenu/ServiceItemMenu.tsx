@@ -15,10 +15,9 @@ import ViewActionTableTrigger from "./ViewActionTableTrigger";
 
 type Props = {
   service: ServiceIdDto;
-  fetchData: () => Promise<void>;
 };
 
-const ServiceItemMenu: FC<Props> = ({ service, fetchData }) => {
+const ServiceItemMenu: FC<Props> = ({ service }) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -35,9 +34,7 @@ const ServiceItemMenu: FC<Props> = ({ service, fetchData }) => {
           <PopoverBody mb="2" mt="2" padding="0">
             <VStack minWidth="200" spacing="0">
               <ViewActionTableTrigger service={service}></ViewActionTableTrigger>
-              <AddActionTriggerBtn
-                serviceId={service.id}
-                fetchData={fetchData}></AddActionTriggerBtn>
+              <AddActionTriggerBtn serviceId={service.id}></AddActionTriggerBtn>
             </VStack>
           </PopoverBody>
         </PopoverContent>
