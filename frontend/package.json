@@ -52,7 +52,7 @@
     "@types/react": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
-    "chai": "^4.3.3",
+    "chai": "^4.3.4",
     "cross-env": "^7.0.3",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^7.2.0",
