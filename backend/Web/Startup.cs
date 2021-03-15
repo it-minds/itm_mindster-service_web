@@ -1,6 +1,8 @@
 using Application;
 using Application.Common.Interfaces;
 using Application.Common.Interfaces.Hubs;
+using AuthService;
+using AuthService.Client;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -36,6 +38,7 @@ namespace Web
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services)
     {
+      services.Configure<ServiceOptions>(Configuration.GetSection(ServiceOptions.Service));
 
       services.AddCors(options =>
       {
@@ -48,6 +51,7 @@ namespace Web
                   });
       });
 
+      services.AddAuthService();
       services.AddApplication();
       services.AddInfrastructure(Configuration, Environment);
 

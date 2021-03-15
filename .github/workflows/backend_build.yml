@@ -17,7 +17,7 @@ env:
 jobs:
   build:
     name: Full build validation
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Cancel Previous Runs

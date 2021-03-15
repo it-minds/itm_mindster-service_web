@@ -2,9 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
-using Application.Services;
-using Application.Services.Commands.CreateService;
-using Domain.Enums;
 using FluentAssertions;
 using Xunit;
 
@@ -23,7 +20,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
           Description = "Desc for test app"
         }
       };
-      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context);
+      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient);
 
       var result = await handler.Handle(command, CancellationToken.None);
 

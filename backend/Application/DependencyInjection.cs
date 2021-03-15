@@ -1,4 +1,5 @@
 using Application.Common.Behaviours;
+using AuthService.Client;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
