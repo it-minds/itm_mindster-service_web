@@ -15,6 +15,8 @@ namespace Application.Common.Interfaces
     DbSet<Service> Services { get; set; }
     DbSet<Action> Actions { get; set; }
     DbSet<ApplicationEntity> Applications { get; set; }
+    DbSet<AppToken> AppTokens { get; set; }
+    DbSet<AppTokenAction> AppTokenActions { get; set; }
 
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
