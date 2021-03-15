@@ -2,6 +2,7 @@
 # Domain
 
 ```plantuml
+
 class User
 {
   ID
@@ -10,6 +11,7 @@ class User
 
 class Service
 {
+  Id
   Title
   Description
   Actions[]
@@ -18,6 +20,7 @@ class Service
 
 class Action
 {
+  Id
   Title
   Description
   AdminNote
@@ -26,12 +29,26 @@ class Action
 
 class Application
 {
+  Id
   Title
   Description
 }
+class AppToken
+{
+  Id
+  ApplicationId
+  AppTokenActions[]
+}
+class AppTokenAction
+{
+  Id
+  AppTokenId
+  ActionId
+  State
+  RejectionReason
+}
 
-
+Application "1"-->"0..*" AppToken
+AppToken "1"-->"0..*" AppTokenActions
 Service "1"-->"0..*" Action
-
-
 ```
