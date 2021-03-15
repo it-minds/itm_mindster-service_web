@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="PrepareForBuild;BeforeBuild;Compile;Build">
-     <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net50) run nswag.json">
+    <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Net50) run nswag.json">
       <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
       <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
     </Exec>
@@ -23,5 +23,15 @@
     <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
     <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
   </Target>
+
+   <!--Custom task to remove generate source code before clean project-->
+  <Target Name="RemoveGenerateSources" BeforeTargets="CoreClean">
+    <RemoveDir Directories="Client.g.cs" />
+  </Target>
+
+  <!--Register generated source code as project source code-->
+  <ItemGroup>
+    <Compile Include="Client.g.cs" />
+  </ItemGroup>
 
 </Project>
