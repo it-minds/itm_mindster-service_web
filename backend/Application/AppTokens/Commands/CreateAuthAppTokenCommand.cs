@@ -39,7 +39,6 @@ namespace Application.AppTokens.Commands
           request.xToken,
           request.TokenInput,
           cancellationToken);
-   
 
         return result ;
       }
