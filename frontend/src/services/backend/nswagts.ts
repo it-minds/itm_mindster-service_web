@@ -132,6 +132,7 @@ export interface IApplicationClient {
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(): Promise<AppTokenIdDto[]>;
+    createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -390,6 +391,50 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<AppTokenIdDto[]>(<any>null);
+    }
+
+    createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput> {
+        let url_ = this.baseUrl + "/api/Application/AuthJWT/{aid}/token";
+        if (aid === undefined || aid === null)
+            throw new Error("The parameter 'aid' must be defined.");
+        url_ = url_.replace("{aid}", encodeURIComponent("" + aid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "xToken": xToken !== undefined && xToken !== null ? "" + xToken : "",
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAuthAppToken(_response));
+        });
+    }
+
+    protected processCreateAuthAppToken(response: Response): Promise<TokenOutput> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TokenOutput.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TokenOutput>(<any>null);
     }
 }
 
@@ -1325,6 +1370,172 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
 
 export interface IAppTokenActionIdDto extends IAppTokenActionDto {
     id?: number;
+}
+
+export class TokenOutput implements ITokenOutput {
+    tokenIdentifier?: string;
+    jwt?: string;
+
+    constructor(data?: ITokenOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
+            this.jwt = _data["jwt"] !== undefined ? _data["jwt"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TokenOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
+        data["jwt"] = this.jwt !== undefined ? this.jwt : <any>null;
+        return data; 
+    }
+}
+
+export interface ITokenOutput {
+    tokenIdentifier?: string;
+    jwt?: string;
+}
+
+export class CreateAuthAppTokenCommand implements ICreateAuthAppTokenCommand {
+    tokenInput?: TokenInput | null;
+
+    constructor(data?: ICreateAuthAppTokenCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.tokenInput = data.tokenInput && !(<any>data.tokenInput).toJSON ? new TokenInput(data.tokenInput) : <TokenInput>this.tokenInput; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenInput = _data["tokenInput"] ? TokenInput.fromJS(_data["tokenInput"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateAuthAppTokenCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAuthAppTokenCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenInput"] = this.tokenInput ? this.tokenInput.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateAuthAppTokenCommand {
+    tokenInput?: ITokenInput | null;
+}
+
+export class TokenInput implements ITokenInput {
+    tokenIdentifier?: string;
+    services?: Services;
+
+    constructor(data?: ITokenInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.services = data.services && !(<any>data.services).toJSON ? new Services(data.services) : <Services>this.services; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
+            this.services = _data["services"] ? Services.fromJS(_data["services"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TokenInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
+        data["services"] = this.services ? this.services.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ITokenInput {
+    tokenIdentifier?: string;
+    services?: IServices;
+}
+
+export class Services implements IServices {
+    aud?: string;
+    access?: number[];
+
+    constructor(data?: IServices) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.aud = _data["aud"] !== undefined ? _data["aud"] : <any>null;
+            if (Array.isArray(_data["access"])) {
+                this.access = [] as any;
+                for (let item of _data["access"])
+                    this.access!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Services {
+        data = typeof data === 'object' ? data : {};
+        let result = new Services();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["aud"] = this.aud !== undefined ? this.aud : <any>null;
+        if (Array.isArray(this.access)) {
+            data["access"] = [];
+            for (let item of this.access)
+                data["access"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IServices {
+    aud?: string;
+    access?: number[];
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {

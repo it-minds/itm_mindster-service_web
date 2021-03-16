@@ -11,6 +11,7 @@ using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Queries.GetAppTokens;
 using Application.Services.Commands.CreateService;
+using AuthService.Client;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,6 +53,13 @@ namespace Web.Controllers
     public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens()
     {
       return await Mediator.Send(new GetAppTokensQuery());
+    }
+    [HttpPost("AuthJWT/{aid}/token")]
+    public async Task<ActionResult<TokenOutput>> CreateAuthAppToken([FromRoute] string aid, [FromHeader] string xToken, CreateAuthAppTokenCommand command)
+    {
+      command.aId = aid;
+      command.xToken = xToken;
+      return await Mediator.Send(command);
     }
   }
 }

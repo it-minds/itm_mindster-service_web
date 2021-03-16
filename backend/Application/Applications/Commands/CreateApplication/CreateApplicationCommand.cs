@@ -39,8 +39,7 @@ namespace Application.Applications.Commands.CreateApplication
         var result = await _authClient.AppAsync(new ApplicationInput {
           AppIdentifer = application.Title
         }, cancellationToken);
-        // result.AppSecret; // TODO return AppSecret. Can never be retrieved again from external service
-        var resultString = "Created App " + application.Id + "With AppSecret: " + result.AppSecret;
+        var resultString = "Created App " + application.Id + ", with AppSecret: " + result.AppSecret;
         return resultString;
       }
     }
