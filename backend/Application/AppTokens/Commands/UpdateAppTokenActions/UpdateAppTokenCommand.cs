@@ -24,11 +24,9 @@ namespace Application.AppTokens.Commands.Update
     public class UpdateAppTokenCommandHandler : IRequestHandler<UpdateAppTokenCommand>
     {
       private readonly IApplicationDbContext _context;
-      private readonly IMapper _mapper;
-      public UpdateAppTokenCommandHandler(IApplicationDbContext context, IMapper mapper)
+      public UpdateAppTokenCommandHandler(IApplicationDbContext context)
       {
         _context = context;
-        _mapper = mapper;
       }
 
       public async Task<Unit> Handle(UpdateAppTokenCommand request, CancellationToken cancellationToken)
@@ -43,10 +41,13 @@ namespace Application.AppTokens.Commands.Update
           throw new NotFoundException(nameof(Domain.Entities.AppToken), request.Id);
         }
 
-        Console.WriteLine("========****========================");
-        Console.WriteLine(appToken.AppTokenActions.Count);
-        Console.WriteLine(appToken.AppTokenActions.First().RejectionReason);
-        Console.WriteLine(appToken.AppTokenActions.Count +" www" + appToken.AppTokenActions.ToList()[0].ActionId+" adawdwa  "+ appToken.AppTokenActions.ToList().Count);
+        if (appToken.AppTokenActions.Count != request.AppToken.AppTokenActions.Count)
+        {
+          throw new NotFoundException(
+            "Expected: " + appToken.AppTokenActions.Count + " actions but recieved: " + request.AppToken.AppTokenActions
+              .Count);
+        }
+
         for (var i = 0; i < appToken.AppTokenActions.Count; i++)
         {
           var action = appToken.AppTokenActions.ToList()[i];
