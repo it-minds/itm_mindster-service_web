@@ -19,7 +19,7 @@ namespace Web.Controllers
   public class ApplicationController : ApiControllerBase
   {
     [HttpPost]
-    public async Task<ActionResult<int>> CreateApplication(CreateApplicationCommand command)
+    public async Task<ActionResult<string>> CreateApplication(CreateApplicationCommand command)
     {
       return await Mediator.Send(command);
     }

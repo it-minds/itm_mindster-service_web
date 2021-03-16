@@ -126,7 +126,7 @@ export class ClientBase {
 }
 
 export interface IApplicationClient {
-    createApplication(command: CreateApplicationCommand): Promise<number>;
+    createApplication(command: CreateApplicationCommand): Promise<string>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
@@ -145,7 +145,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createApplication(command: CreateApplicationCommand): Promise<number> {
+    createApplication(command: CreateApplicationCommand): Promise<string> {
         let url_ = this.baseUrl + "/api/Application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -167,7 +167,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         });
     }
 
-    protected processCreateApplication(response: Response): Promise<number> {
+    protected processCreateApplication(response: Response): Promise<string> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -182,7 +182,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<number>(<any>null);
+        return Promise.resolve<string>(<any>null);
     }
 
     getAllApplications(): Promise<ApplicationIdDto[]> {
