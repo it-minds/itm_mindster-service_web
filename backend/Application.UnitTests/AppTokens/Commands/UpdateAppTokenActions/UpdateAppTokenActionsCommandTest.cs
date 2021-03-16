@@ -52,7 +52,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
       entity.AppTokenActions.Last().State.Should().Be(ServiceStates.Rejected);
     }
     [Fact]
-    public async Task Handle_GivenInValidTokenId_ThrowsException()
+    public void Handle_GivenInValidTokenId_ThrowsException()
     {
       var command = new UpdateAppTokenCommand
       {
@@ -79,7 +79,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
       action.Should().Throw<NotFoundException>();
     }
     [Fact]
-    public async Task Handle_GivenInvalidAmountOfActions_ThrowsException()
+    public void Handle_GivenInvalidAmountOfActions_ThrowsException()
     {
       var command = new UpdateAppTokenCommand
       {
