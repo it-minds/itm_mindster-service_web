@@ -1251,6 +1251,7 @@ export interface IAppTokenActionDto {
 
 export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
     id?: number;
+    appTokenActions?: AppTokenActionIdDto[] | null;
 
     constructor(data?: IAppTokenIdDto) {
         super(data);
@@ -1260,6 +1261,11 @@ export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            if (Array.isArray(_data["appTokenActions"])) {
+                this.appTokenActions = [] as any;
+                for (let item of _data["appTokenActions"])
+                    this.appTokenActions!.push(AppTokenActionIdDto.fromJS(item));
+            }
         }
     }
 
@@ -1273,12 +1279,51 @@ export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        if (Array.isArray(this.appTokenActions)) {
+            data["appTokenActions"] = [];
+            for (let item of this.appTokenActions)
+                data["appTokenActions"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data; 
     }
 }
 
 export interface IAppTokenIdDto extends IAppTokenDto {
+    id?: number;
+    appTokenActions?: AppTokenActionIdDto[] | null;
+}
+
+export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
+    id?: number;
+
+    constructor(data?: IAppTokenActionIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppTokenActionIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenActionIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IAppTokenActionIdDto extends IAppTokenActionDto {
     id?: number;
 }
 
