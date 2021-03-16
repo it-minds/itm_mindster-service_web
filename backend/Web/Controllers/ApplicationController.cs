@@ -9,6 +9,7 @@ using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
+using Application.AppTokens.Commands.Update;
 using Application.AppTokens.Queries.GetAppTokens;
 using Application.Services.Commands.CreateService;
 using AuthService.Client;
@@ -60,6 +61,14 @@ namespace Web.Controllers
       command.aId = aid;
       command.xToken = xToken;
       return await Mediator.Send(command);
+    }
+    [HttpPut("AppTokens/{id}/UpdateActions")]
+    public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenCommand command)
+    {
+      command.Id = id;
+      await Mediator.Send(command);
+
+      return NoContent();
     }
   }
 }

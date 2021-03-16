@@ -18,4 +18,8 @@
     <ProjectReference Include="..\AuthService\AuthService.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AppTokenActions\Commands\Update\" />
+  </ItemGroup>
+
 </Project>
