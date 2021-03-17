@@ -43,13 +43,17 @@ const ServiceLibrary: FC = () => {
             {allShown ? (
               <SimpleGrid width="full" minChildWidth="300px" spacingX="20px" spacingY="50px">
                 {services.map((Service: ServiceIdDto) => (
-                  <LibraryCard key={Service.id} service={Service}></LibraryCard>
+                  <Center key={Service.id}>
+                    <LibraryCard service={Service}></LibraryCard>
+                  </Center>
                 ))}
               </SimpleGrid>
             ) : (
               <SimpleGrid width="full" minChildWidth="300px" spacingX="20px" spacingY="50px">
                 {services.slice(0, 5).map((Service: ServiceIdDto) => (
-                  <LibraryCard key={Service.id} service={Service}></LibraryCard>
+                  <Center key={Service.id}>
+                    <LibraryCard service={Service}></LibraryCard>
+                  </Center>
                 ))}
               </SimpleGrid>
             )}
