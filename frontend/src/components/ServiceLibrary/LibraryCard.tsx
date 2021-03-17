@@ -1,9 +1,8 @@
-import { Box, Button, Heading, Tag, TagLabel, Td, Tr } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import ServiceItemMenu from "components/ServiceTable/ServiceTableMenus/ServiceItemMenu/ServiceItemMenu";
 import { useColors } from "hooks/useColors";
-import Head from "next/head";
 import React, { FC } from "react";
-import { ServiceIdDto, ServiceStates } from "services/backend/nswagts";
+import { ServiceIdDto } from "services/backend/nswagts";
 
 type Props = {
   service: ServiceIdDto;
@@ -12,18 +11,23 @@ type Props = {
 const LibraryCard: FC<Props> = ({ service }) => {
   const { hoverBg } = useColors();
 
-  const stateColors = ["yellow", "green", "red"];
-
   return (
-    <Box w="250px" h="250px" shadow="xl" borderWidth="1px" borderRadius="lg">
+    <Box
+      cursor="pointer"
+      _hover={{
+        bgColor: hoverBg
+      }}
+      w="300px"
+      h="250px"
+      shadow="xl"
+      borderWidth="1px"
+      borderRadius="sm">
       <Box p="6">
-        <Box mt="1" fontWeight="semibold" as="header" lineHeight="tight" isTruncated>
+        <Box mt="1" as="header">
           <Heading fontSize="xl">{service.title}</Heading>
         </Box>
-        <Box>{service.description}</Box>
-        <Tag size="md" variant="subtle" colorScheme={stateColors[service.state]}>
-          <TagLabel>{ServiceStates[service.state]}</TagLabel>
-        </Tag>
+        <Box mt="2">{service.description}</Box>
+
         <ServiceItemMenu service={service}></ServiceItemMenu>
       </Box>
     </Box>
