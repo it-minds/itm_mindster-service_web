@@ -24,7 +24,7 @@ const LibraryCard: FC<Props> = ({ service }) => {
       borderRadius="sm">
       <Box p="6">
         <Box mt="1" as="header">
-          <Heading fontSize="xl">{service.title}</Heading>
+          <Heading fontSize="xl">{`${service.id} ${service.title}`}</Heading>
         </Box>
         <Box mt="2">{service.description}</Box>
 
