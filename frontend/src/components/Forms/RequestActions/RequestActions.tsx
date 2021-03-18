@@ -9,13 +9,6 @@ type Props = {
 };
 
 const RequestActions: FC<Props> = ({ service }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [localFormData, setLocalFormData] = useState<ApplicationDto>(
-    new ApplicationDto({
-      title: "",
-      description: ""
-    })
-  );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
 
