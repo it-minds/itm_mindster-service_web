@@ -48,7 +48,7 @@ const LibraryCard: FC<Props> = ({ service }) => {
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Request actions</ModalHeader>
+          <ModalHeader>{`Request actions of ${service.id}`}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <RequestActions service={service}></RequestActions>
