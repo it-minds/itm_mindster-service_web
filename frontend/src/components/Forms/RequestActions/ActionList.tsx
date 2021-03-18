@@ -5,7 +5,6 @@ import {
   Spinner,
   Table,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
@@ -17,10 +16,11 @@ import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
   AppTokenActionDto,
-  AppTokenActionUpdateDto,
   CreateAppTokenActionsCommand,
   CreateAppTokenCommand
 } from "services/backend/nswagts";
+
+import ActionListItem from "./ActionListItem";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
@@ -103,6 +103,12 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
           }
         })
       );
+      toast({
+        description: "Acces was requested",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
     } catch (error) {
       toast({
         description: `PutAppToken responded: ${error}`,
@@ -136,20 +142,11 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
           </Thead>
           <Tbody>
             {tableData.map((action: ActionIdDto) => (
-              <Tr key={action.id}>
-                <Td>{action.id}</Td>
-                <Td>{action.title}</Td>
-                <Td>{action.description}</Td>
-                <Td>{action.adminNote}</Td>
-                <Td>
-                  <Checkbox
-                    isChecked={checkboxes.find(e => e.id == action.id).checked}
-                    onChange={() => addAction(action.id)}
-                    size="md"
-                    colorScheme="green"
-                  />
-                </Td>
-              </Tr>
+              <ActionListItem
+                key={action.id}
+                action={action}
+                checked={checkboxes.find(e => e.id == action.id).checked}
+                addAction={addAction}></ActionListItem>
             ))}
           </Tbody>
         </Table>

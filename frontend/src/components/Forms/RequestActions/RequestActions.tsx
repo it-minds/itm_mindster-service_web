@@ -1,6 +1,6 @@
-import { Box, Center, Flex, useDisclosure, Wrap } from "@chakra-ui/react";
-import React, { FC, useRef, useState } from "react";
-import { ApplicationDto, ServiceIdDto } from "services/backend/nswagts";
+import { Box, Center, Flex, Wrap } from "@chakra-ui/react";
+import React, { FC } from "react";
+import { ServiceIdDto } from "services/backend/nswagts";
 
 import ActionList from "./ActionList";
 
@@ -9,9 +9,6 @@ type Props = {
 };
 
 const RequestActions: FC<Props> = ({ service }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
-
   return (
     <Center>
       <Wrap width="full" justify="center">

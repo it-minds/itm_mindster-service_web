@@ -12,8 +12,6 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import RequestActions from "components/Forms/RequestActions/RequestActions";
-import ServiceForm from "components/Forms/Service/ServiceForm";
-import ServiceItemMenu from "components/ServiceTable/ServiceTableMenus/ServiceItemMenu/ServiceItemMenu";
 import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
@@ -44,8 +42,6 @@ const LibraryCard: FC<Props> = ({ service }) => {
             <Heading fontSize="xl">{`${service.id} ${service.title}`}</Heading>
           </Box>
           <Box mt="2">{service.description}</Box>
-
-          <ServiceItemMenu service={service}></ServiceItemMenu>
         </Box>
       </Box>
 
