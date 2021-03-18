@@ -104,7 +104,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
         })
       );
       toast({
-        description: "Acces was requested",
+        description: "Access was requested",
         status: "success",
         duration: 5000,
         isClosable: true
