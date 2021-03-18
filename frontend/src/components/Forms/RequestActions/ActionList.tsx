@@ -9,10 +9,18 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
   VStack
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { ActionIdDto } from "services/backend/nswagts";
+import React, { FC, useCallback, useState } from "react";
+import { genApplicationClient } from "services/backend/apiClients";
+import {
+  ActionIdDto,
+  AppTokenActionDto,
+  AppTokenActionUpdateDto,
+  CreateAppTokenActionsCommand,
+  CreateAppTokenCommand
+} from "services/backend/nswagts";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
@@ -32,6 +40,10 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [checkboxes, setCheckboxes] = useState<Model[]>(
     tableData.map((action: ActionIdDto) => new Model(action.id, false))
   );
+  const toast = useToast();
+
+  // Constant at the moment, pass through props or page route later
+  const applicationId = 16;
 
   const checkAll = useCallback(() => {
     if (allChecked) {
@@ -45,7 +57,6 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
     }
     setCheckboxes(checkboxes);
     setAllChecked(!allChecked);
-    console.log(checkboxes);
   }, [allChecked, checkboxes]);
 
   const addAction = useCallback(
@@ -53,7 +64,6 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
       const copy = [...checkboxes];
 
       let allCheck = true;
-
       copy.forEach(modal => {
         if (modal.id == data) {
           modal.checked = !modal.checked;
@@ -62,14 +72,47 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
           allCheck = false;
         }
       });
-
       setCheckboxes(copy);
       setAllChecked(allCheck);
-
-      console.log(checkboxes);
     },
     [checkboxes, allChecked]
   );
+
+  /**
+   * This both creates the empty AppToken and then adds the requested AppTokenActions
+   */
+  const onSubmit = useCallback(async () => {
+    setIsLoading(true);
+
+    const actions: AppTokenActionDto[] = [];
+    checkboxes.forEach(modal => {
+      if (modal.checked) {
+        actions.push(new AppTokenActionDto({ actionId: modal.id }));
+      }
+    });
+
+    const client = await genApplicationClient();
+    try {
+      const appTokenId = await client.createAppToken(applicationId, new CreateAppTokenCommand({}));
+
+      await client.createAppTokenActions(
+        appTokenId,
+        new CreateAppTokenActionsCommand({
+          appToken: {
+            appTokenActions: actions
+          }
+        })
+      );
+    } catch (error) {
+      toast({
+        description: `PutAppToken responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
+    setIsLoading(false);
+  }, [checkboxes]);
 
   return (
     <Center>
@@ -115,7 +158,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
             <Spinner></Spinner>
           </Button>
         ) : (
-          <Button variant="outline" width="full" mt={20} type="submit">
+          <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
             {`Request actions`}
           </Button>
         )}

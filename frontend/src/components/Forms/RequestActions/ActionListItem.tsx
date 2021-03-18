@@ -1,15 +1,14 @@
 import { Center, Checkbox, Td, Tr } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { ActionIdDto } from "services/backend/nswagts";
-interface ActionTableItemProps {
-  action: ActionIdDto;
+type Props = {
+  actionId: number;
   checked: boolean;
-  addAction: (data: number, added: boolean) => void;
-}
-const ActionListItem: FC<ActionTableItemProps> = ({ action, checked, addAction }) => {
-  const [isChecked, setChecked] = useState(checked);
+  addAction: (data: number) => void;
+};
+const ActionListItem: FC<Props> = ({ actionId: action, checked, addAction }) => {
   const handleOnChange = useCallback(() => {
-    addAction(action.id, !checked);
+    addAction(actionId);
   }, [action]);
   return (
     <Tr>
@@ -19,7 +18,7 @@ const ActionListItem: FC<ActionTableItemProps> = ({ action, checked, addAction }
       <Td>{action.adminNote}</Td>
       <Td>
         <Checkbox
-          isChecked={isChecked}
+          isChecked={checked}
           size="md"
           colorScheme="green"
           onChange={() => handleOnChange()}
