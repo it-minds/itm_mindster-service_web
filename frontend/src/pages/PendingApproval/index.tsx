@@ -13,10 +13,11 @@ import PendingList from "../../components/PendingApprovals/PendingList";
 const PendingApprovalPage: NextPage = () => {
   const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
 
+  //GetAllAppTokens(true) only returns tokens that have the pending state in them
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens();
+      const data = await client.getAllAppTokens(true);
 
       if (data && data.length > 0) setAppTokens(data);
       else logger.info("exampleClient.get no data");

@@ -131,7 +131,7 @@ export interface IApplicationClient {
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
-    getAllAppTokens(): Promise<AppTokenIdDto[]>;
+    getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
     updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse>;
 }
@@ -354,8 +354,12 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         return Promise.resolve<number>(<any>null);
     }
 
-    getAllAppTokens(): Promise<AppTokenIdDto[]> {
-        let url_ = this.baseUrl + "/api/Application/AppTokens";
+    getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens?";
+        if (onlyPending === null)
+            throw new Error("The parameter 'onlyPending' cannot be null.");
+        else if (onlyPending !== undefined)
+            url_ += "onlyPending=" + encodeURIComponent("" + onlyPending) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
