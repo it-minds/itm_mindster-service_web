@@ -1187,6 +1187,7 @@ export interface IApplicationIdDto extends IApplicationDto {
 }
 
 export class CreateAppTokenCommand implements ICreateAppTokenCommand {
+    appToken?: AppTokenCreateDto | null;
 
     constructor(data?: ICreateAppTokenCommand) {
         if (data) {
@@ -1194,10 +1195,14 @@ export class CreateAppTokenCommand implements ICreateAppTokenCommand {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
+            this.appToken = data.appToken && !(<any>data.appToken).toJSON ? new AppTokenCreateDto(data.appToken) : <AppTokenCreateDto>this.appToken; 
         }
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.appToken = _data["appToken"] ? AppTokenCreateDto.fromJS(_data["appToken"]) : <any>null;
+        }
     }
 
     static fromJS(data: any): CreateAppTokenCommand {
@@ -1209,11 +1214,49 @@ export class CreateAppTokenCommand implements ICreateAppTokenCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["appToken"] = this.appToken ? this.appToken.toJSON() : <any>null;
         return data; 
     }
 }
 
 export interface ICreateAppTokenCommand {
+    appToken?: IAppTokenCreateDto | null;
+}
+
+export class AppTokenCreateDto implements IAppTokenCreateDto {
+    description?: string | null;
+
+    constructor(data?: IAppTokenCreateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppTokenCreateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenCreateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        return data; 
+    }
+}
+
+export interface IAppTokenCreateDto {
+    description?: string | null;
 }
 
 export class CreateAppTokenActionsCommand implements ICreateAppTokenActionsCommand {
@@ -1340,7 +1383,7 @@ export interface IAppTokenActionDto {
     actionId?: number;
 }
 
-export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
+export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
     id?: number;
     appTokenActions?: AppTokenActionIdDto[] | null;
 
@@ -1380,7 +1423,7 @@ export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
     }
 }
 
-export interface IAppTokenIdDto extends IAppTokenDto {
+export interface IAppTokenIdDto extends IAppTokenCreateDto {
     id?: number;
     appTokenActions?: AppTokenActionIdDto[] | null;
 }

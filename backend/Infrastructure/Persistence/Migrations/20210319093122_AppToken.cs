@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
@@ -68,6 +68,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

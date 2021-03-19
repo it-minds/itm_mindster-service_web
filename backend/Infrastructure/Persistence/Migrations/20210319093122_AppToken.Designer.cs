@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210315123305_AppToken")]
+    [Migration("20210319093122_AppToken")]
     partial class AppToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,6 +58,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 

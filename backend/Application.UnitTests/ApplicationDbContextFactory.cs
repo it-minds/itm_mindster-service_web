@@ -96,6 +96,7 @@ namespace Application.UnitTests
           {
           Id = 1,
           ApplicationId = 1,
+          Description = "Den første appToken",
           AppTokenActions = new List<AppTokenAction>{
               new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = 0},
               new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = 0}
@@ -106,6 +107,7 @@ namespace Application.UnitTests
           {
             Id = 2,
             ApplicationId = 2,
+            Description = "Den anden appToken",
             AppTokenActions = new List<AppTokenAction>
             {
               new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = 0},
