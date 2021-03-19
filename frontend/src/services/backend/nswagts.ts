@@ -265,8 +265,10 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
 }
 
 export interface IAuthClient {
-    login(): Promise<string>;
-    checkAuth(): Promise<boolean>;
+    getLoginUrl(): Promise<string>;
+    checkAuth(): Promise<string>;
+    googleLogin(callback?: string | null | undefined): Promise<void>;
+    googleCallback(callback?: string | null | undefined): Promise<FileResponse>;
 }
 
 export class AuthClient extends ClientBase implements IAuthClient {
@@ -280,12 +282,12 @@ export class AuthClient extends ClientBase implements IAuthClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    login(): Promise<string> {
+    getLoginUrl(): Promise<string> {
         let url_ = this.baseUrl + "/api/Auth";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
-            method: "POST",
+            method: "GET",
             headers: {
                 "Accept": "application/json"
             }
@@ -294,11 +296,11 @@ export class AuthClient extends ClientBase implements IAuthClient {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processLogin(_response));
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetLoginUrl(_response));
         });
     }
 
-    protected processLogin(response: Response): Promise<string> {
+    protected processGetLoginUrl(response: Response): Promise<string> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -316,7 +318,7 @@ export class AuthClient extends ClientBase implements IAuthClient {
         return Promise.resolve<string>(<any>null);
     }
 
-    checkAuth(): Promise<boolean> {
+    checkAuth(): Promise<string> {
         let url_ = this.baseUrl + "/api/Auth";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -334,7 +336,7 @@ export class AuthClient extends ClientBase implements IAuthClient {
         });
     }
 
-    protected processCheckAuth(response: Response): Promise<boolean> {
+    protected processCheckAuth(response: Response): Promise<string> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -349,7 +351,77 @@ export class AuthClient extends ClientBase implements IAuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<boolean>(<any>null);
+        return Promise.resolve<string>(<any>null);
+    }
+
+    googleLogin(callback?: string | null | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/Auth/google?";
+        if (callback !== undefined && callback !== null)
+            url_ += "callback=" + encodeURIComponent("" + callback) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGoogleLogin(_response));
+        });
+    }
+
+    protected processGoogleLogin(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(<any>null);
+    }
+
+    googleCallback(callback?: string | null | undefined): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Auth/google-callback?";
+        if (callback !== undefined && callback !== null)
+            url_ += "callback=" + encodeURIComponent("" + callback) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGoogleCallback(_response));
+        });
+    }
+
+    protected processGoogleCallback(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
