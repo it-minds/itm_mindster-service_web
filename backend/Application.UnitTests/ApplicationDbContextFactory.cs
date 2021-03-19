@@ -25,7 +25,7 @@ namespace Application.UnitTests
           .Returns(new DateTimeOffset(3001, 1, 1, 1, 1, 1, TimeSpan.Zero));
 
       var currentUserServiceMock = new Mock<ICurrentUserService>();
-      currentUserServiceMock.Setup(m => m.UserId)
+      currentUserServiceMock.Setup(m => m.UserEmail)
           .Returns("00000000-0000-0000-0000-000000000000");
 
       var context = new ApplicationDbContext(options, currentUserServiceMock.Object, dateTimeMock.Object);

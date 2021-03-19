@@ -15,10 +15,7 @@ type BaseConstructor<T> = {
   ): T;
 };
 
-export const api = async <T, U extends BaseConstructor<T>>(
-  Client: U,
-  context?: GetServerSidePropsContext
-): Promise<T> => {
+export const api = async <T, U extends BaseConstructor<T>>(Client: U): Promise<T> => {
   let envSettings = isomorphicEnvSettings();
 
   if (envSettings === null && process.browser) {
@@ -29,7 +26,7 @@ export const api = async <T, U extends BaseConstructor<T>>(
     throw new Error("Environment settings null on server");
   }
 
-  const authToken = getAuthToken(context) ?? "";
+  const authToken = getAuthToken() ?? "";
   const initilizedClient = new Client(new AuthBase(authToken), envSettings.backendUrl, {
     fetch
   });

@@ -1,9 +1,9 @@
 import "../styles.global.css";
 import "isomorphic-unfetch";
 
-import { ChakraProvider } from "@chakra-ui/react";
+import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
 import { AuthContext } from "contexts/AuthContext";
-import { useAuth } from "hooks/useAuth";
+import { AuthStage, useAuth } from "hooks/useAuth";
 import { usePWA } from "hooks/usePWA";
 import { AppPropsType } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
@@ -22,7 +22,7 @@ type Props = {
 const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactElement => {
   // usePWA(); //! OPT IN
 
-  // const auth = useAuth(); //! OPT IN
+  const auth = useAuth(); //! OPT IN
 
   useEffect(() => {
     if (!__N_SSG) {
@@ -46,6 +46,12 @@ const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactEl
     }
   }, []);
 
+  useEffect(() => {
+    if (auth.authStage == AuthStage.UNAUTHENTICATED) {
+      auth.login();
+    }
+  }, [auth.authStage]);
+
   return (
     <main>
       <Head>
@@ -62,15 +68,21 @@ const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactEl
       <noscript>
         <h1>JavaScript must be enabled!</h1>
       </noscript>
-      <I18nProvider table={pageProps.table}>
-        <ChakraProvider theme={theme}>
-          {/* <AuthContext.Provider value={auth}> */}
-          {/* <SignalRContext.Provider value={{ connection }}> */}
-          <Component {...pageProps} />
-          {/* </SignalRContext.Provider> */}
-          {/* </AuthContext.Provider> */}
-        </ChakraProvider>
-      </I18nProvider>
+      {auth.authStage !== AuthStage.AUTHENTICATED ? (
+        <Center>
+          <CircularProgress isIndeterminate />
+        </Center>
+      ) : (
+        <I18nProvider table={pageProps.table}>
+          <ChakraProvider theme={theme}>
+            {/* <AuthContext.Provider value={auth}> */}
+            {/* <SignalRContext.Provider value={{ connection }}> */}
+            <Component {...pageProps} />
+            {/* </SignalRContext.Provider> */}
+            {/* </AuthContext.Provider> */}
+          </ChakraProvider>
+        </I18nProvider>
+      )}
     </main>
   );
 };
