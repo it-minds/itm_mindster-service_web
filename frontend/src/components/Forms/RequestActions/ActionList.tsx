@@ -93,7 +93,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
     const client = await genApplicationClient();
     try {
-      const appTokenId = await client.createAppToken(applicationId, new CreateAppTokenCommand({}));
+      const appTokenId = 1;
 
       await client.createAppTokenActions(
         appTokenId,

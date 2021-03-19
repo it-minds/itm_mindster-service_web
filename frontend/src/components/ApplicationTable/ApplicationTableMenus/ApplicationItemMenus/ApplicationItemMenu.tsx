@@ -10,6 +10,7 @@ import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import React, { FC, useState } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";
 
+import AddAppTokenTriggerBtn from "./AddAppTokenTriggerBtn";
 import UpdateApplicationTriggerBtn from "./UpdateApplicationTriggerBtn";
 
 type Props = {
@@ -31,8 +32,10 @@ const ApplicationItemMenu: FC<Props> = ({ application }) => {
         </PopoverTrigger>
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
-            <VStack minWidth="200" spacing="0"></VStack>
-            <UpdateApplicationTriggerBtn application={application}></UpdateApplicationTriggerBtn>
+            <VStack minWidth="200" spacing="0">
+              <UpdateApplicationTriggerBtn application={application}></UpdateApplicationTriggerBtn>
+              <AddAppTokenTriggerBtn application={application}></AddAppTokenTriggerBtn>
+            </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>

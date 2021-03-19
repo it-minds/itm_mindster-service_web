@@ -9,6 +9,8 @@ namespace Application.AppTokens.Commands
     {
       RuleFor(e => e.Id)
         .NotEmpty();
+      RuleFor(e => e.AppToken)
+        .NotEmpty();
     }
   }
 }
