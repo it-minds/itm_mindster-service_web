@@ -10,17 +10,10 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
-import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
-import { ApplicationContext } from "contexts/ApplicationContext";
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, useCallback } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import {
-  ApplicationIdDto,
-  AppTokenCreateDto,
-  CreateAppTokenCommand,
-  UpdateApplicationCommand
-} from "services/backend/nswagts";
+import { ApplicationIdDto, CreateAppTokenCommand } from "services/backend/nswagts";
 
 type Props = {
   application: ApplicationIdDto;
@@ -54,7 +47,7 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
   }, []);
 
   return (
-    <div>
+    <>
       <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
         Add new AppToken
       </Button>
@@ -74,7 +67,7 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 export default AddAppTokenTriggerBtn;

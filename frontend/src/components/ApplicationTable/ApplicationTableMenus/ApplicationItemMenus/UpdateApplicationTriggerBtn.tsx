@@ -52,7 +52,7 @@ const UpdateApplicationTriggerBtn: FC<Props> = ({ application }) => {
   }, []);
 
   return (
-    <div>
+    <>
       <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
         Update application
       </Button>
@@ -74,7 +74,7 @@ const UpdateApplicationTriggerBtn: FC<Props> = ({ application }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </>
   );
 };
 export default UpdateApplicationTriggerBtn;

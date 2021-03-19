@@ -32,7 +32,7 @@ const ApplicationItemMenu: FC<Props> = ({ application }) => {
         </PopoverTrigger>
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
-            <VStack minWidth="200" spacing="0">
+            <VStack minWidth="full" spacing="0">
               <UpdateApplicationTriggerBtn application={application}></UpdateApplicationTriggerBtn>
               <AddAppTokenTriggerBtn application={application}></AddAppTokenTriggerBtn>
             </VStack>

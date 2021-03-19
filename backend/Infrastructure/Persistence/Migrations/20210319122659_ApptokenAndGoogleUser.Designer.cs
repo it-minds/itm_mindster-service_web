@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210319120134_mergedAppToken_andGoogleUser")]
-    partial class mergedAppToken_andGoogleUser
+    [Migration("20210319122659_ApptokenAndGoogleUser")]
+    partial class ApptokenAndGoogleUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
