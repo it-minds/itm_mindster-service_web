@@ -133,6 +133,7 @@ export interface IApplicationClient {
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(): Promise<AppTokenIdDto[]>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
+    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -435,6 +436,47 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<TokenOutput>(<any>null);
+    }
+
+    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens/{id}/UpdateActions";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateAppTokenActions(_response));
+        });
+    }
+
+    protected processUpdateAppTokenActions(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
     }
 }
 
@@ -1413,6 +1455,8 @@ export interface IAppTokenIdDto extends IAppTokenDto {
 
 export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
     id?: number;
+    state?: ServiceStates;
+    rejectionReason?: string | null;
 
     constructor(data?: IAppTokenActionIdDto) {
         super(data);
@@ -1422,6 +1466,8 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+            this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
         }
     }
 
@@ -1435,6 +1481,8 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["state"] = this.state !== undefined ? this.state : <any>null;
+        data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
         super.toJSON(data);
         return data; 
     }
@@ -1442,6 +1490,14 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
 
 export interface IAppTokenActionIdDto extends IAppTokenActionDto {
     id?: number;
+    state?: ServiceStates;
+    rejectionReason?: string | null;
+}
+
+export enum ServiceStates {
+    Pending = 0,
+    Approved = 1,
+    Rejected = 2,
 }
 
 export class TokenOutput implements ITokenOutput {
@@ -1608,6 +1664,134 @@ export class Services implements IServices {
 export interface IServices {
     aud?: string;
     access?: number[];
+}
+
+export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
+    appToken?: AppTokenUpdateDto | null;
+
+    constructor(data?: IUpdateAppTokenCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.appToken = data.appToken && !(<any>data.appToken).toJSON ? new AppTokenUpdateDto(data.appToken) : <AppTokenUpdateDto>this.appToken; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appToken = _data["appToken"] ? AppTokenUpdateDto.fromJS(_data["appToken"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateAppTokenCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateAppTokenCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appToken"] = this.appToken ? this.appToken.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IUpdateAppTokenCommand {
+    appToken?: IAppTokenUpdateDto | null;
+}
+
+export class AppTokenUpdateDto implements IAppTokenUpdateDto {
+    appTokenActions?: AppTokenActionUpdateDto[] | null;
+
+    constructor(data?: IAppTokenUpdateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.appTokenActions) {
+                this.appTokenActions = [];
+                for (let i = 0; i < data.appTokenActions.length; i++) {
+                    let item = data.appTokenActions[i];
+                    this.appTokenActions[i] = item && !(<any>item).toJSON ? new AppTokenActionUpdateDto(item) : <AppTokenActionUpdateDto>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["appTokenActions"])) {
+                this.appTokenActions = [] as any;
+                for (let item of _data["appTokenActions"])
+                    this.appTokenActions!.push(AppTokenActionUpdateDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AppTokenUpdateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenUpdateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.appTokenActions)) {
+            data["appTokenActions"] = [];
+            for (let item of this.appTokenActions)
+                data["appTokenActions"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IAppTokenUpdateDto {
+    appTokenActions?: IAppTokenActionUpdateDto[] | null;
+}
+
+export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
+    state?: ServiceStates;
+    rejectionReason?: string | null;
+
+    constructor(data?: IAppTokenActionUpdateDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+            this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppTokenActionUpdateDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenActionUpdateDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["state"] = this.state !== undefined ? this.state : <any>null;
+        data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
+        return data; 
+    }
+}
+
+export interface IAppTokenActionUpdateDto {
+    state?: ServiceStates;
+    rejectionReason?: string | null;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
@@ -1919,12 +2103,6 @@ export interface IServiceDto {
     title?: string | null;
     description?: string | null;
     state?: ServiceStates;
-}
-
-export enum ServiceStates {
-    Pending = 0,
-    Approved = 1,
-    Rejected = 2,
 }
 
 export class ServiceIdDto extends ServiceDto implements IServiceIdDto {

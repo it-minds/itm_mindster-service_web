@@ -85,12 +85,37 @@ namespace Application.UnitTests
         }
 
         );
+
       context.Applications.AddRange(
         new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
         new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
         new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" }
 
         );
+      context.AppTokens.AddRange(
+        new AppToken
+          {
+          Id = 1,
+          ApplicationId = 1,
+          AppTokenActions = new List<AppTokenAction>{
+              new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = 0},
+              new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = 0}
+
+            }
+          },
+          new AppToken
+          {
+            Id = 2,
+            ApplicationId = 2,
+            AppTokenActions = new List<AppTokenAction>
+            {
+              new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = 0},
+              new AppTokenAction{ Id = 4, AppTokenId = 2, ActionId = 3, State = 0}
+
+            }
+          }
+        );
+
       context.SaveChanges();
     }
 
