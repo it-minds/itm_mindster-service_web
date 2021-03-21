@@ -126,9 +126,13 @@ export class ClientBase {
 }
 
 export interface IApplicationClient {
-    createApplication(command: CreateApplicationCommand): Promise<number>;
+    createApplication(command: CreateApplicationCommand): Promise<string>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
+    createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
+    createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
+    getAllAppTokens(): Promise<AppTokenIdDto[]>;
+    createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -142,7 +146,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createApplication(command: CreateApplicationCommand): Promise<number> {
+    createApplication(command: CreateApplicationCommand): Promise<string> {
         let url_ = this.baseUrl + "/api/Application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -164,7 +168,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         });
     }
 
-    protected processCreateApplication(response: Response): Promise<number> {
+    protected processCreateApplication(response: Response): Promise<string> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -179,7 +183,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<number>(<any>null);
+        return Promise.resolve<string>(<any>null);
     }
 
     getAllApplications(): Promise<ApplicationIdDto[]> {
@@ -261,6 +265,176 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    createAppToken(id: number, command: CreateAppTokenCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Application/{id}/AppTokens";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAppToken(_response));
+        });
+    }
+
+    protected processCreateAppToken(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+
+    createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens/{tokenId}/AppTokenActions";
+        if (tokenId === undefined || tokenId === null)
+            throw new Error("The parameter 'tokenId' must be defined.");
+        url_ = url_.replace("{tokenId}", encodeURIComponent("" + tokenId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAppTokenActions(_response));
+        });
+    }
+
+    protected processCreateAppTokenActions(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+
+    getAllAppTokens(): Promise<AppTokenIdDto[]> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllAppTokens(_response));
+        });
+    }
+
+    protected processGetAllAppTokens(response: Response): Promise<AppTokenIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AppTokenIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AppTokenIdDto[]>(<any>null);
+    }
+
+    createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput> {
+        let url_ = this.baseUrl + "/api/Application/AuthJWT/{aid}/token";
+        if (aid === undefined || aid === null)
+            throw new Error("The parameter 'aid' must be defined.");
+        url_ = url_.replace("{aid}", encodeURIComponent("" + aid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "xToken": xToken !== undefined && xToken !== null ? "" + xToken : "",
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateAuthAppToken(_response));
+        });
+    }
+
+    protected processCreateAuthAppToken(response: Response): Promise<TokenOutput> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TokenOutput.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TokenOutput>(<any>null);
     }
 }
 
@@ -1036,6 +1210,404 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
 
 export interface IApplicationIdDto extends IApplicationDto {
     id?: number;
+}
+
+export class CreateAppTokenCommand implements ICreateAppTokenCommand {
+
+    constructor(data?: ICreateAppTokenCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): CreateAppTokenCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAppTokenCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface ICreateAppTokenCommand {
+}
+
+export class CreateAppTokenActionsCommand implements ICreateAppTokenActionsCommand {
+    appToken?: AppTokenDto | null;
+
+    constructor(data?: ICreateAppTokenActionsCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.appToken = data.appToken && !(<any>data.appToken).toJSON ? new AppTokenDto(data.appToken) : <AppTokenDto>this.appToken; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appToken = _data["appToken"] ? AppTokenDto.fromJS(_data["appToken"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateAppTokenActionsCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAppTokenActionsCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appToken"] = this.appToken ? this.appToken.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateAppTokenActionsCommand {
+    appToken?: IAppTokenDto | null;
+}
+
+export class AppTokenDto implements IAppTokenDto {
+    appTokenActions?: AppTokenActionDto[] | null;
+
+    constructor(data?: IAppTokenDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.appTokenActions) {
+                this.appTokenActions = [];
+                for (let i = 0; i < data.appTokenActions.length; i++) {
+                    let item = data.appTokenActions[i];
+                    this.appTokenActions[i] = item && !(<any>item).toJSON ? new AppTokenActionDto(item) : <AppTokenActionDto>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["appTokenActions"])) {
+                this.appTokenActions = [] as any;
+                for (let item of _data["appTokenActions"])
+                    this.appTokenActions!.push(AppTokenActionDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AppTokenDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.appTokenActions)) {
+            data["appTokenActions"] = [];
+            for (let item of this.appTokenActions)
+                data["appTokenActions"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IAppTokenDto {
+    appTokenActions?: IAppTokenActionDto[] | null;
+}
+
+export class AppTokenActionDto implements IAppTokenActionDto {
+    actionId?: number;
+
+    constructor(data?: IAppTokenActionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.actionId = _data["actionId"] !== undefined ? _data["actionId"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppTokenActionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenActionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["actionId"] = this.actionId !== undefined ? this.actionId : <any>null;
+        return data; 
+    }
+}
+
+export interface IAppTokenActionDto {
+    actionId?: number;
+}
+
+export class AppTokenIdDto extends AppTokenDto implements IAppTokenIdDto {
+    id?: number;
+    appTokenActions?: AppTokenActionIdDto[] | null;
+
+    constructor(data?: IAppTokenIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            if (Array.isArray(_data["appTokenActions"])) {
+                this.appTokenActions = [] as any;
+                for (let item of _data["appTokenActions"])
+                    this.appTokenActions!.push(AppTokenActionIdDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AppTokenIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        if (Array.isArray(this.appTokenActions)) {
+            data["appTokenActions"] = [];
+            for (let item of this.appTokenActions)
+                data["appTokenActions"].push(item.toJSON());
+        }
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IAppTokenIdDto extends IAppTokenDto {
+    id?: number;
+    appTokenActions?: AppTokenActionIdDto[] | null;
+}
+
+export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
+    id?: number;
+
+    constructor(data?: IAppTokenActionIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppTokenActionIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppTokenActionIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IAppTokenActionIdDto extends IAppTokenActionDto {
+    id?: number;
+}
+
+export class TokenOutput implements ITokenOutput {
+    tokenIdentifier?: string;
+    jwt?: string;
+
+    constructor(data?: ITokenOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
+            this.jwt = _data["jwt"] !== undefined ? _data["jwt"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TokenOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
+        data["jwt"] = this.jwt !== undefined ? this.jwt : <any>null;
+        return data; 
+    }
+}
+
+export interface ITokenOutput {
+    tokenIdentifier?: string;
+    jwt?: string;
+}
+
+export class CreateAuthAppTokenCommand implements ICreateAuthAppTokenCommand {
+    tokenInput?: TokenInput | null;
+
+    constructor(data?: ICreateAuthAppTokenCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.tokenInput = data.tokenInput && !(<any>data.tokenInput).toJSON ? new TokenInput(data.tokenInput) : <TokenInput>this.tokenInput; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenInput = _data["tokenInput"] ? TokenInput.fromJS(_data["tokenInput"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateAuthAppTokenCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAuthAppTokenCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenInput"] = this.tokenInput ? this.tokenInput.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateAuthAppTokenCommand {
+    tokenInput?: ITokenInput | null;
+}
+
+export class TokenInput implements ITokenInput {
+    tokenIdentifier?: string;
+    services?: Services;
+
+    constructor(data?: ITokenInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.services = data.services && !(<any>data.services).toJSON ? new Services(data.services) : <Services>this.services; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
+            this.services = _data["services"] ? Services.fromJS(_data["services"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TokenInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
+        data["services"] = this.services ? this.services.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface ITokenInput {
+    tokenIdentifier?: string;
+    services?: IServices;
+}
+
+export class Services implements IServices {
+    aud?: string;
+    access?: number[];
+
+    constructor(data?: IServices) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.aud = _data["aud"] !== undefined ? _data["aud"] : <any>null;
+            if (Array.isArray(_data["access"])) {
+                this.access = [] as any;
+                for (let item of _data["access"])
+                    this.access!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): Services {
+        data = typeof data === 'object' ? data : {};
+        let result = new Services();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["aud"] = this.aud !== undefined ? this.aud : <any>null;
+        if (Array.isArray(this.access)) {
+            data["access"] = [];
+            for (let item of this.access)
+                data["access"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IServices {
+    aud?: string;
+    access?: number[];
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {

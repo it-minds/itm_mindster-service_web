@@ -6,7 +6,12 @@ using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
+using Application.AppTokenActions.Commands;
+using Application.AppTokens;
+using Application.AppTokens.Commands;
+using Application.AppTokens.Queries.GetAppTokens;
 using Application.Services.Commands.CreateService;
+using AuthService.Client;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +20,7 @@ namespace Web.Controllers
   public class ApplicationController : ApiControllerBase
   {
     [HttpPost]
-    public async Task<ActionResult<int>> CreateApplication(CreateApplicationCommand command)
+    public async Task<ActionResult<string>> CreateApplication(CreateApplicationCommand command)
     {
       return await Mediator.Send(command);
     }
@@ -31,6 +36,30 @@ namespace Web.Controllers
     public async Task<ActionResult<List<ApplicationIdDto>>> GetAllApplications()
     {
       return await Mediator.Send(new GetApplicationsQuery());
+    }
+    [HttpPost("{id}/AppTokens")]
+    public async Task<ActionResult<int>> CreateAppToken([FromRoute] int id, CreateAppTokenCommand command)
+    {
+      command.Id = id;
+      return await Mediator.Send(command);
+    }
+    [HttpPost("AppTokens/{tokenId}/AppTokenActions")]
+    public async Task<ActionResult<int>> CreateAppTokenActions([FromRoute] int tokenId, CreateAppTokenActionsCommand command)
+    {
+      command.TokenId = tokenId;
+      return await Mediator.Send(command);
+    }
+    [HttpGet("AppTokens")]
+    public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens()
+    {
+      return await Mediator.Send(new GetAppTokensQuery());
+    }
+    [HttpPost("AuthJWT/{aid}/token")]
+    public async Task<ActionResult<TokenOutput>> CreateAuthAppToken([FromRoute] string aid, [FromHeader] string xToken, CreateAuthAppTokenCommand command)
+    {
+      command.aId = aid;
+      command.xToken = xToken;
+      return await Mediator.Send(command);
     }
   }
 }

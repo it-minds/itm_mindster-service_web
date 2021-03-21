@@ -28,6 +28,8 @@ namespace Infrastructure.Persistence
     public DbSet<Service> Services { get; set; }
     public DbSet<Action> Actions { get; set; }
     public DbSet<ApplicationEntity> Applications { get; set; }
+    public DbSet<AppToken> AppTokens { get; set; }
+    public DbSet<AppTokenAction> AppTokenActions { get; set; }
 
 
 

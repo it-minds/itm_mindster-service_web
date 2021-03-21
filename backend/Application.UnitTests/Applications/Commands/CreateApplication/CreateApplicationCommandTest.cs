@@ -10,7 +10,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
   public class CreateApplicationCommandTest : CommandTestBase
   {
     [Fact]
-    public async Task Hande_ShouldPersistApplication()
+    public async Task Handle_ShouldPersistApplication()
     {
       var command = new CreateApplicationCommand()
       {
@@ -23,8 +23,8 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
       var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient);
 
       var result = await handler.Handle(command, CancellationToken.None);
-
-      var entity = Context.Applications.Find(result);
+      //TODO change the hardcoded Find(4) to the proper result.Id when we synchronise aid later
+      var entity = Context.Applications.Find(4);
 
       entity.Should().NotBeNull();
       entity.Title.Should().Be(command.Application.Title);

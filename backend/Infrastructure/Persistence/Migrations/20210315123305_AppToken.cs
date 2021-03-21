@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class AddedApplicationn : Migration
+    public partial class AppToken : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,6 +63,25 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppTokens_Applications_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Applications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExampleChildren",
                 columns: table => new
                 {
@@ -109,10 +128,53 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "AppTokenActions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    RejectionReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppTokenId = table.Column<int>(type: "int", nullable: false),
+                    ActionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppTokenActions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppTokenActions_Actions_ActionId",
+                        column: x => x.ActionId,
+                        principalTable: "Actions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AppTokenActions_AppTokens_AppTokenId",
+                        column: x => x.AppTokenId,
+                        principalTable: "AppTokens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Actions_ServiceId",
                 table: "Actions",
                 column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppTokenActions_ActionId",
+                table: "AppTokenActions",
+                column: "ActionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppTokenActions_AppTokenId",
+                table: "AppTokenActions",
+                column: "AppTokenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppTokens_ApplicationId",
+                table: "AppTokens",
+                column: "ApplicationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExampleChildren_ParentId",
@@ -123,10 +185,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Actions");
-
-            migrationBuilder.DropTable(
-                name: "Applications");
+                name: "AppTokenActions");
 
             migrationBuilder.DropTable(
                 name: "ExampleChildren");
@@ -135,10 +194,19 @@ namespace Infrastructure.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "Actions");
+
+            migrationBuilder.DropTable(
+                name: "AppTokens");
 
             migrationBuilder.DropTable(
                 name: "ExampleParents");
+
+            migrationBuilder.DropTable(
+                name: "Services");
+
+            migrationBuilder.DropTable(
+                name: "Applications");
         }
     }
 }

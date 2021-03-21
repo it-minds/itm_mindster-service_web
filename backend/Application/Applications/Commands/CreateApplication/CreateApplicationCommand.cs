@@ -7,11 +7,11 @@ using MediatR;
 
 namespace Application.Applications.Commands.CreateApplication
 {
-  public class CreateApplicationCommand : IRequest<int>
+  public class CreateApplicationCommand : IRequest<string>
   {
     public ApplicationDto Application { get; set; }
 
-    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, int>
+    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, string>
     {
       private readonly IApplicationDbContext _context;
 
@@ -23,7 +23,7 @@ namespace Application.Applications.Commands.CreateApplication
         _authClient = authClient;
       }
 
-      public async Task<int> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
+      public async Task<string> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
       {
         var application = new ApplicationEntity()
         {
@@ -35,12 +35,12 @@ namespace Application.Applications.Commands.CreateApplication
 
         await _context.SaveChangesAsync(cancellationToken);
 
+
         var result = await _authClient.AppAsync(new ApplicationInput {
           AppIdentifer = application.Title
         }, cancellationToken);
-        // result.AppSecret; // TODO return AppSecret. Can never be retrieved again from external service
-
-        return application.Id;
+        var resultString = "Created App " + application.Id + ", with AppSecret: " + result.AppSecret;
+        return resultString;
       }
     }
   }
