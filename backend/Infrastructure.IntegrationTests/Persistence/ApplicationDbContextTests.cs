@@ -28,7 +28,7 @@ namespace Infrastructure.IntegrationTests.Persistence
 
       _userId = "00000000-0000-0000-0000-000000000000";
       _currentUserServiceMock = new Mock<ICurrentUserService>();
-      _currentUserServiceMock.Setup(m => m.UserId).Returns(_userId);
+      _currentUserServiceMock.Setup(m => m.UserEmail).Returns(_userId);
 
       var options = new DbContextOptionsBuilder<ApplicationDbContext>()
           .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))

@@ -3,6 +3,7 @@ import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import { genAuthenticationClient } from "services/backend/apiClients";
+import isomorphicEnvSettings from "utils/envSettings";
 
 import { useEffectAsync } from "./useEffectAsync";
 
@@ -14,46 +15,60 @@ export enum AuthStage {
 
 type AuthHook<T> = {
   authStage: AuthStage;
-  login: () => Promise<boolean>;
+  login: () => Promise<void>;
   logout: () => void;
   activeUser: T | null;
 };
 
-export const useAuth = (): AuthHook<boolean> => {
+export const useAuth = (): AuthHook<string> => {
   const [authStage, setAuthStage] = useState(AuthStage.CHECKING);
   const [authCounter, setAuthCounter] = useState(0);
-  const [activeUser, setActiveUser] = useState<boolean>(null);
+  const [activeUser, setActiveUser] = useState<string>(null);
   const router = useRouter();
 
   useEffectAsync(async () => {
+    const auth = router.query[process.env.NEXT_PUBLIC_AUTH_NAME] as string;
+    if (auth) {
+      console.log("Setting Auth: ", auth);
+      setAuthToken(auth);
+      delete router.query[process.env.NEXT_PUBLIC_AUTH_NAME];
+
+      const queryStr = Object.entries(router.query)
+        .map(x => x.join("="))
+        .join("");
+
+      router.replace(`${router.pathname}?${queryStr}`, undefined, {
+        shallow: true
+      });
+    }
+
+    console.log("Checking Auth with :", getAuthToken());
+
     const client = await genAuthenticationClient();
-    const user: boolean = await client.checkAuth().catch(() => null);
 
-    setActiveUser(user);
+    const useremail: string = await client.checkAuth().catch(() => null);
 
-    setAuthStage(user ? AuthStage.AUTHENTICATED : AuthStage.UNAUTHENTICATED);
-  }, [authCounter]);
+    setActiveUser(useremail);
+    setAuthStage(useremail ? AuthStage.AUTHENTICATED : AuthStage.UNAUTHENTICATED);
+  }, [authCounter, router]);
 
-  const login = useCallback(async () =>
-    // TODO input login DTO
-    {
-      const client = await genAuthenticationClient();
+  const login = useCallback(async () => {
+    const client = await genAuthenticationClient();
+    const url: string = await client.getLoginUrl();
 
-      const user: string = await client.login().catch(() => null);
-
-      if (!user) {
-        return false;
-      }
-      setAuthStage(AuthStage.CHECKING);
-      setCookie(user);
-      setAuthToken(user);
-      setAuthCounter(c => c + 1);
-      return true;
-    }, []);
+    const envSettings = isomorphicEnvSettings();
+    window.location.href =
+      envSettings.backendUrl +
+      url +
+      "?callback=" +
+      window.location.origin +
+      "?" +
+      process.env.NEXT_PUBLIC_AUTH_NAME +
+      "=";
+  }, []);
 
   const logout = useCallback(() => {
     setAuthStage(AuthStage.CHECKING);
-    deleteCookie();
     setAuthToken("");
     setAuthCounter(c => c + 1);
     router.push("/");
@@ -62,38 +77,14 @@ export const useAuth = (): AuthHook<boolean> => {
   return { authStage, login, logout, activeUser };
 };
 
-export const getAuthToken = (context?: GetServerSidePropsContext): string => {
+export const getAuthToken = (): string => {
   if (process.browser) return localStorage.getItem(process.env.NEXT_PUBLIC_AUTH_NAME);
 
-  if (!context) return null;
-
-  const token = context.req.cookies[process.env.NEXT_PUBLIC_AUTH_NAME];
-  return token;
+  return null;
 };
 
-export const setAuthToken = (token: string, context?: GetServerSidePropsContext): void => {
+export const setAuthToken = (token: string): void => {
   if (process.browser) return localStorage.setItem(process.env.NEXT_PUBLIC_AUTH_NAME, token);
 
-  if (!context) return;
-
-  context.res.setHeader("Set-Cookie", genSetCookie(token));
-
-  return; // TODO Maybe use cookie with context read??
-};
-
-const genSetCookie = (token: string) => {
-  const d = new Date();
-  d.setTime(d.getTime() + 14 * 24 * 60 * 60 * 1000); //14 days
-
-  return `${
-    process.env.NEXT_PUBLIC_AUTH_NAME
-  }=${token}; expires=${d.toUTCString()}; path=/; SameSite=Strict`;
-};
-
-const setCookie = (token: string) => {
-  document.cookie = genSetCookie(token);
-};
-
-const deleteCookie = () => {
-  document.cookie = `${process.env.NEXT_PUBLIC_AUTH_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+  return null;
 };
