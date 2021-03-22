@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Checkbox,
@@ -122,44 +123,50 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
   return (
     <Center>
-      <VStack width="full">
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Id</Th>
-              <Th>Title</Th>
-              <Th>Description</Th>
-              <Th>Admin Note</Th>
-              <Th>
-                <Checkbox
-                  isChecked={allChecked}
-                  onChange={() => checkAll()}
-                  size="lg"
-                  colorScheme="green"
-                />
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {tableData.map((action: ActionIdDto) => (
-              <ActionListItem
-                key={action.id}
-                action={action}
-                checked={checkboxes.find(e => e.id == action.id).checked}
-                addAction={addAction}></ActionListItem>
-            ))}
-          </Tbody>
-        </Table>
-        {isLoading ? (
-          <Button variant="outline" width="full" mt={10}>
-            <Spinner></Spinner>
-          </Button>
-        ) : (
-          <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
-            {`Request actions`}
-          </Button>
-        )}
-      </VStack>
+      {tableData.length != 0 ? (
+        <VStack width="full">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Id</Th>
+                <Th>Title</Th>
+                <Th>Description</Th>
+                <Th>Admin Note</Th>
+                <Th>
+                  <Checkbox
+                    isChecked={allChecked}
+                    onChange={() => checkAll()}
+                    size="lg"
+                    colorScheme="green"
+                  />
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {tableData.map((action: ActionIdDto) => (
+                <ActionListItem
+                  key={action.id}
+                  action={action}
+                  checked={checkboxes.find(e => e.id == action.id).checked}
+                  addAction={addAction}></ActionListItem>
+              ))}
+            </Tbody>
+          </Table>
+          {isLoading ? (
+            <Button variant="outline" width="full" mt={10}>
+              <Spinner></Spinner>
+            </Button>
+          ) : (
+            <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
+              {`Request actions`}
+            </Button>
+          )}
+        </VStack>
+      ) : (
+        <Box w="full" justifyContent="center">
+          No Actions in this Service yet
+        </Box>
+      )}
     </Center>
   );
 };
