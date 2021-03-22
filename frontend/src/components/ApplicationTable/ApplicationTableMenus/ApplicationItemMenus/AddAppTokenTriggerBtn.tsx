@@ -11,7 +11,8 @@ import {
   useToast
 } from "@chakra-ui/react";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
-import React, { FC, useCallback } from "react";
+import { ApplicationContext } from "contexts/ApplicationContext";
+import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationIdDto, CreateAppTokenCommand } from "services/backend/nswagts";
 
@@ -21,13 +22,13 @@ type Props = {
 
 const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { fetchAppTokens } = useContext(ApplicationContext);
   const toast = useToast();
 
   const createAppToken = useCallback(async metaData => {
     const client = await genApplicationClient();
-    let tokenId = 0;
     try {
-      tokenId = await client.createAppToken(
+      await client.createAppToken(
         application.id,
         new CreateAppTokenCommand({ appToken: metaData })
       );
@@ -45,7 +46,7 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
         isClosable: true
       });
     }
-    return tokenId;
+    fetchAppTokens;
   }, []);
 
   return (

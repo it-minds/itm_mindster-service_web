@@ -22,7 +22,7 @@ type Props = {
 
 const UpdateApplicationTriggerBtn: FC<Props> = ({ application }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchData } = useContext(ApplicationContext);
+  const { fetchApps } = useContext(ApplicationContext);
   const toast = useToast();
 
   const updateApplication = useCallback(async metaData => {
@@ -48,7 +48,7 @@ const UpdateApplicationTriggerBtn: FC<Props> = ({ application }) => {
         isClosable: true
       });
     }
-    fetchData();
+    fetchApps();
   }, []);
 
   return (

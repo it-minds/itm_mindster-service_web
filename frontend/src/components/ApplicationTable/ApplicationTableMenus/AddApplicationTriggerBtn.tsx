@@ -18,7 +18,7 @@ import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswag
 
 const AddApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchData } = useContext(ApplicationContext);
+  const { fetchApps } = useContext(ApplicationContext);
   const toast = useToast();
 
   const addApplication = useCallback(async (form: ApplicationDto) => {
@@ -43,7 +43,7 @@ const AddApplicationTriggerBtn: FC = () => {
         isClosable: true
       });
     }
-    fetchData();
+    fetchApps();
   }, []);
 
   return (

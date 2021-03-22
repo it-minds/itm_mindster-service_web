@@ -12,7 +12,8 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import { ApplicationContext } from "contexts/ApplicationContext";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
@@ -27,9 +28,6 @@ interface ActionTableProps {
   tableData: ActionIdDto[];
 }
 
-// Constant at the moment, pass through props or page route later
-const tokenId = 1;
-
 const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
@@ -39,6 +37,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
       checked: false
     }))
   );
+  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
@@ -77,7 +76,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
     const client = await genApplicationClient();
     try {
       await client.createAppTokenActions(
-        tokenId,
+        currToken.id,
         new CreateAppTokenActionsCommand({
           appToken: {
             appTokenActions: actions
@@ -99,6 +98,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
       });
     }
     setIsLoading(false);
+    fetchAppTokens();
   }, [checkboxes]);
 
   return (

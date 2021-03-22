@@ -33,7 +33,6 @@ namespace Application.AppTokens.Queries.GetAppTokens
       public async Task<List<AppTokenIdDto>> Handle(GetAppTokensQuery request, CancellationToken cancellationToken)
       {
         var appTokens = await _context.AppTokens
-          .Where(e => e.AppTokenActions.Count != 0)
           .Include(x => x.AppTokenActions)
           .ProjectTo<AppTokenIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);

@@ -10,14 +10,14 @@ import {
   Wrap
 } from "@chakra-ui/react";
 import ServiceTableMenu from "components/ServiceTable/ServiceTableMenus/ServiceTableMenu";
-import { ServiceContext } from "contexts/ServiceContext";
+import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useContext, useState } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
 
 import LibraryCard from "./LibraryCard";
 
 const ServiceLibrary: FC = () => {
-  const { services } = useContext(ServiceContext);
+  const { services } = useContext(ApplicationContext);
   const [allShown, setAllShown] = useState(false);
 
   return (

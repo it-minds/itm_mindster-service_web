@@ -9,13 +9,11 @@ import {
   Textarea,
   Wrap
 } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { AppTokenCreateDto } from "services/backend/nswagts";
 
 type Props = {
-  submitCallback: (AppMetaDataForm: AppTokenCreateDto) => Promise<number>;
+  submitCallback: (AppMetaDataForm: AppTokenCreateDto) => Promise<void>;
   AppMetaData?: AppTokenCreateDto;
 };
 
@@ -24,7 +22,6 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [localFormData, setLocalFormData] = useState<AppTokenCreateDto>(
     new AppTokenCreateDto({ description: "" })
   );
-  const router = useRouter();
 
   useEffect(() => {
     if (AppMetaData) {
@@ -36,10 +33,8 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
     async event => {
       event.preventDefault();
       setIsLoading(true);
-      const AppTokenId = await submitCallback(localFormData);
-      console.log(AppTokenId);
+      await submitCallback(localFormData);
       setIsLoading(false);
-      router.push({ pathname: "/ServiceLibrary", query: { TokenId: `${AppTokenId}` } });
     },
     [localFormData]
   );

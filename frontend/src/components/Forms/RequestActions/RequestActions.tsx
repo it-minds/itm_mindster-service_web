@@ -16,7 +16,7 @@ const RequestActions: FC<Props> = ({ service }) => {
           <Box width="full" justifyContent="left" fontWeight="semibold" fontSize="lg">
             {service.title}
           </Box>
-          <Box width="full" justifyContent="left">
+          <Box p="2" width="full" justifyContent="left">
             {service.description}
           </Box>
           <Box width="full" p={6}>

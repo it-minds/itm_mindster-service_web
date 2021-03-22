@@ -1,4 +1,5 @@
-import { Box, Center, Heading, VStack, Wrap } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Heading, Spacer, VStack, Wrap } from "@chakra-ui/react";
+import ShowServiceLibraryBtn from "components/ServiceLibrary/ShowServiceLibraryBtn";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { FC, useContext } from "react";
 import { AppTokenActionIdDto } from "services/backend/nswagts";
@@ -14,7 +15,13 @@ const CurrToken: FC = () => {
         <VStack w="full">
           {currToken != null ? (
             <Box p="5" borderWidth="1px" width="full" borderRadius="sm">
-              <Heading mb="2" size="md">{`Id: ${currToken.id} ${currToken.description}`}</Heading>
+              <Flex>
+                <Heading mb="2" size="md">{`Id: ${currToken.id} ${currToken.description}`}</Heading>
+                <Spacer />
+                <Box>
+                  <ShowServiceLibraryBtn></ShowServiceLibraryBtn>
+                </Box>
+              </Flex>
               <Box p="2">
                 Actions:
                 <Box p="2">
