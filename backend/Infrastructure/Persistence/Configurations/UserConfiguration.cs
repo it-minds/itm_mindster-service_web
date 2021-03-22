@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-  public class UserConfiguration : IEntityTypeConfiguration<User> 
+  public class UserConfiguration : IEntityTypeConfiguration<User>
   {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-      builder.Property(e => e.Username)
+      builder.Property(e => e.Email)
         .HasMaxLength(200)
         .IsRequired();
     }
