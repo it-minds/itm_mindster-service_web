@@ -1,4 +1,6 @@
+import { Center, HStack, VStack } from "@chakra-ui/layout";
 import ApplicationTable from "components/ApplicationTable/ApplicationTable";
+import AppToken from "components/AppTokens/AppToken";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
@@ -13,6 +15,7 @@ const IndexPage: NextPage = () => {
   const [applications, setApplications] = useState<ApplicationIdDto[]>([]);
   const [services, setServices] = useState<ServiceIdDto[]>([]);
   const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
+  const [currToken, setCurrToken] = useState<AppTokenIdDto>();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -29,10 +32,12 @@ const IndexPage: NextPage = () => {
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens(true);
+      const data = await client.getAllAppTokens(false);
 
-      if (data && data.length > 0) setAppTokens(data);
-      else logger.info("exampleClient.get no data");
+      if (data && data.length > 0) {
+        setAppTokens(data);
+        setCurrToken(data[0]);
+      } else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
     }
@@ -62,23 +67,20 @@ const IndexPage: NextPage = () => {
         applications: applications,
         services: services,
         appTokens: appTokens,
-        currToken: null,
+        currToken: currToken,
+        setCurrToken: setCurrToken,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices
       }}>
-      <ApplicationTable />
+      <Center>
+        <HStack spacing="10">
+          <ApplicationTable />
+          <AppToken />
+        </HStack>
+      </Center>
     </ApplicationContext.Provider>
   );
-};
-
-export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {
-  const locale = context.locale || context.defaultLocale;
-
-  const { table = {} } = await import(`../../i18n/${locale}`);
-
-  console.log(table);
-  return { props: { table } };
 };
 
 export default IndexPage;

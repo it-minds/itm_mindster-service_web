@@ -29,7 +29,6 @@ const ApplicationTableMenu: FC = () => {
           <PopoverBody mb="2" mt="2" padding="0">
             <VStack minWidth="full" spacing="0">
               <AddApplicationTriggerBtn></AddApplicationTriggerBtn>
-              <AddApplicationTriggerBtn></AddApplicationTriggerBtn>
             </VStack>
           </PopoverBody>
         </PopoverContent>
