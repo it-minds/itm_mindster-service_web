@@ -1,12 +1,12 @@
 import { Box, Center, Flex, Heading, VStack, Wrap } from "@chakra-ui/react";
-import { ServiceContext } from "contexts/ServiceContext";
+import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useContext } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 
 import PendingListItem from "./PendingListItem";
 
 const PendingList: FC = () => {
-  const { appTokens } = useContext(ServiceContext);
+  const { appTokens } = useContext(ApplicationContext);
 
   return (
     <Center>
@@ -14,7 +14,7 @@ const PendingList: FC = () => {
         <VStack width="full">
           <VStack mb="40px">
             <Heading>Pending applications</Heading>
-            <Box>
+            <Box w="full" borderRadius="md" borderWidth="2px">
               {appTokens.map((appToken: AppTokenIdDto) => (
                 <PendingListItem key={appToken.id} appToken={appToken}></PendingListItem>
               ))}

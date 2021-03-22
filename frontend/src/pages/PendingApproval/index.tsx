@@ -1,4 +1,4 @@
-import { ServiceContext } from "contexts/ServiceContext";
+import { ApplicationContext } from "contexts/ApplicationContext";
 import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
@@ -29,16 +29,21 @@ const PendingApprovalPage: NextPage = () => {
   useEffect(() => {
     fetchAppTokens();
   }, [fetchAppTokens]);
+
   return (
-    <ServiceContext.Provider
+    <ApplicationContext.Provider
       value={{
         services: [],
-        fetchData: null,
+        applications: [],
         appTokens: appTokens,
+        currToken: null,
+        setCurrToken: null,
+        fetchApps: null,
+        fetchServices: null,
         fetchAppTokens: fetchAppTokens
       }}>
       <PendingList />
-    </ServiceContext.Provider>
+    </ApplicationContext.Provider>
   );
 };
 

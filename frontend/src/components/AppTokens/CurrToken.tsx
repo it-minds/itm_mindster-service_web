@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, Heading, Spacer, VStack, Wrap } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, Spacer, VStack, Wrap } from "@chakra-ui/react";
 import ShowServiceLibraryBtn from "components/ServiceLibrary/ShowServiceLibraryBtn";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { FC, useContext } from "react";
@@ -32,7 +32,9 @@ const CurrToken: FC = () => {
               </Box>
             </Box>
           ) : (
-            <Heading>No Token selected</Heading>
+            <Heading margin="10" size="lg">
+              No Token selected
+            </Heading>
           )}
         </VStack>
       </Wrap>
