@@ -1,11 +1,12 @@
-import { Box, Center, Heading, Select, Tag, TagLabel, VStack, Wrap } from "@chakra-ui/react";
+import { Center, Heading, Select, VStack, Wrap } from "@chakra-ui/react";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { FC, useContext } from "react";
-import { AppTokenActionIdDto, AppTokenIdDto, ServiceStates } from "services/backend/nswagts";
+import { AppTokenIdDto } from "services/backend/nswagts";
+
+import CurrToken from "./CurrToken";
 
 const AppToken: FC = () => {
-  const { appTokens, currToken, setCurrToken } = useContext(ApplicationContext);
-  const stateColors = ["yellow", "green", "red"];
+  const { appTokens, setCurrToken } = useContext(ApplicationContext);
 
   function handleSelectChange(value: number) {
     setCurrToken(appTokens.find(e => e.id == value));
@@ -23,23 +24,7 @@ const AppToken: FC = () => {
               </option>
             ))}
           </Select>
-
-          {currToken != null ? (
-            <Box width="full">
-              <Heading>{`Id: ${currToken.id} ${currToken.description}`}</Heading>
-              {currToken.appTokenActions.map((action: AppTokenActionIdDto) => (
-                <Box key={action.id}>
-                  {action.actionId}
-                  <Tag size="md" variant="subtle" colorScheme={stateColors[action.state]}>
-                    <TagLabel>{ServiceStates[action.state]}</TagLabel>
-                  </Tag>
-                  <Box>{action.rejectionReason}</Box>
-                </Box>
-              ))}
-            </Box>
-          ) : (
-            <Heading>No Token selected</Heading>
-          )}
+          <CurrToken></CurrToken>
         </VStack>
       </Wrap>
     </Center>

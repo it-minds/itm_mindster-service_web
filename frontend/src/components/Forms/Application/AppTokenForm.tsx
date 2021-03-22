@@ -1,34 +1,18 @@
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Box,
   Button,
   Center,
   Flex,
   FormControl,
   FormLabel,
-  Input,
   Spinner,
   Textarea,
-  useDisclosure,
   Wrap
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import ServiceLibraryPage from "pages/ServiceLibrary";
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import {
-  ApplicationDto,
-  ApplicationIdDto,
-  AppTokenCreateDto,
-  AppTokenDto,
-  AppTokenIdDto
-} from "services/backend/nswagts";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { AppTokenCreateDto } from "services/backend/nswagts";
 
 type Props = {
   submitCallback: (AppMetaDataForm: AppTokenCreateDto) => Promise<number>;
@@ -91,16 +75,6 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                 </Button>
               )}
             </form>
-            <Link href="/ServiceLibrary">
-              <Button variant="outline" width="full" mt={6} type="submit">
-                Go to ServiceLibrary to add new
-              </Button>
-            </Link>
-            <Link href={{ pathname: "/ServiceLibrary", query: { data: "2" } }}>
-              <Button variant="outline" width="full" mt={6} type="submit">
-                Go to ServiceLibrary to add new pas 2
-              </Button>
-            </Link>
           </Box>
         </Flex>
       </Wrap>
