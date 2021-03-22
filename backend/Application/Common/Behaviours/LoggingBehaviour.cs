@@ -21,7 +21,7 @@ namespace Application.Common.Behaviours
     public async Task Process(TRequest request, CancellationToken cancellationToken)
     {
       var requestName = typeof(TRequest).Name;
-      var userId = _currentUserService.UserId ?? string.Empty;
+      var userId = _currentUserService.UserEmail ?? string.Empty;
 
       _logger.LogInformation("Request: {Name} {@UserId} {@UserId} {@Request}",
           requestName, userId, userId, request);
