@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Checkbox,
@@ -11,13 +12,13 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import { ServiceContext } from "contexts/ServiceContext";
-import React, { FC, useCallback, useContext, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
   AppTokenActionDto,
-  CreateAppTokenActionsCommand
+  CreateAppTokenActionsCommand,
+  IAppTokenActionDto
 } from "services/backend/nswagts";
 
 import ActionListItem from "./ActionListItem";
@@ -26,52 +27,39 @@ interface ActionTableProps {
   tableData: ActionIdDto[];
 }
 
-class Model {
-  id;
-  checked;
-  constructor(id: number, checked: boolean) {
-    this.id = id;
-    this.checked = checked;
-  }
-}
+// Constant at the moment, pass through props or page route later
+const tokenId = 1;
+
 const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [allChecked, setAllChecked] = useState<boolean>(false);
-  const [checkboxes, setCheckboxes] = useState<Model[]>(
-    tableData.map((action: ActionIdDto) => new Model(action.id, false))
+  const [allChecked, setAllChecked] = useState(false);
+  const [checkboxes, setCheckboxes] = useState(
+    tableData.map(action => ({
+      id: action.id,
+      checked: false
+    }))
   );
-  const { appTokenId } = useContext(ServiceContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
-    if (allChecked) {
-      checkboxes.forEach(modal => {
-        modal.checked = false;
-      });
-    } else {
-      checkboxes.forEach(modal => {
-        modal.checked = true;
-      });
-    }
-    setCheckboxes(checkboxes);
+    setCheckboxes(
+      checkboxes.map(x => {
+        x.checked = !allChecked;
+        return x;
+      })
+    );
     setAllChecked(!allChecked);
   }, [allChecked, checkboxes]);
 
   const addAction = useCallback(
     (data: number) => {
-      const copy = [...checkboxes];
-
-      let allCheck = true;
-      copy.forEach(modal => {
-        if (modal.id == data) {
-          modal.checked = !modal.checked;
-        }
-        if (modal.checked == false) {
-          allCheck = false;
-        }
-      });
-      setCheckboxes(copy);
-      setAllChecked(allCheck);
+      setCheckboxes(
+        checkboxes.map(x => {
+          if (x.id == data) x.checked = !x.checked;
+          return x;
+        })
+      );
+      setAllChecked(checkboxes.every(e => e.checked == true));
     },
     [checkboxes, allChecked]
   );
@@ -79,7 +67,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const onSubmit = useCallback(async () => {
     setIsLoading(true);
 
-    const actions: AppTokenActionDto[] = [];
+    const actions: IAppTokenActionDto[] = [];
     checkboxes.forEach(modal => {
       if (modal.checked) {
         actions.push(new AppTokenActionDto({ actionId: modal.id }));
@@ -88,12 +76,8 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
     const client = await genApplicationClient();
     try {
-      const id = parseInt(appTokenId);
-      console.log("tokenString" + appTokenId);
-      console.log(id);
-
       await client.createAppTokenActions(
-        id,
+        tokenId,
         new CreateAppTokenActionsCommand({
           appToken: {
             appTokenActions: actions
@@ -119,44 +103,50 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
   return (
     <Center>
-      <VStack width="full">
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Id</Th>
-              <Th>Title</Th>
-              <Th>Description</Th>
-              <Th>Admin Note</Th>
-              <Th>
-                <Checkbox
-                  isChecked={allChecked}
-                  onChange={() => checkAll()}
-                  size="lg"
-                  colorScheme="green"
-                />
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {tableData.map((action: ActionIdDto) => (
-              <ActionListItem
-                key={action.id}
-                action={action}
-                checked={checkboxes.find(e => e.id == action.id).checked}
-                addAction={addAction}></ActionListItem>
-            ))}
-          </Tbody>
-        </Table>
-        {isLoading ? (
-          <Button variant="outline" width="full" mt={10}>
-            <Spinner></Spinner>
-          </Button>
-        ) : (
-          <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
-            {`Request actions`}
-          </Button>
-        )}
-      </VStack>
+      {tableData.length != 0 ? (
+        <VStack width="full">
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Id</Th>
+                <Th>Title</Th>
+                <Th>Description</Th>
+                <Th>Admin Note</Th>
+                <Th>
+                  <Checkbox
+                    isChecked={allChecked}
+                    onChange={() => checkAll()}
+                    size="lg"
+                    colorScheme="green"
+                  />
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {tableData.map((action: ActionIdDto) => (
+                <ActionListItem
+                  key={action.id}
+                  action={action}
+                  checked={checkboxes.find(e => e.id == action.id).checked}
+                  addAction={addAction}></ActionListItem>
+              ))}
+            </Tbody>
+          </Table>
+          {isLoading ? (
+            <Button variant="outline" width="full" mt={10}>
+              <Spinner></Spinner>
+            </Button>
+          ) : (
+            <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
+              {`Request actions`}
+            </Button>
+          )}
+        </VStack>
+      ) : (
+        <Box w="full" justifyContent="center">
+          No Actions in this Service yet
+        </Box>
+      )}
     </Center>
   );
 };

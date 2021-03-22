@@ -32,31 +32,19 @@ const ServiceLibrary: FC = () => {
             <Box p="4">Services</Box>
             <Spacer />
             <Box onClick={() => setAllShown(!allShown)} p="4">
-              {!allShown ? (
-                <Box cursor="pointer">View all ({services.length})</Box>
-              ) : (
-                <Box cursor="pointer">Hide all ({services.length})</Box>
-              )}
+              <Box cursor="pointer">
+                {!allShown ? "View all" : "Hide all"} ({services.length})
+              </Box>
             </Box>
           </Flex>
           <Flex width="full">
-            {allShown ? (
-              <SimpleGrid width="full" minChildWidth="300px" spacingX="20px" spacingY="50px">
-                {services.map((Service: ServiceIdDto) => (
-                  <Center key={Service.id}>
-                    <LibraryCard service={Service}></LibraryCard>
-                  </Center>
-                ))}
-              </SimpleGrid>
-            ) : (
-              <SimpleGrid width="full" minChildWidth="300px" spacingX="20px" spacingY="50px">
-                {services.slice(0, 5).map((Service: ServiceIdDto) => (
-                  <Center key={Service.id}>
-                    <LibraryCard service={Service}></LibraryCard>
-                  </Center>
-                ))}
-              </SimpleGrid>
-            )}
+            <SimpleGrid width="full" minChildWidth="300px" spacingX="20px" spacingY="50px">
+              {(allShown ? services : services.slice(0, 5)).map((Service: ServiceIdDto) => (
+                <Center key={Service.id}>
+                  <LibraryCard service={Service}></LibraryCard>
+                </Center>
+              ))}
+            </SimpleGrid>
           </Flex>
         </VStack>
       </Wrap>
