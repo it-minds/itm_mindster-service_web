@@ -18,7 +18,8 @@ import {
   ActionIdDto,
   AppTokenActionDto,
   CreateAppTokenActionsCommand,
-  CreateAppTokenCommand
+  CreateAppTokenCommand,
+  IAppTokenActionDto
 } from "services/backend/nswagts";
 
 import ActionListItem from "./ActionListItem";
@@ -27,54 +28,39 @@ interface ActionTableProps {
   tableData: ActionIdDto[];
 }
 
-class Model {
-  id;
-  checked;
-  constructor(id: number, checked: boolean) {
-    this.id = id;
-    this.checked = checked;
-  }
-}
+// Constant at the moment, pass through props or page route later
+const applicationId = 1;
+
 const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [allChecked, setAllChecked] = useState<boolean>(false);
-  const [checkboxes, setCheckboxes] = useState<Model[]>(
-    tableData.map((action: ActionIdDto) => new Model(action.id, false))
+  const [allChecked, setAllChecked] = useState(false);
+  const [checkboxes, setCheckboxes] = useState(
+    tableData.map(action => ({
+      id: action.id,
+      checked: false
+    }))
   );
   const toast = useToast();
 
-  // Constant at the moment, pass through props or page route later
-  const applicationId = 16;
-
   const checkAll = useCallback(() => {
-    if (allChecked) {
-      checkboxes.forEach(modal => {
-        modal.checked = false;
-      });
-    } else {
-      checkboxes.forEach(modal => {
-        modal.checked = true;
-      });
-    }
-    setCheckboxes(checkboxes);
+    setCheckboxes(
+      checkboxes.map(x => {
+        x.checked = !allChecked;
+        return x;
+      })
+    );
     setAllChecked(!allChecked);
   }, [allChecked, checkboxes]);
 
   const addAction = useCallback(
     (data: number) => {
-      const copy = [...checkboxes];
-
-      let allCheck = true;
-      copy.forEach(modal => {
-        if (modal.id == data) {
-          modal.checked = !modal.checked;
-        }
-        if (modal.checked == false) {
-          allCheck = false;
-        }
-      });
-      setCheckboxes(copy);
-      setAllChecked(allCheck);
+      setCheckboxes(
+        checkboxes.map(x => {
+          if (x.id == data) x.checked = !x.checked;
+          return x;
+        })
+      );
+      setAllChecked(checkboxes.every(e => e.checked == true));
     },
     [checkboxes, allChecked]
   );
@@ -85,7 +71,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const onSubmit = useCallback(async () => {
     setIsLoading(true);
 
-    const actions: AppTokenActionDto[] = [];
+    const actions: IAppTokenActionDto[] = [];
     checkboxes.forEach(modal => {
       if (modal.checked) {
         actions.push(new AppTokenActionDto({ actionId: modal.id }));
