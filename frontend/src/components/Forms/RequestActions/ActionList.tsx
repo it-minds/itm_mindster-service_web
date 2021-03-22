@@ -11,13 +11,13 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import { ServiceContext } from "contexts/ServiceContext";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
   AppTokenActionDto,
-  CreateAppTokenActionsCommand,
-  CreateAppTokenCommand
+  CreateAppTokenActionsCommand
 } from "services/backend/nswagts";
 
 import ActionListItem from "./ActionListItem";
@@ -40,10 +40,8 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [checkboxes, setCheckboxes] = useState<Model[]>(
     tableData.map((action: ActionIdDto) => new Model(action.id, false))
   );
+  const { appTokenId } = useContext(ServiceContext);
   const toast = useToast();
-
-  // Constant at the moment, pass through props or page route later
-  const applicationId = 16;
 
   const checkAll = useCallback(() => {
     if (allChecked) {
@@ -78,9 +76,6 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
     [checkboxes, allChecked]
   );
 
-  /**
-   * This both creates the empty AppToken and then adds the requested AppTokenActions
-   */
   const onSubmit = useCallback(async () => {
     setIsLoading(true);
 
@@ -93,10 +88,12 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
     const client = await genApplicationClient();
     try {
-      const appTokenId = 1;
+      const id = parseInt(appTokenId);
+      console.log("tokenString" + appTokenId);
+      console.log(id);
 
       await client.createAppTokenActions(
-        appTokenId,
+        id,
         new CreateAppTokenActionsCommand({
           appToken: {
             appTokenActions: actions

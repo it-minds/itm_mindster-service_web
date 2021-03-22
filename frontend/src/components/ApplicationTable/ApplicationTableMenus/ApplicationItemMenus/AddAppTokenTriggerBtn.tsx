@@ -25,8 +25,9 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
 
   const createAppToken = useCallback(async metaData => {
     const client = await genApplicationClient();
+    let tokenId = 0;
     try {
-      await client.createAppToken(
+      tokenId = await client.createAppToken(
         application.id,
         new CreateAppTokenCommand({ appToken: metaData })
       );
@@ -44,6 +45,7 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
         isClosable: true
       });
     }
+    return tokenId;
   }, []);
 
   return (

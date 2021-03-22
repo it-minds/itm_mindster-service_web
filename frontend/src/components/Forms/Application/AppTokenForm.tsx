@@ -18,16 +18,20 @@ import {
   useDisclosure,
   Wrap
 } from "@chakra-ui/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import ServiceLibraryPage from "pages/ServiceLibrary";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ApplicationDto,
   ApplicationIdDto,
   AppTokenCreateDto,
-  AppTokenDto
+  AppTokenDto,
+  AppTokenIdDto
 } from "services/backend/nswagts";
 
 type Props = {
-  submitCallback: (AppMetaDataForm: AppTokenCreateDto) => void;
+  submitCallback: (AppMetaDataForm: AppTokenCreateDto) => Promise<number>;
   AppMetaData?: AppTokenCreateDto;
 };
 
@@ -36,6 +40,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [localFormData, setLocalFormData] = useState<AppTokenCreateDto>(
     new AppTokenCreateDto({ description: "" })
   );
+  const router = useRouter();
 
   useEffect(() => {
     if (AppMetaData) {
@@ -47,8 +52,10 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
     async event => {
       event.preventDefault();
       setIsLoading(true);
-      await submitCallback(localFormData);
+      const AppTokenId = await submitCallback(localFormData);
+      console.log(AppTokenId);
       setIsLoading(false);
+      router.push({ pathname: "/ServiceLibrary", query: { TokenId: `${AppTokenId}` } });
     },
     [localFormData]
   );
@@ -84,6 +91,16 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                 </Button>
               )}
             </form>
+            <Link href="/ServiceLibrary">
+              <Button variant="outline" width="full" mt={6} type="submit">
+                Go to ServiceLibrary to add new
+              </Button>
+            </Link>
+            <Link href={{ pathname: "/ServiceLibrary", query: { data: "2" } }}>
+              <Button variant="outline" width="full" mt={6} type="submit">
+                Go to ServiceLibrary to add new pas 2
+              </Button>
+            </Link>
           </Box>
         </Flex>
       </Wrap>
