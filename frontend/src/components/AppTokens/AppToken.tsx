@@ -8,7 +8,7 @@ import CurrToken from "./CurrToken";
 const AppToken: FC = () => {
   const { appTokens, setCurrToken } = useContext(ApplicationContext);
 
-  function handleSelectChange(value: number) {
+  function handleSelectChange(value: string | number) {
     setCurrToken(appTokens.find(e => e.id == value));
   }
   return (
@@ -17,7 +17,7 @@ const AppToken: FC = () => {
         <VStack w="full">
           <Heading>App Tokens</Heading>
 
-          <Select w="full" onChange={() => handleSelectChange(event.target.value)}>
+          <Select w="full" onChange={event => handleSelectChange(event.target.value)}>
             {appTokens.map((token: AppTokenIdDto) => (
               <option key={token.id} value={token.id}>
                 {token.id} Token: {token.description}
