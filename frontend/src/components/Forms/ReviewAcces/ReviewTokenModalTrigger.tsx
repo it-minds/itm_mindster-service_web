@@ -21,7 +21,7 @@ type Props = {
 
 const ReviewTokenModalTrigger: FC<Props> = ({ token }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setCurrToken } = useContext(ApplicationContext);
+  const { currToken, setCurrToken } = useContext(ApplicationContext);
 
   return (
     <>
@@ -37,7 +37,7 @@ const ReviewTokenModalTrigger: FC<Props> = ({ token }) => {
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="4xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Approve or decline actions: </ModalHeader>
+          <ModalHeader>Approve or decline actions for token: {token.id} </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ReviewTokenForm></ReviewTokenForm>

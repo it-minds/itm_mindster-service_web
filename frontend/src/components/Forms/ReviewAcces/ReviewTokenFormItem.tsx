@@ -1,50 +1,62 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  HStack,
-  Input,
-  Select,
-  Spacer
-} from "@chakra-ui/react";
-import React, { FC } from "react";
-import { AppTokenActionIdDto } from "services/backend/nswagts";
+import { Box, FormControl, FormLabel, HStack, Input, Select } from "@chakra-ui/react";
+import React, { FC, useCallback, useState } from "react";
+import { AppTokenActionUpdateDto, ServiceStates } from "services/backend/nswagts";
 
 type Props = {
-  action: AppTokenActionIdDto;
+  index: number;
+  localFormData: AppTokenActionUpdateDto;
+  submitCallback: (index: number, action: AppTokenActionUpdateDto) => void;
 };
 
-const ReviewTokenFormItem: FC<Props> = ({ action }) => {
-  return (
-    <Box m="4" p="2" borderWidth="1px" borderRadius="sm">
-      <Heading size="h4">{`ActionId: ${action.actionId}`}</Heading>
+const ReviewTokenFormItem: FC<Props> = ({ index, localFormData, submitCallback }) => {
+  const handleStateChange = useCallback(
+    value => {
+      localFormData.state = value;
+      submitCallback(index, localFormData);
+    },
+    [localFormData]
+  );
+  const handleTextChange = useCallback(
+    value => {
+      localFormData.rejectionReason = value;
+      submitCallback(index, localFormData);
+    },
+    [localFormData]
+  );
+  // const handleChange = useCallback(
+  //   (value: unknown, key: keyof AppTokenActionUpdateDto) => {
+  //     if (key == "rejectionReason") {
+  //       localFormData.rejectionReason = value;
+  //     }
 
-      <form>
-        <HStack spacing="5" p="2">
-          <Box width="150px">
-            <FormControl isRequired>
-              <FormLabel> Response:</FormLabel>
-              <Select>
-                <option color="green">Approved</option>
-                <option color="red">Rejected</option>
-              </Select>
-            </FormControl>
-          </Box>
-          <Box w="full">
-            <FormControl isRequired>
-              <FormLabel>Rejection Reason: </FormLabel>
-              <Input
-                type="text"
-                placeholder="Why the rejection?"
-                // onChange={event => updateLocalForm(event.target.value, "title")}
-              ></Input>
-            </FormControl>
-          </Box>
-        </HStack>
-      </form>
-    </Box>
+  //     submitCallback(index, localFormData);
+  //   },
+  //   [localFormData]
+  // );
+  return (
+    <HStack spacing="5" p="2">
+      <Box width="150px">
+        <FormControl isRequired>
+          <FormLabel> Response</FormLabel>
+          <Select onChange={event => handleStateChange(event.target.value)}>
+            <option value={ServiceStates.Approved}>Approve</option>
+            <option value={ServiceStates.Rejected}>Reject</option>
+          </Select>
+        </FormControl>
+      </Box>
+      <Box w="full">
+        <FormControl
+          isRequired={localFormData.state == ServiceStates.Rejected}
+          isReadOnly={localFormData.state != ServiceStates.Rejected}>
+          <FormLabel>Rejection Reason: </FormLabel>
+          <Input
+            type="text"
+            placeholder="Why the rejection?"
+            value={localFormData.rejectionReason}
+            onChange={event => handleTextChange(event.target.value)}></Input>
+        </FormControl>
+      </Box>
+    </HStack>
   );
 };
 export default ReviewTokenFormItem;
