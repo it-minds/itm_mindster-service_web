@@ -12,15 +12,15 @@ import {
 import ReviewTokenFormItem from "./ReviewTokenFormItem";
 
 const ReviewTokenForm: FC = () => {
-  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
+  const { currToken, services, fetchAppTokens } = useContext(ApplicationContext);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const [actions, setActions] = useState<AppTokenActionUpdateDto[]>(
     currToken.appTokenActions.map(
-      () =>
+      action =>
         new AppTokenActionUpdateDto({
-          state: 1,
-          rejectionReason: ""
+          state: action.state,
+          rejectionReason: action.rejectionReason
         })
     )
   );
@@ -67,8 +67,6 @@ const ReviewTokenForm: FC = () => {
           return x;
         })
       );
-      console.log(action);
-      console.log(actions);
     },
     [currToken, actions]
   );
@@ -80,7 +78,7 @@ const ReviewTokenForm: FC = () => {
           <form onSubmit={() => handleSubmit(event)}>
             {currToken.appTokenActions.map((action: AppTokenActionIdDto) => (
               <Box key={action.id} m="4" p="2" borderWidth="1px" borderRadius="sm">
-                <Heading size="h4">{`ActionId: ${action.actionId}`}</Heading>
+                <Heading size="h4">{`ActionId: ${action.actionId} `}</Heading>
                 <ReviewTokenFormItem
                   submitCallback={updateAction}
                   index={currToken.appTokenActions.indexOf(action)}

@@ -31,6 +31,7 @@ const ReviewTokenFormItem: FC<Props> = ({ index, localFormData, submitCallback }
           <FormLabel> Response</FormLabel>
           <Select
             defaultValue={localFormData.state}
+            placeholder={`Pending`}
             onChange={event => handleStateChange(event.target.value)}>
             <option value={ServiceStates.Approved}>Approve</option>
             <option value={ServiceStates.Rejected}>Reject</option>
