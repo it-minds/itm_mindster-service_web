@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 

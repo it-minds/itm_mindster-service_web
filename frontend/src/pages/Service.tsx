@@ -31,7 +31,9 @@ const ServicePage: NextPage = () => {
     <ServiceContext.Provider
       value={{
         services: serviceEntities,
-        fetchData: fetchData
+        fetchData: fetchData,
+        appTokens: [],
+        fetchAppTokens: null
       }}>
       <ServiceTable></ServiceTable>
     </ServiceContext.Provider>

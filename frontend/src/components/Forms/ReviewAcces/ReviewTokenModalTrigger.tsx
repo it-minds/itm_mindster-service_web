@@ -9,7 +9,6 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import CurrToken from "components/AppTokens/CurrToken";
 import ReviewTokenForm from "components/Forms/ReviewAcces/ReviewTokenForm";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useContext } from "react";
@@ -21,7 +20,7 @@ type Props = {
 
 const ReviewTokenModalTrigger: FC<Props> = ({ token }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currToken, setCurrToken } = useContext(ApplicationContext);
+  const { setCurrToken } = useContext(ApplicationContext);
 
   return (
     <>

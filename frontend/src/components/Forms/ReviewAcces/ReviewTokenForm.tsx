@@ -12,7 +12,7 @@ import {
 import ReviewTokenFormItem from "./ReviewTokenFormItem";
 
 const ReviewTokenForm: FC = () => {
-  const { currToken, services, fetchAppTokens } = useContext(ApplicationContext);
+  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const [actions, setActions] = useState<AppTokenActionUpdateDto[]>(
@@ -98,13 +98,6 @@ const ReviewTokenForm: FC = () => {
             )}
           </form>
         </Box>
-
-        {/* {actions.map(action => (
-          <Box key={actions.indexOf(action)} m="4" p="2" borderWidth="1px" borderRadius="sm">
-            {action.state}
-            <Box>RR:{action.rejectionReason}</Box>
-          </Box>
-        ))} */}
       </VStack>
     </Center>
   );
