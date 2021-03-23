@@ -19,7 +19,7 @@ const ReviewTokenForm: FC = () => {
     currToken.appTokenActions.map(
       () =>
         new AppTokenActionUpdateDto({
-          state: 0,
+          state: 1,
           rejectionReason: ""
         })
     )

@@ -1,5 +1,5 @@
 import { Box, FormControl, FormLabel, HStack, Input, Select } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback } from "react";
 import { AppTokenActionUpdateDto, ServiceStates } from "services/backend/nswagts";
 
 type Props = {
@@ -23,22 +23,15 @@ const ReviewTokenFormItem: FC<Props> = ({ index, localFormData, submitCallback }
     },
     [localFormData]
   );
-  // const handleChange = useCallback(
-  //   (value: unknown, key: keyof AppTokenActionUpdateDto) => {
-  //     if (key == "rejectionReason") {
-  //       localFormData.rejectionReason = value;
-  //     }
 
-  //     submitCallback(index, localFormData);
-  //   },
-  //   [localFormData]
-  // );
   return (
     <HStack spacing="5" p="2">
       <Box width="150px">
         <FormControl isRequired>
           <FormLabel> Response</FormLabel>
-          <Select onChange={event => handleStateChange(event.target.value)}>
+          <Select
+            defaultValue={localFormData.state}
+            onChange={event => handleStateChange(event.target.value)}>
             <option value={ServiceStates.Approved}>Approve</option>
             <option value={ServiceStates.Rejected}>Reject</option>
           </Select>
