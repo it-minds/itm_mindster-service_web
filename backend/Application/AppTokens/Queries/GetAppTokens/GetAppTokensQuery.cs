@@ -32,32 +32,23 @@ namespace Application.AppTokens.Queries.GetAppTokens
 
       public async Task<List<AppTokenIdDto>> Handle(GetAppTokensQuery request, CancellationToken cancellationToken)
       {
-        var appTokens = await _context.AppTokens
-          .Include(x => x.AppTokenActions)
-          .ProjectTo<AppTokenIdDto>(_mapper.ConfigurationProvider)
-          .ToListAsync(cancellationToken);
-
-        if (!request.OnlyPending) return appTokens;
-        var pendingTokens = new List<AppTokenIdDto> { };
-        foreach (var token in appTokens)
+        var appTokens = new List<AppTokenIdDto>{};
+        if (!request.OnlyPending)
         {
-          var isPending = true;
-          foreach (var action in token.AppTokenActions)
-          {
-            if (action.State != ServiceStates.Pending)
-            {
-              isPending = false;
-            }
-          }
-
-          if (isPending)
-          {
-            pendingTokens.Add(token);
-          }
+           appTokens = await _context.AppTokens
+            .Include(x => x.AppTokenActions)
+            .ProjectTo<AppTokenIdDto>(_mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
         }
-
-        return pendingTokens;
-
+        else
+        {
+           appTokens = await _context.AppTokens
+            .Include(x => x.AppTokenActions)
+            .Where(e => e.AppTokenActions.Any(e => e.State == ServiceStates.Pending))
+            .ProjectTo<AppTokenIdDto>(_mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
+        }
+        return appTokens;
       }
     }
   }
