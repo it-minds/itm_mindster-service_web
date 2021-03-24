@@ -18,7 +18,7 @@ const TokenTable: FC = () => {
               {/* (currently id since token doesn't have name */}
               <Center>Name</Center>
             </Th>
-            <Th minWidth="400px">
+            <Th w={0.7}>
               <Center>Description</Center>
             </Th>
             <Th>
