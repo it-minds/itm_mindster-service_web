@@ -71,11 +71,12 @@ const IndexPage: NextPage = () => {
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices
       }}>
-      <VStack borderColor="black" borderWidth="1px">
-        <Box w="full">
+      <VStack>
+        <Box zIndex={1} position="fixed" w="full">
           <Header></Header>
         </Box>
-        <Box w="full">
+        <Box pt="100px" borderColor="black" borderWidth="1px" w="full">
+          <ApplicationInfo></ApplicationInfo>
           <ApplicationInfo></ApplicationInfo>
         </Box>
       </VStack>

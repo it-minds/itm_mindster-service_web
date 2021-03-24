@@ -37,6 +37,7 @@ const ApplicationInfo: FC = () => {
             <FormControl mt="6">
               <FormLabel>Description:</FormLabel>
               <Textarea
+                height="200px"
                 placeholder="Description of application"
                 isReadOnly={true}
                 value={localFormData.description}

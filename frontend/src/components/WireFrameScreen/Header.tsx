@@ -26,11 +26,13 @@ const Header: FC = () => {
         </Box>
 
         <Box m="5" w="max-content">
-          <Select w="full" onChange={event => handleSelectChange(event.target.value)}>
-            <option>Select Application</option>
+          <Select
+            w="full"
+            placeholder={`Select Application`}
+            onChange={event => handleSelectChange(event.target.value)}>
             {applications.map((application: ApplicationIdDto) => (
               <option key={application.id} value={application.id}>
-                {application.id} Token: {application.description}
+                {application.id}: {application.title}
               </option>
             ))}
           </Select>
