@@ -4,7 +4,11 @@ import { FC, useContext } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";
 
 const Header: FC = () => {
-  const { applications } = useContext(ViewContext);
+  const { applications, setCurrApp } = useContext(ViewContext);
+
+  function handleSelectChange(value: string | number) {
+    setCurrApp(applications.find(e => e.id == value));
+  }
 
   return (
     <Wrap p="5" bgColor="blue.400" width="full">
@@ -19,7 +23,7 @@ const Header: FC = () => {
         </Box>
 
         <Box m="5" w="max-content">
-          <Select w="full">
+          <Select w="full" onChange={event => handleSelectChange(event.target.value)}>
             <option>Select Application</option>
             {applications.map((application: ApplicationIdDto) => (
               <option key={application.id} value={application.id}>

@@ -1,3 +1,5 @@
+import { VStack } from "@chakra-ui/layout";
+import ApplicationInfo from "components/WireFrameScreen/ApplicationInfo";
 import Header from "components/WireFrameScreen/Header";
 import { ViewContext } from "contexts/ViewContext";
 import { Locale } from "i18n/Locale";
@@ -12,6 +14,7 @@ const IndexPage: NextPage = () => {
   const [applications, setApplications] = useState<ApplicationIdDto[]>([]);
   const [services, setServices] = useState<ServiceIdDto[]>([]);
   const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
+  const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -62,11 +65,16 @@ const IndexPage: NextPage = () => {
         applications: applications,
         services: services,
         appTokens: appTokens,
+        currApplication: currApplication,
+        setCurrApp: setCurrApp,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices
       }}>
-      <Header></Header>
+      <VStack>
+        <Header></Header>
+        <ApplicationInfo></ApplicationInfo>
+      </VStack>
     </ViewContext.Provider>
   );
 };
