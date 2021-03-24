@@ -77,7 +77,6 @@ const IndexPage: NextPage = () => {
         </Box>
         <Box pt="100px" borderColor="black" borderWidth="1px" w="full">
           <ApplicationInfo></ApplicationInfo>
-          <ApplicationInfo></ApplicationInfo>
         </Box>
       </VStack>
     </ViewContext.Provider>
