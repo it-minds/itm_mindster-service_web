@@ -1,17 +1,18 @@
 import {
   Box,
-  Center,
-  Flex,
+  Button,
   FormControl,
   FormLabel,
   Input,
   Textarea,
   useDisclosure,
-  Wrap
+  VStack
 } from "@chakra-ui/react";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
+
+import TokenTable from "./Tokens/TokenTable";
 
 const ApplicationInfo: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,30 +54,40 @@ const ApplicationInfo: FC = () => {
   }, []);
 
   return (
-    <Flex p="10" width="full" justifyContent="left">
-      <Box ml="100" width="500px">
-        <form onSubmit={onSubmit}>
-          <FormControl isRequired>
-            <FormLabel>Title:</FormLabel>
-            <Input
-              type="text"
-              value={localFormData.title}
-              isReadOnly={true}
-              placeholder="Title of your application"
-              onChange={event => updateLocalForm(event.target.value, "title")}></Input>
-          </FormControl>
-          <FormControl mt="6">
-            <FormLabel>Description:</FormLabel>
-            <Textarea
-              placeholder="Description of application"
-              isReadOnly={true}
-              value={localFormData.description}
-              onChange={event => updateLocalForm(event.target.value, "description")}
-            />
-          </FormControl>
-        </form>
-      </Box>
-    </Flex>
+    <Box padding="100" width="full">
+      <VStack pl="50" width="full" align="left">
+        <Box width={0.65}>
+          <form onSubmit={onSubmit}>
+            <FormControl isRequired>
+              <FormLabel>Title:</FormLabel>
+              <Input
+                type="text"
+                value={localFormData.title}
+                isReadOnly={true}
+                placeholder="Title of your application"
+                onChange={event => updateLocalForm(event.target.value, "title")}></Input>
+            </FormControl>
+            <FormControl mt="6">
+              <FormLabel>Description:</FormLabel>
+              <Textarea
+                placeholder="Description of application"
+                isReadOnly={true}
+                value={localFormData.description}
+                onChange={event => updateLocalForm(event.target.value, "description")}
+              />
+            </FormControl>
+          </form>
+        </Box>
+        <Box pt="10" width="full">
+          <TokenTable></TokenTable>
+        </Box>
+        <Box pt="10" width="full">
+          <Button borderColor="black" bgColor="green.300">
+            Create new token +
+          </Button>
+        </Box>
+      </VStack>
+    </Box>
   );
 };
 export default ApplicationInfo;

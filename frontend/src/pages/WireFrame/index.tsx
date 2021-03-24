@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/layout";
+import { Box, VStack } from "@chakra-ui/layout";
 import ApplicationInfo from "components/WireFrameScreen/ApplicationInfo";
 import Header from "components/WireFrameScreen/Header";
 import { ViewContext } from "contexts/ViewContext";
@@ -71,9 +71,13 @@ const IndexPage: NextPage = () => {
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices
       }}>
-      <VStack>
-        <Header></Header>
-        <ApplicationInfo></ApplicationInfo>
+      <VStack borderColor="black" borderWidth="1px">
+        <Box w="full">
+          <Header></Header>
+        </Box>
+        <Box w="full">
+          <ApplicationInfo></ApplicationInfo>
+        </Box>
       </VStack>
     </ViewContext.Provider>
   );

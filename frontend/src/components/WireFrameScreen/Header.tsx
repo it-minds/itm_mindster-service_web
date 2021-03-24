@@ -34,7 +34,7 @@ const Header: FC = () => {
         </Box>
 
         <Box>
-          <Button borderColor="black" bgColor="green">
+          <Button borderColor="black" bgColor="green.400">
             Create new project +
           </Button>
         </Box>
