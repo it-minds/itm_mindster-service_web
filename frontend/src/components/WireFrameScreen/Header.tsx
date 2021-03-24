@@ -1,7 +1,10 @@
 import { Box, Button, Flex, Image, Select, Spacer, Wrap } from "@chakra-ui/react";
 import { ViewContext } from "contexts/ViewContext";
+import Link from "next/link";
 import { FC, useContext } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";
+
+import CreateApplicationTriggerBtn from "./CreateApplicationTriggerBtn";
 
 const Header: FC = () => {
   const { applications, setCurrApp } = useContext(ViewContext);
@@ -34,13 +37,13 @@ const Header: FC = () => {
         </Box>
 
         <Box>
-          <Button borderColor="black" bgColor="green.400">
-            Create new project +
-          </Button>
+          <CreateApplicationTriggerBtn></CreateApplicationTriggerBtn>
         </Box>
         <Spacer />
         <Box alignContent="end" justifyContent="right">
-          <Button bgColor="orange">{`Enter as Service Provider ->`}</Button>
+          <Link href={`/`}>
+            <Button bgColor="orange">{`Enter as Service Provider ->`}</Button>
+          </Link>
         </Box>
       </Flex>
     </Wrap>
