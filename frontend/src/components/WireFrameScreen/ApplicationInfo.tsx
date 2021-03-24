@@ -1,9 +1,9 @@
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   Input,
+  Text,
   Textarea,
   useDisclosure,
   VStack
@@ -12,6 +12,7 @@ import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
 
+import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
 import TokenTable from "./Tokens/TokenTable";
 
 const ApplicationInfo: FC = () => {
@@ -82,9 +83,11 @@ const ApplicationInfo: FC = () => {
           <TokenTable></TokenTable>
         </Box>
         <Box pt="10" width="full">
-          <Button borderColor="black" bgColor="green.300">
-            Create new token +
-          </Button>
+          {currApplication != null ? (
+            <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
+          ) : (
+            <Text>Select an application to create a token</Text>
+          )}
         </Box>
       </VStack>
     </Box>
