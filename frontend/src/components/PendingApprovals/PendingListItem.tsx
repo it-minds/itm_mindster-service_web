@@ -7,21 +7,17 @@ type Props = {
 };
 
 const PendingListItem: FC<Props> = ({ appToken }) => {
+  if (appToken.appTokenActions.length == 0) return null;
+
   return (
-    <>
-      {appToken.appTokenActions.length != 0 ? (
-        <Flex align="center" m="4" p="2" borderWidth="1px" borderRadius="sm">
-          <Flex flexDirection="column">
-            <Box>{`Token: ${appToken.id} with ${appToken.appTokenActions.length} actions`}</Box>
-            <Box padding="2">{appToken.description}</Box>
-          </Flex>
-          <Spacer />
-          <Button>Review</Button>
-        </Flex>
-      ) : (
-        <></>
-      )}
-    </>
+    <Flex align="center" m="4" p="2" borderWidth="1px" borderRadius="sm">
+      <Flex flexDirection="column">
+        <Box>{`Token: ${appToken.id} with ${appToken.appTokenActions.length} actions`}</Box>
+        <Box padding="2">{appToken.description}</Box>
+      </Flex>
+      <Spacer />
+      <Button>Review</Button>
+    </Flex>
   );
 };
 export default PendingListItem;
