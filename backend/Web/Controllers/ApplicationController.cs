@@ -51,7 +51,7 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpGet("AppTokens")]
-    public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens(bool onlyPending = false)
+    public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens([FromQuery]bool onlyPending = false)
     {
 
       return await Mediator.Send(new GetAppTokensQuery {OnlyPending = onlyPending});

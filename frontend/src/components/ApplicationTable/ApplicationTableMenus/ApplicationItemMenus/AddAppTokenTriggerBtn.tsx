@@ -46,7 +46,7 @@ const AddAppTokenTriggerBtn: FC<Props> = ({ application }) => {
         isClosable: true
       });
     }
-    fetchAppTokens;
+    fetchAppTokens();
   }, []);
 
   return (
