@@ -10,6 +10,7 @@ import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import React, { FC, useState } from "react";
 
 import AddApplicationTriggerBtn from "./AddApplicationTriggerBtn";
+import AddAppTokenTriggerBtn from "./ApplicationItemMenus/AddAppTokenTriggerBtn";
 
 const ApplicationTableMenu: FC = () => {
   const [isOpen, setOpen] = useState(false);
@@ -26,8 +27,9 @@ const ApplicationTableMenu: FC = () => {
         </PopoverTrigger>
         <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
           <PopoverBody mb="2" mt="2" padding="0">
-            <VStack minWidth="200" spacing="0"></VStack>
-            <AddApplicationTriggerBtn></AddApplicationTriggerBtn>
+            <VStack minWidth="full" spacing="0">
+              <AddApplicationTriggerBtn></AddApplicationTriggerBtn>
+            </VStack>
           </PopoverBody>
         </PopoverContent>
       </Popover>

@@ -13,6 +13,9 @@ namespace Infrastructure.Persistence.Configurations
       builder.HasMany<AppTokenAction>(e => e.AppTokenActions)
         .WithOne(e => e.AppToken)
         .IsRequired(true);
+      builder.Property(e => e.Description)
+        .IsRequired(true)
+        .HasMaxLength(300);
     }
   }
 }

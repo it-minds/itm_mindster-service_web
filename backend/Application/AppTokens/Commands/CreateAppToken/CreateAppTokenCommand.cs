@@ -13,8 +13,7 @@ namespace Application.AppTokens.Commands
   {
     [JsonIgnore]
     public int Id { get; set; }
-    [JsonIgnore]
-    public AppTokenDto AppToken { get; set; }
+    public AppTokenCreateDto AppToken { get; set; }
 
     public class CreateAppTokenCommandHandler : IRequestHandler<CreateAppTokenCommand, int>
     {
@@ -29,7 +28,8 @@ namespace Application.AppTokens.Commands
       {
         var appToken = new AppToken()
         {
-          ApplicationId = request.Id
+          ApplicationId = request.Id,
+          Description = request.AppToken.Description
         };
 
         if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken))

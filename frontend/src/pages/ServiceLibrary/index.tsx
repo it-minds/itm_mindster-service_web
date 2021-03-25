@@ -30,6 +30,8 @@ const ServiceLibraryPage: NextPage = () => {
   return (
     <ServiceContext.Provider
       value={{
+        appTokens: [],
+        fetchAppTokens: null,
         services: serviceEntities,
         fetchData: fetchData
       }}>

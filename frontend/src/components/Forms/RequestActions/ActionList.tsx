@@ -12,13 +12,13 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
+import { ApplicationContext } from "contexts/ApplicationContext";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
   AppTokenActionDto,
   CreateAppTokenActionsCommand,
-  CreateAppTokenCommand,
   IAppTokenActionDto
 } from "services/backend/nswagts";
 
@@ -27,9 +27,6 @@ import ActionListItem from "./ActionListItem";
 interface ActionTableProps {
   tableData: ActionIdDto[];
 }
-
-// Constant at the moment, pass through props or page route later
-const applicationId = 1;
 
 const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +37,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
       checked: false
     }))
   );
+  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
@@ -65,9 +63,6 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
     [checkboxes, allChecked]
   );
 
-  /**
-   * This both creates the empty AppToken and then adds the requested AppTokenActions
-   */
   const onSubmit = useCallback(async () => {
     setIsLoading(true);
 
@@ -80,10 +75,8 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
 
     const client = await genApplicationClient();
     try {
-      const appTokenId = await client.createAppToken(applicationId, new CreateAppTokenCommand({}));
-
       await client.createAppTokenActions(
-        appTokenId,
+        currToken.id,
         new CreateAppTokenActionsCommand({
           appToken: {
             appTokenActions: actions
@@ -91,7 +84,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
         })
       );
       toast({
-        description: "Acces was requested",
+        description: "Access was requested",
         status: "success",
         duration: 5000,
         isClosable: true
@@ -105,6 +98,7 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
       });
     }
     setIsLoading(false);
+    fetchAppTokens();
   }, [checkboxes]);
 
   return (
