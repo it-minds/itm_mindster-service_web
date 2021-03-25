@@ -6,12 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace Application.Applications.Commands.UpdateApplication
 {
+  [Authorize]
   public class UpdateApplicationCommand : IRequest
   {
     [JsonIgnore]
@@ -21,20 +23,24 @@ namespace Application.Applications.Commands.UpdateApplication
     public class UpdateApplicationCommandHandler : IRequestHandler<UpdateApplicationCommand>
     {
       private readonly IApplicationDbContext _context;
+      private readonly ICurrentUserService _currentUserService;
 
-      public UpdateApplicationCommandHandler(IApplicationDbContext context)
+      public UpdateApplicationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
       {
         _context = context;
+        _currentUserService = currentUserService;
       }
 
       public async Task<Unit> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
       {
+        var applicationOwner = _context.AppOwners
+          .Where(e => e.ApplicationId == request.Id)
+          .Where(e => e.Email == _currentUserService.UserEmail);
+
         var application = await _context.Applications.FindAsync(request.Id);
 
-        if (application == null)
-        {
-          throw new NotFoundException(nameof(ApplicationEntity), request.Id);
-        }
+        if (!applicationOwner.Any()) throw new NotFoundException(nameof(ApplicationOwner), request.Id);
+        if (application == null) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
 
         application.Title = request.Application.Title;
         application.Description = request.Application.Description;
