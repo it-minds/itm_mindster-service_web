@@ -1,6 +1,6 @@
 import { Box, VStack } from "@chakra-ui/layout";
-import ApplicationInfo from "components/WireFrameScreen/ApplicationInfo";
-import Header from "components/WireFrameScreen/Header";
+import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
+import Header from "components/ApplicationScreen/Header";
 import { ViewContext } from "contexts/ViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";

@@ -17,12 +17,7 @@ const Header: FC = () => {
     <Wrap p="5" bgColor="blue.400" width="full">
       <Flex align="center" width="full">
         <Box>
-          <Image
-            borderRadius="full"
-            boxSize="100px"
-            src="https://bit.ly/sage-adebayo"
-            alt="Segun Adebayo"
-          />
+          <Image borderRadius="full" boxSize="100px" src="/images/icons/icon-144x144.png" />
         </Box>
 
         <Box m="5" w="max-content">
