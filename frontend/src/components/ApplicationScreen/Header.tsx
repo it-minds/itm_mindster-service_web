@@ -38,7 +38,7 @@ const Header: FC = () => {
         </Box>
         <Spacer />
         <Box alignContent="end" justifyContent="right">
-          <Link href={`/`}>
+          <Link href="/">
             <Button bgColor="orange">{`Enter as Service Provider ->`}</Button>
           </Link>
         </Box>

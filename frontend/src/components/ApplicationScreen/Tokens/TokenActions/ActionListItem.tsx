@@ -6,9 +6,9 @@ type Props = {
   action: AppTokenActionIdDto;
 };
 
-const TokenActionListItem: FC<Props> = ({ action }) => {
-  const stateColors = ["yellow", "green", "red"];
+const stateColors = ["yellow", "green", "red"];
 
+const TokenActionListItem: FC<Props> = ({ action }) => {
   return (
     <Grid templateColumns="repeat(3, 1fr)">
       <Box mt="2">{` Action id: ${action.actionId}`}</Box>

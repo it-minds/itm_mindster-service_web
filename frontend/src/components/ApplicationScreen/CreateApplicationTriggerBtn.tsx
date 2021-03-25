@@ -10,6 +10,7 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useCallback, useContext } from "react";
@@ -49,8 +50,8 @@ const CreateApplicationTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button borderColor="black" bgColor="green.400" onClick={onOpen}>
-        Create new project +
+      <Button rightIcon={<BsPlus />} borderColor="black" bgColor="green.400" onClick={onOpen}>
+        Create new project
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">

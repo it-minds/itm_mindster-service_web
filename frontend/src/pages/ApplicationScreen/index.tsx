@@ -5,15 +5,21 @@ import { ViewContext } from "contexts/ViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
-import { ApplicationIdDto, AppTokenIdDto, ServiceIdDto } from "services/backend/nswagts";
+import {
+  ApplicationIdDto,
+  IApplicationIdDto,
+  IAppTokenIdDto,
+  IServiceIdDto
+} from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 const IndexPage: NextPage = () => {
-  const [applications, setApplications] = useState<ApplicationIdDto[]>([]);
-  const [services, setServices] = useState<ServiceIdDto[]>([]);
-  const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
+  const [applications, dispatchApplications] = useReducer(ListReducer<IApplicationIdDto>("id"), []);
+  const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
+  const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
 
   const fetchApps = useCallback(async () => {
@@ -21,7 +27,11 @@ const IndexPage: NextPage = () => {
       const applicationClient = await genApplicationClient();
       const data = await applicationClient.getAllApplications();
 
-      if (data && data.length > 0) setApplications(data);
+      if (data && data.length > 0)
+        dispatchApplications({
+          type: ListReducerActionType.AddOrUpdate,
+          data
+        });
       else logger.info("ApplicationClient.get no data");
     } catch (err) {
       logger.warn("ApplicationClient.get Error", err);
@@ -34,7 +44,10 @@ const IndexPage: NextPage = () => {
       const data = await client.getAllAppTokens(false);
 
       if (data && data.length > 0) {
-        setAppTokens(data);
+        dispatchAppTokens({
+          type: ListReducerActionType.AddOrUpdate,
+          data
+        });
       } else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
@@ -46,7 +59,11 @@ const IndexPage: NextPage = () => {
       const serviceClient = await genServiceClient();
       const data = await serviceClient.getAllServices();
 
-      if (data && data.length > 0) setServices(data);
+      if (data && data.length > 0)
+        dispatchServices({
+          type: ListReducerActionType.AddOrUpdate,
+          data
+        });
       else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
@@ -57,7 +74,7 @@ const IndexPage: NextPage = () => {
     fetchApps();
     fetchAppTokens();
     fetchServices();
-  }, [fetchApps]);
+  }, [fetchApps, fetchAppTokens, fetchServices]);
 
   return (
     <ViewContext.Provider
