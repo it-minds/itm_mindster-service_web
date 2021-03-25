@@ -30,9 +30,9 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpGet]
-    public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices()
+    public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices([FromQuery] bool onlyMyServices = false)
     {
-      return await Mediator.Send(new GetServicesQuery());
+      return await Mediator.Send(new GetServicesQuery{OnlyMyServices = onlyMyServices});
     }
   }
 }

@@ -928,7 +928,7 @@ export class HealthClient extends ClientBase implements IHealthClient {
 
 export interface IServiceClient {
     createService(command: CreateServiceCommand): Promise<number>;
-    getAllServices(): Promise<ServiceIdDto[]>;
+    getAllServices(onlyMyServices?: boolean | undefined): Promise<ServiceIdDto[]>;
     getServiceById(id: number): Promise<ServiceIdDto>;
     createAction(id: number, command: CreateActionCommand): Promise<number>;
 }
@@ -984,8 +984,12 @@ export class ServiceClient extends ClientBase implements IServiceClient {
         return Promise.resolve<number>(<any>null);
     }
 
-    getAllServices(): Promise<ServiceIdDto[]> {
-        let url_ = this.baseUrl + "/api/Service";
+    getAllServices(onlyMyServices?: boolean | undefined): Promise<ServiceIdDto[]> {
+        let url_ = this.baseUrl + "/api/Service?";
+        if (onlyMyServices === null)
+            throw new Error("The parameter 'onlyMyServices' cannot be null.");
+        else if (onlyMyServices !== undefined)
+            url_ += "onlyMyServices=" + encodeURIComponent("" + onlyMyServices) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ = <RequestInit>{
