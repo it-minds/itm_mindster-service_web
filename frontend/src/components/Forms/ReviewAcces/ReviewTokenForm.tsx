@@ -15,7 +15,7 @@ const ReviewTokenForm: FC = () => {
   const { currToken, fetchAppTokens } = useContext(ApplicationContext);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const [actions, setActions] = useState<AppTokenActionUpdateDto[]>(
+  const [actions, setActions] = useState<AppTokenActionUpdateDto[]>(() =>
     currToken.appTokenActions.map(
       action =>
         new AppTokenActionUpdateDto({

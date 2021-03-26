@@ -10,7 +10,7 @@ import {
   Wrap
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { AppTokenCreateDto, IAppTokenCreateDto } from "services/backend/nswagts";
+import { IAppTokenCreateDto } from "services/backend/nswagts";
 
 type Props = {
   submitCallback: (AppMetaDataForm: IAppTokenCreateDto) => Promise<void>;
