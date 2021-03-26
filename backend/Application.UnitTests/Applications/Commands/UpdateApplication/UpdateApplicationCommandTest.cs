@@ -55,6 +55,24 @@ namespace Application.UnitTests.Applications.Commands.UpdateApplication
 
       action.Should().Throw<NotFoundException>();
     }
+    [Fact]
+    public void Handle_InvalidUser_ShouldThrowError()
+    {
+      var command = new UpdateApplicationCommand
+      {
+        Id = 1,
+        Application = new ApplicationDto
+        {
+          Title = "Im updated",
+          Description = "Updated description"
+        }
+      };
+      var handler = new UpdateApplicationCommand.UpdateApplicationCommandHandler(Context, InvalidUserServiceMock.Object);
+
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
   }
 }
 

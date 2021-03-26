@@ -57,6 +57,25 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
 
       action.Should().Throw<NotFoundException>();
     }
+    [Fact]
+    public void Handle_InvalidUser_ShouldThrowError()
+    {
+      var command = new CreateActionCommand()
+      {
+        Id = 99,
+        Action = new ActionDto()
+        {
+          Title = "Test of createAction",
+          Description = "Added to service 1",
+          AdminNote = "TEST ACTION"
+        }
+      };
+      var handler = new CreateActionCommand.CreateActionCommandHandler(Context, InvalidUserServiceMock.Object);
+
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
 
   }
 }

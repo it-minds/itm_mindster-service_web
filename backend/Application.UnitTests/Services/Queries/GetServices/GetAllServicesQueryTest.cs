@@ -15,13 +15,13 @@ using Xunit;
 namespace Application.UnitTests.Services.Queries.GetServices
 {
   [Collection("QueryTests")]
-  public class GetServicesQueryTest
+  public class GetAllServicesQueryTest
   {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
 
-    public GetServicesQueryTest(QueryTestFixture fixture)
+    public GetAllServicesQueryTest(QueryTestFixture fixture)
     {
       _context = fixture.Context;
       _mapper = fixture.Mapper;

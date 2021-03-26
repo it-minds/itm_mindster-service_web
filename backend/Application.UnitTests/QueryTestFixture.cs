@@ -25,6 +25,9 @@ namespace Application.UnitTests
       currentUserServiceMock.Setup(m => m.UserEmail)
         .Returns("test@mail.dk");
 
+      InvalidUserServiceMock = new Mock<ICurrentUserService>();
+      InvalidUserServiceMock.Setup(m => m.UserEmail)
+        .Returns("invalid@mail.dk");
 
     }
     public ApplicationDbContext Context { get; }
@@ -32,6 +35,9 @@ namespace Application.UnitTests
     public IMapper Mapper { get; }
 
     public Mock<ICurrentUserService> currentUserServiceMock { get; }
+    public Mock<ICurrentUserService> InvalidUserServiceMock { get; }
+
+
 
     public void Dispose()
     {

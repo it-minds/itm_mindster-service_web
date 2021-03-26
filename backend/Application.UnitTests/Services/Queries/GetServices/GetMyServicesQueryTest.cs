@@ -1,31 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Applications;
-using Application.Applications.Queries.GetApplications;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.ExampleChildren;
 using Application.ExampleChildren.Queries.GetExampleChildren;
+using Application.Services;
+using Application.Services.Queries;
+using Application.Services.Queries.GetServices;
 using AutoMapper;
 using FluentAssertions;
 using Infrastructure.Persistence;
 using Xunit;
 
-namespace Application.UnitTests.Applications.Queries.GetApplications
+namespace Application.UnitTests.Services.Queries.GetServices
 {
   [Collection("QueryTests")]
-  public class GetApplicationsQueryTest
+  public class GetMyServicesQueryTest
   {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
     private readonly ICurrentUserService _invalidUserService;
 
-    public GetApplicationsQueryTest(QueryTestFixture fixture)
+    public GetMyServicesQueryTest(QueryTestFixture fixture)
     {
       _context = fixture.Context;
       _mapper = fixture.Mapper;
@@ -34,23 +33,26 @@ namespace Application.UnitTests.Applications.Queries.GetApplications
     }
 
     [Fact]
-    public async Task Handle_ReturnsCorrectVmAndApplicationsCount()
+    public async Task Handle_ReturnsCorrectVmAndServicesCount()
     {
-      var query = new GetApplicationsQuery();
+      var query = new GetMyServicesQuery();
 
-      var handler = new GetApplicationsQuery.GetApplicationQueryHandler(_context, _mapper, _currentUserService);
+      var handler = new GetMyServicesQuery.GetMyServicesQueryHandler(_context, _mapper, _currentUserService);
 
       var result = await handler.Handle(query, CancellationToken.None);
 
-      result.Should().BeOfType<List<ApplicationIdDto>>();
-      result.Count.Should().Be(2); // The test user currenlty owns 2 out of 3 Applications
+      result.Should().BeOfType<List<ServiceIdDto>>();
+      result.Count.Should().Be(2);
+      result[0].Actions.Count.Should().Be(2);
+      result[1].Actions.Count.Should().Be(2);
+
     }
     [Fact]
     public void Handle_InvalidUser_ShouldThrowError()
     {
-      var query = new GetApplicationsQuery();
+      var query = new GetMyServicesQuery();
 
-      var handler = new GetApplicationsQuery.GetApplicationQueryHandler(_context, _mapper, _invalidUserService);
+      var handler = new GetMyServicesQuery.GetMyServicesQueryHandler(_context, _mapper, _invalidUserService);
 
       Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
 

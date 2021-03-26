@@ -37,7 +37,7 @@ namespace Application.Applications.Queries.GetApplications
       {
         var user = _context.AppOwners.Where(e => e.Email == _currentUserService.UserEmail)
           .Select(e => e.ApplicationId).ToList();
-        if (!user.Any()) throw new NotFoundException(nameof(ApplicationOwner), "You have no application");
+        if (!user.Any()) throw new NotFoundException(nameof(ApplicationOwner), "You have no application" + _currentUserService.UserEmail);
 
 
         var applications = await _context.Applications
