@@ -39,7 +39,7 @@ namespace Application.AppTokens.Commands.Update
         if (appToken == null)
         {
           throw new NotFoundException(nameof(Domain.Entities.AppToken), request.Id);
-        }
+        } 
 
         if (appToken.AppTokenActions.Count != request.AppToken.AppTokenActions.Count)
         {

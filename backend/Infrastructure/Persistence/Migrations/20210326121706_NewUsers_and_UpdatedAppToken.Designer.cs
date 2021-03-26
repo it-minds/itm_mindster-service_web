@@ -10,13 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<< HEAD:backend/Infrastructure/Persistence/Migrations/20210325101247_New_Users.Designer.cs
-    [Migration("20210325101247_New_Users")]
-    partial class New_Users
-=======
-    [Migration("20210319122659_ApptokenAndGoogleUser")]
-    partial class ApptokenAndGoogleUser
->>>>>>> main:backend/Infrastructure/Persistence/Migrations/20210319122659_ApptokenAndGoogleUser.Designer.cs
+    [Migration("20210326121706_NewUsers_and_UpdatedAppToken")]
+    partial class NewUsers_and_UpdatedAppToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -253,13 +248,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-<<<<<<< HEAD:backend/Infrastructure/Persistence/Migrations/20210325101247_New_Users.Designer.cs
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
-=======
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
->>>>>>> main:backend/Infrastructure/Persistence/Migrations/20210319122659_ApptokenAndGoogleUser.Designer.cs
 
                     b.HasKey("Id");
 
