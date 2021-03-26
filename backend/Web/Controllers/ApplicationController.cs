@@ -51,9 +51,10 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpGet("AppTokens")]
-    public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens()
+    public async Task<ActionResult<List<AppTokenIdDto>>> GetAllAppTokens([FromQuery]bool onlyPending = false)
     {
-      return await Mediator.Send(new GetAppTokensQuery());
+
+      return await Mediator.Send(new GetAppTokensQuery {OnlyPending = onlyPending});
     }
     [HttpPost("AuthJWT/{aid}/token")]
     public async Task<ActionResult<TokenOutput>> CreateAuthAppToken([FromRoute] string aid, [FromHeader] string xToken, CreateAuthAppTokenCommand command)

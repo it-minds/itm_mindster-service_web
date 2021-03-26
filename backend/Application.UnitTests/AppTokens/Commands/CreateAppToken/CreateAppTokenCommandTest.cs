@@ -17,7 +17,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
       var command = new CreateAppTokenCommand
       {
         Id = 1,
-        AppToken = new AppTokenDto() { }
+        AppToken = new AppTokenCreateDto {Description = "Test af CreateAppToken"}
       };
 
       var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context);
@@ -27,6 +27,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
       var entity = Context.AppTokens.Find(result);
 
       entity.Should().NotBeNull();
+      entity.Description.Should().Be(command.AppToken.Description);
     }
     [Fact]
     public void WithInvalidApplicationId_ThrowsException()
@@ -34,7 +35,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
       var command = new CreateAppTokenCommand
       {
         Id = 99,
-        AppToken = new AppTokenDto() { }
+        AppToken = new AppTokenCreateDto { Description = "Test af CreateAppToken" }
       };
 
       var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context);

@@ -5,16 +5,16 @@ using Domain.Entities;
 
 namespace Application.AppTokens
 {
-  public class AppTokenIdDto : AppTokenDto
+  public class AppTokenIdDto : AppTokenCreateDto
   {
     public int Id { get; set; }
 
-    public new ICollection<AppTokenActionIdDto> AppTokenActions { get; set; }
+    public ICollection<AppTokenActionIdDto> AppTokenActions { get; set; }
 
     public void Mapping(Profile profile)
     {
       profile.CreateMap<AppToken, AppTokenIdDto>()
-        .IncludeBase<AppToken, AppTokenDto>();
+        .IncludeBase<AppToken, AppTokenCreateDto>();
     }
   }
 }

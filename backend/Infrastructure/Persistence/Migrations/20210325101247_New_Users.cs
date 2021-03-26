@@ -3,7 +3,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
+<<<<<<< HEAD:backend/Infrastructure/Persistence/Migrations/20210325101247_New_Users.cs
     public partial class New_Users : Migration
+=======
+    public partial class ApptokenAndGoogleUser : Migration
+>>>>>>> main:backend/Infrastructure/Persistence/Migrations/20210319122659_ApptokenAndGoogleUser.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,9 +86,14 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+<<<<<<< HEAD:backend/Infrastructure/Persistence/Migrations/20210325101247_New_Users.cs
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<int>(type: "int", nullable: false)
+=======
+                    Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+>>>>>>> main:backend/Infrastructure/Persistence/Migrations/20210319122659_ApptokenAndGoogleUser.cs
                 },
                 constraints: table =>
                 {
@@ -97,6 +106,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     ApplicationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
