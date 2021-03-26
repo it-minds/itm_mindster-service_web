@@ -10,14 +10,14 @@ type Props = {
 
 const ReviewTokenFormItem: FC<Props> = ({ index, localFormData, submitCallback }) => {
   const handleStateChange = useCallback(
-    value => {
+    (value: number) => {
       localFormData.state = value;
       submitCallback(index, localFormData);
     },
     [localFormData]
   );
   const handleTextChange = useCallback(
-    value => {
+    (value: string) => {
       localFormData.rejectionReason = value;
       submitCallback(index, localFormData);
     },
@@ -32,7 +32,7 @@ const ReviewTokenFormItem: FC<Props> = ({ index, localFormData, submitCallback }
           <Select
             defaultValue={localFormData.state}
             placeholder={`Pending`}
-            onChange={event => handleStateChange(event.target.value)}>
+            onChange={event => handleStateChange(parseInt(event.target.value))}>
             <option value={ServiceStates.Approved}>Approve</option>
             <option value={ServiceStates.Rejected}>Reject</option>
           </Select>
