@@ -1,15 +1,21 @@
 using AuthService.Client;
 using Infrastructure.Persistence;
 using System;
+using Application.Common.Interfaces;
+using Moq;
 
 namespace Application.UnitTests
 {
   public class CommandTestBase : IDisposable
   {
+    public Mock<ICurrentUserService> CurrentUserServiceMock;
     public CommandTestBase()
     {
       Context = ApplicationDbContextFactory.Create();
       AuthCient = new AuthTestService();
+      CurrentUserServiceMock = new Mock<ICurrentUserService>();
+      CurrentUserServiceMock.Setup(u => u.UserEmail)
+        .Returns("test@mail.dk");
     }
 
     public ApplicationDbContext Context { get; }

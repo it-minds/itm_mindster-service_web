@@ -27,7 +27,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
           AdminNote = "TEST ACTION"
         }
       };
-      var handler = new CreateActionCommand.CreateActionCommandHandler(Context);
+      var handler = new CreateActionCommand.CreateActionCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
 
@@ -52,7 +52,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
           AdminNote = "TEST ACTION"
         }
       };
-      var handler = new CreateActionCommand.CreateActionCommandHandler(Context);
+      var handler = new CreateActionCommand.CreateActionCommandHandler(Context,  CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();

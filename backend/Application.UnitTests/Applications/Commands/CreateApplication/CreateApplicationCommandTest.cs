@@ -20,7 +20,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
           Description = "Desc for test app"
         }
       };
-      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient);
+      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
       //TODO change the hardcoded Find(4) to the proper result.Id when we synchronise aid later
