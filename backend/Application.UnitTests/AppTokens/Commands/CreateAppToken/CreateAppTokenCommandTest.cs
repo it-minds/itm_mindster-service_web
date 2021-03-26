@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
+using Application.AppTokens.Commands.CreateAppToken;
 using Application.Common.Exceptions;
 using FluentAssertions;
 using Xunit;
@@ -20,7 +21,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
         AppToken = new AppTokenCreateDto {Description = "Test af CreateAppToken"}
       };
 
-      var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context);
+      var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
 
@@ -38,7 +39,21 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
         AppToken = new AppTokenCreateDto { Description = "Test af CreateAppToken" }
       };
 
-      var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context);
+      var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
+    [Fact]
+    public void Handle_InvalidUser_ShouldThrowError()
+    {
+      var command = new CreateAppTokenCommand
+      {
+        Id = 1,
+        AppToken = new AppTokenCreateDto { Description = "Test af CreateAppToken" }
+      };
+      var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context, InvalidUserServiceMock.Object);
+
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();

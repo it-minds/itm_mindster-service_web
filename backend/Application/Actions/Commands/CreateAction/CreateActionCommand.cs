@@ -33,6 +33,10 @@ namespace Application.Actions.Commands.CreateAction
 
       public async Task<int> Handle(CreateActionCommand request, CancellationToken cancellationToken)
       {
+
+        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id);
+        if (!await _context.ServiceOwners.AnyAsync(e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+
         var action = new Action
         {
           Title = request.Action.Title,
@@ -40,11 +44,6 @@ namespace Application.Actions.Commands.CreateAction
           AdminNote = request.Action.AdminNote,
           ServiceId = request.Id
         };
-        var user = _context.ServiceOwners.Where(e => e.ServiceId == request.Id)
-          .Where(e => e.Email == _currentUserService.UserEmail);
-
-        if (!user.Any()) throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
-        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id);
 
         _context.Actions.Add(action);
 

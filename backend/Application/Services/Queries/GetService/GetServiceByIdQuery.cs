@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace Application.Services.Queries
 {
+  [Authorize]
   public class GetServiceByIdQuery : IRequest<ServiceIdDto>
   {
     [JsonIgnore]

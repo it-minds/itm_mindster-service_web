@@ -1,14 +1,17 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Application.AppTokens.Commands
+namespace Application.AppTokens.Commands.CreateAppToken
 {
+  [Authorize]
   public class CreateAppTokenCommand : IRequest<int>
   {
     [JsonIgnore]
@@ -18,24 +21,28 @@ namespace Application.AppTokens.Commands
     public class CreateAppTokenCommandHandler : IRequestHandler<CreateAppTokenCommand, int>
     {
       private readonly IApplicationDbContext _context;
+      private readonly ICurrentUserService _currentUserService;
 
-      public CreateAppTokenCommandHandler(IApplicationDbContext context)
+      public CreateAppTokenCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
       {
         _context = context;
+        _currentUserService = currentUserService;
       }
 
       public async Task<int> Handle(CreateAppTokenCommand request, CancellationToken cancellationToken)
       {
+        if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
+        if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
+        {
+          throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
+
+        }
+        
         var appToken = new AppToken()
         {
           ApplicationId = request.Id,
           Description = request.AppToken.Description
         };
-
-        if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken))
-        {
-          throw new NotFoundException(nameof(ApplicationEntity), request.Id);
-        }
 
         _context.AppTokens.Add(appToken);
 

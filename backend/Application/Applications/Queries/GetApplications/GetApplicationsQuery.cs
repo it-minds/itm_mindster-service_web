@@ -35,13 +35,12 @@ namespace Application.Applications.Queries.GetApplications
 
       public async Task<List<ApplicationIdDto>> Handle(GetApplicationsQuery request, CancellationToken cancellationToken)
       {
-        var user = _context.AppOwners.Where(e => e.Email == _currentUserService.UserEmail)
+        var ownedApps = _context.AppOwners.Where(e => e.Email == _currentUserService.UserEmail)
           .Select(e => e.ApplicationId).ToList();
-        if (!user.Any()) throw new NotFoundException(nameof(ApplicationOwner), "You have no application" + _currentUserService.UserEmail);
-
+        if (!ownedApps.Any()) throw new NotFoundException(nameof(ApplicationOwner), "You have no application" + _currentUserService.UserEmail);
 
         var applications = await _context.Applications
-          .Where(e => user.Contains(e.Id))
+          .Where(e => ownedApps.Contains(e.Id))
           .ProjectTo<ApplicationIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
 

@@ -34,13 +34,13 @@ namespace Application.Services.Queries.GetServices
 
       public async Task<List<ServiceIdDto>> Handle(GetMyServicesQuery request, CancellationToken cancellationToken)
       {
-        var user = _context.ServiceOwners
+        var ownedServices = _context.ServiceOwners
           .Where(e => e.Email == _currentUserService.UserEmail)
           .Select(e => e.ServiceId);
-        if (!user.Any()) throw new NotFoundException(nameof(ServiceOwner), "You have no services");
+        if (!ownedServices.Any()) throw new NotFoundException(nameof(ServiceOwner), "You have no services");
 
         var services = await _context.Services
-          .Where(e => user.Contains(e.Id))
+          .Where(e => ownedServices.Contains(e.Id))
           .Include(x => x.Actions)
           .ProjectTo<ServiceIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);

@@ -32,7 +32,7 @@ namespace Application.Applications.Commands.CreateApplication
 
       public async Task<string> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
       {
-        var application = new ApplicationEntity()
+        var application = new ApplicationEntity
         {
           Title = request.Application.Title,
           Description = request.Application.Description
@@ -42,7 +42,7 @@ namespace Application.Applications.Commands.CreateApplication
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var applicationOwner = new ApplicationOwner()
+        var applicationOwner = new ApplicationOwner
         {
           ApplicationId = application.Id,
           Email = _currentUserService.UserEmail

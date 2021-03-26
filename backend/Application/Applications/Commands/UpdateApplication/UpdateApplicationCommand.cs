@@ -9,6 +9,7 @@ using Application.Common.Interfaces;
 using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Application.Applications.Commands.UpdateApplication
@@ -33,13 +34,13 @@ namespace Application.Applications.Commands.UpdateApplication
 
       public async Task<Unit> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
       {
-        var applicationOwner = _context.AppOwners
-          .Where(e => e.ApplicationId == request.Id)
-          .Where(e => e.Email == _currentUserService.UserEmail);
+        if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
+        {
+          throw new NotFoundException(nameof(ApplicationOwner), request.Id);
 
+        }
         var application = await _context.Applications.FindAsync(request.Id);
 
-        if (!applicationOwner.Any()) throw new NotFoundException(nameof(ApplicationOwner), request.Id);
         if (application == null) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
 
         application.Title = request.Application.Title;
