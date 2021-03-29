@@ -24,7 +24,9 @@ namespace Infrastructure.Persistence
 
     public DbSet<ExampleChild> ExampleChildren { get; set; }
     public DbSet<ExampleParent> ExampleParents { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<ApplicationOwner> AppOwners { get; set; }
+    public DbSet<ServiceOwner> ServiceOwners { get; set; }
+    public DbSet<ActionApprover> ActionApprovers { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Action> Actions { get; set; }
     public DbSet<ApplicationEntity> Applications { get; set; }

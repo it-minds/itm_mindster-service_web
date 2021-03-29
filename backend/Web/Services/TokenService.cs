@@ -22,7 +22,7 @@ namespace Web.Services
       _options = options.Value;
     }
 
-    public string CreateToken(User user)
+    public string CreateToken(ApplicationOwner user)
     {
       var claims = new List<Claim>();
       claims.Add(new Claim(ClaimTypes.Email, user.Email));

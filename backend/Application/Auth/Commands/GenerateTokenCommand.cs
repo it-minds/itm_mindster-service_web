@@ -27,7 +27,7 @@ namespace Application.Auth.Commands
 
       public async Task<string> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
       {
-        var token = _tokenService.CreateToken(new Domain.Entities.User
+        var token = _tokenService.CreateToken(new ApplicationOwner
         {
           Email = _currentUserService.UserEmail
         });
