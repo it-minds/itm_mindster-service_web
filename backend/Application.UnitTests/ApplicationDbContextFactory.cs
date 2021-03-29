@@ -117,6 +117,12 @@ namespace Application.UnitTests
           Id = 2,
           ApplicationId = 2,
           Email = "test@mail.dk"
+        },
+        new ApplicationOwner
+        {
+          Id = 3,
+          ApplicationId = 1,
+          Email = "iAlsoOwnApp1@mail.dk"
         }
         );
       context.AppTokens.AddRange(

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Application.Services;
 using Application.Services.Queries.GetServices;
 using AutoMapper;
@@ -16,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Applications.Queries.GetApplications
 {
+  [Authorize]
   public class GetApplicationsQuery : IRequest<List<ApplicationIdDto>>
   {
     public class GetApplicationQueryHandler : IRequestHandler<GetApplicationsQuery, List<ApplicationIdDto>>

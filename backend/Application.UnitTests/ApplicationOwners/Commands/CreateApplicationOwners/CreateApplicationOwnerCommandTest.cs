@@ -40,8 +40,8 @@ namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwne
       var entities = Context.AppOwners.Where(e => e.ApplicationId == command.Id).ToList();
 
       entities.Should().NotBeNullOrEmpty();
-      entities.Count().Should().Be(result+1);
-      entities[1].Email.Should().Be(command.AppOwners.ToList()[1].Email);
+      result.Should().Be(2);
+      entities[3].Email.Should().Be(command.AppOwners.ToList()[0].Email);
     }
     [Fact]
     public void Handle_GivenInValidId_ThrowsException()
