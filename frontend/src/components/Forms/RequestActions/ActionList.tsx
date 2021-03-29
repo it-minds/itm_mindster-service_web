@@ -31,7 +31,7 @@ interface ActionTableProps {
 const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
-  const [checkboxes, setCheckboxes] = useState(
+  const [checkboxes, setCheckboxes] = useState(() =>
     tableData.map(action => ({
       id: action.id,
       checked: false

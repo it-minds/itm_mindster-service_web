@@ -1,7 +1,9 @@
 import { Center, HStack } from "@chakra-ui/layout";
 import ApplicationTable from "components/ApplicationTable/ApplicationTable";
 import AppToken from "components/AppTokens/AppToken";
-import { NextPage } from "next";
+import { Locale } from "i18n/Locale";
+import { GetStaticProps, NextPage } from "next";
+import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useState } from "react";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
 import { ApplicationIdDto, AppTokenIdDto, ServiceIdDto } from "services/backend/nswagts";
@@ -34,7 +36,6 @@ const IndexPage: NextPage = () => {
 
       if (data && data.length > 0) {
         setAppTokens(data);
-        // setCurrToken(data[0]);
       } else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
@@ -79,6 +80,16 @@ const IndexPage: NextPage = () => {
       </Center>
     </ApplicationContext.Provider>
   );
+};
+
+export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {
+  const locale = context.locale || context.defaultLocale;
+  const { table = {} } = await import(`../../i18n/${locale}`);
+  // table = await runTimeTable(locale, table);
+
+  return {
+    props: { table }
+  };
 };
 
 export default IndexPage;

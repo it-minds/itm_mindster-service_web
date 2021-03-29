@@ -10,18 +10,18 @@ import {
   Wrap
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { AppTokenCreateDto } from "services/backend/nswagts";
+import { IAppTokenCreateDto } from "services/backend/nswagts";
 
 type Props = {
-  submitCallback: (AppMetaDataForm: AppTokenCreateDto) => Promise<void>;
-  AppMetaData?: AppTokenCreateDto;
+  submitCallback: (AppMetaDataForm: IAppTokenCreateDto) => Promise<void>;
+  AppMetaData?: IAppTokenCreateDto;
 };
 
 const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [localFormData, setLocalFormData] = useState<AppTokenCreateDto>(
-    new AppTokenCreateDto({ description: "" })
-  );
+  const [localFormData, setLocalFormData] = useState<IAppTokenCreateDto>({
+    description: null
+  });
 
   useEffect(() => {
     if (AppMetaData) {
@@ -39,10 +39,10 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
     [localFormData]
   );
 
-  const updateLocalForm = useCallback((value: unknown, key: keyof AppTokenCreateDto) => {
+  const updateLocalForm = useCallback((value: unknown, key: keyof typeof localFormData) => {
     setLocalFormData(form => {
       (form[key] as unknown) = value;
-      return new AppTokenCreateDto(form);
+      return form;
     });
   }, []);
 

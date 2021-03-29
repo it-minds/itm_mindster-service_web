@@ -1,6 +1,8 @@
-import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
+
+import ReviewTokenModalTrigger from "../Forms/ReviewAcces/ReviewTokenModalTrigger";
 
 type Props = {
   appToken: AppTokenIdDto;
@@ -16,7 +18,7 @@ const PendingListItem: FC<Props> = ({ appToken }) => {
         <Box padding="2">{appToken.description}</Box>
       </Flex>
       <Spacer />
-      <Button>Review</Button>
+      <ReviewTokenModalTrigger token={appToken}></ReviewTokenModalTrigger>
     </Flex>
   );
 };

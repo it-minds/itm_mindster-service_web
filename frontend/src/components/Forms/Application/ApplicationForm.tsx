@@ -62,6 +62,7 @@ const ApplicationForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
       (form[key] as unknown) = value;
       return new ApplicationDto(form);
     });
+    console.log(localFormData);
   }, []);
 
   return (

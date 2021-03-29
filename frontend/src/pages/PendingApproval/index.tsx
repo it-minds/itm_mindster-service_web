@@ -12,6 +12,7 @@ import PendingList from "../../components/PendingApprovals/PendingList";
 
 const PendingApprovalPage: NextPage = () => {
   const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
+  const [currToken, setCurrToken] = useState<AppTokenIdDto>();
 
   //GetAllAppTokens(true) only returns tokens that have the pending state in them
   const fetchAppTokens = useCallback(async () => {
@@ -36,8 +37,8 @@ const PendingApprovalPage: NextPage = () => {
         services: [],
         applications: [],
         appTokens: appTokens,
-        currToken: null,
-        setCurrToken: null,
+        currToken: currToken,
+        setCurrToken: setCurrToken,
         fetchApps: null,
         fetchServices: null,
         fetchAppTokens: fetchAppTokens
