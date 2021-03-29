@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.AppTokens.Commands.CreateAppToken;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Security;
@@ -18,7 +17,7 @@ namespace Application.ApplicationOwners.Commands.CreateApplicationOwners
   {
     [JsonIgnore]
     public int Id { get; set; }
-    public ICollection<ApplicationOwnerDto  > AppOwners { get; set; }
+    public ICollection<ApplicationOwnerDto> AppOwners { get; set; }
 
     public class CreateApplicationOwnerCommandHandler : IRequestHandler<CreateApplicationOwnerCommand, int>
     {
@@ -46,12 +45,11 @@ namespace Application.ApplicationOwners.Commands.CreateApplicationOwners
           ApplicationId = request.Id,
           Email = e.Email
         });
-
+        var result = newOwners.Count();
         _context.AppOwners.AddRange(newOwners);
-
         await _context.SaveChangesAsync(cancellationToken);
 
-        return newOwners.Count();
+        return result;
       }
     }
 

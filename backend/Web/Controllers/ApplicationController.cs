@@ -44,9 +44,7 @@ namespace Web.Controllers
     public async Task<ActionResult<int>> AddAppOwners([FromRoute] int id, CreateApplicationOwnerCommand command)
     {
       command.Id = id;
-      await Mediator.Send(command);
-
-      return NoContent();
+      return await Mediator.Send(command);
     }
     [HttpPost("{id}/AppTokens")]
     public async Task<ActionResult<int>> CreateAppToken([FromRoute] int id, CreateAppTokenCommand command)
