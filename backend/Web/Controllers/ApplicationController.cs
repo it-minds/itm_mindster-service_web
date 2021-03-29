@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.ApplicationOwners.Commands.CreateApplicationOwners;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
@@ -38,6 +39,14 @@ namespace Web.Controllers
     public async Task<ActionResult<List<ApplicationIdDto>>> GetAllApplications()
     {
       return await Mediator.Send(new GetApplicationsQuery());
+    }
+    [HttpPost("{id}/ApplicationOwners")]
+    public async Task<ActionResult<int>> AddAppOwners([FromRoute] int id, CreateApplicationOwnerCommand command)
+    {
+      command.Id = id;
+      await Mediator.Send(command);
+
+      return NoContent();
     }
     [HttpPost("{id}/AppTokens")]
     public async Task<ActionResult<int>> CreateAppToken([FromRoute] int id, CreateAppTokenCommand command)

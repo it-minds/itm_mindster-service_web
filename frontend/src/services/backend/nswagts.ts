@@ -129,6 +129,7 @@ export interface IApplicationClient {
     createApplication(command: CreateApplicationCommand): Promise<string>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
+    addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
@@ -266,6 +267,49 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Application/{id}/ApplicationOwners";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddAppOwners(_response));
+        });
+    }
+
+    protected processAddAppOwners(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
     }
 
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number> {
@@ -1297,6 +1341,93 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
 
 export interface IApplicationIdDto extends IApplicationDto {
     id?: number;
+}
+
+export class CreateApplicationOwnerCommand implements ICreateApplicationOwnerCommand {
+    appOwners?: ApplicationOwnerDto[] | null;
+
+    constructor(data?: ICreateApplicationOwnerCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.appOwners) {
+                this.appOwners = [];
+                for (let i = 0; i < data.appOwners.length; i++) {
+                    let item = data.appOwners[i];
+                    this.appOwners[i] = item && !(<any>item).toJSON ? new ApplicationOwnerDto(item) : <ApplicationOwnerDto>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["appOwners"])) {
+                this.appOwners = [] as any;
+                for (let item of _data["appOwners"])
+                    this.appOwners!.push(ApplicationOwnerDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateApplicationOwnerCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateApplicationOwnerCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.appOwners)) {
+            data["appOwners"] = [];
+            for (let item of this.appOwners)
+                data["appOwners"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICreateApplicationOwnerCommand {
+    appOwners?: IApplicationOwnerDto[] | null;
+}
+
+export class ApplicationOwnerDto implements IApplicationOwnerDto {
+    email?: string | null;
+
+    constructor(data?: IApplicationOwnerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ApplicationOwnerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationOwnerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        return data; 
+    }
+}
+
+export interface IApplicationOwnerDto {
+    email?: string | null;
 }
 
 export class CreateAppTokenCommand implements ICreateAppTokenCommand {
