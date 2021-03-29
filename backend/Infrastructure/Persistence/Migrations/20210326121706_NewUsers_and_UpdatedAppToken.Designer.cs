@@ -104,6 +104,11 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("int");
+                        
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 

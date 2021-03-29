@@ -130,6 +130,7 @@ export interface IApplicationClient {
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
     addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number>;
+    getApplicationOwnersByAppId(id: number): Promise<ApplicationOwnerIdDto[]>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
@@ -310,6 +311,49 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    getApplicationOwnersByAppId(id: number): Promise<ApplicationOwnerIdDto[]> {
+        let url_ = this.baseUrl + "/api/Application/{id}/ApplicationOwners";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetApplicationOwnersByAppId(_response));
+        });
+    }
+
+    protected processGetApplicationOwnersByAppId(response: Response): Promise<ApplicationOwnerIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ApplicationOwnerIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ApplicationOwnerIdDto[]>(<any>null);
     }
 
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number> {
@@ -1428,6 +1472,39 @@ export class ApplicationOwnerDto implements IApplicationOwnerDto {
 
 export interface IApplicationOwnerDto {
     email?: string | null;
+}
+
+export class ApplicationOwnerIdDto extends ApplicationOwnerDto implements IApplicationOwnerIdDto {
+    id?: number;
+
+    constructor(data?: IApplicationOwnerIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ApplicationOwnerIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationOwnerIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IApplicationOwnerIdDto extends IApplicationOwnerDto {
+    id?: number;
 }
 
 export class CreateAppTokenCommand implements ICreateAppTokenCommand {
