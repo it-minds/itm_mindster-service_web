@@ -3,6 +3,7 @@ import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
 
+import OwnerOverview from "./Owners/OwnerOverview";
 import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
 import TokenTable from "./Tokens/TokenTable";
 
@@ -49,11 +50,10 @@ const ApplicationInfo: FC = () => {
           <TokenTable></TokenTable>
         </Box>
         <Box pt="10" width="full">
-          {currApplication != null ? (
-            <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
-          ) : (
-            <Text>Select an application to create a token</Text>
-          )}
+          <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
+        </Box>
+        <Box pt="10" width="full">
+          <OwnerOverview></OwnerOverview>
         </Box>
       </VStack>
     </Box>

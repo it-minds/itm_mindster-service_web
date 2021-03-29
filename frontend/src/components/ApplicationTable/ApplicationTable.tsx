@@ -5,6 +5,7 @@ import { ApplicationIdDto } from "services/backend/nswagts";
 
 import ApplicationTableItem from "./ApplicationTableItem";
 import ApplicationTableMenu from "./ApplicationTableMenus/ApplicationTableMenu";
+import OwnerOverview from "./Owners/OwnerOverview";
 
 const ApplicationTable: FC = () => {
   const { applications } = useContext(ApplicationContext);
@@ -32,6 +33,8 @@ const ApplicationTable: FC = () => {
             ))}
           </Tbody>
         </Table>
+        <Heading>Add a new owner to your application</Heading>
+        <OwnerOverview></OwnerOverview>
       </Wrap>
     </Center>
   );

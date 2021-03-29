@@ -10,56 +10,55 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
-import AppTokenForm from "components/Forms/Application/AppTokenForm";
-import { ViewContext } from "contexts/ViewContext";
+import ApplicationForm from "components/Forms/Application/ApplicationForm";
+import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import { CreateAppTokenCommand } from "services/backend/nswagts";
+import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
 
-const CreateTokenTriggerBtn: FC = () => {
+const AddApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppTokens, currApplication } = useContext(ViewContext);
+  const { fetchApps } = useContext(ApplicationContext);
   const toast = useToast();
 
-  const createAppToken = useCallback(async metaData => {
-    const client = await genApplicationClient();
+  const addApplication = useCallback(async (form: ApplicationDto) => {
+    const applicationClient = await genApplicationClient();
     try {
-      await client.createAppToken(
-        currApplication.id,
-        new CreateAppTokenCommand({ appToken: metaData })
+      await applicationClient.createApplication(
+        new CreateApplicationCommand({
+          application: form
+        })
       );
       toast({
-        description: "AppToken was created",
+        description: "Application was added",
         status: "success",
         duration: 5000,
         isClosable: true
       });
     } catch (error) {
       toast({
-        description: `CreateAppToken responded: ${error}`,
+        description: `PostApplication responded: ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true
       });
     }
-    fetchAppTokens();
+    fetchApps();
   }, []);
-
-  if (currApplication == null) return null;
 
   return (
     <>
-      <Button onClick={onOpen} borderColor="black" bgColor="green.300">
-        Create new token +
+      <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
+        Add application
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add AppToken</ModalHeader>
+          <ModalHeader>Create a new application</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
+            <ApplicationForm submitCallback={addApplication}></ApplicationForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -71,4 +70,5 @@ const CreateTokenTriggerBtn: FC = () => {
     </>
   );
 };
-export default CreateTokenTriggerBtn;
+
+export default AddApplicationTriggerBtn;

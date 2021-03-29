@@ -11,6 +11,7 @@ import { genApplicationClient, genServiceClient } from "services/backend/apiClie
 import {
   ApplicationIdDto,
   IApplicationIdDto,
+  IApplicationOwnerIdDto,
   IAppTokenIdDto,
   IServiceIdDto
 } from "services/backend/nswagts";
@@ -20,6 +21,7 @@ const IndexPage: NextPage = () => {
   const [applications, dispatchApplications] = useReducer(ListReducer<IApplicationIdDto>("id"), []);
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
+  const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
 
   const fetchApps = useCallback(async () => {
@@ -54,6 +56,22 @@ const IndexPage: NextPage = () => {
     }
   }, []);
 
+  const fetchAppOwners = useCallback(async () => {
+    try {
+      const client = await genApplicationClient();
+      const data = await client.getApplicationOwnersByAppId(currApplication.id);
+
+      if (data && data.length > 0)
+        dispatchAppOwners({
+          type: ListReducerActionType.Reset,
+          data
+        });
+      else logger.info("exampleClient.get no data");
+    } catch (err) {
+      logger.warn("exampleClient.get Error", err);
+    }
+  }, [currApplication]);
+
   const fetchServices = useCallback(async () => {
     try {
       const serviceClient = await genServiceClient();
@@ -76,17 +94,23 @@ const IndexPage: NextPage = () => {
     fetchServices();
   }, [fetchApps, fetchAppTokens, fetchServices]);
 
+  useEffect(() => {
+    fetchAppOwners();
+  }, [fetchAppOwners, currApplication]);
+
   return (
     <ViewContext.Provider
       value={{
         applications: applications,
         services: services,
         appTokens: appTokens,
+        appOwners: appOwners,
         currApplication: currApplication,
         setCurrApp: setCurrApp,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
-        fetchServices: fetchServices
+        fetchServices: fetchServices,
+        fetchAppOwners: fetchAppOwners
       }}>
       <VStack>
         <Box zIndex={1} position="fixed" w="full">

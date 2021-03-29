@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.ApplicationOwners;
 using Application.ApplicationOwners.Commands.CreateApplicationOwners;
+using Application.ApplicationOwners.Queries.GetAppOwnersByAppId;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
@@ -45,6 +47,11 @@ namespace Web.Controllers
     {
       command.Id = id;
       return await Mediator.Send(command);
+    }
+    [HttpGet("{id}/ApplicationOwners")]
+    public async Task<ActionResult<List<ApplicationOwnerIdDto>>> GetApplicationOwnersByAppId([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetAppOwnersByAppIdQuery { Id = id });
     }
     [HttpPost("{id}/AppTokens")]
     public async Task<ActionResult<int>> CreateAppToken([FromRoute] int id, CreateAppTokenCommand command)
