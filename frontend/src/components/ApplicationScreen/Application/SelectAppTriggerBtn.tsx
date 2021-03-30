@@ -24,6 +24,7 @@ import { BsX } from "@react-icons/all-files/bs/BsX";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useContext } from "react";
 
+import AppTable from "./AppTable";
 import CreateApplicationTriggerBtn from "./CreateApplicationTriggerBtn";
 
 const SelectAppTriggerBtn: FC = () => {
@@ -71,13 +72,13 @@ const SelectAppTriggerBtn: FC = () => {
 
               <TabPanels>
                 <TabPanel>
-                  <p>Recent!</p>
+                  <AppTable></AppTable>
                 </TabPanel>
                 <TabPanel>
                   <p>Starred!</p>
                 </TabPanel>
                 <TabPanel>
-                  <p>All!</p>
+                  <AppTable></AppTable>
                 </TabPanel>
               </TabPanels>
             </Tabs>
