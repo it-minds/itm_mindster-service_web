@@ -5,8 +5,8 @@ import Link from "next/link";
 import { FC, useContext } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";
 
-import CreateApplicationTriggerBtn from "./CreateApplicationTriggerBtn";
-import SelectAppTriggerBtn from "./SelectAppTriggerBtn";
+import CreateApplicationTriggerBtn from "./Application/CreateApplicationTriggerBtn";
+import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
 const Header: FC = () => {
   const { applications, setCurrApp } = useContext(ViewContext);

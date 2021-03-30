@@ -32,20 +32,15 @@ const SelectAppTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="#4CAF50"
-        onClick={onOpen}>
-        Create new project
+      <Button borderWidth="1px" borderColor="black" bgColor="white" onClick={onOpen}>
+        Select Application
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
           <Flex align="center" justify="center">
-            <ModalHeader minWidth="max-content">Create a new application</ModalHeader>
+            <ModalHeader minWidth="max-content">Select Project</ModalHeader>
             <Spacer></Spacer>
             <Box>
               <CreateApplicationTriggerBtn />
