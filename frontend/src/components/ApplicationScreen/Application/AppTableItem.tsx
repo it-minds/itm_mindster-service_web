@@ -1,5 +1,21 @@
-import { Box, HStack, IconButton, Td, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  IconButton,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
+  Td,
+  Tooltip,
+  Tr
+} from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
+import { BsFillQuestionCircleFill } from "@react-icons/all-files/bs/BsFillQuestionCircleFill";
 import { BsStar } from "@react-icons/all-files/bs/BsStar";
 import { BsStarFill } from "@react-icons/all-files/bs/BsStarFill";
 import { ViewContext } from "contexts/ViewContext";
@@ -31,7 +47,21 @@ const AppTableItem: FC<Props> = ({ application }) => {
           </Box>
         </HStack>
       </Td>
-      <Td>{application.title}</Td>
+      <Td>
+        <HStack>
+          <Box>{application.title}</Box>
+          <Box>
+            <Tooltip
+              label={`Description: ${application.description}`}
+              placement="right"
+              hasArrow={true}
+              shouldWrapChildren={true}
+              fontSize="md">
+              <BsFillQuestionCircleFill />
+            </Tooltip>
+          </Box>
+        </HStack>
+      </Td>
       <Td>{application.id}</Td>
     </Tr>
   );
