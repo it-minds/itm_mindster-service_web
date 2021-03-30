@@ -19,7 +19,7 @@ import {
   Tag,
   useDisclosure
 } from "@chakra-ui/react";
-import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
+import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
 import { BsX } from "@react-icons/all-files/bs/BsX";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useContext } from "react";
@@ -29,12 +29,15 @@ import CreateApplicationTriggerBtn from "./CreateApplicationTriggerBtn";
 
 const SelectAppTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setCurrApp, currApplication } = useContext(ViewContext);
+  const { currApplication } = useContext(ViewContext);
 
   return (
     <>
       <Button borderWidth="1px" borderColor="black" bgColor="white" onClick={onOpen}>
-        Select Application
+        <Box mr="7px">
+          {currApplication != null ? `${currApplication.title}` : "Select Application"}
+        </Box>
+        <BsChevronDown />
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">

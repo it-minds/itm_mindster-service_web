@@ -1,4 +1,4 @@
-import { Box, FormControl, FormLabel, Input, Text, Textarea, VStack } from "@chakra-ui/react";
+import { Box, FormControl, FormLabel, Input, Textarea, VStack } from "@chakra-ui/react";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";

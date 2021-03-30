@@ -1,19 +1,4 @@
-import {
-  Box,
-  HStack,
-  IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Portal,
-  Td,
-  Tooltip,
-  Tr
-} from "@chakra-ui/react";
+import { Box, HStack, Td, Tooltip, Tr } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
 import { BsFillQuestionCircleFill } from "@react-icons/all-files/bs/BsFillQuestionCircleFill";
 import { BsStar } from "@react-icons/all-files/bs/BsStar";
