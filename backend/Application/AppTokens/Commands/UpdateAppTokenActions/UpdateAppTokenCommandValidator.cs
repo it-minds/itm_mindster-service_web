@@ -1,4 +1,3 @@
-using Application.AppTokens.Commands.Update;
 using FluentValidation;
 
 namespace Application.AppTokens.Commands.UpdateAppTokenActions

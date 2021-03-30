@@ -22,7 +22,7 @@ namespace Application.UnitTests.Services.Commands.CreateService
           State = ServiceStates.Approved
         }
       };
-      var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context);
+      var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
 

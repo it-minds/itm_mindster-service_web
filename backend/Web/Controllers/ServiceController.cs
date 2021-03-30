@@ -29,10 +29,15 @@ namespace Web.Controllers
       command.Id = id;
       return await Mediator.Send(command);
     }
-    [HttpGet]
+    [HttpGet("All")]
     public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices()
     {
       return await Mediator.Send(new GetServicesQuery());
+    }
+    [HttpGet("MyServices")]
+    public async Task<ActionResult<List<ServiceIdDto>>> GetMyServices()
+    {
+      return await Mediator.Send(new GetMyServicesQuery());
     }
   }
 }

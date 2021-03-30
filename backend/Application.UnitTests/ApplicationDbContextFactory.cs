@@ -26,7 +26,7 @@ namespace Application.UnitTests
 
       var currentUserServiceMock = new Mock<ICurrentUserService>();
       currentUserServiceMock.Setup(m => m.UserEmail)
-          .Returns("00000000-0000-0000-0000-000000000000");
+          .Returns("test@mail.dk");
 
       var context = new ApplicationDbContext(options, currentUserServiceMock.Object, dateTimeMock.Object);
 
@@ -83,13 +83,41 @@ namespace Application.UnitTests
             new Action {Id = 6, Title = "Title for 6", Description = "6 desc", ServiceId = 3, AdminNote = "Admin says 6"}
           }
         }
-
         );
+      context.ServiceOwners.AddRange(
+        new ServiceOwner
+        {
+          Id = 1,
+          ServiceId = 1,
+          Email = "test@mail.dk"
+        },
+        new ServiceOwner
+        {
+          Id = 2,
+          ServiceId = 2,
+          Email = "test@mail.dk"
+        });
+      
       context.Applications.AddRange(
         new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
         new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
         new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" }
 
+        );
+
+      context.AppOwners.AddRange(
+        new ApplicationOwner()
+        {
+          Id = 1,
+          ApplicationId = 1,
+          Email = "test@mail.dk"
+        },
+        new ApplicationOwner
+        {
+          Id = 2,
+          ApplicationId = 2,
+          Email = "test@mail.dk"
+        }
         );
       context.AppTokens.AddRange(
         new AppToken
@@ -128,4 +156,3 @@ namespace Application.UnitTests
     }
   }
 }
-

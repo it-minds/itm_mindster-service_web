@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.AppTokenActions;
 using Application.AppTokens;
-using Application.AppTokens.Commands.Update;
+using Application.AppTokens.Commands.UpdateAppTokenActions;
 using Application.Common.Exceptions;
 using AutoMapper;
 using Domain.Enums;

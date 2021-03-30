@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Interfaces;
 using Application.ExampleChildren;
 using Application.ExampleChildren.Queries.GetExampleChildren;
 using Application.Services;
@@ -14,15 +15,17 @@ using Xunit;
 namespace Application.UnitTests.Services.Queries.GetServices
 {
   [Collection("QueryTests")]
-  public class GetServicesQueryTest
+  public class GetAllServicesQueryTest
   {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly ICurrentUserService _currentUserService;
 
-    public GetServicesQueryTest(QueryTestFixture fixture)
+    public GetAllServicesQueryTest(QueryTestFixture fixture)
     {
       _context = fixture.Context;
       _mapper = fixture.Mapper;
+      _currentUserService = fixture.currentUserServiceMock.Object;
     }
 
     [Fact]
@@ -30,7 +33,7 @@ namespace Application.UnitTests.Services.Queries.GetServices
     {
       var query = new GetServicesQuery();
 
-      var handler = new GetServicesQuery.GetServicesQueryHandler(_context, _mapper);
+      var handler = new GetServicesQuery.GetServicesQueryHandler(_context, _mapper, _currentUserService);
 
       var result = await handler.Handle(query, CancellationToken.None);
 

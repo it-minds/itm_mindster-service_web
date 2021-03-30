@@ -1,3 +1,4 @@
+using Application.AppTokens.Commands.CreateAppToken;
 using Application.Services.Commands.CreateService;
 using FluentValidation;
 

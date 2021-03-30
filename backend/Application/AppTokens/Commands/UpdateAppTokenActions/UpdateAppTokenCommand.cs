@@ -1,19 +1,13 @@
-using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Applications;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Application.AppTokens.Commands.Update
+namespace Application.AppTokens.Commands.UpdateAppTokenActions
 {
   public class UpdateAppTokenCommand : IRequest
   {
@@ -39,7 +33,7 @@ namespace Application.AppTokens.Commands.Update
         if (appToken == null)
         {
           throw new NotFoundException(nameof(Domain.Entities.AppToken), request.Id);
-        }
+        } 
 
         if (appToken.AppTokenActions.Count != request.AppToken.AppTokenActions.Count)
         {

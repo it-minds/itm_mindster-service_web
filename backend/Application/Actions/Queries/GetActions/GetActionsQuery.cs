@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Actions.Queries.GetActions
 {
+  /**
+   * Not Currently used and might be deleted at a later point
+   */
   public class GetActionsQuery : IRequest<List<ActionIdDto>>
   {
     public class GetActionsQueryHandler : IRequestHandler<GetActionsQuery, List<ActionIdDto>>

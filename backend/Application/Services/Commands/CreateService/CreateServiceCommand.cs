@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Services.Commands.CreateService
 {
+  [Authorize] 
   public class CreateServiceCommand : IRequest<int>
   {
     public ServiceDto Service { get; set; }
@@ -18,9 +20,14 @@ namespace Application.Services.Commands.CreateService
     {
       private readonly IApplicationDbContext _context;
 
-      public CreateServiceCommandHandler(IApplicationDbContext context)
+      private readonly ICurrentUserService _currentUserService;
+
+
+      public CreateServiceCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
       {
         _context = context;
+        _currentUserService = currentUserService;
+
       }
 
       public async Task<int> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
@@ -34,6 +41,14 @@ namespace Application.Services.Commands.CreateService
 
         _context.Services.Add(service);
 
+        await _context.SaveChangesAsync(cancellationToken);
+
+        var serviceOwner = new ServiceOwner()
+        {
+          ServiceId = service.Id,
+          Email = _currentUserService.UserEmail
+        };
+        _context.ServiceOwners.Add((serviceOwner));
         await _context.SaveChangesAsync(cancellationToken);
 
         return service.Id;

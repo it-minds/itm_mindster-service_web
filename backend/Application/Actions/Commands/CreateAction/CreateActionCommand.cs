@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace Application.Actions.Commands.CreateAction
 {
+  [Authorize]
   public class CreateActionCommand : IRequest<int>
   {
     [JsonIgnore]
@@ -20,13 +23,20 @@ namespace Application.Actions.Commands.CreateAction
     {
       private readonly IApplicationDbContext _context;
 
-      public CreateActionCommandHandler(IApplicationDbContext context)
+      private readonly ICurrentUserService _currentUserService;
+
+      public CreateActionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
       {
         _context = context;
+        _currentUserService = currentUserService;
       }
 
       public async Task<int> Handle(CreateActionCommand request, CancellationToken cancellationToken)
       {
+
+        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id);
+        if (!await _context.ServiceOwners.AnyAsync(e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+
         var action = new Action
         {
           Title = request.Action.Title,
@@ -34,11 +44,6 @@ namespace Application.Actions.Commands.CreateAction
           AdminNote = request.Action.AdminNote,
           ServiceId = request.Id
         };
-
-        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken))
-        {
-          throw new NotFoundException(nameof(Service), request.Id);
-        }
 
         _context.Actions.Add(action);
 
