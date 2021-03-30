@@ -1,7 +1,7 @@
 import { Box, VStack } from "@chakra-ui/layout";
 import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
 import Header from "components/ApplicationScreen/Header";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
@@ -100,7 +100,7 @@ const IndexPage: NextPage = () => {
   }, [fetchAppOwners, fetchAppTokens, currApplication]);
 
   return (
-    <ViewContext.Provider
+    <AppViewContext.Provider
       value={{
         applications: applications,
         services: services,
@@ -121,7 +121,7 @@ const IndexPage: NextPage = () => {
           <ApplicationInfo></ApplicationInfo>
         </Box>
       </VStack>
-    </ViewContext.Provider>
+    </AppViewContext.Provider>
   );
 };
 

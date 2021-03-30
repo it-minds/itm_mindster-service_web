@@ -12,7 +12,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationOwnerDto, CreateApplicationOwnerCommand } from "services/backend/nswagts";
@@ -21,7 +21,7 @@ import AppOwnerForm from "../../Forms/Application/AddAppOwnerForm";
 
 const AddOwnersTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppOwners, currApplication } = useContext(ViewContext);
+  const { fetchAppOwners, currApplication } = useContext(AppViewContext);
   const toast = useToast();
 
   const addOwners = useCallback(

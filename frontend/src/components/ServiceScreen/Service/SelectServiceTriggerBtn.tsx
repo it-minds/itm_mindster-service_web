@@ -21,22 +21,19 @@ import {
 } from "@chakra-ui/react";
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
 import { BsX } from "@react-icons/all-files/bs/BsX";
-import { AppViewContext } from "contexts/AppViewContext";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext } from "react";
 
-import AppTable from "./AppTable";
-import CreateApplicationTriggerBtn from "./CreateApplicationTriggerBtn";
+import ServiceTable from "./ServiceTable";
 
-const SelectAppTriggerBtn: FC = () => {
+const SelectServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication } = useContext(AppViewContext);
+  const { currService } = useContext(ServiceViewContext);
 
   return (
     <>
       <Button borderWidth="1px" borderColor="black" bgColor="white" onClick={onOpen}>
-        <Box mr="7px">
-          {currApplication != null ? `${currApplication.title}` : "Select Application"}
-        </Box>
+        <Box mr="7px">{currService != null ? `${currService.title}` : "Select Service"}</Box>
         <BsChevronDown />
       </Button>
 
@@ -46,9 +43,7 @@ const SelectAppTriggerBtn: FC = () => {
           <Flex align="center" justify="center">
             <ModalHeader minWidth="max-content">Select Project</ModalHeader>
             <Spacer></Spacer>
-            <Box>
-              <CreateApplicationTriggerBtn />
-            </Box>
+            <Box>{/* <CreateApplicationTriggerBtn /> */}</Box>
             <Box>
               <IconButton
                 marginLeft="10px"
@@ -75,13 +70,13 @@ const SelectAppTriggerBtn: FC = () => {
 
               <TabPanels>
                 <TabPanel>
-                  <AppTable></AppTable>
+                  <ServiceTable />
                 </TabPanel>
                 <TabPanel>
                   <p>Starred!</p>
                 </TabPanel>
                 <TabPanel>
-                  <AppTable></AppTable>
+                  <ServiceTable />
                 </TabPanel>
               </TabPanels>
             </Tabs>
@@ -98,4 +93,4 @@ const SelectAppTriggerBtn: FC = () => {
   );
 };
 
-export default SelectAppTriggerBtn;
+export default SelectServiceTriggerBtn;

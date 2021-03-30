@@ -13,14 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
 
 const CreateApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchApps, setCurrApp } = useContext(ViewContext);
+  const { fetchApps, setCurrApp } = useContext(AppViewContext);
   const toast = useToast();
 
   const addApplication = useCallback(async (form: ApplicationDto) => {

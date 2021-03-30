@@ -3,10 +3,10 @@ import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 
-import ServicePage from "./Service";
+import ServiceScreen from "./ServiceScreen";
 
 const IndexPage: NextPage = () => {
-  return <ServicePage></ServicePage>;
+  return <ServiceScreen />;
 };
 
 export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {

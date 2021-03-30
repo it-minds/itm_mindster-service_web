@@ -1,26 +1,22 @@
 import { Box, FormControl, FormLabel, Input, Textarea, VStack } from "@chakra-ui/react";
-import { AppViewContext } from "contexts/AppViewContext";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
+import { IServiceIdDto, ServiceIdDto } from "services/backend/nswagts";
 
-import OwnerOverview from "./Owners/OwnerOverview";
-import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
-import TokenTable from "./Tokens/TokenTable";
-
-const ApplicationInfo: FC = () => {
-  const { currApplication } = useContext(AppViewContext);
-  const [localFormData, setLocalFormData] = useState<IApplicationDto>(
-    new ApplicationDto({
+const ServiceInfo: FC = () => {
+  const { currService } = useContext(ServiceViewContext);
+  const [localFormData, setLocalFormData] = useState<IServiceIdDto>(
+    new ServiceIdDto({
       title: "",
       description: ""
     })
   );
 
   useEffect(() => {
-    if (currApplication) {
-      setLocalFormData(currApplication);
+    if (currService) {
+      setLocalFormData(currService);
     }
-  }, [currApplication]);
+  }, [currService]);
 
   return (
     <Box padding="100" width="full">
@@ -46,7 +42,7 @@ const ApplicationInfo: FC = () => {
             </FormControl>
           </form>
         </Box>
-        <Box pt="10" width="full">
+        {/* <Box pt="10" width="full">
           <TokenTable></TokenTable>
         </Box>
         <Box pt="10" width="full">
@@ -54,9 +50,9 @@ const ApplicationInfo: FC = () => {
         </Box>
         <Box pt="10" width="full">
           <OwnerOverview></OwnerOverview>
-        </Box>
+        </Box> */}
       </VStack>
     </Box>
   );
 };
-export default ApplicationInfo;
+export default ServiceInfo;

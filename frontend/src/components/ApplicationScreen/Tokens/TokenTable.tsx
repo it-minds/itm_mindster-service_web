@@ -1,12 +1,12 @@
 import { Center, Heading, Table, Tbody, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import { FC, useContext } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 
 import TokenTableItem from "./TokenTableItem";
 
 const TokenTable: FC = () => {
-  const { appTokens } = useContext(ViewContext);
+  const { appTokens } = useContext(AppViewContext);
 
   if (appTokens.length == 0) return null;
   return (
