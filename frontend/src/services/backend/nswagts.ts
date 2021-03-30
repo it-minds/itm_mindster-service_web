@@ -132,6 +132,7 @@ export interface IApplicationClient {
     addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number>;
     getApplicationOwnersByAppId(id: number): Promise<ApplicationOwnerIdDto[]>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
+    getAppTokensByAppId(id: number): Promise<AppTokenIdDto[]>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
@@ -397,6 +398,49 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    getAppTokensByAppId(id: number): Promise<AppTokenIdDto[]> {
+        let url_ = this.baseUrl + "/api/Application/{id}/AppTokens";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAppTokensByAppId(_response));
+        });
+    }
+
+    protected processGetAppTokensByAppId(response: Response): Promise<AppTokenIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AppTokenIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AppTokenIdDto[]>(<any>null);
     }
 
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number> {

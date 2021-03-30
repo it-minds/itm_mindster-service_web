@@ -55,6 +55,7 @@ const AddOwnersTriggerBtn: FC = () => {
           isClosable: true
         });
       }
+      onClose();
       fetchAppOwners();
     },
     [currApplication]

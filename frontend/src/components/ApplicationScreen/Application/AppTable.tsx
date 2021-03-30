@@ -1,4 +1,4 @@
-import { Center, Table, Tbody, Th, Thead, Tr, Wrap } from "@chakra-ui/react";
+import { Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import { ViewContext } from "contexts/ViewContext";
 import { FC, useContext } from "react";
 import { ApplicationIdDto } from "services/backend/nswagts";

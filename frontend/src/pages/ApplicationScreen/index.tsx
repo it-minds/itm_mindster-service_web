@@ -43,18 +43,19 @@ const IndexPage: NextPage = () => {
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens(false);
+      const data = await client.getAppTokensByAppId(currApplication.id);
 
-      if (data && data.length > 0) {
+      if (data && data.length >= 0) {
         dispatchAppTokens({
-          type: ListReducerActionType.AddOrUpdate,
+          type: ListReducerActionType.Reset,
           data
         });
+        console.log(appTokens);
       } else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
     }
-  }, []);
+  }, [currApplication]);
 
   const fetchAppOwners = useCallback(async () => {
     try {
@@ -90,13 +91,13 @@ const IndexPage: NextPage = () => {
 
   useEffect(() => {
     fetchApps();
-    fetchAppTokens();
     fetchServices();
-  }, [fetchApps, fetchAppTokens, fetchServices]);
+  }, [fetchApps, fetchServices]);
 
   useEffect(() => {
     fetchAppOwners();
-  }, [fetchAppOwners, currApplication]);
+    fetchAppTokens();
+  }, [fetchAppOwners, fetchAppTokens, currApplication]);
 
   return (
     <ViewContext.Provider
