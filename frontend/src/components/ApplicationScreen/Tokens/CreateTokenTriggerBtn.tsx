@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,6 +11,7 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
 import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useCallback, useContext } from "react";
@@ -49,8 +51,8 @@ const CreateTokenTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button onClick={onOpen} borderColor="black" bgColor="green.300">
-        Create new token +
+      <Button onClick={onOpen} rightIcon={<BsPlus />} borderColor="black" bgColor="green.300">
+        Create new token
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
@@ -58,9 +60,11 @@ const CreateTokenTriggerBtn: FC = () => {
         <ModalContent>
           <ModalHeader>Add AppToken</ModalHeader>
           <ModalCloseButton />
+          <Divider />
           <ModalBody>
             <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
           </ModalBody>
+          <Divider />
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close

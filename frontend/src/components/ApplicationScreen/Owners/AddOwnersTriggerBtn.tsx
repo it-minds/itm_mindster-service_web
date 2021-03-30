@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -10,56 +11,71 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import { ApplicationContext } from "contexts/ApplicationContext";
+import { ViewContext } from "contexts/ViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
+import {
+  ApplicationDto,
+  ApplicationOwnerDto,
+  CreateApplicationCommand,
+  CreateApplicationOwnerCommand
+} from "services/backend/nswagts";
 
-const AddApplicationTriggerBtn: FC = () => {
+import AppOwnerForm from "../../Forms/Application/AddAppOwnerForm";
+
+const AddOwnersTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchApps } = useContext(ApplicationContext);
+  const { fetchAppOwners, currApplication } = useContext(ViewContext);
   const toast = useToast();
 
-  const addApplication = useCallback(async (form: ApplicationDto) => {
-    const applicationClient = await genApplicationClient();
-    try {
-      await applicationClient.createApplication(
-        new CreateApplicationCommand({
-          application: form
-        })
-      );
-      toast({
-        description: "Application was added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `PostApplication responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    }
-    fetchApps();
-  }, []);
+  const addOwners = useCallback(
+    async (form: ApplicationOwnerDto[]) => {
+      const applicationClient = await genApplicationClient();
+      try {
+        await applicationClient.addAppOwners(
+          currApplication.id,
+          new CreateApplicationOwnerCommand({
+            appOwners: form
+          })
+        );
+        toast({
+          description: "Owners were added",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        });
+      } catch (error) {
+        toast({
+          description: `PostAppOwners responded: ${error}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true
+        });
+      }
+      fetchAppOwners();
+    },
+    [currApplication]
+  );
 
   return (
     <>
-      <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
-        Add application
+      <Button onClick={onOpen} rightIcon={<BsPlus />} bgColor="green.300">
+        Add owners
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create a new application</ModalHeader>
+          <ModalHeader>Add owners to: {currApplication.title}</ModalHeader>
           <ModalCloseButton />
+          <Divider />
           <ModalBody>
-            <ApplicationForm submitCallback={addApplication}></ApplicationForm>
+            <AppOwnerForm submitCallback={addOwners}></AppOwnerForm>
           </ModalBody>
+          <Divider />
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
@@ -71,4 +87,4 @@ const AddApplicationTriggerBtn: FC = () => {
   );
 };
 
-export default AddApplicationTriggerBtn;
+export default AddOwnersTriggerBtn;
