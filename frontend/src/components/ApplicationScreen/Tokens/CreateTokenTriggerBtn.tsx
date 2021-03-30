@@ -51,7 +51,12 @@ const CreateTokenTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button onClick={onOpen} rightIcon={<BsPlus />} borderColor="black" bgColor="green.300">
+      <Button
+        onClick={onOpen}
+        rightIcon={<BsPlus />}
+        borderWidth="1px"
+        borderColor="black"
+        bgColor="#4CAF50">
         Create new token
       </Button>
 
