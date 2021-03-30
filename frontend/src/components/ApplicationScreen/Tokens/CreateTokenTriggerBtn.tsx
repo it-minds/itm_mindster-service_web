@@ -23,29 +23,32 @@ const CreateTokenTriggerBtn: FC = () => {
   const { fetchAppTokens, currApplication } = useContext(ViewContext);
   const toast = useToast();
 
-  const createAppToken = useCallback(async metaData => {
-    const client = await genApplicationClient();
-    try {
-      await client.createAppToken(
-        currApplication.id,
-        new CreateAppTokenCommand({ appToken: metaData })
-      );
-      toast({
-        description: "AppToken was created",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `CreateAppToken responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    }
-    fetchAppTokens();
-  }, []);
+  const createAppToken = useCallback(
+    async metaData => {
+      const client = await genApplicationClient();
+      try {
+        await client.createAppToken(
+          currApplication.id,
+          new CreateAppTokenCommand({ appToken: metaData })
+        );
+        toast({
+          description: "AppToken was created",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        });
+      } catch (error) {
+        toast({
+          description: `CreateAppToken responded: ${error}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true
+        });
+      }
+      fetchAppTokens();
+    },
+    [currApplication, fetchAppTokens]
+  );
 
   if (currApplication == null) return null;
 
