@@ -31,7 +31,7 @@ const AddActionTriggerBtn: FC<AddActionProps> = ({ serviceId }) => {
           <ModalHeader>Add new action to service: {serviceId}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ActionForm serviceId={serviceId}></ActionForm>
+            <ActionForm submitCallback={null}></ActionForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
