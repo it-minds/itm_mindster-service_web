@@ -12,20 +12,15 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import ServiceForm from "components/Forms/Service/ServiceForm";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import {
-  CreateApplicationCommand,
-  CreateServiceCommand,
-  ServiceDto
-} from "services/backend/nswagts";
+import { CreateServiceCommand, ServiceDto } from "services/backend/nswagts";
 
 const CreateServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchServices, setCurrService } = useContext(ServiceViewContext);
+  const { fetchServices } = useContext(ServiceViewContext);
   const toast = useToast();
 
   const addService = useCallback(async (form: ServiceDto) => {
