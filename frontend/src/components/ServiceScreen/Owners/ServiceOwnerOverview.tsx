@@ -3,6 +3,8 @@ import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { FC, useContext } from "react";
 import { IServiceOwnerIdDto } from "services/backend/nswagts";
 
+import AddServiceOwnersTriggerBtn from "./AddServiceOwnerTriggerBtn";
+
 const ServiceOwnerOverview: FC = () => {
   const { serviceOwners, currService } = useContext(ServiceViewContext);
 
@@ -17,7 +19,9 @@ const ServiceOwnerOverview: FC = () => {
           </Tag>
         ))}
       </Box>
-      <Box>{/* <AddOwnersTriggerBtn></AddOwnersTriggerBtn> */}</Box>
+      <Box>
+        <AddServiceOwnersTriggerBtn />
+      </Box>
     </VStack>
   );
 };
