@@ -19,23 +19,19 @@ import {
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useEffect, useReducer, useRef, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
-import { ApplicationOwnerDto, IApplicationOwnerDto } from "services/backend/nswagts";
+import { IApplicationOwnerDto } from "services/backend/nswagts";
 
 type Props = {
-  submitCallback: (OwnerMetaDataForm: IApplicationOwnerDto[]) => void;
+  submitCallback: (OwnerMetaDataForm: IApplicationOwnerDto[]) => Promise<void>;
   AppMetaData?: IApplicationOwnerDto[];
 };
 
 const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerDto>("email"), []);
-  const [newOwner, setNewOwner] = useState<IApplicationOwnerDto>(
-    new ApplicationOwnerDto({
-      email: ""
-    })
-  );
+  const [newOwner, setNewOwner] = useState<IApplicationOwnerDto>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
+  const cancelRef = useRef<HTMLButtonElement>();
 
   useEffect(() => {
     if (AppMetaData) {
@@ -71,7 +67,7 @@ const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
       ) : (
         <Box>
           {appOwners.map(owner => (
-            <Tag m="5px" colorScheme="facebook" key={owner.email}>
+            <Tag m="5px" key={owner.email}>
               {owner.email}
             </Tag>
           ))}
@@ -84,7 +80,7 @@ const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
           <InputGroup>
             <Input
               type="email"
-              value={newOwner.email}
+              value={newOwner?.email ?? ""}
               placeholder="Write the email of the user you want to add"
               onChange={event => setNewOwner({ email: event.target.value })}></Input>
             <InputRightElement>
@@ -123,7 +119,7 @@ const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
               Are you sure you want to add these users to your application?
               <Box>
                 {appOwners.map(owner => (
-                  <Tag m="5px" colorScheme="facebook" key={owner.email}>
+                  <Tag m="5px" key={owner.email}>
                     {owner.email}
                   </Tag>
                 ))}

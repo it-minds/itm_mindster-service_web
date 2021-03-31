@@ -34,9 +34,7 @@ const SelectAppTriggerBtn: FC = () => {
   return (
     <>
       <Button borderWidth="1px" borderColor="black" bgColor="white" onClick={onOpen}>
-        <Box mr="7px">
-          {currApplication != null ? `${currApplication.title}` : "Select Application"}
-        </Box>
+        <Box mr="7px">{currApplication?.title ?? "Select Application"}</Box>
         <BsChevronDown />
       </Button>
 

@@ -59,7 +59,7 @@ const CreateTokenTriggerBtn: FC = () => {
         rightIcon={<BsPlus />}
         borderWidth="1px"
         borderColor="black"
-        bgColor="#4CAF50">
+        bgColor="green">
         Create new token
       </Button>
 

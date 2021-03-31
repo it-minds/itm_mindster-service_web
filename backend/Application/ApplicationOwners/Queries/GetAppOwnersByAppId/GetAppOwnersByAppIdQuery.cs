@@ -37,7 +37,10 @@ namespace Application.ApplicationOwners.Queries.GetAppOwnersByAppId
       public async Task<List<ApplicationOwnerIdDto>> Handle(GetAppOwnersByAppIdQuery request, CancellationToken cancellationToken)
       {
         var owners = _context.AppOwners.Where(e => e.ApplicationId == request.Id);
-        if (!owners.Any(e => e.Email == _currentUserService.UserEmail)) throw new NotFoundException(nameof(ApplicationOwner), "You don't have permission for application:" +request.Id);
+        if (!owners.Any(e => e.Email == _currentUserService.UserEmail))
+        {
+          throw new NotFoundException(nameof(ApplicationOwner), "You don't have permission for application:" +request.Id);
+        }
         var result = await owners.ProjectTo<ApplicationOwnerIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
 
