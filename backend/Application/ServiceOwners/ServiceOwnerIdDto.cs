@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.ServiceOwners
 {
-  public class ServiceOwnerIdDto
+  public class ServiceOwnerIdDto : ServiceOwnerDto
   {
     public int Id { get; set; }
     public void Mapping(Profile profile)

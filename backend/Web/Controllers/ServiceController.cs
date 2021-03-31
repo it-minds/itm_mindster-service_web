@@ -4,6 +4,9 @@ using Application.Services;
 using Application.Services.Commands.CreateService;
 using Application.Services.Queries;
 using Application.Actions.Commands.CreateAction;
+using Application.ServiceOwners;
+using Application.ServiceOwners.Commands.CreateServiceOwners;
+using Application.ServiceOwners.Queries.GetServiceOwnersByServiceId;
 using Application.Services.Queries.GetServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,12 +26,16 @@ namespace Web.Controllers
       return await Mediator.Send(new GetServiceByIdQuery {Id = id});
     }
     [HttpPost("{id}/ServiceOwners")]
-    public async Task<ActionResult<int>> AddServiceOwners([FromRoute] int id, CreateServiceCommand command)
+    public async Task<ActionResult<int>> AddServiceOwners([FromRoute] int id, CreateServiceOwnerCommand command)
     {
       command.Id = id;
       return await Mediator.Send(command);
     }
-
+    [HttpGet("{id}/ServiceOwners")]
+    public async Task<ActionResult<List<ServiceOwnerIdDto>>> GetServiceOwnersByServiceId([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetServiceOwnersByServiceIdQuery { Id = id });
+    }
     [HttpPost("{id}/Actions")]
     public async Task<ActionResult<int>> CreateAction([FromRoute] int id, CreateActionCommand command)
     {
