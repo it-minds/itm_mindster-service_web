@@ -24,6 +24,7 @@ import { BsX } from "@react-icons/all-files/bs/BsX";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext } from "react";
 
+import CreateServiceTriggerBtn from "./CreateServiceTriggerBtn";
 import ServiceTable from "./ServiceTable";
 
 const SelectServiceTriggerBtn: FC = () => {
@@ -43,7 +44,9 @@ const SelectServiceTriggerBtn: FC = () => {
           <Flex align="center" justify="center">
             <ModalHeader minWidth="max-content">Select Project</ModalHeader>
             <Spacer></Spacer>
-            <Box>{/* <CreateApplicationTriggerBtn /> */}</Box>
+            <Box>
+              <CreateServiceTriggerBtn />
+            </Box>
             <Box>
               <IconButton
                 marginLeft="10px"
