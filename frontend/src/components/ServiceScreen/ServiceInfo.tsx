@@ -3,6 +3,7 @@ import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IServiceIdDto, ServiceIdDto } from "services/backend/nswagts";
 
+import ActionTable from "./Actions/ActionTable";
 import ServiceOwnerOverview from "./Owners/ServiceOwnerOverview";
 
 const ServiceInfo: FC = () => {
@@ -44,9 +45,10 @@ const ServiceInfo: FC = () => {
             </FormControl>
           </form>
         </Box>
-        {/* <Box pt="10" width="full">
-          <TokenTable></TokenTable>
+        <Box pt="10" width="full">
+          <ActionTable />
         </Box>
+        {/* 
         <Box pt="10" width="full">
           <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
         </Box> */}

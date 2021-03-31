@@ -18,8 +18,6 @@ import React, { FC, useCallback, useContext } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceOwnerCommand, ServiceOwnerDto } from "services/backend/nswagts";
 
-import AppOwnerForm from "../../Forms/Application/AppOwnerForm";
-
 const AddServiceOwnersTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { fetchOwners, currService } = useContext(ServiceViewContext);
