@@ -22,6 +22,12 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetServiceByIdQuery {Id = id});
     }
+    [HttpPost("{id}/ServiceOwners")]
+    public async Task<ActionResult<int>> AddServiceOwners([FromRoute] int id, CreateServiceCommand command)
+    {
+      command.Id = id;
+      return await Mediator.Send(command);
+    }
 
     [HttpPost("{id}/Actions")]
     public async Task<ActionResult<int>> CreateAction([FromRoute] int id, CreateActionCommand command)
