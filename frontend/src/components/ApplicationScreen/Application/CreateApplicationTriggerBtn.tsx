@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -50,7 +51,12 @@ const CreateApplicationTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button rightIcon={<BsPlus />} borderColor="black" bgColor="green.400" onClick={onOpen}>
+      <Button
+        rightIcon={<BsPlus />}
+        borderWidth="1px"
+        borderColor="black"
+        bgColor="green"
+        onClick={onOpen}>
         Create new project
       </Button>
 
@@ -59,9 +65,11 @@ const CreateApplicationTriggerBtn: FC = () => {
         <ModalContent>
           <ModalHeader>Create a new application</ModalHeader>
           <ModalCloseButton />
+          <Divider />
           <ModalBody>
             <ApplicationForm submitCallback={addApplication}></ApplicationForm>
           </ModalBody>
+          <Divider />
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close

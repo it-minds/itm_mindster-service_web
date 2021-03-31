@@ -8,6 +8,7 @@ import TokenTableItem from "./TokenTableItem";
 const TokenTable: FC = () => {
   const { appTokens } = useContext(ViewContext);
 
+  if (appTokens.length == 0) return null;
   return (
     <VStack w="full" align="left">
       <Heading size="h3">Tokens:</Heading>

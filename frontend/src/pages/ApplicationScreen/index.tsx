@@ -11,6 +11,7 @@ import { genApplicationClient, genServiceClient } from "services/backend/apiClie
 import {
   ApplicationIdDto,
   IApplicationIdDto,
+  IApplicationOwnerIdDto,
   IAppTokenIdDto,
   IServiceIdDto
 } from "services/backend/nswagts";
@@ -20,6 +21,7 @@ const IndexPage: NextPage = () => {
   const [applications, dispatchApplications] = useReducer(ListReducer<IApplicationIdDto>("id"), []);
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
+  const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
 
   const fetchApps = useCallback(async () => {
@@ -41,18 +43,35 @@ const IndexPage: NextPage = () => {
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens(false);
+      const data = await client.getAppTokensByAppId(currApplication.id);
 
-      if (data && data.length > 0) {
+      if (data && data.length >= 0) {
         dispatchAppTokens({
-          type: ListReducerActionType.AddOrUpdate,
+          type: ListReducerActionType.Reset,
           data
         });
+        console.log(appTokens);
       } else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);
     }
-  }, []);
+  }, [currApplication]);
+
+  const fetchAppOwners = useCallback(async () => {
+    try {
+      const client = await genApplicationClient();
+      const data = await client.getApplicationOwnersByAppId(currApplication.id);
+
+      if (data && data.length > 0)
+        dispatchAppOwners({
+          type: ListReducerActionType.Reset,
+          data
+        });
+      else logger.info("exampleClient.get no data");
+    } catch (err) {
+      logger.warn("exampleClient.get Error", err);
+    }
+  }, [currApplication]);
 
   const fetchServices = useCallback(async () => {
     try {
@@ -72,9 +91,13 @@ const IndexPage: NextPage = () => {
 
   useEffect(() => {
     fetchApps();
-    fetchAppTokens();
     fetchServices();
-  }, [fetchApps, fetchAppTokens, fetchServices]);
+  }, [fetchApps, fetchServices]);
+
+  useEffect(() => {
+    fetchAppOwners();
+    fetchAppTokens();
+  }, [fetchAppOwners, fetchAppTokens, currApplication]);
 
   return (
     <ViewContext.Provider
@@ -82,11 +105,13 @@ const IndexPage: NextPage = () => {
         applications: applications,
         services: services,
         appTokens: appTokens,
+        appOwners: appOwners,
         currApplication: currApplication,
         setCurrApp: setCurrApp,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
-        fetchServices: fetchServices
+        fetchServices: fetchServices,
+        fetchAppOwners: fetchAppOwners
       }}>
       <VStack>
         <Box zIndex={1} position="fixed" w="full">

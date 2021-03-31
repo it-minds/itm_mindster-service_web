@@ -117,6 +117,12 @@ namespace Application.UnitTests
           Id = 2,
           ApplicationId = 2,
           Email = "test@mail.dk"
+        },
+        new ApplicationOwner
+        {
+          Id = 3,
+          ApplicationId = 1,
+          Email = "iAlsoOwnApp1@mail.dk"
         }
         );
       context.AppTokens.AddRange(
@@ -126,7 +132,7 @@ namespace Application.UnitTests
           ApplicationId = 1,
           Description = "Den første appToken",
           AppTokenActions = new List<AppTokenAction>{
-              new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = 0},
+              new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = ServiceStates.Pending},
               new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = 0}
 
             }
@@ -138,8 +144,8 @@ namespace Application.UnitTests
             Description = "Den anden appToken",
             AppTokenActions = new List<AppTokenAction>
             {
-              new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = 0},
-              new AppTokenAction{ Id = 4, AppTokenId = 2, ActionId = 3, State = 0}
+              new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = ServiceStates.Approved},
+              new AppTokenAction{ Id = 4, AppTokenId = 2, ActionId = 3, State = ServiceStates.Rejected}
 
             }
           }

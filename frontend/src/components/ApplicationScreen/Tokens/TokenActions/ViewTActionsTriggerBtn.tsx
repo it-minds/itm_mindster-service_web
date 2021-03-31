@@ -33,11 +33,11 @@ const ViewTActionTriggerBtn: FC<Props> = ({ token }) => {
         <ModalContent>
           <ModalHeader>Actions of Token: {token.id}</ModalHeader>
           <ModalCloseButton />
-          <Divider></Divider>
+          <Divider />
           <ModalBody m="5">
             <TokenActionList actions={token.appTokenActions}></TokenActionList>
           </ModalBody>
-          <Divider></Divider>
+          <Divider />
           <ModalFooter>
             <Button width={0.15} colorScheme="blue" mr={3} onClick={onClose}>
               Close
