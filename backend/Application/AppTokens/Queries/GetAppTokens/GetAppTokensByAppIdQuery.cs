@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Security;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
@@ -16,6 +17,7 @@ using Newtonsoft.Json;
 
 namespace Application.AppTokens.Queries.GetAppTokens
 {
+  [Authorize]
   public class GetAppTokenByAppIdQuery : IRequest<List<AppTokenIdDto>>
   {
     [JsonIgnore]

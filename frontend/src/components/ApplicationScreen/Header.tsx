@@ -7,7 +7,7 @@ import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
 const Header: FC = () => {
   return (
-    <Wrap p="5" bgColor="#673AB7" width="full">
+    <Wrap p="5" bgColor="purple.500" width="full">
       <Flex align="center" width="full">
         <Box>
           <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />

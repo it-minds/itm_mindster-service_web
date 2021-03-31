@@ -14,7 +14,7 @@ const OwnerOverview: FC = () => {
       <Heading size="h4">Application Owners:</Heading>
       <Box>
         {appOwners.map((owner: ApplicationOwnerIdDto) => (
-          <Tag m="5px" colorScheme="facebook" key={owner.id}>
+          <Tag m="5px" key={owner.id}>
             {owner.email}
           </Tag>
         ))}

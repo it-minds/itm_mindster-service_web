@@ -18,8 +18,4 @@
     <ProjectReference Include="..\AuthService\AuthService.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ApplicationOwners\Commands\CreateApplicationOwners\" />
-  </ItemGroup>
-
 </Project>

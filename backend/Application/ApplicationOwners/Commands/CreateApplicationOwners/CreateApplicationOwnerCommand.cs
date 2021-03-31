@@ -32,7 +32,10 @@ namespace Application.ApplicationOwners.Commands.CreateApplicationOwners
 
       public async Task<int> Handle(CreateApplicationOwnerCommand request, CancellationToken cancellationToken)
       {
-        if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
+        if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken))
+        {
+          throw new NotFoundException(nameof(ApplicationEntity), request.Id);
+        }
         if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
           throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");

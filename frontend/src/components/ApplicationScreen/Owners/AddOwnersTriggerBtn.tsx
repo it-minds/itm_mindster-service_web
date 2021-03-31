@@ -17,7 +17,7 @@ import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationOwnerDto, CreateApplicationOwnerCommand } from "services/backend/nswagts";
 
-import AppOwnerForm from "../../Forms/Application/AddAppOwnerForm";
+import AppOwnerForm from "../../Forms/Application/AppOwnerForm";
 
 const AddOwnersTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,9 +47,10 @@ const AddOwnersTriggerBtn: FC = () => {
           duration: 5000,
           isClosable: true
         });
+      } finally {
+        onClose();
+        fetchAppOwners();
       }
-      onClose();
-      fetchAppOwners();
     },
     [currApplication, fetchAppOwners]
   );
@@ -61,7 +62,7 @@ const AddOwnersTriggerBtn: FC = () => {
         rightIcon={<BsPlus />}
         borderWidth="1px"
         borderColor="black"
-        bgColor="#4CAF50">
+        bgColor="green">
         Add owners
       </Button>
 
