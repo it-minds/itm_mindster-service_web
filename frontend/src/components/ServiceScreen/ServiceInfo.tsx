@@ -3,6 +3,8 @@ import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IServiceIdDto, ServiceIdDto } from "services/backend/nswagts";
 
+import ServiceOwnerOverview from "./Owners/ServiceOwnerOverview";
+
 const ServiceInfo: FC = () => {
   const { currService } = useContext(ServiceViewContext);
   const [localFormData, setLocalFormData] = useState<IServiceIdDto>(
@@ -47,10 +49,10 @@ const ServiceInfo: FC = () => {
         </Box>
         <Box pt="10" width="full">
           <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
-        </Box>
-        <Box pt="10" width="full">
-          <OwnerOverview></OwnerOverview>
         </Box> */}
+        <Box pt="10" width="full">
+          <ServiceOwnerOverview />
+        </Box>
       </VStack>
     </Box>
   );

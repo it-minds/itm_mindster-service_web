@@ -1,6 +1,6 @@
 import { Box, VStack } from "@chakra-ui/layout";
 import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
-import Header from "components/ApplicationScreen/Header";
+import ServiceHeader from "components/ApplicationScreen/ServiceHeader";
 import { AppViewContext } from "contexts/AppViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
@@ -115,7 +115,7 @@ const IndexPage: NextPage = () => {
       }}>
       <VStack>
         <Box zIndex={1} position="fixed" w="full">
-          <Header></Header>
+          <ServiceHeader></ServiceHeader>
         </Box>
         <Box pt="100px" borderColor="black" borderWidth="1px" w="full">
           <ApplicationInfo></ApplicationInfo>

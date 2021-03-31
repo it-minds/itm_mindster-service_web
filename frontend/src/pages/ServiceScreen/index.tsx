@@ -1,5 +1,5 @@
 import { Box, VStack } from "@chakra-ui/layout";
-import ServiceHeader from "components/ServiceScreen/Header";
+import ServiceHeader from "components/ServiceScreen/ServiceHeader";
 import ServiceInfo from "components/ServiceScreen/ServiceInfo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { Locale } from "i18n/Locale";
@@ -8,12 +8,21 @@ import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
-import { IAppTokenIdDto, IServiceIdDto, ServiceIdDto } from "services/backend/nswagts";
+import {
+  IAppTokenIdDto,
+  IServiceIdDto,
+  IServiceOwnerIdDto,
+  ServiceIdDto
+} from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 const ServiceScreen: NextPage = () => {
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
+  const [serviceOwners, dispatchServiceOwners] = useReducer(
+    ListReducer<IServiceOwnerIdDto>("id"),
+    []
+  );
   const [currService, setCurrService] = useState<ServiceIdDto>();
 
   const fetchAppTokens = useCallback(async () => {
@@ -49,18 +58,40 @@ const ServiceScreen: NextPage = () => {
     }
   }, []);
 
+  const fetchServiceOwners = useCallback(async () => {
+    try {
+      const client = await genServiceClient();
+      const data = await client.getServiceOwnersByServiceId(currService.id);
+
+      if (data && data.length > 0)
+        dispatchServiceOwners({
+          type: ListReducerActionType.Reset,
+          data
+        });
+      else logger.info("exampleClient.get no data");
+    } catch (err) {
+      logger.warn("exampleClient.get Error", err);
+    }
+  }, [currService]);
+
   useEffect(() => {
     fetchServices();
   }, [fetchServices]);
+
+  useEffect(() => {
+    fetchServiceOwners();
+  }, [fetchServiceOwners, currService]);
 
   return (
     <ServiceViewContext.Provider
       value={{
         services: services,
         appTokens: appTokens,
+        serviceOwners: serviceOwners,
         currService: currService,
         setCurrService: setCurrService,
         fetchAppTokens: fetchAppTokens,
+        fetchOwners: fetchServiceOwners,
         fetchServices: fetchServices
       }}>
       <VStack>

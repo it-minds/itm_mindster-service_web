@@ -5,7 +5,7 @@ import { FC } from "react";
 
 import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
-const Header: FC = () => {
+const ServiceHeader: FC = () => {
   return (
     <Wrap p="5" bgColor="purple.500" width="full">
       <Flex align="center" width="full">
@@ -34,4 +34,4 @@ const Header: FC = () => {
   );
 };
 
-export default Header;
+export default ServiceHeader;

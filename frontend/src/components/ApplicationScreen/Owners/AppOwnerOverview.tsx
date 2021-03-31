@@ -5,7 +5,7 @@ import { ApplicationOwnerIdDto } from "services/backend/nswagts";
 
 import AddOwnersTriggerBtn from "./AddOwnersTriggerBtn";
 
-const OwnerOverview: FC = () => {
+const AppOwnerOverview: FC = () => {
   const { appOwners, currApplication } = useContext(AppViewContext);
 
   if (currApplication == null) return null;
@@ -26,4 +26,4 @@ const OwnerOverview: FC = () => {
   );
 };
 
-export default OwnerOverview;
+export default AppOwnerOverview;
