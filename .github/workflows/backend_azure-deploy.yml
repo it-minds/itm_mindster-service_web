@@ -41,7 +41,6 @@ jobs:
           dotnet build --no-restore GoogleService || true
           dotnet build --no-restore
           dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/${{ env.appName }}
-        working-directory: backend/Web
 
       - name: Deploy Backend to Azure Web App
         uses: azure/webapps-deploy@v2
