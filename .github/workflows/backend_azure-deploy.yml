@@ -36,6 +36,7 @@ jobs:
       - name: Build with dotnet
         run: |
           dotnet build AuthService || true
+          dotnet build GoogleService || true
           dotnet build
           dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/${{ env.appName }}
         working-directory: backend/Web

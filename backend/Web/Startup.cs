@@ -4,6 +4,8 @@ using Application.Common.Interfaces.Hubs;
 using Application.Common.Options;
 using AuthService;
 using AuthService.Client;
+using GoogleService;
+using GoogleService.Client;
 using FluentValidation.AspNetCore;
 using Google.Apis.Auth.AspNetCore3;
 using Infrastructure;
@@ -44,7 +46,8 @@ namespace Web
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services)
     {
-      services.Configure<ServiceOptions>(Configuration.GetSection(ServiceOptions.Service));
+      services.Configure<AuthServiceOptions>(Configuration.GetSection(AuthServiceOptions.Service));
+      services.Configure<GoogleServiceOptions>(Configuration.GetSection(GoogleServiceOptions.Service));
       services.Configure<TokenOptions>(Configuration.GetSection(TokenOptions.Tokens));
 
       services.AddCors(options =>
@@ -60,6 +63,7 @@ namespace Web
       });
 
       services.AddAuthService();
+      services.AddGoogleService();
       services.AddApplication();
       services.AddInfrastructure(Configuration, Environment);
 

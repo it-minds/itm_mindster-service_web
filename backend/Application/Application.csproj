@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\AuthService\AuthService.csproj" />
+    <ProjectReference Include="..\GoogleService\GoogleService.csproj" />
   </ItemGroup>
 
 </Project>
