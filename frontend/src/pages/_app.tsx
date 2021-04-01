@@ -2,9 +2,7 @@ import "../styles.global.css";
 import "isomorphic-unfetch";
 
 import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
-import { AuthContext } from "contexts/AuthContext";
 import { AuthStage, useAuth } from "hooks/useAuth";
-import { usePWA } from "hooks/usePWA";
 import { AppPropsType } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
 import { I18nProvider } from "next-rosetta";

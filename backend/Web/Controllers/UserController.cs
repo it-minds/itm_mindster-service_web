@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
-
   public class UserController : ApiControllerBase
   {
     [HttpGet]
