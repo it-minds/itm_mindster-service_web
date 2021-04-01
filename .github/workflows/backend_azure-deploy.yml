@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "backend/**"
+      - "workflows/backend_azure-deploy.yml"
     branches:
       - main
 
@@ -35,9 +36,10 @@ jobs:
 
       - name: Build with dotnet
         run: |
-          dotnet build AuthService || true
-          dotnet build GoogleService || true
-          dotnet build
+          dotnet restore
+          dotnet build --no-restore AuthService || true
+          dotnet build --no-restore GoogleService || true
+          dotnet build --no-restore
           dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/${{ env.appName }}
         working-directory: backend/Web
 
