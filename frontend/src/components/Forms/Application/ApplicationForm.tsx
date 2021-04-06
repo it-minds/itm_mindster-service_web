@@ -22,7 +22,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { ApplicationDto, ApplicationIdDto } from "services/backend/nswagts";
 
 type Props = {
-  submitCallback: (AppMetaDataForm: ApplicationDto) => void;
+  submitCallback: (AppMetaDataForm: ApplicationDto) => Promise<void>;
   AppMetaData?: ApplicationIdDto;
 };
 
@@ -62,7 +62,6 @@ const ApplicationForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
       (form[key] as unknown) = value;
       return new ApplicationDto(form);
     });
-    console.log(localFormData);
   }, []);
 
   return (

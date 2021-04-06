@@ -12,26 +12,25 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import { AppViewContext } from "contexts/AppViewContext";
+import ServiceOwnerForm from "components/Forms/Service/ServiceOwnerForm";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
-import { genApplicationClient } from "services/backend/apiClients";
-import { ApplicationOwnerDto, CreateApplicationOwnerCommand } from "services/backend/nswagts";
+import { genServiceClient } from "services/backend/apiClients";
+import { CreateServiceOwnerCommand, ServiceOwnerDto } from "services/backend/nswagts";
 
-import AppOwnerForm from "../../Forms/Application/AppOwnerForm";
-
-const AddOwnersTriggerBtn: FC = () => {
+const AddServiceOwnersTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppOwners, currApplication } = useContext(AppViewContext);
+  const { fetchOwners, currService } = useContext(ServiceViewContext);
   const toast = useToast();
 
   const addOwners = useCallback(
-    async (form: ApplicationOwnerDto[]) => {
-      const applicationClient = await genApplicationClient();
+    async (form: ServiceOwnerDto[]) => {
+      const client = await genServiceClient();
       try {
-        await applicationClient.addAppOwners(
-          currApplication.id,
-          new CreateApplicationOwnerCommand({
-            appOwners: form
+        await client.addServiceOwners(
+          currService.id,
+          new CreateServiceOwnerCommand({
+            serviceOwners: form
           })
         );
         toast({
@@ -42,17 +41,17 @@ const AddOwnersTriggerBtn: FC = () => {
         });
       } catch (error) {
         toast({
-          description: `PostAppOwners responded: ${error}`,
+          description: `PostServiceOwners responded: ${error}`,
           status: "error",
           duration: 5000,
           isClosable: true
         });
       } finally {
         onClose();
-        fetchAppOwners();
+        fetchOwners();
       }
     },
-    [currApplication, fetchAppOwners]
+    [currService, fetchOwners]
   );
 
   return (
@@ -69,11 +68,11 @@ const AddOwnersTriggerBtn: FC = () => {
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add owners to: {currApplication.title}</ModalHeader>
+          <ModalHeader>Add owners to: {currService.title}</ModalHeader>
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <AppOwnerForm submitCallback={addOwners}></AppOwnerForm>
+            <ServiceOwnerForm submitCallback={addOwners} />
           </ModalBody>
           <Divider />
           <ModalFooter>
@@ -87,4 +86,4 @@ const AddOwnersTriggerBtn: FC = () => {
   );
 };
 
-export default AddOwnersTriggerBtn;
+export default AddServiceOwnersTriggerBtn;

@@ -8,78 +8,37 @@ import {
   Input,
   Spinner,
   Textarea,
-  useToast,
   Wrap
 } from "@chakra-ui/react";
-import { ServiceContext } from "contexts/ServiceContext";
-import React, { FC, useCallback, useContext, useState } from "react";
-import { genServiceClient } from "services/backend/apiClients";
-import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
+import React, { FC, useCallback, useState } from "react";
+import { IActionDto } from "services/backend/nswagts";
 
-interface fromProps {
-  serviceId: number;
-}
+type Props = {
+  submitCallback: (AppMetaDataForm: IActionDto) => Promise<void>;
+};
 
-const ActionForm: FC<fromProps> = ({ serviceId }) => {
-  const { fetchData } = useContext(ServiceContext);
-  const [localActionDataForm, setLocalActionDataForm] = useState<ActionDto>(
-    new ActionDto({
-      title: "",
-      description: "",
-      adminNote: ""
-    })
-  );
-
-  const toast = useToast();
-
+const ActionForm: FC<Props> = ({ submitCallback }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [localFormData, setLocalFormData] = useState<IActionDto>({
+    title: null,
+    description: null,
+    adminNote: null
+  });
 
   const onSubmit = useCallback(
     async event => {
       setIsLoading(true);
       event.preventDefault();
-      addAction();
+      await submitCallback(localFormData);
+      setIsLoading(false);
     },
-    [localActionDataForm]
+    [localFormData]
   );
 
-  const addAction = useCallback(async () => {
-    const serviceClient = await genServiceClient();
-    try {
-      await serviceClient.createAction(
-        serviceId,
-        new CreateActionCommand({
-          action: {
-            title: localActionDataForm.title,
-            description: localActionDataForm.description,
-            adminNote: localActionDataForm.adminNote
-          }
-        })
-      );
-      toast({
-        description: "Action was added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `PostAction responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    }
-
-    fetchData();
-
-    setIsLoading(false);
-  }, [localActionDataForm]);
-
-  const updateLocalForm = useCallback((value: unknown, key: keyof ActionDto) => {
-    setLocalActionDataForm(form => {
+  const updateLocalForm = useCallback((value: unknown, key: keyof IActionDto) => {
+    setLocalFormData(form => {
       (form[key] as unknown) = value;
-      return new ActionDto(form);
+      return form;
     });
   }, []);
 
@@ -92,7 +51,7 @@ const ActionForm: FC<fromProps> = ({ serviceId }) => {
               <FormControl>
                 <FormLabel>Title:</FormLabel>
                 <Input
-                  value={localActionDataForm.title}
+                  value={localFormData.title}
                   placeholder="Title of your action"
                   onChange={event => updateLocalForm(event.target.value, "title")}></Input>
               </FormControl>
@@ -100,14 +59,14 @@ const ActionForm: FC<fromProps> = ({ serviceId }) => {
                 <FormLabel>Description: </FormLabel>
                 <Textarea
                   placeholder="Description of action"
-                  value={localActionDataForm.description}
+                  value={localFormData.description}
                   onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
               <FormControl>
                 <FormLabel>Admin note: </FormLabel>
                 <Input
-                  value={localActionDataForm.adminNote}
+                  value={localFormData.adminNote}
                   placeholder="admin note"
                   onChange={event => updateLocalForm(event.target.value, "adminNote")}></Input>
               </FormControl>

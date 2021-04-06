@@ -96,7 +96,14 @@ namespace Application.UnitTests
           Id = 2,
           ServiceId = 2,
           Email = "test@mail.dk"
-        });
+        },
+        new ServiceOwner()
+        {
+          Id = 3,
+          ServiceId = 1,
+          Email = "iAlsoOwnService1@mail.dk"
+        }
+      );
       
       context.Applications.AddRange(
         new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},

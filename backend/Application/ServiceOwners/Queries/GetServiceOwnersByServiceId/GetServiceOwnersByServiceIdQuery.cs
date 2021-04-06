@@ -11,35 +11,34 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.ApplicationOwners.Queries.GetAppOwnersByAppId
+namespace Application.ServiceOwners.Queries.GetServiceOwnersByServiceId
 {
   [Authorize]
-  public class GetAppOwnersByAppIdQuery : IRequest<List<ApplicationOwnerIdDto>>
+  public class GetServiceOwnersByServiceIdQuery : IRequest<List<ServiceOwnerIdDto>>
   {
     public int Id { get; set; }
-    public class GetAppOwnersByAppIdQueryHandler : IRequestHandler<GetAppOwnersByAppIdQuery, List<ApplicationOwnerIdDto>>
+    public class GetServiceOwnersByServiceIdQueryHandler : IRequestHandler<GetServiceOwnersByServiceIdQuery, List<ServiceOwnerIdDto>>
     {
       private readonly IApplicationDbContext _context;
       private readonly IMapper _mapper;
       private readonly ICurrentUserService _currentUserService;
 
 
-      public GetAppOwnersByAppIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService)
+      public GetServiceOwnersByServiceIdQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService)
       {
         _context = context;
         _mapper = mapper;
         _currentUserService = currentUserService;
-
       }
 
-      public async Task<List<ApplicationOwnerIdDto>> Handle(GetAppOwnersByAppIdQuery request, CancellationToken cancellationToken)
+      public async Task<List<ServiceOwnerIdDto>> Handle(GetServiceOwnersByServiceIdQuery request, CancellationToken cancellationToken)
       {
-        var owners = _context.AppOwners.Where(e => e.ApplicationId == request.Id);
+        var owners = _context.ServiceOwners.Where(e => e.ServiceId == request.Id);
         if (!owners.Any(e => e.Email == _currentUserService.UserEmail))
         {
-          throw new NotFoundException(nameof(ApplicationOwner), "You don't have permission for application:" +request.Id);
+          throw new NotFoundException(nameof(ServiceOwner), "You don't have permission for Service:" + request.Id);
         }
-        var result = await owners.ProjectTo<ApplicationOwnerIdDto>(_mapper.ConfigurationProvider)
+        var result = await owners.ProjectTo<ServiceOwnerIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);
 
         return result;

@@ -3,29 +3,27 @@ import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
 import Link from "next/link";
 import { FC } from "react";
 
-import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
+import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
-const Header: FC = () => {
+const ServiceHeader: FC = () => {
   return (
-    <Wrap p="5" bgColor="purple.500" width="full">
+    <Wrap p="5" bgColor="#FF9800" width="full">
       <Flex align="center" width="full">
         <Box>
           <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />
         </Box>
-
         <Box m="5" w="max-content">
-          <SelectAppTriggerBtn></SelectAppTriggerBtn>
+          <SelectServiceTriggerBtn />
         </Box>
-
         <Spacer />
         <Box alignContent="end" justifyContent="right">
-          <Link href="/">
+          <Link href="/ApplicationScreen">
             <Button
               rightIcon={<BsArrowRight />}
               borderWidth="1px"
               borderColor="black"
-              bgColor="orange">
-              Enter as Service Provider
+              bgColor="#673AB7">
+              Enter as Application Owner
             </Button>
           </Link>
         </Box>
@@ -34,4 +32,4 @@ const Header: FC = () => {
   );
 };
 
-export default Header;
+export default ServiceHeader;

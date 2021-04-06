@@ -1,14 +1,14 @@
 import { Box, FormControl, FormLabel, Input, Textarea, VStack } from "@chakra-ui/react";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
 
-import OwnerOverview from "./Owners/OwnerOverview";
+import AppOwnerOverview from "./Owners/AppOwnerOverview";
 import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
 import TokenTable from "./Tokens/TokenTable";
 
 const ApplicationInfo: FC = () => {
-  const { currApplication } = useContext(ViewContext);
+  const { currApplication } = useContext(AppViewContext);
   const [localFormData, setLocalFormData] = useState<IApplicationDto>(
     new ApplicationDto({
       title: "",
@@ -53,7 +53,7 @@ const ApplicationInfo: FC = () => {
           <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
         </Box>
         <Box pt="10" width="full">
-          <OwnerOverview></OwnerOverview>
+          <AppOwnerOverview></AppOwnerOverview>
         </Box>
       </VStack>
     </Box>
