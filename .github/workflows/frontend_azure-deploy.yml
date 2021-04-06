@@ -5,7 +5,7 @@ on:
     paths:
       - "frontend/**"
     branches:
-      - nonce
+      - main
 
 defaults:
   run:
@@ -13,7 +13,7 @@ defaults:
 
 env:
   node-version: 14.x
-  appName: ${{ secrets.AzureAppService_AppName }}-frontend
+  appName: ${{ secrets.AzureAppService_AppName }}
 
 jobs:
   frontend-deploy:

@@ -7,7 +7,7 @@ namespace AuthService.Client
     public string Auth { get; set; }
     public string BaseUrl { get; set; }
 
-    public BaseConfig(IOptions<ServiceOptions> options)
+    public BaseConfig(IOptions<AuthServiceOptions> options)
     {
       BaseUrl = options.Value.Url;
       Auth = options.Value.Token;

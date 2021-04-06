@@ -1372,6 +1372,62 @@ export class ServiceClient extends ClientBase implements IServiceClient {
     }
 }
 
+export interface IUserClient {
+    getAllUsers(): Promise<User[]>;
+}
+
+export class UserClient extends ClientBase implements IUserClient {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(configuration: AuthBase, baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super(configuration);
+        this.http = http ? http : <any>window;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    getAllUsers(): Promise<User[]> {
+        let url_ = this.baseUrl + "/api/User";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllUsers(_response));
+        });
+    }
+
+    protected processGetAllUsers(response: Response): Promise<User[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(User.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<User[]>(<any>null);
+    }
+}
+
 export class CreateApplicationCommand implements ICreateApplicationCommand {
     application?: ApplicationDto | null;
 
@@ -2007,7 +2063,7 @@ export interface ICreateAuthAppTokenCommand {
 
 export class TokenInput implements ITokenInput {
     tokenIdentifier?: string;
-    services?: Services;
+    services?: Service[];
 
     constructor(data?: ITokenInput) {
         if (data) {
@@ -2015,14 +2071,24 @@ export class TokenInput implements ITokenInput {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
-            this.services = data.services && !(<any>data.services).toJSON ? new Services(data.services) : <Services>this.services; 
+            if (data.services) {
+                this.services = [];
+                for (let i = 0; i < data.services.length; i++) {
+                    let item = data.services[i];
+                    this.services[i] = item && !(<any>item).toJSON ? new Service(item) : <Service>item;
+                }
+            }
         }
     }
 
     init(_data?: any) {
         if (_data) {
             this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
-            this.services = _data["services"] ? Services.fromJS(_data["services"]) : <any>null;
+            if (Array.isArray(_data["services"])) {
+                this.services = [] as any;
+                for (let item of _data["services"])
+                    this.services!.push(Service.fromJS(item));
+            }
         }
     }
 
@@ -2036,21 +2102,25 @@ export class TokenInput implements ITokenInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
-        data["services"] = this.services ? this.services.toJSON() : <any>null;
+        if (Array.isArray(this.services)) {
+            data["services"] = [];
+            for (let item of this.services)
+                data["services"].push(item.toJSON());
+        }
         return data; 
     }
 }
 
 export interface ITokenInput {
     tokenIdentifier?: string;
-    services?: IServices;
+    services?: IService[];
 }
 
-export class Services implements IServices {
+export class Service implements IService {
     aud?: string;
-    access?: number[];
+    access?: string[];
 
-    constructor(data?: IServices) {
+    constructor(data?: IService) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2070,9 +2140,9 @@ export class Services implements IServices {
         }
     }
 
-    static fromJS(data: any): Services {
+    static fromJS(data: any): Service {
         data = typeof data === 'object' ? data : {};
-        let result = new Services();
+        let result = new Service();
         result.init(data);
         return result;
     }
@@ -2089,9 +2159,9 @@ export class Services implements IServices {
     }
 }
 
-export interface IServices {
+export interface IService {
     aud?: string;
-    access?: number[];
+    access?: string[];
 }
 
 export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
@@ -2810,6 +2880,95 @@ export class CreateActionCommand implements ICreateActionCommand {
 
 export interface ICreateActionCommand {
     action?: IActionDto | null;
+}
+
+export class User implements IUser {
+    primaryEmail?: string;
+    thumbnailPhotoUrl?: string;
+    name?: Name;
+
+    constructor(data?: IUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.name = data.name && !(<any>data.name).toJSON ? new Name(data.name) : <Name>this.name; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.primaryEmail = _data["primaryEmail"] !== undefined ? _data["primaryEmail"] : <any>null;
+            this.thumbnailPhotoUrl = _data["thumbnailPhotoUrl"] !== undefined ? _data["thumbnailPhotoUrl"] : <any>null;
+            this.name = _data["name"] ? Name.fromJS(_data["name"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): User {
+        data = typeof data === 'object' ? data : {};
+        let result = new User();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["primaryEmail"] = this.primaryEmail !== undefined ? this.primaryEmail : <any>null;
+        data["thumbnailPhotoUrl"] = this.thumbnailPhotoUrl !== undefined ? this.thumbnailPhotoUrl : <any>null;
+        data["name"] = this.name ? this.name.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IUser {
+    primaryEmail?: string;
+    thumbnailPhotoUrl?: string;
+    name?: IName;
+}
+
+export class Name implements IName {
+    fullName?: string;
+    familyName?: string;
+    givenName?: string;
+
+    constructor(data?: IName) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fullName = _data["fullName"] !== undefined ? _data["fullName"] : <any>null;
+            this.familyName = _data["familyName"] !== undefined ? _data["familyName"] : <any>null;
+            this.givenName = _data["givenName"] !== undefined ? _data["givenName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): Name {
+        data = typeof data === 'object' ? data : {};
+        let result = new Name();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fullName"] = this.fullName !== undefined ? this.fullName : <any>null;
+        data["familyName"] = this.familyName !== undefined ? this.familyName : <any>null;
+        data["givenName"] = this.givenName !== undefined ? this.givenName : <any>null;
+        return data; 
+    }
+}
+
+export interface IName {
+    fullName?: string;
+    familyName?: string;
+    givenName?: string;
 }
 
 export enum CommandErrorCode {

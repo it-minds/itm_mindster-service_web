@@ -23,4 +23,8 @@
     <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
   </Target>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthService\AuthService.csproj" />
+  </ItemGroup>
+
 </Project>

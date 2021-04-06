@@ -4,8 +4,9 @@ on:
   push:
     paths:
       - "backend/**"
+      - ".github/workflows/backend_azure-deploy.yml"
     branches:
-      - nonce
+      - main
 
 defaults:
   run:
@@ -14,7 +15,7 @@ defaults:
 env:
   DOTNET_ROOT: "/opt/dotnet"
   dotnet-version: 5.0.x
-  appName: ${{ secrets.AzureAppService_AppName }}-backend
+  appName: backend-${{ secrets.AzureAppService_AppName }}
 
 jobs:
   backend-deploy:
@@ -35,10 +36,11 @@ jobs:
 
       - name: Build with dotnet
         run: |
-          dotnet build AuthService || true
-          dotnet build
+          dotnet restore
+          dotnet build --no-restore AuthService || true
+          dotnet build --no-restore GoogleService || true
+          dotnet build --no-restore
           dotnet publish -c Release -o ${{ env.DOTNET_ROOT }}/${{ env.appName }}
-        working-directory: backend/Web
 
       - name: Deploy Backend to Azure Web App
         uses: azure/webapps-deploy@v2

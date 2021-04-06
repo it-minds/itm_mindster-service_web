@@ -2,9 +2,9 @@ import "../styles.global.css";
 import "isomorphic-unfetch";
 
 import { Center, ChakraProvider, CircularProgress } from "@chakra-ui/react";
-import { AuthContext } from "contexts/AuthContext";
+import { UnsavedChangesContext } from "contexts/UnsavedChangesContext";
 import { AuthStage, useAuth } from "hooks/useAuth";
-import { usePWA } from "hooks/usePWA";
+import { useProtectChanges } from "hooks/useProtectChanges";
 import { AppPropsType } from "next/dist/next-server/lib/utils";
 import Head from "next/head";
 import { I18nProvider } from "next-rosetta";
@@ -19,10 +19,11 @@ type Props = {
   envSettings: EnvSettings;
 };
 
-const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactElement => {
+const MyApp = ({ Component, pageProps, __N_SSG, router }: AppPropsType & Props): ReactElement => {
   // usePWA(); //! OPT IN
 
   const auth = useAuth(); //! OPT IN
+  const protectChanges = useProtectChanges();
 
   useEffect(() => {
     if (!__N_SSG) {
@@ -47,10 +48,10 @@ const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactEl
   }, []);
 
   useEffect(() => {
-    if (auth.authStage == AuthStage.UNAUTHENTICATED) {
+    if (auth.authStage == AuthStage.UNAUTHENTICATED && router.query.demo != "1") {
       auth.login();
     }
-  }, [auth.authStage]);
+  }, [auth.authStage, router]);
 
   return (
     <main>
@@ -68,18 +69,20 @@ const MyApp = ({ Component, pageProps, __N_SSG }: AppPropsType & Props): ReactEl
       <noscript>
         <h1>JavaScript must be enabled!</h1>
       </noscript>
-      {auth.authStage !== AuthStage.AUTHENTICATED ? (
+      {auth.authStage !== AuthStage.AUTHENTICATED && router.query.demo != "1" ? (
         <Center>
           <CircularProgress isIndeterminate />
         </Center>
       ) : (
         <I18nProvider table={pageProps.table}>
           <ChakraProvider theme={theme}>
-            {/* <AuthContext.Provider value={auth}> */}
-            {/* <SignalRContext.Provider value={{ connection }}> */}
-            <Component {...pageProps} />
-            {/* </SignalRContext.Provider> */}
-            {/* </AuthContext.Provider> */}
+            <UnsavedChangesContext.Provider value={protectChanges}>
+              {/* <AuthContext.Provider value={auth}> */}
+              {/* <SignalRContext.Provider value={{ connection }}> */}
+              <Component {...pageProps} />
+              {/* </SignalRContext.Provider> */}
+              {/* </AuthContext.Provider> */}
+            </UnsavedChangesContext.Provider>
           </ChakraProvider>
         </I18nProvider>
       )}
