@@ -10,6 +10,7 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
+import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ServiceOwnerForm from "components/Forms/Service/ServiceOwnerForm";
 import React, { FC, useCallback } from "react";
 import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
@@ -28,7 +29,12 @@ const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) 
 
   return (
     <>
-      <Button onClick={onOpen} borderWidth="1px" borderColor="black" bgColor="green">
+      <Button
+        onClick={onOpen}
+        rightIcon={<BsPlus />}
+        borderWidth="1px"
+        borderColor="black"
+        bgColor="green">
         Add owners
       </Button>
 

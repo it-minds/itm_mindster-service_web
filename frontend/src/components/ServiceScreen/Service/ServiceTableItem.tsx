@@ -28,7 +28,7 @@ const ServiceTableItem: FC<Props> = ({ service }) => {
         <HStack>
           <BsCheck visibility={currService == service ? "" : "hidden"} />
           <Box onClick={() => setIsFavorite(!isFavorite)} cursor={"pointer"}>
-            {isFavorite ? <BsStarFill color="#ded035" /> : <BsStar />}
+            {isFavorite ? <BsStarFill color="yellow" /> : <BsStar />}
           </Box>
         </HStack>
       </Td>

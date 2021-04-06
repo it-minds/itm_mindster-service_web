@@ -10,7 +10,6 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import React, { FC } from "react";
 import { IActionIdDto } from "services/backend/nswagts";
 
@@ -25,7 +24,7 @@ const ViewActionApproversTriggerBtn: FC<Props> = ({ currAction }) => {
 
   return (
     <>
-      <Button onClick={onOpen} rightIcon={<BsPlus />} borderWidth="1px" borderColor="black">
+      <Button onClick={onOpen} borderWidth="1px" borderColor="black">
         Approvers
       </Button>
 
