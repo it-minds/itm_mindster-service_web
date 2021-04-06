@@ -19,7 +19,7 @@ type ContextType = {
   fetchAppTokens: () => Promise<void>;
 };
 
-export const ViewContext = createContext<ContextType>({
+export const AppViewContext = createContext<ContextType>({
   applications: [],
   services: [],
   appTokens: [],

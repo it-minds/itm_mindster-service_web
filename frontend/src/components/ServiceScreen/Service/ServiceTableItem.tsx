@@ -3,30 +3,30 @@ import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
 import { BsFillQuestionCircleFill } from "@react-icons/all-files/bs/BsFillQuestionCircleFill";
 import { BsStar } from "@react-icons/all-files/bs/BsStar";
 import { BsStarFill } from "@react-icons/all-files/bs/BsStarFill";
-import { AppViewContext } from "contexts/AppViewContext";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { useColors } from "hooks/useColors";
 import React, { FC, useContext, useState } from "react";
-import { ApplicationIdDto } from "services/backend/nswagts";
+import { ServiceIdDto } from "services/backend/nswagts";
 
 type Props = {
-  application: ApplicationIdDto;
+  service: ServiceIdDto;
 };
-const AppTableItem: FC<Props> = ({ application }) => {
+const ServiceTableItem: FC<Props> = ({ service }) => {
   const { hoverBg } = useColors();
-  const { currApplication, setCurrApp } = useContext(AppViewContext);
+  const { currService, setCurrService } = useContext(ServiceViewContext);
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
     <Tr
-      onClick={() => setCurrApp(application)}
-      key={application.id}
+      onClick={() => setCurrService(service)}
+      key={service.id}
       _hover={{
         bgColor: hoverBg
       }}
       cursor={"pointer"}>
       <Td>
         <HStack>
-          <BsCheck visibility={currApplication == application ? "" : "hidden"} />
+          <BsCheck visibility={currService == service ? "" : "hidden"} />
           <Box onClick={() => setIsFavorite(!isFavorite)} cursor={"pointer"}>
             {isFavorite ? <BsStarFill color="#ded035" /> : <BsStar />}
           </Box>
@@ -34,10 +34,10 @@ const AppTableItem: FC<Props> = ({ application }) => {
       </Td>
       <Td>
         <HStack>
-          <Box>{application.title}</Box>
+          <Box>{service.title}</Box>
           <Box>
             <Tooltip
-              label={`Description: ${application.description}`}
+              label={`Description: ${service.description}`}
               placement="right"
               hasArrow={true}
               shouldWrapChildren={true}
@@ -47,8 +47,8 @@ const AppTableItem: FC<Props> = ({ application }) => {
           </Box>
         </HStack>
       </Td>
-      <Td>{application.id}</Td>
+      <Td>{service.id}</Td>
     </Tr>
   );
 };
-export default AppTableItem;
+export default ServiceTableItem;

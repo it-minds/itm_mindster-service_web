@@ -1065,6 +1065,8 @@ export class HealthClient extends ClientBase implements IHealthClient {
 export interface IServiceClient {
     createService(command: CreateServiceCommand): Promise<number>;
     getServiceById(id: number): Promise<ServiceIdDto>;
+    addServiceOwners(id: number, command: CreateServiceOwnerCommand): Promise<number>;
+    getServiceOwnersByServiceId(id: number): Promise<ServiceOwnerIdDto[]>;
     createAction(id: number, command: CreateActionCommand): Promise<number>;
     getAllServices(): Promise<ServiceIdDto[]>;
     getMyServices(): Promise<ServiceIdDto[]>;
@@ -1158,6 +1160,92 @@ export class ServiceClient extends ClientBase implements IServiceClient {
             });
         }
         return Promise.resolve<ServiceIdDto>(<any>null);
+    }
+
+    addServiceOwners(id: number, command: CreateServiceOwnerCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Service/{id}/ServiceOwners";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddServiceOwners(_response));
+        });
+    }
+
+    protected processAddServiceOwners(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+
+    getServiceOwnersByServiceId(id: number): Promise<ServiceOwnerIdDto[]> {
+        let url_ = this.baseUrl + "/api/Service/{id}/ServiceOwners";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetServiceOwnersByServiceId(_response));
+        });
+    }
+
+    protected processGetServiceOwnersByServiceId(response: Response): Promise<ServiceOwnerIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ServiceOwnerIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ServiceOwnerIdDto[]>(<any>null);
     }
 
     createAction(id: number, command: CreateActionCommand): Promise<number> {
@@ -2634,6 +2722,126 @@ export class ActionIdDto extends ActionDto implements IActionIdDto {
 }
 
 export interface IActionIdDto extends IActionDto {
+    id?: number;
+}
+
+export class CreateServiceOwnerCommand implements ICreateServiceOwnerCommand {
+    serviceOwners?: ServiceOwnerDto[] | null;
+
+    constructor(data?: ICreateServiceOwnerCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.serviceOwners) {
+                this.serviceOwners = [];
+                for (let i = 0; i < data.serviceOwners.length; i++) {
+                    let item = data.serviceOwners[i];
+                    this.serviceOwners[i] = item && !(<any>item).toJSON ? new ServiceOwnerDto(item) : <ServiceOwnerDto>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["serviceOwners"])) {
+                this.serviceOwners = [] as any;
+                for (let item of _data["serviceOwners"])
+                    this.serviceOwners!.push(ServiceOwnerDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateServiceOwnerCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateServiceOwnerCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.serviceOwners)) {
+            data["serviceOwners"] = [];
+            for (let item of this.serviceOwners)
+                data["serviceOwners"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICreateServiceOwnerCommand {
+    serviceOwners?: IServiceOwnerDto[] | null;
+}
+
+export class ServiceOwnerDto implements IServiceOwnerDto {
+    email?: string | null;
+
+    constructor(data?: IServiceOwnerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ServiceOwnerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceOwnerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        return data; 
+    }
+}
+
+export interface IServiceOwnerDto {
+    email?: string | null;
+}
+
+export class ServiceOwnerIdDto extends ServiceOwnerDto implements IServiceOwnerIdDto {
+    id?: number;
+
+    constructor(data?: IServiceOwnerIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ServiceOwnerIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceOwnerIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IServiceOwnerIdDto extends IServiceOwnerDto {
     id?: number;
 }
 

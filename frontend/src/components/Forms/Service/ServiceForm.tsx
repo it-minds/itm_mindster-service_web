@@ -16,59 +16,49 @@ import {
   Spinner,
   Textarea,
   useDisclosure,
-  useToast,
   Wrap
 } from "@chakra-ui/react";
-import { ServiceContext } from "contexts/ServiceContext";
-import React, { FC, useCallback, useContext, useRef, useState } from "react";
-import { genServiceClient } from "services/backend/apiClients";
-import { CreateServiceCommand } from "services/backend/nswagts";
-
-const ServiceForm: FC = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import { IServiceDto, ServiceDto } from "services/backend/nswagts";
+type Props = {
+  submitCallback: (service: IServiceDto) => Promise<void>;
+  serviceMetaData?: IServiceDto;
+};
+const ServiceForm: FC<Props> = ({ submitCallback, serviceMetaData }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [service, setService] = useState<IServiceDto>(
+    new ServiceDto({
+      title: null,
+      description: null,
+      state: 0
+    })
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchData } = useContext(ServiceContext);
-  const cancelRef = useRef();
+  const cancelRef = useRef<HTMLButtonElement>();
 
-  const toast = useToast();
-
-  const addService = useCallback(async () => {
-    setIsLoading(true);
-    const serviceClient = await genServiceClient();
-    try {
-      await serviceClient.createService(
-        new CreateServiceCommand({
-          service: {
-            title: title,
-            description: description,
-            state: 0
-          }
-        })
-      );
-      toast({
-        description: "Service was added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-      await fetchData();
-      onClose();
-    } catch (error) {
-      toast({
-        description: `PostService responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
+  useEffect(() => {
+    if (serviceMetaData) {
+      setService(serviceMetaData);
     }
+  }, [serviceMetaData]);
+
+  const submitService = useCallback(async () => {
+    onClose();
+    setIsLoading(true);
+    await submitCallback(service);
     setIsLoading(false);
-  }, [title, description]);
+  }, [service]);
 
   const onSubmit = useCallback(event => {
     event.preventDefault();
     onOpen();
+  }, []);
+
+  const updateLocalService = useCallback((value: unknown, key: keyof IServiceDto) => {
+    setService(form => {
+      (form[key] as unknown) = value;
+      return form;
+    });
   }, []);
 
   return (
@@ -81,16 +71,16 @@ const ServiceForm: FC = () => {
                 <FormLabel>Title:</FormLabel>
                 <Input
                   type="text"
-                  value={title}
+                  value={service.title}
                   placeholder="Title of your service"
-                  onChange={event => setTitle(event.target.value)}></Input>
+                  onChange={event => updateLocalService(event.target.value, "title")}></Input>
               </FormControl>
               <FormControl mt="6">
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Description of service"
-                  value={description}
-                  onChange={event => setDescription(event.target.value)}
+                  value={service.description}
+                  onChange={event => updateLocalService(event.target.value, "description")}
                 />
               </FormControl>
               {isLoading ? (
@@ -109,7 +99,6 @@ const ServiceForm: FC = () => {
                     isOpen={isOpen}
                     isCentered>
                     <AlertDialogOverlay />
-
                     <AlertDialogContent>
                       <AlertDialogHeader>Confirm submission</AlertDialogHeader>
                       <AlertDialogCloseButton />
@@ -117,18 +106,18 @@ const ServiceForm: FC = () => {
                         Are you sure you want submit this service?
                         <FormControl>
                           <FormLabel>Title:</FormLabel>
-                          <Input type="text" isReadOnly={true} value={title}></Input>
+                          <Input type="text" isReadOnly={true} value={service.title}></Input>
                         </FormControl>
                         <FormControl mt="6">
                           <FormLabel>Description:</FormLabel>
-                          <Textarea isReadOnly={true} value={description} />
+                          <Textarea isReadOnly={true} value={service.description} />
                         </FormControl>
                       </AlertDialogBody>
                       <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
                           No
                         </Button>
-                        <Button onClick={addService} type="submit" colorScheme="red" ml={3}>
+                        <Button onClick={submitService} type="submit" colorScheme="red" ml={3}>
                           Yes
                         </Button>
                       </AlertDialogFooter>

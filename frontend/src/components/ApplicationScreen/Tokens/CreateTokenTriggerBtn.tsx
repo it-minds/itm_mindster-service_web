@@ -13,14 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { CreateAppTokenCommand } from "services/backend/nswagts";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppTokens, currApplication } = useContext(ViewContext);
+  const { fetchAppTokens, currApplication } = useContext(AppViewContext);
   const toast = useToast();
 
   const createAppToken = useCallback(

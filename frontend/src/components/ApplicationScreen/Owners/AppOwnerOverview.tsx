@@ -1,12 +1,12 @@
 import { Box, Heading, Tag, VStack } from "@chakra-ui/react";
-import { ViewContext } from "contexts/ViewContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import { FC, useContext } from "react";
 import { ApplicationOwnerIdDto } from "services/backend/nswagts";
 
 import AddOwnersTriggerBtn from "./AddOwnersTriggerBtn";
 
-const OwnerOverview: FC = () => {
-  const { appOwners, currApplication } = useContext(ViewContext);
+const AppOwnerOverview: FC = () => {
+  const { appOwners, currApplication } = useContext(AppViewContext);
 
   if (currApplication == null) return null;
   return (
@@ -26,4 +26,4 @@ const OwnerOverview: FC = () => {
   );
 };
 
-export default OwnerOverview;
+export default AppOwnerOverview;

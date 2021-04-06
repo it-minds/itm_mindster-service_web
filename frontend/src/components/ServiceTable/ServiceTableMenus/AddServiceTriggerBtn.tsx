@@ -27,7 +27,7 @@ const AddServiceTriggerBtn: FC = () => {
           <ModalHeader>Create a new service</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ServiceForm></ServiceForm>
+            <ServiceForm submitCallback={null}></ServiceForm>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
