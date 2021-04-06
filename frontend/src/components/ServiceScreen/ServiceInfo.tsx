@@ -33,13 +33,13 @@ const ServiceInfo: FC = () => {
                 type="text"
                 value={localFormData.title}
                 isReadOnly={true}
-                placeholder="Title of your application"></Input>
+                placeholder="Title of your service"></Input>
             </FormControl>
             <FormControl mt="6">
               <FormLabel>Description:</FormLabel>
               <Textarea
                 height="200px"
-                placeholder="Description of application"
+                placeholder="Description of service"
                 isReadOnly={true}
                 value={localFormData.description}
               />

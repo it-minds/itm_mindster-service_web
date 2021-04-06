@@ -5,7 +5,7 @@ import { FC } from "react";
 
 import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
-const ServiceHeader: FC = () => {
+const AppHeader: FC = () => {
   return (
     <Wrap p="5" bgColor="purple.500" width="full">
       <Flex align="center" width="full">
@@ -19,7 +19,7 @@ const ServiceHeader: FC = () => {
 
         <Spacer />
         <Box alignContent="end" justifyContent="right">
-          <Link href="/">
+          <Link href="/ServiceScreen">
             <Button
               rightIcon={<BsArrowRight />}
               borderWidth="1px"
@@ -34,4 +34,4 @@ const ServiceHeader: FC = () => {
   );
 };
 
-export default ServiceHeader;
+export default AppHeader;
