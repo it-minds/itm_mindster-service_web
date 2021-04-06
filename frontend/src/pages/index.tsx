@@ -5,7 +5,6 @@ import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
-
 import React, { useState } from "react";
 
 const IndexPage: NextPage = () => {
