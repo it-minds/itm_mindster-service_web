@@ -16,7 +16,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Tag,
   useDisclosure
 } from "@chakra-ui/react";
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
@@ -63,10 +62,7 @@ const SelectServiceTriggerBtn: FC = () => {
               <TabList>
                 <Tab>Recent</Tab>
                 <Tab>
-                  <Box>
-                    Starred
-                    <Tag>Preview</Tag>
-                  </Box>
+                  <Box>Starred</Box>
                 </Tab>
                 <Tab>All</Tab>
               </TabList>

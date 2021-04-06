@@ -1,4 +1,6 @@
 import { Box, FormControl, FormLabel, Input, Textarea, VStack } from "@chakra-ui/react";
+import MarkdownTwoInOne from "components/Markdown/MarkdownTwoInOne";
+import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IServiceIdDto, ServiceIdDto } from "services/backend/nswagts";
@@ -15,10 +17,12 @@ const ServiceInfo: FC = () => {
       description: ""
     })
   );
+  const [value, setValue] = useState(localFormData.description);
 
   useEffect(() => {
     if (currService) {
       setLocalFormData(currService);
+      setValue(currService.description);
     }
   }, [currService]);
 
@@ -26,7 +30,9 @@ const ServiceInfo: FC = () => {
     <Box padding="100" width="full">
       <VStack pl="50" width="full" align="left">
         <Box width={0.65}>
-          <form>
+          <MarkdownViewer value={localFormData.description} />
+
+          {/* <form>
             <FormControl>
               <FormLabel>Title:</FormLabel>
               <Input
@@ -44,7 +50,7 @@ const ServiceInfo: FC = () => {
                 value={localFormData.description}
               />
             </FormControl>
-          </form>
+          </form> */}
         </Box>
         <Box pt="10" width="full">
           <ActionTable />

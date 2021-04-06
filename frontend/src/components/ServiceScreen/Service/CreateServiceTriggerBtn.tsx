@@ -13,22 +13,28 @@ import {
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ServiceForm from "components/Forms/Service/ServiceForm";
+import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateServiceCommand, ServiceDto } from "services/backend/nswagts";
+import { CreateServiceCommand, ServiceDto, ServiceStates } from "services/backend/nswagts";
 
 const CreateServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { fetchServices } = useContext(ServiceViewContext);
+  const [value, setValue] = useState("# My Service\n");
   const toast = useToast();
 
-  const addService = useCallback(async (form: ServiceDto) => {
+  const addService = useCallback(async (title: string, description: string) => {
     const client = await genServiceClient();
     try {
       await client.createService(
         new CreateServiceCommand({
-          service: form
+          service: new ServiceDto({
+            title: title,
+            description: description,
+            state: ServiceStates.Pending
+          })
         })
       );
       toast({
@@ -59,14 +65,15 @@ const CreateServiceTriggerBtn: FC = () => {
         Create new Service
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create a new Service</ModalHeader>
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ServiceForm submitCallback={addService} />
+            {/* <ServiceForm submitCallback={addService} /> */}
+            <MarkdownTwoSplit value={value} onValueChange={setValue} onSave={addService} />
           </ModalBody>
           <Divider />
           <ModalFooter>
