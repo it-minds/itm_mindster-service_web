@@ -104,7 +104,28 @@ namespace Application.UnitTests
           Email = "iAlsoOwnService1@mail.dk"
         }
       );
-      
+
+      context.ActionApprovers.AddRange(
+        new ActionApprover
+        {
+          Id = 1,
+          ActionId = 1,
+          Email = "test@mail.dk"
+        },
+        new ActionApprover
+        {
+          Id = 2,
+          ActionId = 2,
+          Email = "test@mail.dk"
+        },
+        new ActionApprover()
+        {
+          Id = 3,
+          ActionId = 1,
+          Email = "iAlsoOwnAction1@mail.dk"
+        }
+      );
+
       context.Applications.AddRange(
         new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
         new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
