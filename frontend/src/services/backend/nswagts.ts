@@ -1068,6 +1068,8 @@ export interface IServiceClient {
     addServiceOwners(id: number, command: CreateServiceOwnerCommand): Promise<number>;
     getServiceOwnersByServiceId(id: number): Promise<ServiceOwnerIdDto[]>;
     createAction(id: number, command: CreateActionCommand): Promise<number>;
+    addActionApprovers(id: number, command: CreateActionApproverCommand): Promise<number>;
+    getActionApproversByActionId(id: number): Promise<ActionApproverIdDto[]>;
     getAllServices(): Promise<ServiceIdDto[]>;
     getMyServices(): Promise<ServiceIdDto[]>;
 }
@@ -1289,6 +1291,92 @@ export class ServiceClient extends ClientBase implements IServiceClient {
             });
         }
         return Promise.resolve<number>(<any>null);
+    }
+
+    addActionApprovers(id: number, command: CreateActionApproverCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Service/{id}/ActionApprovers";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processAddActionApprovers(_response));
+        });
+    }
+
+    protected processAddActionApprovers(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(<any>null);
+    }
+
+    getActionApproversByActionId(id: number): Promise<ActionApproverIdDto[]> {
+        let url_ = this.baseUrl + "/api/Service/{id}/ActionApprovers";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetActionApproversByActionId(_response));
+        });
+    }
+
+    protected processGetActionApproversByActionId(response: Response): Promise<ActionApproverIdDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ActionApproverIdDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ActionApproverIdDto[]>(<any>null);
     }
 
     getAllServices(): Promise<ServiceIdDto[]> {
@@ -2880,6 +2968,126 @@ export class CreateActionCommand implements ICreateActionCommand {
 
 export interface ICreateActionCommand {
     action?: IActionDto | null;
+}
+
+export class CreateActionApproverCommand implements ICreateActionApproverCommand {
+    actionApprovers?: ActionApproverDto[] | null;
+
+    constructor(data?: ICreateActionApproverCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.actionApprovers) {
+                this.actionApprovers = [];
+                for (let i = 0; i < data.actionApprovers.length; i++) {
+                    let item = data.actionApprovers[i];
+                    this.actionApprovers[i] = item && !(<any>item).toJSON ? new ActionApproverDto(item) : <ActionApproverDto>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["actionApprovers"])) {
+                this.actionApprovers = [] as any;
+                for (let item of _data["actionApprovers"])
+                    this.actionApprovers!.push(ActionApproverDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateActionApproverCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateActionApproverCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.actionApprovers)) {
+            data["actionApprovers"] = [];
+            for (let item of this.actionApprovers)
+                data["actionApprovers"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICreateActionApproverCommand {
+    actionApprovers?: IActionApproverDto[] | null;
+}
+
+export class ActionApproverDto implements IActionApproverDto {
+    email?: string | null;
+
+    constructor(data?: IActionApproverDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ActionApproverDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActionApproverDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        return data; 
+    }
+}
+
+export interface IActionApproverDto {
+    email?: string | null;
+}
+
+export class ActionApproverIdDto extends ActionApproverDto implements IActionApproverIdDto {
+    id?: number;
+
+    constructor(data?: IActionApproverIdDto) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ActionApproverIdDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActionApproverIdDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface IActionApproverIdDto extends IActionApproverDto {
+    id?: number;
 }
 
 export class User implements IUser {

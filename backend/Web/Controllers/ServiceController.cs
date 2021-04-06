@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.ActionApprovers;
+using Application.ActionApprovers.Commands.CreateActionApprovers;
+using Application.ActionApprovers.Queries.GetActionApproversByActionId;
 using Application.Services;
 using Application.Services.Commands.CreateService;
 using Application.Services.Queries;
@@ -41,6 +44,17 @@ namespace Web.Controllers
     {
       command.Id = id;
       return await Mediator.Send(command);
+    }
+    [HttpPost("{id}/ActionApprovers")]
+    public async Task<ActionResult<int>> AddActionApprovers([FromRoute] int id, CreateActionApproverCommand command)
+    {
+      command.Id = id;
+      return await Mediator.Send(command);
+    }
+    [HttpGet("{id}/ActionApprovers")]
+    public async Task<ActionResult<List<ActionApproverIdDto>>> GetActionApproversByActionId([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetActionApproversByActionIdQuery { Id = id });
     }
     [HttpGet("All")]
     public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices()

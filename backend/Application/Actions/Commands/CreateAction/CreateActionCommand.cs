@@ -34,8 +34,16 @@ namespace Application.Actions.Commands.CreateAction
       public async Task<int> Handle(CreateActionCommand request, CancellationToken cancellationToken)
       {
 
-        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id);
-        if (!await _context.ServiceOwners.AnyAsync(e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken)) throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+        if (!await _context.Services.AnyAsync(e => e.Id == request.Id, cancellationToken))
+        {
+          throw new NotFoundException(nameof(Service), request.Id);
+        }
+
+        if (!await _context.ServiceOwners.AnyAsync(
+          e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
+        {
+          throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+        }
 
         var action = new Action
         {
@@ -47,6 +55,14 @@ namespace Application.Actions.Commands.CreateAction
 
         _context.Actions.Add(action);
 
+        await _context.SaveChangesAsync(cancellationToken);
+
+        var actionApprover = new ActionApprover
+        {
+          ActionId = action.Id,
+          Email = _currentUserService.UserEmail
+        };
+        _context.ActionApprovers.Add(actionApprover);
         await _context.SaveChangesAsync(cancellationToken);
 
         return action.Id;
