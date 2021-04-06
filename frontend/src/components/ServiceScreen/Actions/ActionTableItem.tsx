@@ -1,15 +1,20 @@
 import { Td, Tr } from "@chakra-ui/react";
 import React, { FC } from "react";
-import { ActionIdDto } from "services/backend/nswagts";
+import { IActionIdDto } from "services/backend/nswagts";
+
+import ViewActionApproversTriggerBtn from "./ActionApprovers/ViewActionApproversTriggerBtn";
 
 type Props = {
-  action: ActionIdDto;
+  action: IActionIdDto;
 };
 const ActionTableItem: FC<Props> = ({ action }) => {
   return (
     <Tr>
       <Td>{action.id}</Td>
       <Td>{action.title}</Td>
+      <Td>
+        <ViewActionApproversTriggerBtn currAction={action} />
+      </Td>
     </Tr>
   );
 };
