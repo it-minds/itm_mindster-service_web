@@ -41,7 +41,6 @@ namespace Application.ActionApprovers.Commands.CreateActionApprovers
           throw new NotFoundException(nameof(Action), request.Id + "Not authorized for the given Action");
         }
         var existingApprovers = _context.ActionApprovers.Where(e => e.ActionId == request.Id);
-
         var newApprovers = request.ActionApprovers
           .Where(a => !existingApprovers.Any(e => e.Email == a.Email))
           .Select(e => new ActionApprover
