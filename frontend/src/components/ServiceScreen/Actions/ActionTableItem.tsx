@@ -3,7 +3,6 @@ import React, { FC } from "react";
 import { IActionIdDto } from "services/backend/nswagts";
 
 import ApproverMenu from "./ActionApprovers/ApproverMenu";
-import ViewActionApproversTriggerBtn from "./ActionApprovers/ViewActionApproversTriggerBtn";
 
 type Props = {
   action: IActionIdDto;

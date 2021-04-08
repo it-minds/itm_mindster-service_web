@@ -8,53 +8,19 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
-  useToast
+  useDisclosure
 } from "@chakra-ui/react";
-import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
 import ActionApproverForm from "components/Forms/Service/ActionApproverForm";
-import ServiceOwnerForm from "components/Forms/Service/ServiceOwnerForm";
-import React, { FC, useCallback } from "react";
-import { genServiceClient } from "services/backend/apiClients";
-import {
-  CreateActionApproverCommand,
-  IActionApproverDto,
-  IActionIdDto
-} from "services/backend/nswagts";
+import React, { FC } from "react";
+import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
 
 type Props = {
   currAction: IActionIdDto;
-  submitCallback: (OwnerMetaDataForm: IServiceOwnerDto[]) => Promise<void>;
+  submitCallback: (OwnerMetaDataForm: IActionApproverDto[]) => Promise<void>;
 };
-const AddActionApproverTriggerBtn: FC<Props> = ({ currAction }) => {
+const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
-
-  const addApprovers = useCallback(async (form: IActionApproverDto[]) => {
-    const client = await genServiceClient();
-    try {
-      await client.addActionApprovers(
-        currAction.id,
-        new CreateActionApproverCommand({
-          actionApprovers: form
-        })
-      );
-      toast({
-        description: "Approvers were added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `PostApprovers responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    }
-  }, []);
 
   return (
     <>
@@ -67,7 +33,7 @@ const AddActionApproverTriggerBtn: FC<Props> = ({ currAction }) => {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ActionApproverForm submitCallback={addApprovers} />
+            <ActionApproverForm submitCallback={submitCallback} />
           </ModalBody>
           <Divider />
           <ModalFooter>
