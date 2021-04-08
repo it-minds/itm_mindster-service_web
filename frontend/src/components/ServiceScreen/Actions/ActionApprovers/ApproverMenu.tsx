@@ -13,6 +13,7 @@ import { useEffectAsync } from "hooks/useEffectAsync";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import {
+  ActionApproverDto,
   CreateActionApproverCommand,
   IActionApproverDto,
   IActionApproverIdDto,
@@ -20,7 +21,7 @@ import {
 } from "services/backend/nswagts";
 
 import AddActionApproverTriggerBtn from "./AddActionApproverTriggerBtn";
-import CopyApproverTriggerBtn from "./CopyApproversTriggerBtn";
+import CopyApproverTriggerBtn from "./CopyApprovers/CopyApproversTriggerBtn";
 import ViewActionApproversTriggerBtn from "./ViewActionApproversTriggerBtn";
 
 type Props = {
@@ -37,33 +38,36 @@ const ApproverMenu: FC<Props> = ({ currAction }) => {
     setApprovers(data);
   }, []);
 
-  const addApprovers = useCallback(async (form: IActionApproverDto[]) => {
-    const client = await genServiceClient();
-    try {
-      await client.addActionApprovers(
-        currAction.id,
-        new CreateActionApproverCommand({
-          actionApprovers: form
-        })
-      );
-      toast({
-        description: "Approvers were added",
-        status: "success",
-        duration: 5000,
-        isClosable: true
-      });
-    } catch (error) {
-      toast({
-        description: `PostApprovers responded: ${error}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true
-      });
-    } finally {
-      const data = await fetchActionApprovers(currAction.id);
-      setApprovers(data);
-    }
-  }, []);
+  const addApprovers = useCallback(
+    async (actionId: number, form: IActionApproverDto[]) => {
+      const client = await genServiceClient();
+      try {
+        await client.addActionApprovers(
+          actionId,
+          new CreateActionApproverCommand({
+            actionApprovers: form
+          })
+        );
+        toast({
+          description: "Approvers were added",
+          status: "success",
+          duration: 5000,
+          isClosable: true
+        });
+      } catch (error) {
+        toast({
+          description: `PostApprovers responded: ${error}`,
+          status: "error",
+          duration: 5000,
+          isClosable: true
+        });
+      } finally {
+        const data = await fetchActionApprovers(currAction.id);
+        setApprovers(data);
+      }
+    },
+    [approvers]
+  );
 
   return (
     <Popover placement="bottom-start">
@@ -78,7 +82,11 @@ const ApproverMenu: FC<Props> = ({ currAction }) => {
           <VStack minWidth="full" spacing="0">
             <ViewActionApproversTriggerBtn currAction={currAction} approvers={approvers} />
             <AddActionApproverTriggerBtn currAction={currAction} submitCallback={addApprovers} />
-            <CopyApproverTriggerBtn currAction={currAction} />
+            <CopyApproverTriggerBtn
+              ownersToCopy={approvers.map(e => new ActionApproverDto({ email: e.email }))}
+              currAction={currAction}
+              submitCallback={addApprovers}
+            />
           </VStack>
         </PopoverBody>
       </PopoverContent>

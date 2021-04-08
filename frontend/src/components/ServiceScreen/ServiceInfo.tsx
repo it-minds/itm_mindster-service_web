@@ -31,26 +31,6 @@ const ServiceInfo: FC = () => {
       <VStack pl="50" width="full" align="left">
         <Box width={0.65}>
           <MarkdownViewer value={localFormData.description} />
-
-          {/* <form>
-            <FormControl>
-              <FormLabel>Title:</FormLabel>
-              <Input
-                type="text"
-                value={localFormData.title}
-                isReadOnly={true}
-                placeholder="Title of your service"></Input>
-            </FormControl>
-            <FormControl mt="6">
-              <FormLabel>Description:</FormLabel>
-              <Textarea
-                height="200px"
-                placeholder="Description of service"
-                isReadOnly={true}
-                value={localFormData.description}
-              />
-            </FormControl>
-          </form> */}
         </Box>
         <Box pt="10" width="full">
           <ActionTable />
