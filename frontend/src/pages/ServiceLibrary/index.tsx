@@ -1,4 +1,5 @@
 import ServiceLibrary from "components/ServiceLibrary/ServiceLibrary";
+import { ApplicationContext } from "contexts/ApplicationContext";
 import { ServiceContext } from "contexts/ServiceContext";
 import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
@@ -28,15 +29,19 @@ const ServiceLibraryPage: NextPage = () => {
     fetchData();
   }, [fetchData]);
   return (
-    <ServiceContext.Provider
+    <ApplicationContext.Provider
       value={{
         appTokens: [],
         fetchAppTokens: null,
         services: serviceEntities,
-        fetchData: fetchData
+        fetchServices: fetchData,
+        fetchApps: null,
+        currToken: null,
+        setCurrToken: null,
+        applications: []
       }}>
       <ServiceLibrary />
-    </ServiceContext.Provider>
+    </ApplicationContext.Provider>
   );
 };
 

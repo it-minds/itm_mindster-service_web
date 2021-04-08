@@ -2,6 +2,7 @@ import { Td, Tr } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { IActionIdDto } from "services/backend/nswagts";
 
+import ApproverMenu from "./ActionApprovers/ApproverMenu";
 import ViewActionApproversTriggerBtn from "./ActionApprovers/ViewActionApproversTriggerBtn";
 
 type Props = {
@@ -13,7 +14,7 @@ const ActionTableItem: FC<Props> = ({ action }) => {
       <Td>{action.id}</Td>
       <Td>{action.title}</Td>
       <Td>
-        <ViewActionApproversTriggerBtn currAction={action} />
+        <ApproverMenu currAction={action} />
       </Td>
     </Tr>
   );

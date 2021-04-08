@@ -8,35 +8,57 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
+import PopoverMenuButton from "components/Common/PopoverMenuButton";
+import ActionApproverForm from "components/Forms/Service/ActionApproverForm";
 import ServiceOwnerForm from "components/Forms/Service/ServiceOwnerForm";
 import React, { FC, useCallback } from "react";
-import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
+import { genServiceClient } from "services/backend/apiClients";
+import {
+  CreateActionApproverCommand,
+  IActionApproverDto,
+  IActionIdDto
+} from "services/backend/nswagts";
 
 type Props = {
   currAction: IActionIdDto;
-  submitCallback: (Approvers: IActionApproverDto[]) => Promise<void>;
+  submitCallback: (OwnerMetaDataForm: IServiceOwnerDto[]) => Promise<void>;
 };
-const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) => {
+const AddActionApproverTriggerBtn: FC<Props> = ({ currAction }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
-  const handleSubmit = useCallback(async (approvers: IActionApproverDto[]) => {
-    await submitCallback(approvers);
-    onClose();
+  const addApprovers = useCallback(async (form: IActionApproverDto[]) => {
+    const client = await genServiceClient();
+    try {
+      await client.addActionApprovers(
+        currAction.id,
+        new CreateActionApproverCommand({
+          actionApprovers: form
+        })
+      );
+      toast({
+        description: "Approvers were added",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      toast({
+        description: `PostApprovers responded: ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true
+      });
+    }
   }, []);
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green">
-        Add owners
-      </Button>
+      <PopoverMenuButton btnText={"Add owners"} onClickMethod={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="3xl">
         <ModalOverlay />
@@ -45,7 +67,7 @@ const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) 
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ServiceOwnerForm submitCallback={handleSubmit} />
+            <ActionApproverForm submitCallback={addApprovers} />
           </ModalBody>
           <Divider />
           <ModalFooter>
