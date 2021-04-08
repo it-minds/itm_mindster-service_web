@@ -51,7 +51,7 @@ const ActionApproverForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
       });
       setNewApprover({ email: "" });
     },
-    [approvers, newApprover]
+    [newApprover]
   );
   const addApprovers = useCallback(async () => {
     setIsLoading(true);

@@ -1,5 +1,6 @@
 import { Box, Tag, useToast, VStack } from "@chakra-ui/react";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { useEffectAsync } from "hooks/useEffectAsync";
 import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import {
@@ -19,12 +20,9 @@ const ActionApproverOverview: FC<Props> = ({ currAction }) => {
   const { fetchActionApprovers } = useContext(ServiceViewContext);
   const toast = useToast();
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchActionApprovers(currAction.id);
-      setApprovers(data);
-    }
-    fetchData();
+  useEffectAsync(async () => {
+    const data = await fetchActionApprovers(currAction.id);
+    setApprovers(data);
   }, []);
 
   const addApprovers = useCallback(async (form: ActionApproverDto[]) => {

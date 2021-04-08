@@ -42,8 +42,9 @@ namespace Application.ServiceOwners.Commands.CreateServiceOwners
           throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
         }
 
+        var existingOwners = _context.ServiceOwners.Where(e => e.ServiceId == request.Id);
         var newOwners = request.ServiceOwners
-          .Where(a => !_context.ServiceOwners.Any(e => e.Email == a.Email && e.ServiceId == request.Id))
+          .Where(a => !existingOwners.Any(e => e.Email == a.Email))
           .Select(e => new ServiceOwner
           {
             ServiceId = request.Id,

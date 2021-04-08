@@ -40,9 +40,9 @@ namespace Application.ApplicationOwners.Commands.CreateApplicationOwners
         {
           throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
         }
-
+        var existingOwners = _context.AppOwners.Where(e => e.ApplicationId == request.Id);
         var newOwners =request.AppOwners
-          .Where(a => !_context.AppOwners.Any(e => e.Email == a.Email && e.ApplicationId == request.Id))
+          .Where(a => !existingOwners.Any(e => e.Email == a.Email))
           .Select(e => new ApplicationOwner
         {
           ApplicationId = request.Id,

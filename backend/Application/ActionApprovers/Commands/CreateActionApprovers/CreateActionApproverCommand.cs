@@ -40,14 +40,16 @@ namespace Application.ActionApprovers.Commands.CreateActionApprovers
         {
           throw new NotFoundException(nameof(Action), request.Id + "Not authorized for the given Action");
         }
+        var existingApprovers = _context.ActionApprovers.Where(e => e.ActionId == request.Id);
 
         var newApprovers = request.ActionApprovers
-          .Where(a => !_context.ActionApprovers.Any(e => e.Email == a.Email && e.ActionId == request.Id))
+          .Where(a => !existingApprovers.Any(e => e.Email == a.Email))
           .Select(e => new ActionApprover
           {
             ActionId = request.Id,
             Email = e.Email
           });
+
         var result = newApprovers.Count();
         _context.ActionApprovers.AddRange(newApprovers);
         await _context.SaveChangesAsync(cancellationToken);
