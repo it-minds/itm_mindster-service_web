@@ -34,9 +34,9 @@ const IndexPage: NextPage = () => {
           type: ListReducerActionType.AddOrUpdate,
           data
         });
-      else logger.info("ApplicationClient.get no data");
+      else logger.info("ApplicationClient.getAllApps got no data");
     } catch (err) {
-      logger.warn("ApplicationClient.get Error", err);
+      logger.warn("ApplicationClient.getAllApps Error", err);
     }
   }, []);
 
@@ -50,10 +50,9 @@ const IndexPage: NextPage = () => {
           type: ListReducerActionType.Reset,
           data
         });
-        console.log(appTokens);
-      } else logger.info("exampleClient.get no data");
+      } else logger.info("ApplicationClient.getAppTokensByAppId got no data");
     } catch (err) {
-      logger.warn("exampleClient.get Error", err);
+      logger.warn("ApplicationClient.getAppTokensByAppId Error", err);
     }
   }, [currApplication]);
 
@@ -67,9 +66,9 @@ const IndexPage: NextPage = () => {
           type: ListReducerActionType.Reset,
           data
         });
-      else logger.info("exampleClient.get no data");
+      else logger.info("ApplicationClient.getApplicationsOwnersByAppId got no data");
     } catch (err) {
-      logger.warn("exampleClient.get Error", err);
+      logger.warn("ApplicationClient.getApplicationsOwnersByAppId Error", err);
     }
   }, [currApplication]);
 
@@ -83,9 +82,9 @@ const IndexPage: NextPage = () => {
           type: ListReducerActionType.AddOrUpdate,
           data
         });
-      else logger.info("exampleClient.get no data");
+      else logger.info("ServiceClient.GetAllServices got no data");
     } catch (err) {
-      logger.warn("exampleClient.get Error", err);
+      logger.warn("ServiceClient.GetAllServices Error", err);
     }
   }, []);
 
