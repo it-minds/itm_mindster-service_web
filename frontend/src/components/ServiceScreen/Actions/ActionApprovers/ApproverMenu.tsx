@@ -74,7 +74,7 @@ const ApproverMenu: FC<Props> = ({ currAction }) => {
             />
             <AddActionApproverTriggerBtn currAction={currAction} submitCallback={addApprovers} />
             <CopyApproverTriggerBtn
-              ownersToCopy={approvers.filter(e => e.actionId == currAction.id)}
+              approversToCopy={approvers.filter(e => e.actionId == currAction.id)}
               currAction={currAction}
               submitCallback={addApprovers}
             />

@@ -34,7 +34,6 @@ const ServiceScreen: NextPage = () => {
           type: ListReducerActionType.Reset,
           data
         });
-        console.log(appTokens);
       } else logger.info("ApplicationClient.getAppToken got no data");
     } catch (err) {
       logger.warn("ApplicationClient.getAppToken Error", err);
@@ -58,10 +57,7 @@ const ServiceScreen: NextPage = () => {
 
     if (currService != null || currService != undefined) {
       const updatedService = services.find(e => e.id == currService.id);
-      console.log("updated Service");
-      console.log(updatedService);
       setCurrService(updatedService);
-      console.log(currService);
     }
   }, []);
 
@@ -117,7 +113,6 @@ const ServiceScreen: NextPage = () => {
     if (currService) {
       fetchServiceOwners();
       fetchActionApprovers();
-      console.log(approvers);
     }
   }, [fetchServiceOwners, fetchActionApprovers, currService]);
 
