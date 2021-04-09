@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.ActionApprovers;
 using Application.ActionApprovers.Commands.CreateActionApprovers;
 using Application.ActionApprovers.Queries.GetActionApproversByActionId;
+using Application.ActionApprovers.Queries.GetActionApproversByServiceId;
 using Application.Services;
 using Application.Services.Commands.CreateService;
 using Application.Services.Queries;
@@ -51,10 +52,15 @@ namespace Web.Controllers
       command.Id = id;
       return await Mediator.Send(command);
     }
-    [HttpGet("{id}/ActionApprovers")]
+    [HttpGet("Actions/{id}/ActionApprovers")]
     public async Task<ActionResult<List<ActionApproverIdDto>>> GetActionApproversByActionId([FromRoute] int id)
     {
       return await Mediator.Send(new GetActionApproversByActionIdQuery { Id = id });
+    }
+    [HttpGet("{id}/ActionApprovers")]
+    public async Task<ActionResult<List<ActionApproverIdDto>>> GetActionApproversByServiceId([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetActionApproversByServiceIdQuery { Id = id });
     }
     [HttpGet("All")]
     public async Task<ActionResult<List<ServiceIdDto>>> GetAllServices()
