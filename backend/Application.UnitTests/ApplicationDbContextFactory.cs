@@ -123,6 +123,12 @@ namespace Application.UnitTests
           Id = 3,
           ActionId = 1,
           Email = "iAlsoOwnAction1@mail.dk"
+        },
+        new ActionApprover()
+        {
+          Id = 4,
+          ActionId = 4,
+          Email = "test3@mail.dk"
         }
       );
 
