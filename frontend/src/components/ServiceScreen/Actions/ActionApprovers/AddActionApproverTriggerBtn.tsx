@@ -28,7 +28,7 @@ const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) 
 
   return (
     <>
-      <PopoverMenuButton btnText={"Add owners"} onClickMethod={onOpen} />
+      <PopoverMenuButton btnText={"Add approvers"} onClickMethod={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="3xl">
         <ModalOverlay />

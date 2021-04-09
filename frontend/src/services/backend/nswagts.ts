@@ -3103,6 +3103,7 @@ export interface IActionApproverDto {
 
 export class ActionApproverIdDto extends ActionApproverDto implements IActionApproverIdDto {
     id?: number;
+    actionId?: number;
 
     constructor(data?: IActionApproverIdDto) {
         super(data);
@@ -3112,6 +3113,7 @@ export class ActionApproverIdDto extends ActionApproverDto implements IActionApp
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.actionId = _data["actionId"] !== undefined ? _data["actionId"] : <any>null;
         }
     }
 
@@ -3125,6 +3127,7 @@ export class ActionApproverIdDto extends ActionApproverDto implements IActionApp
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["actionId"] = this.actionId !== undefined ? this.actionId : <any>null;
         super.toJSON(data);
         return data; 
     }
@@ -3132,6 +3135,7 @@ export class ActionApproverIdDto extends ActionApproverDto implements IActionApp
 
 export interface IActionApproverIdDto extends IActionApproverDto {
     id?: number;
+    actionId?: number;
 }
 
 export class User implements IUser {

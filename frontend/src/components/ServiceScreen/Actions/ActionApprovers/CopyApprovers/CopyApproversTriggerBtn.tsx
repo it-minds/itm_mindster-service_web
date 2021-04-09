@@ -13,7 +13,7 @@ import {
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
-import { ActionIdDto, IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
+import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
 
 import CopyActionList from "./CopyActionsList";
 
