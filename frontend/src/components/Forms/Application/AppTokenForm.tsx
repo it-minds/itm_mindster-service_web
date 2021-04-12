@@ -19,9 +19,7 @@ type Props = {
 
 const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [localFormData, setLocalFormData] = useState<IAppTokenCreateDto>({
-    description: null
-  });
+  const [localFormData, setLocalFormData] = useState<IAppTokenCreateDto>({});
 
   useEffect(() => {
     if (AppMetaData) {
@@ -61,11 +59,11 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                 />
               </FormControl>
               {isLoading ? (
-                <Button variant="outline" width="full" mt={6}>
+                <Button bgColor="blue.200" variant="outline" width="full" mt={6}>
                   <Spinner></Spinner>
                 </Button>
               ) : (
-                <Button variant="outline" width="full" mt={6} type="submit">
+                <Button bgColor="blue.200" variant="outline" width="full" mt={6} type="submit">
                   Submit
                 </Button>
               )}

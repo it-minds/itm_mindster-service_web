@@ -9,9 +9,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure
 } from "@chakra-ui/react";
 import RequestActions from "components/Forms/RequestActions/RequestActions";
+import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
@@ -32,16 +34,20 @@ const LibraryCard: FC<Props> = ({ service }) => {
         _hover={{
           bgColor: hoverBg
         }}
-        w="300px"
-        h="250px"
+        w="350px"
+        h="300px"
         shadow="xl"
         borderWidth="1px"
         borderRadius="sm">
-        <Box p="6">
+        <Box p="3">
           <Box mt="1" as="header">
             <Heading fontSize="xl">{`${service.id} ${service.title}`}</Heading>
           </Box>
-          <Box mt="2">{service.description}</Box>
+          <Box overflowY="scroll" mt="2">
+            <Text maxHeight="220px">
+              <MarkdownViewer value={service.description} />
+            </Text>
+          </Box>
         </Box>
       </Box>
 

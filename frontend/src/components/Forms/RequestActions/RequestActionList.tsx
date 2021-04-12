@@ -12,7 +12,7 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import { ApplicationContext } from "contexts/ApplicationContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
@@ -37,7 +37,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
       checked: false
     }))
   );
-  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
+  const { currToken, fetchAppTokens } = useContext(AppViewContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
@@ -99,7 +99,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
     }
     setIsLoading(false);
     fetchAppTokens();
-  }, [checkboxes]);
+  }, [checkboxes, currToken]);
 
   return (
     <Center>

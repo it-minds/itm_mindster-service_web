@@ -23,6 +23,7 @@ const IndexPage: NextPage = () => {
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
+  const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -94,8 +95,10 @@ const IndexPage: NextPage = () => {
   }, [fetchApps, fetchServices]);
 
   useEffect(() => {
-    fetchAppOwners();
-    fetchAppTokens();
+    if (currApplication) {
+      fetchAppOwners();
+      fetchAppTokens();
+    }
   }, [fetchAppOwners, fetchAppTokens, currApplication]);
 
   return (
@@ -106,7 +109,9 @@ const IndexPage: NextPage = () => {
         appTokens: appTokens,
         appOwners: appOwners,
         currApplication: currApplication,
+        currToken: currToken,
         setCurrApp: setCurrApp,
+        setCurrToken: setCurrToken,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices,

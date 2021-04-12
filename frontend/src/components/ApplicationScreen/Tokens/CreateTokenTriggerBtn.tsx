@@ -2,20 +2,12 @@ import {
   Box,
   Button,
   CloseButton,
-  Divider,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spacer,
   useDisclosure,
   useToast,
@@ -23,23 +15,25 @@ import {
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
+import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import { CreateAppTokenCommand } from "services/backend/nswagts";
+import { AppTokenCreateDto, CreateAppTokenCommand } from "services/backend/nswagts";
 
 import ThreeStepShower from "../../Common/ThreeStepShower";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppTokens, currApplication } = useContext(AppViewContext);
+  const { fetchAppTokens, currApplication, setCurrToken } = useContext(AppViewContext);
   const toast = useToast();
+  const [open, setOpen] = useState(false);
 
   const createAppToken = useCallback(
-    async metaData => {
+    async (metaData: AppTokenCreateDto) => {
       const client = await genApplicationClient();
       try {
-        await client.createAppToken(
+        const result = await client.createAppToken(
           currApplication.id,
           new CreateAppTokenCommand({ appToken: metaData })
         );
@@ -49,6 +43,8 @@ const CreateTokenTriggerBtn: FC = () => {
           duration: 5000,
           isClosable: true
         });
+        setCurrToken({ id: result, description: metaData.description, appTokenActions: [] }); // sets currTokenId so that fetchAppTokens fetches the remaining data
+        await fetchAppTokens();
       } catch (error) {
         toast({
           description: `CreateAppToken responded: ${error}`,
@@ -57,7 +53,8 @@ const CreateTokenTriggerBtn: FC = () => {
           isClosable: true
         });
       }
-      fetchAppTokens();
+      onClose();
+      setOpen(true);
     },
     [currApplication, fetchAppTokens]
   );
@@ -74,6 +71,7 @@ const CreateTokenTriggerBtn: FC = () => {
         bgColor="green">
         Create new token
       </Button>
+      <ServiceLibraryDrawer Open={open} setOpen={setOpen} />
 
       <Drawer onClose={onClose} isOpen={isOpen} size="full">
         <DrawerOverlay>
@@ -89,7 +87,7 @@ const CreateTokenTriggerBtn: FC = () => {
               <Box padding="100" width="full">
                 <VStack pl="50" width="full" align="left">
                   <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
-                  <ThreeStepShower radius={50} />
+                  <ThreeStepShower radius={50} stepCounter={1} />
                 </VStack>
               </Box>
             </DrawerBody>
