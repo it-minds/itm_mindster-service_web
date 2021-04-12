@@ -10,6 +10,7 @@ using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
+using Application.AppTokenActions.Commands.CreateAppTokenAction;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Commands.CreateAppToken;
