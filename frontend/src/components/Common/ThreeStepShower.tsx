@@ -2,14 +2,15 @@ import { Center, Divider, Flex, HStack, Text } from "@chakra-ui/react";
 import React, { FC } from "react";
 type Props = {
   radius: number;
+  stepCounter: number;
 };
-const ThreeStepShower: FC<Props> = ({ radius }) => {
+const ThreeStepShower: FC<Props> = ({ radius, stepCounter }) => {
   return (
     <HStack margin="10">
       <Flex
         borderWidth="1px"
         borderColor="black"
-        bgColor="blue.100"
+        bgColor={stepCounter == 1 ? "blue.100" : "white"}
         minHeight={radius}
         minWidth={radius}
         borderRadius="full">
@@ -22,7 +23,7 @@ const ThreeStepShower: FC<Props> = ({ radius }) => {
       <Flex
         borderWidth="1px"
         borderColor="black"
-        bgColor="blue.100"
+        bgColor={stepCounter == 2 ? "blue.100" : "white"}
         minHeight={radius}
         minWidth={radius}
         borderRadius="full">
@@ -34,7 +35,7 @@ const ThreeStepShower: FC<Props> = ({ radius }) => {
       <Flex
         borderWidth="1px"
         borderColor="black"
-        bgColor="blue.100"
+        bgColor={stepCounter == 3 ? "blue.100" : "white"}
         minHeight={radius}
         minWidth={radius}
         borderRadius="full">
