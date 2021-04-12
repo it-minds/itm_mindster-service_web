@@ -111,7 +111,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
                 <Th>Id</Th>
                 <Th>Title</Th>
                 <Th>Description</Th>
-                <Th>Admin Note</Th>
                 <Th>
                   <Checkbox
                     isChecked={allChecked}
