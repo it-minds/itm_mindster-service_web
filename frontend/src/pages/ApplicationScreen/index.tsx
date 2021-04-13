@@ -55,6 +55,13 @@ const IndexPage: NextPage = () => {
     } catch (err) {
       logger.warn("ApplicationClient.getAppTokensByAppId Error", err);
     }
+
+    if (currToken != null || currToken != undefined) {
+      console.log("FIRED FIRED FIRED");
+      console.log(currToken);
+      const updatedToken = appTokens.find(e => e.id == currToken.id);
+      setCurrToken(updatedToken);
+    }
   }, [currApplication]);
 
   const fetchAppOwners = useCallback(async () => {
@@ -96,6 +103,8 @@ const IndexPage: NextPage = () => {
 
   useEffect(() => {
     if (currApplication) {
+      console.log("appliadcawdawawd");
+      console.log(currApplication);
       fetchAppOwners();
       fetchAppTokens();
     }

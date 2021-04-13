@@ -42,11 +42,10 @@ const CreateActionTriggerBtn: FC = () => {
           isClosable: true
         });
       } finally {
-        fetchServices();
         fetchUpdatedService();
       }
     },
-    [currService, fetchServices, fetchUpdatedService]
+    [currService, fetchUpdatedService]
   );
 
   if (currService == null) return null;

@@ -61,13 +61,30 @@ const ServiceScreen: NextPage = () => {
     }
   }, []);
 
+  const setNewCurrService = useCallback(
+    async (serviceId: number) => {
+      await fetchServices();
+      const newService = services.find(e => e.id == serviceId);
+
+      if (newService) {
+        setCurrService(newService);
+      } else logger.info("could find service ID");
+    },
+    [services]
+  );
+
   const fetchUpdatedServices = useCallback(async () => {
     try {
       const serviceClient = await genServiceClient();
       const data = await serviceClient.getServiceById(currService.id);
 
-      if (data) setCurrService(data);
-      else logger.info("ServiceClient.getServiceById got no data");
+      if (data) {
+        setCurrService(data);
+        dispatchServices({
+          type: ListReducerActionType.AddOrUpdate,
+          data
+        });
+      } else logger.info("ServiceClient.getServiceById got no data");
     } catch (err) {
       logger.warn("ServiceClient.getServiceById Error", err);
     }
@@ -112,7 +129,9 @@ const ServiceScreen: NextPage = () => {
   useEffect(() => {
     if (currService) {
       fetchServiceOwners();
-      fetchActionApprovers();
+      if (currService.actions.length > 0) {
+        fetchActionApprovers();
+      }
     }
   }, [fetchServiceOwners, fetchActionApprovers, currService]);
 
@@ -125,6 +144,7 @@ const ServiceScreen: NextPage = () => {
         currService: currService,
         approvers: approvers,
         setCurrService: setCurrService,
+        setNewCurrService: setNewCurrService,
         fetchAppTokens: fetchAppTokens,
         fetchUpdatedService: fetchUpdatedServices,
         fetchOwners: fetchServiceOwners,
