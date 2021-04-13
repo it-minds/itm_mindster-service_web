@@ -11,11 +11,11 @@ using MediatR;
 namespace Application.Applications.Commands.CreateApplication
 {
   [Authorize]
-  public class CreateApplicationCommand : IRequest<string>
+  public class CreateApplicationCommand : IRequest<CreateAppResult>
   {
     public ApplicationDto Application { get; set; }
 
-    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, string>
+    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, CreateAppResult>
     {
       private readonly IApplicationDbContext _context;
 
@@ -30,7 +30,7 @@ namespace Application.Applications.Commands.CreateApplication
         _currentUserService = currentUserService;
       }
 
-      public async Task<string> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
+      public async Task<CreateAppResult> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
       {
         var application = new ApplicationEntity
         {
@@ -50,11 +50,12 @@ namespace Application.Applications.Commands.CreateApplication
         _context.AppOwners.Add((applicationOwner));
         await _context.SaveChangesAsync(cancellationToken);
 
-        var result = await _authClient.AppAsync(new ApplicationInput {
+        var authResult = await _authClient.AppAsync(new ApplicationInput {
           AppIdentifer = application.Title
         }, cancellationToken);
-        var resultString = "Created App " + application.Id + ", with AppSecret: " + result.AppSecret;
-        return resultString;
+        var result = new CreateAppResult{appId = application.Id, AppSecret = authResult.AppSecret};
+
+        return result;
       }
     }
   }

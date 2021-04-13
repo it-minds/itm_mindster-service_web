@@ -23,9 +23,9 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
       var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
-      //TODO change the hardcoded Find(4) to the proper result.Id when we synchronise aid later
-      var entity = Context.Applications.Find(4);
-
+      result.appId.Should().NotBe(null);
+      result.AppSecret.Should().NotBeNullOrEmpty();
+      var entity = Context.Applications.Find(result.appId);
       entity.Should().NotBeNull();
       entity.Title.Should().Be(command.Application.Title);
       entity.Description.Should().Be(command.Application.Description);
