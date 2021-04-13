@@ -2,10 +2,11 @@ import { Box, VStack } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
+import { ApplicationDto, IApplicationDto, IAppTokenActionIdDto } from "services/backend/nswagts";
 
 import AppOwnerOverview from "./Owners/AppOwnerOverview";
 import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
+import SeeTokenStatusDrawer from "./Tokens/TokenStatus/SeeTokenStatusDrawer";
 import TokenTable from "./Tokens/TokenTable";
 
 const ApplicationInfo: FC = () => {
@@ -35,6 +36,9 @@ const ApplicationInfo: FC = () => {
         </Box>
         <Box pt="10" width="full">
           <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
+        </Box>
+        <Box>
+          <SeeTokenStatusDrawer submitCallback={() => null} />
         </Box>
         <Box pt="10" width="full">
           <AppOwnerOverview></AppOwnerOverview>

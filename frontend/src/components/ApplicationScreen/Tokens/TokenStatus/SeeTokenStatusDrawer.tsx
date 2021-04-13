@@ -25,9 +25,9 @@ const SeeTokenStatusDrawer: FC<Props> = ({ submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
 
-  // useEffect(() => {
-  //   fetchUpdatedToken(1085);
-  // }, []);
+  useEffect(() => {
+    fetchUpdatedToken(1085);
+  }, []);
 
   if (currToken == null) return null;
   return (
