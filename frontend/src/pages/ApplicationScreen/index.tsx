@@ -88,20 +88,6 @@ const IndexPage: NextPage = () => {
     [currToken]
   );
 
-  const setNewCurrToken = useCallback(
-    async (tokenId: number) => {
-      console.log(tokenId);
-      await fetchAppTokens();
-      const newToken = appTokens.find(e => e.id == tokenId);
-      console.log(newToken);
-
-      if (newToken) {
-        setCurrToken(newToken);
-      } else logger.info("could not find token ID");
-    },
-    [appTokens, fetchAppTokens]
-  );
-
   const fetchAppOwners = useCallback(async () => {
     try {
       const client = await genApplicationClient();

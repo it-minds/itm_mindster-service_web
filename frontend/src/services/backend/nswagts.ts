@@ -2151,17 +2151,22 @@ export interface IAppTokenIdDto extends IAppTokenCreateDto {
 
 export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
     id?: number;
+    action?: Action | null;
     state?: ServiceStates;
     rejectionReason?: string | null;
 
     constructor(data?: IAppTokenActionIdDto) {
         super(data);
+        if (data) {
+            this.action = data.action && !(<any>data.action).toJSON ? new Action(data.action) : <Action>this.action; 
+        }
     }
 
     init(_data?: any) {
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.action = _data["action"] ? Action.fromJS(_data["action"]) : <any>null;
             this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
         }
@@ -2177,6 +2182,7 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["action"] = this.action ? this.action.toJSON() : <any>null;
         data["state"] = this.state !== undefined ? this.state : <any>null;
         data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
         super.toJSON(data);
@@ -2186,8 +2192,133 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
 
 export interface IAppTokenActionIdDto extends IAppTokenActionDto {
     id?: number;
+    action?: IAction | null;
     state?: ServiceStates;
     rejectionReason?: string | null;
+}
+
+export class Action implements IAction {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
+    serviceId?: number;
+    service?: Service | null;
+
+    constructor(data?: IAction) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.service = data.service && !(<any>data.service).toJSON ? new Service(data.service) : <Service>this.service; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
+            this.serviceId = _data["serviceId"] !== undefined ? _data["serviceId"] : <any>null;
+            this.service = _data["service"] ? Service.fromJS(_data["service"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): Action {
+        data = typeof data === 'object' ? data : {};
+        let result = new Action();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
+        data["serviceId"] = this.serviceId !== undefined ? this.serviceId : <any>null;
+        data["service"] = this.service ? this.service.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IAction {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
+    serviceId?: number;
+    service?: IService | null;
+}
+
+export class Service implements IService {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    actions?: Action[] | null;
+    state?: ServiceStates;
+
+    constructor(data?: IService) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.actions) {
+                this.actions = [];
+                for (let i = 0; i < data.actions.length; i++) {
+                    let item = data.actions[i];
+                    this.actions[i] = item && !(<any>item).toJSON ? new Action(item) : <Action>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            if (Array.isArray(_data["actions"])) {
+                this.actions = [] as any;
+                for (let item of _data["actions"])
+                    this.actions!.push(Action.fromJS(item));
+            }
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): Service {
+        data = typeof data === 'object' ? data : {};
+        let result = new Service();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        if (Array.isArray(this.actions)) {
+            data["actions"] = [];
+            for (let item of this.actions)
+                data["actions"].push(item.toJSON());
+        }
+        data["state"] = this.state !== undefined ? this.state : <any>null;
+        return data; 
+    }
+}
+
+export interface IService {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    actions?: IAction[] | null;
+    state?: ServiceStates;
 }
 
 export enum ServiceStates {
@@ -2275,7 +2406,7 @@ export interface ICreateAuthAppTokenCommand {
 
 export class TokenInput implements ITokenInput {
     tokenIdentifier?: string;
-    services?: Service[];
+    services?: Service2[];
 
     constructor(data?: ITokenInput) {
         if (data) {
@@ -2287,7 +2418,7 @@ export class TokenInput implements ITokenInput {
                 this.services = [];
                 for (let i = 0; i < data.services.length; i++) {
                     let item = data.services[i];
-                    this.services[i] = item && !(<any>item).toJSON ? new Service(item) : <Service>item;
+                    this.services[i] = item && !(<any>item).toJSON ? new Service2(item) : <Service2>item;
                 }
             }
         }
@@ -2299,7 +2430,7 @@ export class TokenInput implements ITokenInput {
             if (Array.isArray(_data["services"])) {
                 this.services = [] as any;
                 for (let item of _data["services"])
-                    this.services!.push(Service.fromJS(item));
+                    this.services!.push(Service2.fromJS(item));
             }
         }
     }
@@ -2325,14 +2456,14 @@ export class TokenInput implements ITokenInput {
 
 export interface ITokenInput {
     tokenIdentifier?: string;
-    services?: IService[];
+    services?: IService2[];
 }
 
-export class Service implements IService {
+export class Service2 implements IService2 {
     aud?: string;
     access?: string[];
 
-    constructor(data?: IService) {
+    constructor(data?: IService2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2352,9 +2483,9 @@ export class Service implements IService {
         }
     }
 
-    static fromJS(data: any): Service {
+    static fromJS(data: any): Service2 {
         data = typeof data === 'object' ? data : {};
-        let result = new Service();
+        let result = new Service2();
         result.init(data);
         return result;
     }
@@ -2371,7 +2502,7 @@ export class Service implements IService {
     }
 }
 
-export interface IService {
+export interface IService2 {
     aud?: string;
     access?: string[];
 }
