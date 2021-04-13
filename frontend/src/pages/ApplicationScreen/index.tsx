@@ -47,7 +47,7 @@ const IndexPage: NextPage = () => {
 
       if (newApp) {
         setCurrApp(newApp);
-      } else logger.info("could find app ID");
+      } else logger.info("could not find app ID");
     },
     [applications]
   );
@@ -66,14 +66,41 @@ const IndexPage: NextPage = () => {
     } catch (err) {
       logger.warn("ApplicationClient.getAppTokensByAppId Error", err);
     }
-
-    if (currToken != null || currToken != undefined) {
-      console.log("FIRED FIRED FIRED");
-      console.log(currToken);
-      const updatedToken = appTokens.find(e => e.id == currToken.id);
-      setCurrToken(updatedToken);
-    }
   }, [currApplication]);
+
+  const fetchUpdatedToken = useCallback(
+    async (tokenId: number) => {
+      try {
+        const client = await genApplicationClient();
+        const data = await client.getAppTokenById(tokenId);
+
+        if (data) {
+          setCurrToken(data);
+          dispatchAppTokens({
+            type: ListReducerActionType.AddOrUpdate,
+            data
+          });
+        } else logger.info("ApplicationClient.getTokenById got no data");
+      } catch (err) {
+        logger.warn("ApplicationClient.getTokenById Error", err);
+      }
+    },
+    [currToken]
+  );
+
+  const setNewCurrToken = useCallback(
+    async (tokenId: number) => {
+      console.log(tokenId);
+      await fetchAppTokens();
+      const newToken = appTokens.find(e => e.id == tokenId);
+      console.log(newToken);
+
+      if (newToken) {
+        setCurrToken(newToken);
+      } else logger.info("could not find token ID");
+    },
+    [appTokens, fetchAppTokens]
+  );
 
   const fetchAppOwners = useCallback(async () => {
     try {
@@ -114,8 +141,6 @@ const IndexPage: NextPage = () => {
 
   useEffect(() => {
     if (currApplication) {
-      console.log("appliadcawdawawd");
-      console.log(currApplication);
       fetchAppOwners();
       fetchAppTokens();
     }
@@ -133,6 +158,7 @@ const IndexPage: NextPage = () => {
         setCurrApp: setCurrApp,
         setNewCurrApp: setNewCurrApp,
         setCurrToken: setCurrToken,
+        fetchUpdatedToken: fetchUpdatedToken,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices,

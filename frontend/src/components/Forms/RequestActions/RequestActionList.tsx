@@ -37,7 +37,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
       checked: false
     }))
   );
-  const { currToken, fetchAppTokens } = useContext(AppViewContext);
+  const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
@@ -72,7 +72,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
         actions.push(new AppTokenActionDto({ actionId: modal.id }));
       }
     });
-
     const client = await genApplicationClient();
     try {
       await client.createAppTokenActions(
@@ -89,6 +88,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
         duration: 5000,
         isClosable: true
       });
+      fetchUpdatedToken(currToken.id);
     } catch (error) {
       toast({
         description: `PutAppToken responded: ${error}`,
@@ -98,7 +98,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
       });
     }
     setIsLoading(false);
-    fetchAppTokens();
   }, [checkboxes, currToken]);
 
   return (

@@ -13,7 +13,7 @@ import {
 import SeeTokenStatusDrawer from "components/ApplicationScreen/Tokens/TokenStatus/SeeTokenStatusDrawer";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { Dispatch, FC, SetStateAction, useContext } from "react";
+import React, { Dispatch, FC, SetStateAction, useCallback, useContext } from "react";
 
 import ServiceLibrary from "./ServiceLibrary";
 
@@ -24,6 +24,11 @@ type Props = {
 
 const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
   const { currToken } = useContext(AppViewContext);
+
+  const leaveLibraryDrawer = useCallback(async () => {
+    setOpen(false);
+  }, []);
+
   if (currToken) {
     return (
       <>
@@ -43,7 +48,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                     <ServiceLibrary />
                   </Box>
                   <Spacer />
-                  <SeeTokenStatusDrawer />
+                  <SeeTokenStatusDrawer submitCallback={leaveLibraryDrawer} />
                   <ThreeStepShower radius={50} stepCounter={2} />
                 </Flex>
               </DrawerBody>

@@ -2,7 +2,7 @@ import { Center, Td, Tr } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 
-import ViewTActionTriggerBtn from "./TokenActions/ViewTActionsTriggerBtn";
+import ViewActionTriggerBtn from "./TokenActions/ViewActionsTriggerBtn";
 
 type Props = {
   token: AppTokenIdDto;
@@ -18,7 +18,7 @@ const TokenTableItem: FC<Props> = ({ token }) => {
       </Td>
       <Td>
         <Center>
-          <ViewTActionTriggerBtn token={token}></ViewTActionTriggerBtn>
+          <ViewActionTriggerBtn token={token}></ViewActionTriggerBtn>
         </Center>
       </Td>
     </Tr>

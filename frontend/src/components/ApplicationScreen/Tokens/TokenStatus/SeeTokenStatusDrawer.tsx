@@ -10,25 +10,33 @@ import {
   Flex,
   Heading,
   Spacer,
-  useDisclosure,
-  VStack
+  useDisclosure
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 
 import TokenStatusList from "./TokenStatusList";
-
-const SeeTokenStatusDrawer: FC = () => {
+type Props = {
+  submitCallback: () => Promise<void>;
+};
+const SeeTokenStatusDrawer: FC<Props> = ({ submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currToken } = useContext(AppViewContext);
+  const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
+
+  // useEffect(() => {
+  //   fetchUpdatedToken(1085);
+  // }, []);
 
   if (currToken == null) return null;
   return (
     <>
       <Button
-        onClick={onOpen}
+        onClick={() => {
+          //
+          onOpen();
+        }}
         rightIcon={<BsPlus />}
         borderWidth="1px"
         borderColor="black"
@@ -37,7 +45,13 @@ const SeeTokenStatusDrawer: FC = () => {
         See Status
       </Button>
 
-      <Drawer onClose={onClose} isOpen={isOpen} size="full">
+      <Drawer
+        onClose={() => {
+          onClose();
+          submitCallback();
+        }}
+        isOpen={isOpen}
+        size="full">
         <DrawerOverlay>
           <DrawerContent>
             <DrawerHeader>
@@ -46,16 +60,22 @@ const SeeTokenStatusDrawer: FC = () => {
                   Status of {currToken.id} {currToken.description}
                 </Box>
                 <Spacer />
-                <CloseButton onClick={onClose} />
+                <CloseButton
+                  onClick={() => {
+                    onClose();
+                    submitCallback();
+                  }}
+                />
               </Flex>
             </DrawerHeader>
             <DrawerBody>
-              <Box padding="100" width="full">
-                <VStack pl="50" width="full" align="left">
-                  <Heading> STATUS:</Heading>
-                  {/* <TokenStatusList /> */}
+              <Box height="full" width="full">
+                <Flex direction="column" pl="50" height="full" width="full" align="left">
+                  <Heading as="h3"> Status :</Heading>
+                  <TokenStatusList />
+                  <Spacer />
                   <ThreeStepShower radius={50} stepCounter={3} />
-                </VStack>
+                </Flex>
               </Box>
             </DrawerBody>
           </DrawerContent>

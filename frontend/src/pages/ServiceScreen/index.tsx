@@ -54,11 +54,6 @@ const ServiceScreen: NextPage = () => {
     } catch (err) {
       logger.warn("ServiceClient.getMyServices Error", err);
     }
-
-    if (currService != null || currService != undefined) {
-      const updatedService = services.find(e => e.id == currService.id);
-      setCurrService(updatedService);
-    }
   }, []);
 
   const setNewCurrService = useCallback(
@@ -128,6 +123,7 @@ const ServiceScreen: NextPage = () => {
 
   useEffect(() => {
     if (currService) {
+      console.log(currService);
       fetchServiceOwners();
       if (currService.actions.length > 0) {
         fetchActionApprovers();
