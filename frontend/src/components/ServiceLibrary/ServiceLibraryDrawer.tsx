@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CloseButton,
   Drawer,
   DrawerBody,
@@ -9,6 +10,7 @@ import {
   Flex,
   Spacer
 } from "@chakra-ui/react";
+import SeeTokenStatusDrawer from "components/ApplicationScreen/Tokens/TokenStatus/SeeTokenStatusDrawer";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { Dispatch, FC, SetStateAction, useContext } from "react";
@@ -30,9 +32,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
             <DrawerContent>
               <DrawerHeader>
                 <Flex>
-                  <Box>
-                    ServiceLibrary {currToken.id} {currToken.description}
-                  </Box>
+                  <Box>ServiceLibrary</Box>
                   <Spacer />
                   <CloseButton onClick={() => setOpen(false)} />
                 </Flex>
@@ -43,6 +43,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                     <ServiceLibrary />
                   </Box>
                   <Spacer />
+                  <SeeTokenStatusDrawer />
                   <ThreeStepShower radius={50} stepCounter={2} />
                 </Flex>
               </DrawerBody>

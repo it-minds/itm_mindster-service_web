@@ -14,6 +14,7 @@ type ContextType = {
   currApplication: IApplicationIdDto;
   currToken: IAppTokenIdDto;
   setCurrApp: Dispatch<SetStateAction<IApplicationIdDto>>;
+  setNewCurrApp: (appId: number) => Promise<void>;
   setCurrToken: Dispatch<SetStateAction<IAppTokenIdDto>>;
   fetchAppOwners: () => Promise<void>;
   fetchApps: () => Promise<void>;
@@ -29,6 +30,7 @@ export const AppViewContext = createContext<ContextType>({
   currApplication: null,
   currToken: null,
   setCurrApp: null,
+  setNewCurrApp: null,
   setCurrToken: null,
   fetchApps: null,
   fetchServices: null,

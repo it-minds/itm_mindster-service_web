@@ -9,7 +9,6 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
 import {
-  ApplicationIdDto,
   IApplicationIdDto,
   IApplicationOwnerIdDto,
   IAppTokenIdDto,
@@ -22,7 +21,7 @@ const IndexPage: NextPage = () => {
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
-  const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
+  const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
   const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
 
   const fetchApps = useCallback(async () => {
@@ -40,6 +39,18 @@ const IndexPage: NextPage = () => {
       logger.warn("ApplicationClient.getAllApps Error", err);
     }
   }, []);
+
+  const setNewCurrApp = useCallback(
+    async (appId: number) => {
+      await fetchApps();
+      const newApp = applications.find(e => e.id == appId);
+
+      if (newApp) {
+        setCurrApp(newApp);
+      } else logger.info("could find app ID");
+    },
+    [applications]
+  );
 
   const fetchAppTokens = useCallback(async () => {
     try {
@@ -120,6 +131,7 @@ const IndexPage: NextPage = () => {
         currApplication: currApplication,
         currToken: currToken,
         setCurrApp: setCurrApp,
+        setNewCurrApp: setNewCurrApp,
         setCurrToken: setCurrToken,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,

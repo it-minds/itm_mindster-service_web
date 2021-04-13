@@ -25,7 +25,7 @@ import ThreeStepShower from "../../Common/ThreeStepShower";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchAppTokens, currApplication, setCurrToken } = useContext(AppViewContext);
+  const { fetchAppTokens, appTokens, currApplication, setCurrToken } = useContext(AppViewContext);
   const toast = useToast();
   const [open, setOpen] = useState(false);
 
@@ -56,7 +56,7 @@ const CreateTokenTriggerBtn: FC = () => {
       onClose();
       setOpen(true);
     },
-    [currApplication, fetchAppTokens]
+    [currApplication, fetchAppTokens, appTokens]
   );
 
   if (currApplication == null) return null;
