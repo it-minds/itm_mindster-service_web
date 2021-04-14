@@ -1,4 +1,4 @@
-import { Box, Center, Flex, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, Center, Flex, SimpleGrid } from "@chakra-ui/react";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";

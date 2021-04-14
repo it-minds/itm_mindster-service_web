@@ -12,7 +12,6 @@ import {
   Spacer,
   useDisclosure
 } from "@chakra-ui/react";
-import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -57,9 +56,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({ submitOnClose: submitCallback, submit
           onOpen();
         }}
         borderWidth="1px"
-        borderColor="black"
-        View
-        status>
+        borderColor="black">
         See Status
       </Button>
 

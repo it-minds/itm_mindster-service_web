@@ -11,8 +11,7 @@ import {
   Flex,
   Spacer,
   useDisclosure,
-  useToast,
-  VStack
+  useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
