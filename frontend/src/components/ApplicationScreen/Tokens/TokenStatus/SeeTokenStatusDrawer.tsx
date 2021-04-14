@@ -26,7 +26,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({ submitCallback }) => {
   const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
 
   useEffect(() => {
-    fetchUpdatedToken(1085);
+    fetchUpdatedToken(2092);
   }, []);
 
   if (currToken == null) return null;
@@ -70,8 +70,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({ submitCallback }) => {
             </DrawerHeader>
             <DrawerBody>
               <Box height="full" width="full">
-                <Flex direction="column" pl="50" height="full" width="full" align="left">
-                  <Heading as="h3"> Status :</Heading>
+                <Flex direction="column" p="50" height="full" width="full" align="left">
                   <TokenStatusList />
                   <Spacer />
                   <ThreeStepShower radius={50} stepCounter={3} />

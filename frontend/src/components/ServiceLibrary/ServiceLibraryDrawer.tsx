@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   CloseButton,
   Drawer,
   DrawerBody,
@@ -44,11 +45,13 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
               </DrawerHeader>
               <DrawerBody>
                 <Flex h="full" flexDirection="column">
-                  <Box h="full" overflowY="scroll">
+                  <Box mb="5" h="full" overflowY="scroll">
                     <ServiceLibrary />
                   </Box>
                   <Spacer />
-                  <SeeTokenStatusDrawer submitCallback={leaveLibraryDrawer} />
+                  <Center mb="5">
+                    <SeeTokenStatusDrawer submitCallback={leaveLibraryDrawer} />
+                  </Center>
                   <ThreeStepShower radius={50} stepCounter={2} />
                 </Flex>
               </DrawerBody>

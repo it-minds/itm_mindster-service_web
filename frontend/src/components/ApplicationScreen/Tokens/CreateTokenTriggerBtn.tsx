@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   CloseButton,
   Drawer,
   DrawerBody,
@@ -82,11 +83,17 @@ const CreateTokenTriggerBtn: FC = () => {
               </Flex>
             </DrawerHeader>
             <DrawerBody>
-              <Box padding="100" width="full">
-                <VStack pl="50" width="full" align="left">
-                  <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
+              <Box p="10" height="full" width="full">
+                <Flex direction="column" width="full" height="full" align="left">
+                  <Center>
+                    <Box w="70%">
+                      <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
+                    </Box>
+                  </Center>
+
+                  <Spacer />
                   <ThreeStepShower radius={50} stepCounter={1} />
-                </VStack>
+                </Flex>
               </Box>
             </DrawerBody>
           </DrawerContent>

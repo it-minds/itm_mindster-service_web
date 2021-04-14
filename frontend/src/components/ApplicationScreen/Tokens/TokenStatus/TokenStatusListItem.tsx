@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Spacer, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Tooltip } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
 import { BsX } from "@react-icons/all-files/bs/BsX";
 import { FC } from "react";

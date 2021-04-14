@@ -6,11 +6,12 @@ import { IAppTokenActionIdDto } from "services/backend/nswagts";
 import TokenStatusListItem from "./TokenStatusListItem";
 
 const TokenStatusList: FC = () => {
-  const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
+  const { currToken } = useContext(AppViewContext);
   const [services, setTokenServices] = useState<number[]>([]);
-  console.log("STATUSLISTEN");
-  console.log(currToken);
 
+  /**
+   * Used to divide the different actions into the respective services for
+   */
   useEffect(() => {
     const services = currToken.appTokenActions.map(action => {
       return action.action.serviceId;
@@ -22,7 +23,7 @@ const TokenStatusList: FC = () => {
   if (currToken == null) return null;
 
   return (
-    <Box h="full" p="5" borderWidth="1px" align="left">
+    <Box overflowY="scroll" h="full" p="5" borderWidth="1px" align="left">
       {services.map((x: number) => (
         <Box key={x}>
           <Heading size="md">Service: {x}</Heading>

@@ -9,18 +9,16 @@ const ServiceLibrary: FC = () => {
   const { services } = useContext(AppViewContext);
 
   return (
-    <Box height="full" width="full" justify="center">
-      <VStack width="full">
-        <Flex width="full">
-          <SimpleGrid width="full" minChildWidth="300px" spacingX="25px" spacingY="25px">
-            {services.map((Service: ServiceIdDto) => (
-              <Center key={Service.id}>
-                <LibraryCard service={Service}></LibraryCard>
-              </Center>
-            ))}
-          </SimpleGrid>
-        </Flex>
-      </VStack>
+    <Box padding="50px" height="full" width="full" justify="center">
+      <Flex width="full">
+        <SimpleGrid width="full" minChildWidth="300px" spacing="25px">
+          {services.map((Service: ServiceIdDto) => (
+            <Center key={Service.id}>
+              <LibraryCard service={Service}></LibraryCard>
+            </Center>
+          ))}
+        </SimpleGrid>
+      </Flex>
     </Box>
   );
 };
