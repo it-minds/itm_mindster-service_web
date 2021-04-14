@@ -38,7 +38,7 @@ const ApplicationInfo: FC = () => {
           <CreateTokenTriggerBtn></CreateTokenTriggerBtn>
         </Box>
         <Box>
-          <SeeTokenStatusDrawer submitCallback={() => null} />
+          <SeeTokenStatusDrawer submitOnClose={() => null} />
         </Box>
         <Box pt="10" width="full">
           <AppOwnerOverview></AppOwnerOverview>

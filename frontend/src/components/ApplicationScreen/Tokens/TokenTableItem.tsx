@@ -1,14 +1,15 @@
 import { Center, Td, Tr } from "@chakra-ui/react";
-import React, { FC } from "react";
+import { AppViewContext } from "contexts/AppViewContext";
+import React, { FC, useContext } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 
-import ViewActionTriggerBtn from "./TokenActions/ViewActionsTriggerBtn";
 import SeeTokenStatusDrawer from "./TokenStatus/SeeTokenStatusDrawer";
 
 type Props = {
   token: AppTokenIdDto;
 };
 const TokenTableItem: FC<Props> = ({ token }) => {
+  const { fetchUpdatedToken } = useContext(AppViewContext);
   return (
     <Tr>
       <Td>
@@ -19,7 +20,10 @@ const TokenTableItem: FC<Props> = ({ token }) => {
       </Td>
       <Td>
         <Center>
-          <SeeTokenStatusDrawer submitCallback={() => null} />
+          <SeeTokenStatusDrawer
+            submitOnOpen={() => fetchUpdatedToken(token.id)}
+            submitOnClose={() => null}
+          />
           {/* <ViewActionTriggerBtn token={token}></ViewActionTriggerBtn> */}
         </Center>
       </Td>

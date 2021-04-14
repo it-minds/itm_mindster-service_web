@@ -14,6 +14,7 @@ using Application.AppTokenActions.Commands.CreateAppTokenAction;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Commands.CreateAppToken;
+using Application.AppTokens.Commands.CreateAuthAppToken;
 using Application.AppTokens.Commands.UpdateAppTokenActions;
 using Application.AppTokens.Queries.GetAppToken;
 using Application.AppTokens.Queries.GetAppTokens;

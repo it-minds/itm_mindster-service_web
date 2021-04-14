@@ -50,7 +50,10 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                   </Box>
                   <Spacer />
                   <Center mb="5">
-                    <SeeTokenStatusDrawer submitCallback={leaveLibraryDrawer} />
+                    <SeeTokenStatusDrawer
+                      submitOnOpen={() => null}
+                      submitOnClose={leaveLibraryDrawer}
+                    />
                   </Center>
                   <ThreeStepShower radius={50} stepCounter={2} />
                 </Flex>

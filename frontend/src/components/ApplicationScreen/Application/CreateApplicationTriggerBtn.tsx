@@ -33,7 +33,7 @@ const CreateApplicationTriggerBtn: FC = () => {
       );
       setNewCurrApp(appResult.appId);
       toast({
-        description: "Application was added",
+        description: `App created appSecret: ${appResult.appSecret}`,
         status: "success",
         duration: 5000,
         isClosable: true

@@ -1,8 +1,6 @@
-using System.Data;
-using System.IO.Compression;
 using FluentValidation;
 
-namespace Application.AppTokens.Commands
+namespace Application.AppTokens.Commands.CreateAuthAppToken
 {
   public class CreateAuthAppTokenCommandValidation : AbstractValidator<CreateAuthAppTokenCommand>
   {

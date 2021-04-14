@@ -1,15 +1,11 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AuthService.Client;
-using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace Application.AppTokens.Commands
+namespace Application.AppTokens.Commands.CreateAuthAppToken
 {
   public class CreateAuthAppTokenCommand : IRequest<TokenOutput>
   {
@@ -33,7 +29,6 @@ namespace Application.AppTokens.Commands
 
       public async Task<TokenOutput> Handle(CreateAuthAppTokenCommand request, CancellationToken cancellationToken)
       {
-        
         var result =  await _authClient.TokenAsync(
           request.aId,
           request.xToken,

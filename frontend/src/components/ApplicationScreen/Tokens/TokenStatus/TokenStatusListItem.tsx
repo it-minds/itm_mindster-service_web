@@ -9,11 +9,11 @@ type Props = {
 };
 const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
   return (
-    <Flex m="5" align="center">
+    <Flex m="1" align="center">
       <Box>Action: {tokenAction.actionId}</Box>
       <Box ml="20px">
-        {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="40px" />}
-        {tokenAction.state == ServiceStates.Pending && <BsX color="grey" size="40px" />}
+        {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="30px" />}
+        {tokenAction.state == ServiceStates.Pending && <BsX color="grey" size="30px" />}
         {tokenAction.state == ServiceStates.Rejected && (
           <Tooltip
             placement="right"
@@ -22,7 +22,7 @@ const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
             fontSize="md"
             label={tokenAction.rejectionReason}
             aria-label="A tooltip">
-            <BsX color="red" size="40px" />
+            <BsX color="red" size="30px" />
           </Tooltip>
         )}
       </Box>
