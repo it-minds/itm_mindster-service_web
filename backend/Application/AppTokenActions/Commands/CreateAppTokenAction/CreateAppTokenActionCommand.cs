@@ -55,24 +55,6 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
             AppTokenId = request.TokenId
           });
 
-        //var appTokenActions = new List<AppTokenAction>{};
-
-        //foreach (var tokenAction in request.AppToken.AppTokenActions)
-        //{
-        //  if (!await actions.AnyAsync(e => e.Id == tokenAction.ActionId, cancellationToken))
-        //  {
-        //    throw new NotFoundException(nameof(Action), tokenAction.ActionId);
-        //  }
-
-        //  var entity = new AppTokenAction
-        //  {
-        //    ActionId = tokenAction.ActionId,
-        //    AppTokenId = request.TokenId,
-        //    State = ServiceStates.Pending
-        //  };
-        //  appTokenActions.Add(entity);
-
-        //}
         var result = newActions.Count();
 
         _context.AppTokenActions.AddRange(newActions);
