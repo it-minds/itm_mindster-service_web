@@ -15,7 +15,7 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IService2, Service2 } from "services/backend/nswagts";
 
-const GetAuthTokenTriggerBtn: FC = () => {
+const GetJwtTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currApplication, currToken } = useContext(AppViewContext);
   const [jwtServices, setJwtServices] = useState<IService2[]>([]);
@@ -78,4 +78,4 @@ const GetAuthTokenTriggerBtn: FC = () => {
   );
 };
 
-export default GetAuthTokenTriggerBtn;
+export default GetJwtTriggerBtn;
