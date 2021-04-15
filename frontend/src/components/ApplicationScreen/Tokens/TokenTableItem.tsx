@@ -15,7 +15,7 @@ const TokenTableItem: FC<Props> = ({ token }) => {
   return (
     <Tr>
       <Td>
-        <Center>{token.id}</Center>
+        <Center>{token.tokenIdentifier}</Center>
       </Td>
       <Td>
         <Center> {token.description}</Center>

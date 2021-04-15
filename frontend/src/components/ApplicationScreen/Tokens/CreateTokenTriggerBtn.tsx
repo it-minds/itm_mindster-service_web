@@ -25,7 +25,7 @@ import ThreeStepShower from "../../Common/ThreeStepShower";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication, fetchUpdatedToken } = useContext(AppViewContext);
+  const { currApplication, fetchUpdatedToken, convertToIdentifier } = useContext(AppViewContext);
   const toast = useToast();
   const [open, setOpen] = useState(false);
 
@@ -35,7 +35,12 @@ const CreateTokenTriggerBtn: FC = () => {
       try {
         const result = await client.createAppToken(
           currApplication.id,
-          new CreateAppTokenCommand({ appToken: metaData })
+          new CreateAppTokenCommand({
+            appToken: new AppTokenCreateDto({
+              description: metaData.description,
+              tokenIdentifier: convertToIdentifier(metaData.tokenIdentifier)
+            })
+          })
         );
         fetchUpdatedToken(result);
         toast({

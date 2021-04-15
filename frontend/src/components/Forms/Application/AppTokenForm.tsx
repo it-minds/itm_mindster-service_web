@@ -5,7 +5,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Spinner,
+  Input,
   Textarea,
   Wrap
 } from "@chakra-ui/react";
@@ -51,6 +51,15 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
           <Box width="full" p={6}>
             <form onSubmit={() => handleSubmit(event)}>
               <FormControl isRequired>
+                <FormLabel>Identifier:</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Token Identifier"
+                  value={localFormData.tokenIdentifier}
+                  onChange={event => updateLocalForm(event.target.value, "tokenIdentifier")}
+                />
+              </FormControl>
+              <FormControl mt="6">
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Scope of the AppToken"
@@ -58,15 +67,15 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                   onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
-              {isLoading ? (
-                <Button bgColor="blue.200" variant="outline" width="full" mt={6}>
-                  <Spinner></Spinner>
-                </Button>
-              ) : (
-                <Button bgColor="blue.200" variant="outline" width="full" mt={6} type="submit">
-                  Submit
-                </Button>
-              )}
+              <Button
+                isLoading={isLoading}
+                bgColor="blue.200"
+                variant="outline"
+                width="full"
+                type="submit"
+                mt={6}>
+                Submit
+              </Button>
             </form>
           </Box>
         </Flex>

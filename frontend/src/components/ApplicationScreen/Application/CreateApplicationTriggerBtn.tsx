@@ -12,7 +12,6 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import ApplicationForm from "components/Forms/Application/ApplicationForm";
 import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
