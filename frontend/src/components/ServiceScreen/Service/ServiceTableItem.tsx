@@ -47,7 +47,7 @@ const ServiceTableItem: FC<Props> = ({ service }) => {
           </Box>
         </HStack>
       </Td>
-      <Td>{service.id}</Td>
+      <Td>{service.serviceIdentifier}</Td>
     </Tr>
   );
 };
