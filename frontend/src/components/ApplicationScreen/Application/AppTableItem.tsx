@@ -47,7 +47,7 @@ const AppTableItem: FC<Props> = ({ application }) => {
           </Box>
         </HStack>
       </Td>
-      <Td>{application.id}</Td>
+      <Td>{application.appIdentifier}</Td>
     </Tr>
   );
 };

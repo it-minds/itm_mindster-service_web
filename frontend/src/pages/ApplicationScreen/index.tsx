@@ -24,6 +24,17 @@ const IndexPage: NextPage = () => {
   const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
   const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
 
+  function convertToIdentifier(title: string): string {
+    //TODO Replace with proper string filtering and regex (Pls help me Martin)
+    console.log(title);
+    title = title.toLowerCase();
+    title = title.replaceAll(/[^a-z .]/g, "");
+    title = title.replaceAll(".", "_");
+    title = title.replaceAll(" ", "_");
+    title = title.replaceAll(/_+/g, "_");
+    return title;
+  }
+
   const fetchApps = useCallback(async () => {
     try {
       const applicationClient = await genApplicationClient();
@@ -148,7 +159,8 @@ const IndexPage: NextPage = () => {
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices,
-        fetchAppOwners: fetchAppOwners
+        fetchAppOwners: fetchAppOwners,
+        convertToIdentifier: convertToIdentifier
       }}>
       <VStack>
         <Box zIndex={1} position="fixed" w="full">

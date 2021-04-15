@@ -14,7 +14,6 @@ import {
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
-import { title } from "node:process";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand, ServiceDto } from "services/backend/nswagts";
