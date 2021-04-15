@@ -8,6 +8,6 @@ namespace Application.AppTokens
   public class AppTokenCreateDto : IAutoMap<AppToken>
   {
     public string Description { get; set; }
-
+    public string TokenIdentifier { get; set; }
   }
 }

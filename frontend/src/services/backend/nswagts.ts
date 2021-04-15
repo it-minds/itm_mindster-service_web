@@ -1946,6 +1946,7 @@ export interface ICreateAppTokenCommand {
 
 export class AppTokenCreateDto implements IAppTokenCreateDto {
     description?: string | null;
+    tokenIdentifier?: string | null;
 
     constructor(data?: IAppTokenCreateDto) {
         if (data) {
@@ -1959,6 +1960,7 @@ export class AppTokenCreateDto implements IAppTokenCreateDto {
     init(_data?: any) {
         if (_data) {
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
         }
     }
 
@@ -1972,12 +1974,14 @@ export class AppTokenCreateDto implements IAppTokenCreateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
         return data; 
     }
 }
 
 export interface IAppTokenCreateDto {
     description?: string | null;
+    tokenIdentifier?: string | null;
 }
 
 export class CreateAppTokenActionsCommand implements ICreateAppTokenActionsCommand {
@@ -2106,6 +2110,7 @@ export interface IAppTokenActionDto {
 
 export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
     id?: number;
+    state?: TokenStates;
     appTokenActions?: AppTokenActionIdDto[] | null;
 
     constructor(data?: IAppTokenIdDto) {
@@ -2116,6 +2121,7 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             if (Array.isArray(_data["appTokenActions"])) {
                 this.appTokenActions = [] as any;
                 for (let item of _data["appTokenActions"])
@@ -2134,6 +2140,7 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["state"] = this.state !== undefined ? this.state : <any>null;
         if (Array.isArray(this.appTokenActions)) {
             data["appTokenActions"] = [];
             for (let item of this.appTokenActions)
@@ -2146,7 +2153,15 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
 
 export interface IAppTokenIdDto extends IAppTokenCreateDto {
     id?: number;
+    state?: TokenStates;
     appTokenActions?: AppTokenActionIdDto[] | null;
+}
+
+export enum TokenStates {
+    Created = 0,
+    AwaitingReview = 1,
+    Reviewed = 2,
+    JwtReceived = 3,
 }
 
 export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
