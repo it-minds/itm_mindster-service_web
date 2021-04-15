@@ -52,7 +52,13 @@ namespace Application.UnitTests
           new ExampleChild { Id = 5, ParentId = 2, Name = "Coffee", Type = ExampleEnum.Oldest }
       );
       context.Services.AddRange(
-        new Service{ Id = 1, Title = "First", Description = "Desc for 1", State = ServiceStates.Approved,
+        new Service
+        {
+          Id = 1,
+          Title = "First",
+          Description = "Desc for 1",
+          State = ServiceStates.Approved,
+          ServiceIdentifier = "first",
           Actions = new List<Action>
           {
             new Action {Id = 1, Title = "Title for 1", Description = "1 desc", ServiceId = 1, AdminNote = "Admin says 1"},
@@ -64,6 +70,7 @@ namespace Application.UnitTests
           Id = 2,
           Title = "Second",
           Description = "Desc for 2",
+          ServiceIdentifier = "second",
           State = ServiceStates.Pending,
           Actions = new List<Action>
           {
@@ -76,6 +83,7 @@ namespace Application.UnitTests
           Id = 3,
           Title = "Third",
           Description = "Desc for 3",
+          ServiceIdentifier = "third",
           State = ServiceStates.Rejected,
           Actions = new List<Action>
           {
@@ -133,10 +141,9 @@ namespace Application.UnitTests
       );
 
       context.Applications.AddRange(
-        new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First"},
-        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second" },
-        new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" }
-
+        new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First", AppIdentifier = "app_one"},
+        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second", AppIdentifier = "app_two"},
+        new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" , AppIdentifier = "app_three"}
         );
 
       context.AppOwners.AddRange(
@@ -165,6 +172,8 @@ namespace Application.UnitTests
           Id = 1,
           ApplicationId = 1,
           Description = "Den første appToken",
+          TokenIdentifier = "den_første_app_token",
+          State = TokenStates.AwaitingReview,
           AppTokenActions = new List<AppTokenAction>{
               new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = ServiceStates.Pending},
               new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = 0}
@@ -176,6 +185,8 @@ namespace Application.UnitTests
             Id = 2,
             ApplicationId = 2,
             Description = "Den anden appToken",
+            TokenIdentifier = "den_anden_app_token",
+            State = TokenStates.Reviewed,
             AppTokenActions = new List<AppTokenAction>
             {
               new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = ServiceStates.Approved},
