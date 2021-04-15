@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 
 namespace Infrastructure.Persistence.Configurations
 {
@@ -17,6 +11,10 @@ namespace Infrastructure.Persistence.Configurations
       builder.Property(e => e.Title)
         .HasMaxLength(200)
         .IsRequired();
+      builder.Property(e => e.AppIdentifier)
+        .HasMaxLength(200);
+      builder.Property(e => e.Description)
+        .HasMaxLength(400);
     }
   }
 }

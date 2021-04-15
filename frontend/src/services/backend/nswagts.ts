@@ -1680,6 +1680,7 @@ export interface ICreateApplicationCommand {
 export class ApplicationDto implements IApplicationDto {
     title?: string | null;
     description?: string | null;
+    appIdentifier?: string | null;
 
     constructor(data?: IApplicationDto) {
         if (data) {
@@ -1694,6 +1695,7 @@ export class ApplicationDto implements IApplicationDto {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.appIdentifier = _data["appIdentifier"] !== undefined ? _data["appIdentifier"] : <any>null;
         }
     }
 
@@ -1708,6 +1710,7 @@ export class ApplicationDto implements IApplicationDto {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["appIdentifier"] = this.appIdentifier !== undefined ? this.appIdentifier : <any>null;
         return data; 
     }
 }
@@ -1715,6 +1718,7 @@ export class ApplicationDto implements IApplicationDto {
 export interface IApplicationDto {
     title?: string | null;
     description?: string | null;
+    appIdentifier?: string | null;
 }
 
 export class UpdateApplicationCommand implements IUpdateApplicationCommand {

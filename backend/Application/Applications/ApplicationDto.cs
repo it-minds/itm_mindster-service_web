@@ -12,5 +12,6 @@ namespace Application.Applications
   {
     public string Title { get; set; }
     public string Description { get; set; }
+    public string AppIdentifier { get; set; }
   }
 }

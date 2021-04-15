@@ -38,7 +38,7 @@ namespace Application.AppTokens.Commands.CreateAppToken
           throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
 
         }
-        if (!await _context.AppTokens.AnyAsync(e => e.TokenIdentifier == request.AppToken.TokenIdentifier && e.ApplicationId == request.Id, cancellationToken))
+        if (await _context.AppTokens.AnyAsync(e => e.TokenIdentifier == request.AppToken.TokenIdentifier && e.ApplicationId == request.Id, cancellationToken))
         {
           throw new NotFoundException(nameof(Domain.Entities.AppToken),
             key: request.Id + "A Token with that identifier already exists");
