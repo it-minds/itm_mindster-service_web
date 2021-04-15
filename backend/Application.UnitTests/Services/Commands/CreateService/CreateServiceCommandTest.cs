@@ -19,7 +19,6 @@ namespace Application.UnitTests.Services.Commands.CreateService
         {
           Title = "Approved Service",
           Description = "Test of CreateService",
-          State = ServiceStates.Approved
         }
       };
       var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context, CurrentUserServiceMock.Object);
@@ -31,7 +30,6 @@ namespace Application.UnitTests.Services.Commands.CreateService
       entity.Should().NotBeNull();
       entity.Title.Should().Be(command.Service.Title);
       entity.Description.Should().Be(command.Service.Description);
-      entity.State.Should().Be(command.Service.State);
     }
   }
 }

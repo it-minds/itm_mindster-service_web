@@ -14,6 +14,11 @@ namespace Infrastructure.Persistence.Configurations
       builder.HasMany<Action>(e => e.Actions)
         .WithOne(e => e.Service)
         .IsRequired(true);
+      builder.Property(e => e.Description)
+        .HasMaxLength(600);
+      builder.Property(e => e.ServiceIdentifier)
+        .HasMaxLength(200)
+        .IsRequired(true);
     }
 
   }

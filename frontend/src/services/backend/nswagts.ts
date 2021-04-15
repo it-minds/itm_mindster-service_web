@@ -2276,6 +2276,7 @@ export interface IAction {
 export class Service implements IService {
     id?: number;
     title?: string | null;
+    serviceIdentifier?: string | null;
     description?: string | null;
     actions?: Action[] | null;
     state?: ServiceStates;
@@ -2300,6 +2301,7 @@ export class Service implements IService {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.serviceIdentifier = _data["serviceIdentifier"] !== undefined ? _data["serviceIdentifier"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             if (Array.isArray(_data["actions"])) {
                 this.actions = [] as any;
@@ -2321,6 +2323,7 @@ export class Service implements IService {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["serviceIdentifier"] = this.serviceIdentifier !== undefined ? this.serviceIdentifier : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         if (Array.isArray(this.actions)) {
             data["actions"] = [];
@@ -2335,6 +2338,7 @@ export class Service implements IService {
 export interface IService {
     id?: number;
     title?: string | null;
+    serviceIdentifier?: string | null;
     description?: string | null;
     actions?: IAction[] | null;
     state?: ServiceStates;
@@ -2924,7 +2928,7 @@ export interface ICreateServiceCommand {
 export class ServiceDto implements IServiceDto {
     title?: string | null;
     description?: string | null;
-    state?: ServiceStates;
+    serviceIdentifier?: string | null;
 
     constructor(data?: IServiceDto) {
         if (data) {
@@ -2939,7 +2943,7 @@ export class ServiceDto implements IServiceDto {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+            this.serviceIdentifier = _data["serviceIdentifier"] !== undefined ? _data["serviceIdentifier"] : <any>null;
         }
     }
 
@@ -2954,7 +2958,7 @@ export class ServiceDto implements IServiceDto {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["state"] = this.state !== undefined ? this.state : <any>null;
+        data["serviceIdentifier"] = this.serviceIdentifier !== undefined ? this.serviceIdentifier : <any>null;
         return data; 
     }
 }
@@ -2962,7 +2966,7 @@ export class ServiceDto implements IServiceDto {
 export interface IServiceDto {
     title?: string | null;
     description?: string | null;
-    state?: ServiceStates;
+    serviceIdentifier?: string | null;
 }
 
 export class ServiceIdDto extends ServiceDto implements IServiceIdDto {
