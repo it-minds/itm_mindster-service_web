@@ -10,7 +10,7 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import AuthTokenForm from "components/Forms/Application/AuthTokenForm";
+import JwtForm from "components/Forms/Application/JwtForm";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IService2, Service2 } from "services/backend/nswagts";
@@ -58,8 +58,9 @@ const GetJwtTriggerBtn: FC = () => {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <AuthTokenForm
-              aid={currApplication.title}
+            <JwtForm
+              aid={currApplication.appIdentifier}
+              tokenIdentifier={currToken.tokenIdentifier}
               submitCallback={() => {
                 onClose();
               }}

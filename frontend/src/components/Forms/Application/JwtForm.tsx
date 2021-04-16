@@ -26,11 +26,12 @@ import { CreateAuthAppTokenCommand, IService2, TokenInput } from "services/backe
 
 type Props = {
   aid: string;
+  tokenIdentifier: string;
   submitCallback: () => void;
   services: IService2[];
 };
 
-const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
+const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [appSecret, setAppSecret] = useState("");
   const [JWT, setJWT] = useState("");
@@ -45,7 +46,7 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
         aid,
         new CreateAuthAppTokenCommand({
           tokenInput: new TokenInput({
-            tokenIdentifier: "bla bla",
+            tokenIdentifier: tokenIdentifier,
             services: services
           })
         }),
@@ -129,4 +130,4 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
     </Center>
   );
 };
-export default AuthTokenForm;
+export default JwtForm;

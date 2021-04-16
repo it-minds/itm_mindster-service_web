@@ -4,7 +4,7 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useState } from "react";
 import { AppTokenIdDto, TokenStates } from "services/backend/nswagts";
 
-import GetJwtTriggerBtn from "./AuthToken/GetAuthTokenTriggerBtn";
+import GetJwtTriggerBtn from "./AuthToken/GetJwtTriggerBtn";
 import TokenActionList from "./TokenActions/TokenActionsList";
 import SeeTokenStatusDrawer from "./TokenStatus/SeeTokenStatusDrawer";
 

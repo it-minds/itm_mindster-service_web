@@ -59,7 +59,7 @@ namespace Application.Applications.Commands.CreateApplication
         await _context.SaveChangesAsync(cancellationToken);
 
         var authResult = await _authClient.AppAsync(new ApplicationInput {
-          AppIdentifer = application.Title
+          AppIdentifer = application.AppIdentifier
         }, cancellationToken);
         var result = new CreateAppResult{appId = application.Id, AppSecret = authResult.AppSecret};
 

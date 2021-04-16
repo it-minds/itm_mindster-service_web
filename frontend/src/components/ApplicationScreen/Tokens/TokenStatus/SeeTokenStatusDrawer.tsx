@@ -17,7 +17,7 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceStates } from "services/backend/nswagts";
 
-import GetJwtTriggerBtn from "../AuthToken/GetAuthTokenTriggerBtn";
+import GetJwtTriggerBtn from "../AuthToken/GetJwtTriggerBtn";
 import TokenStatusList from "./TokenStatusList";
 
 type Props = {
