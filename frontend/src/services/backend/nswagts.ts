@@ -138,6 +138,7 @@ export interface IApplicationClient {
     getAppTokenById(id: number): Promise<AppTokenIdDto>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
     updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse>;
+    updateTokenState(id: number, command: UpdateAppTokenStateCommand): Promise<FileResponse>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -640,6 +641,47 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
     }
 
     protected processUpdateAppTokenActions(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    updateTokenState(id: number, command: UpdateAppTokenStateCommand): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens/{id}/UpdateState";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateTokenState(_response));
+        });
+    }
+
+    protected processUpdateTokenState(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -2660,6 +2702,42 @@ export interface IAppTokenActionUpdateDto {
     state?: ServiceStates;
     rejectionReason?: string | null;
     id?: number;
+}
+
+export class UpdateAppTokenStateCommand implements IUpdateAppTokenStateCommand {
+    newState?: TokenStates;
+
+    constructor(data?: IUpdateAppTokenStateCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.newState = _data["newState"] !== undefined ? _data["newState"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateAppTokenStateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateAppTokenStateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["newState"] = this.newState !== undefined ? this.newState : <any>null;
+        return data; 
+    }
+}
+
+export interface IUpdateAppTokenStateCommand {
+    newState?: TokenStates;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {

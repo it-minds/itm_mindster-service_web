@@ -100,5 +100,12 @@ namespace Web.Controllers
 
       return NoContent();
     }
+    [HttpPut("AppTokens/{id}/UpdateState")]
+    public async Task<ActionResult> UpdateTokenState([FromRoute] int id, UpdateAppTokenStateCommand command)
+    {
+      command.Id = id;
+      await Mediator.Send(command);
+      return NoContent();
+    }
   }
 }

@@ -27,12 +27,6 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
           {
             new AppTokenActionUpdateDto
             {
-              Id = 1,
-              State = ServiceStates.Approved,
-              RejectionReason = "",
-            },
-            new AppTokenActionUpdateDto
-            {
               Id = 2,
               State = ServiceStates.Rejected,
               RejectionReason = "Test rejected"
@@ -46,10 +40,6 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
       var entity = Context.AppTokens.Find(1);
       var actions = entity.AppTokenActions.ToList();
 
-      var action1 = actions.Find(e => e.Id == 1);
-      action1.Should().NotBe(null);
-      action1.State.Should().Be(ServiceStates.Approved);
-      action1.RejectionReason.Should().BeNullOrEmpty();
       var action2 = actions.Find(e => e.Id == 2);
       action2.Should().NotBe(null);
       action2.State.Should().Be(ServiceStates.Rejected);
