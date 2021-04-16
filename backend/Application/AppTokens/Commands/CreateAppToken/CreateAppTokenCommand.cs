@@ -36,7 +36,6 @@ namespace Application.AppTokens.Commands.CreateAppToken
         if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
           throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
-
         }
         if (await _context.AppTokens.AnyAsync(e => e.TokenIdentifier == request.AppToken.TokenIdentifier && e.ApplicationId == request.Id, cancellationToken))
         {

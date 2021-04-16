@@ -39,7 +39,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
           }
         }
       };
-      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context);
+      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
 
       await handler.Handle(command, CancellationToken.None);
 
@@ -73,7 +73,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
           }
         }
       };
-      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context);
+      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();
@@ -95,7 +95,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
           }
         }
       };
-      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context);
+      var handler = new UpdateAppTokenCommand.UpdateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();

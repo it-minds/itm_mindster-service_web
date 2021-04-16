@@ -36,9 +36,9 @@ namespace Application.UnitTests.Applications.Queries.GetApplications
     [Fact]
     public async Task Handle_ReturnsCorrectVmAndApplicationsCount()
     {
-      var query = new GetApplicationsQuery();
+      var query = new GetMyApplicationsQuery();
 
-      var handler = new GetApplicationsQuery.GetApplicationQueryHandler(_context, _mapper, _currentUserService);
+      var handler = new GetMyApplicationsQuery.GetMyApplicationQueryHandler(_context, _mapper, _currentUserService);
 
       var result = await handler.Handle(query, CancellationToken.None);
 
@@ -48,9 +48,9 @@ namespace Application.UnitTests.Applications.Queries.GetApplications
     [Fact]
     public void Handle_InvalidUser_ShouldThrowError()
     {
-      var query = new GetApplicationsQuery();
+      var query = new GetMyApplicationsQuery();
 
-      var handler = new GetApplicationsQuery.GetApplicationQueryHandler(_context, _mapper, _invalidUserService);
+      var handler = new GetMyApplicationsQuery.GetMyApplicationQueryHandler(_context, _mapper, _invalidUserService);
 
       Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
 
