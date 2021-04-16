@@ -176,10 +176,10 @@ namespace Application.UnitTests
           State = TokenStates.AwaitingReview,
           AppTokenActions = new List<AppTokenAction>{
               new AppTokenAction{ Id = 1, AppTokenId = 1, ActionId = 1, State = ServiceStates.Pending},
-              new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = 0}
-
+              new AppTokenAction{ Id = 2, AppTokenId = 1, ActionId = 2, State = ServiceStates.Pending},
+              new AppTokenAction{ Id = 3, AppTokenId = 1, ActionId = 5, State = ServiceStates.Approved}
             }
-          },
+        },
           new AppToken
           {
             Id = 2,
@@ -189,9 +189,8 @@ namespace Application.UnitTests
             State = TokenStates.Reviewed,
             AppTokenActions = new List<AppTokenAction>
             {
-              new AppTokenAction{ Id = 3, AppTokenId = 2, ActionId = 1, State = ServiceStates.Approved},
-              new AppTokenAction{ Id = 4, AppTokenId = 2, ActionId = 3, State = ServiceStates.Rejected}
-
+              new AppTokenAction{ Id = 4, AppTokenId = 2, ActionId = 1, State = ServiceStates.Approved},
+              new AppTokenAction{ Id = 5, AppTokenId = 2, ActionId = 3, State = ServiceStates.Rejected}
             }
           }
         );

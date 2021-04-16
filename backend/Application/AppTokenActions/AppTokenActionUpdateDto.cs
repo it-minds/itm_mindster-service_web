@@ -10,6 +10,7 @@ namespace Application.AppTokenActions
   {
     public ServiceStates State { get; set; }
     public string RejectionReason { get; set; }
+    public int Id { get; set; }
 
   }
 }

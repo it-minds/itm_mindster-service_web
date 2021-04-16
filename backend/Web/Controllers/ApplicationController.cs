@@ -11,6 +11,7 @@ using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
 using Application.AppTokenActions.Commands.CreateAppTokenAction;
+using Application.AppTokenActions.Commands.UpdateAppTokenActions;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Commands.CreateAppToken;
@@ -92,7 +93,7 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpPut("AppTokens/{id}/UpdateActions")]
-    public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenCommand command)
+    public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenActionsCommand command)
     {
       command.Id = id;
       await Mediator.Send(command);

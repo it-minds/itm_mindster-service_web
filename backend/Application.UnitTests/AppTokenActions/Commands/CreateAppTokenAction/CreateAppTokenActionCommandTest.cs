@@ -40,7 +40,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       result.Should().Be(2);
       entity.Should().NotBeNull();
       entity.Id.Should().Be(command.TokenId);
-      entity.AppTokenActions.Count.Should().Be(2 + result);
+      entity.AppTokenActions.Count.Should().Be(3 + result);
       entity.AppTokenActions.ToList().Last().ActionId.Should().Be(command.AppToken.AppTokenActions.Last().ActionId);
     }
     [Fact]
@@ -87,7 +87,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       result.Should().Be(0);
       entity.Should().NotBeNull();
       entity.Id.Should().Be(command.TokenId);
-      entity.AppTokenActions.Count.Should().Be(2);
+      entity.AppTokenActions.Count.Should().Be(3);
     }
     [Fact]
     public void Handle_InvalidUser_ShouldThrowError()

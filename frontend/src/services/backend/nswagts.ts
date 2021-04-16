@@ -137,7 +137,7 @@ export interface IApplicationClient {
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
     getAppTokenById(id: number): Promise<AppTokenIdDto>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
-    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse>;
+    updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -614,7 +614,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         return Promise.resolve<TokenOutput>(<any>null);
     }
 
-    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse> {
+    updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse> {
         let url_ = this.baseUrl + "/api/Application/AppTokens/{id}/UpdateActions";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2530,10 +2530,10 @@ export interface IService2 {
     access?: string[];
 }
 
-export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
+export class UpdateAppTokenActionsCommand implements IUpdateAppTokenActionsCommand {
     appToken?: AppTokenUpdateDto | null;
 
-    constructor(data?: IUpdateAppTokenCommand) {
+    constructor(data?: IUpdateAppTokenActionsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2549,9 +2549,9 @@ export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
         }
     }
 
-    static fromJS(data: any): UpdateAppTokenCommand {
+    static fromJS(data: any): UpdateAppTokenActionsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateAppTokenCommand();
+        let result = new UpdateAppTokenActionsCommand();
         result.init(data);
         return result;
     }
@@ -2563,7 +2563,7 @@ export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
     }
 }
 
-export interface IUpdateAppTokenCommand {
+export interface IUpdateAppTokenActionsCommand {
     appToken?: IAppTokenUpdateDto | null;
 }
 
@@ -2621,6 +2621,7 @@ export interface IAppTokenUpdateDto {
 export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
     state?: ServiceStates;
     rejectionReason?: string | null;
+    id?: number;
 
     constructor(data?: IAppTokenActionUpdateDto) {
         if (data) {
@@ -2635,6 +2636,7 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
         if (_data) {
             this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
         }
     }
 
@@ -2649,6 +2651,7 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["state"] = this.state !== undefined ? this.state : <any>null;
         data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
         return data; 
     }
 }
@@ -2656,6 +2659,7 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
 export interface IAppTokenActionUpdateDto {
     state?: ServiceStates;
     rejectionReason?: string | null;
+    id?: number;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
