@@ -1,6 +1,7 @@
 import { createContext, Dispatch, SetStateAction } from "react";
 import {
   IActionApproverIdDto,
+  IActionIdDto,
   IAppTokenIdDto,
   IServiceIdDto,
   IServiceOwnerIdDto
@@ -12,9 +13,10 @@ type ContextType = {
   serviceOwners: IServiceOwnerIdDto[];
   approvers: IActionApproverIdDto[];
   currService: IServiceIdDto;
+  currAction: IActionIdDto;
   setCurrService: Dispatch<SetStateAction<IServiceIdDto>>;
   setNewCurrService: (serviceId: number) => Promise<void>;
-  fetchUpdatedService: () => Promise<void>;
+  setCurrAction: Dispatch<SetStateAction<IActionIdDto>>;
   fetchServices: () => Promise<void>;
   fetchOwners: () => Promise<void>;
   fetchAppTokens: () => Promise<void>;
@@ -27,8 +29,10 @@ export const ServiceViewContext = createContext<ContextType>({
   serviceOwners: [],
   approvers: [],
   currService: null,
+  currAction: null,
   setCurrService: null,
   setNewCurrService: null,
+  setCurrAction: null,
   fetchUpdatedService: null,
   fetchServices: null,
   fetchOwners: null,

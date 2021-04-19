@@ -11,17 +11,18 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
-import React, { FC } from "react";
-import { IActionApproverIdDto, IActionIdDto } from "services/backend/nswagts";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
+import React, { FC, useContext } from "react";
+import { IActionApproverIdDto } from "services/backend/nswagts";
 
 import ActionApproverOverview from "./ActionApproverOverview";
 
 type Props = {
-  currAction: IActionIdDto;
   approvers: IActionApproverIdDto[];
 };
 
-const ViewActionApproversTriggerBtn: FC<Props> = ({ currAction, approvers }) => {
+const ViewActionApproversTriggerBtn: FC<Props> = ({ approvers }) => {
+  const { currAction } = useContext(ServiceViewContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
