@@ -8,6 +8,7 @@ import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
 import {
   IActionApproverIdDto,
+  IActionIdDto,
   IAppTokenIdDto,
   IServiceIdDto,
   IServiceOwnerIdDto
@@ -23,6 +24,7 @@ const ServiceScreen: NextPage = () => {
     []
   );
   const [currService, setCurrService] = useState<IServiceIdDto>();
+  const [currAction, setCurrAction] = useState<IActionIdDto>();
 
   const fetchAppTokens = useCallback(async () => {
     try {
@@ -124,6 +126,8 @@ const ServiceScreen: NextPage = () => {
         serviceOwners: serviceOwners,
         currService: currService,
         approvers: approvers,
+        currAction: currAction,
+        setCurrAction: setCurrAction,
         setCurrService: setCurrService,
         fetchAppTokens: fetchAppTokens,
         fetchUpdatedService: fetchUpdatedServices,

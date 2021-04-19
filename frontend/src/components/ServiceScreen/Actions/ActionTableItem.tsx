@@ -13,7 +13,7 @@ const ActionTableItem: FC<Props> = ({ action }) => {
       <Td>{action.id}</Td>
       <Td>{action.title}</Td>
       <Td>
-        <ApproverMenu currAction={action} />
+        <ApproverMenu action={action} />
       </Td>
     </Tr>
   );

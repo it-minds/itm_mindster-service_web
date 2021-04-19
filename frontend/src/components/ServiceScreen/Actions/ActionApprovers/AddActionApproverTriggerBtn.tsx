@@ -12,15 +12,16 @@ import {
 } from "@chakra-ui/react";
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
 import ActionApproverForm from "components/Forms/Service/ActionApproverForm";
-import React, { FC, useCallback } from "react";
-import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
+import React, { FC, useCallback, useContext } from "react";
+import { IActionApproverDto } from "services/backend/nswagts";
 
 type Props = {
-  currAction: IActionIdDto;
   submitCallback: (actionId: number, OwnerMetaDataForm: IActionApproverDto[]) => Promise<void>;
 };
-const AddActionApproverTriggerBtn: FC<Props> = ({ currAction, submitCallback }) => {
+const AddActionApproverTriggerBtn: FC<Props> = ({ submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { currAction } = useContext(ServiceViewContext);
 
   const handleSubmit = useCallback(async (OwnerMetaDataForm: IActionApproverDto[]) => {
     submitCallback(currAction.id, OwnerMetaDataForm);
