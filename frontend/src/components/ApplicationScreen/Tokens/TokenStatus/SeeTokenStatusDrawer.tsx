@@ -60,8 +60,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
           await submitOnOpen();
           onOpen();
         }}
-        borderWidth="1px"
-        borderColor="black">
+        colorScheme="blue">
         {buttonText != null ? buttonText : "See Status"}
       </Button>
 

@@ -55,12 +55,7 @@ const CreateApplicationTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green"
-        onClick={onOpen}>
+      <Button rightIcon={<BsPlus />} colorScheme="green" onClick={onOpen}>
         Create new project
       </Button>
 

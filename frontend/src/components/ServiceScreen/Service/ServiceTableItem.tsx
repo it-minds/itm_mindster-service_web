@@ -1,6 +1,5 @@
-import { Box, HStack, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Box, HStack, Td, Tr } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
-import { BsFillQuestionCircleFill } from "@react-icons/all-files/bs/BsFillQuestionCircleFill";
 import { BsStar } from "@react-icons/all-files/bs/BsStar";
 import { BsStarFill } from "@react-icons/all-files/bs/BsStarFill";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
@@ -35,16 +34,6 @@ const ServiceTableItem: FC<Props> = ({ service }) => {
       <Td>
         <HStack>
           <Box>{service.title}</Box>
-          <Box>
-            <Tooltip
-              label={`Description: ${service.description}`}
-              placement="right"
-              hasArrow={true}
-              shouldWrapChildren={true}
-              fontSize="md">
-              <BsFillQuestionCircleFill />
-            </Tooltip>
-          </Box>
         </HStack>
       </Td>
       <Td>{service.serviceIdentifier}</Td>

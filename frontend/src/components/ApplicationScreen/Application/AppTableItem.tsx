@@ -1,6 +1,5 @@
-import { Box, HStack, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Box, HStack, Td, Tr } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
-import { BsFillQuestionCircleFill } from "@react-icons/all-files/bs/BsFillQuestionCircleFill";
 import { BsStar } from "@react-icons/all-files/bs/BsStar";
 import { BsStarFill } from "@react-icons/all-files/bs/BsStarFill";
 import { AppViewContext } from "contexts/AppViewContext";
@@ -35,16 +34,6 @@ const AppTableItem: FC<Props> = ({ application }) => {
       <Td>
         <HStack>
           <Box>{application.title}</Box>
-          <Box>
-            <Tooltip
-              label={`Description: ${application.description}`}
-              placement="right"
-              hasArrow={true}
-              shouldWrapChildren={true}
-              fontSize="md">
-              <BsFillQuestionCircleFill />
-            </Tooltip>
-          </Box>
         </HStack>
       </Td>
       <Td>{application.appIdentifier}</Td>

@@ -57,8 +57,8 @@ const CreateTokenTriggerBtn: FC = () => {
           isClosable: true
         });
       }
-      onClose();
       setOpen(true);
+      onClose();
     },
     [currApplication]
   );
@@ -66,12 +66,7 @@ const CreateTokenTriggerBtn: FC = () => {
   if (currApplication == null) return null;
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green">
+      <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
         Create new token
       </Button>
       <ServiceLibraryDrawer Open={open} setOpen={setOpen} />

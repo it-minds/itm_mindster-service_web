@@ -15,18 +15,13 @@ const TokenTableItem: FC<Props> = ({ token }) => {
   const [libraryOpen, setOpen] = useState(false);
   return (
     <Tr>
-      <Td>
-        <Center>{token.tokenIdentifier}</Center>
-      </Td>
-      <Td>
-        <Center> {token.description}</Center>
-      </Td>
+      <Td>{token.tokenIdentifier}</Td>
+      <Td>{token.description}</Td>
       <Td>
         <Center>
           {token.state == TokenStates.Created && (
             <Button
-              borderWidth="1px"
-              borderColor="black"
+              colorScheme="blue"
               onClick={async () => {
                 await fetchUpdatedToken(token.id);
                 setOpen(true);

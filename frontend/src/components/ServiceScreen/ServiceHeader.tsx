@@ -7,7 +7,7 @@ import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
   return (
-    <Wrap p="5" bgColor="#FF9800" width="full">
+    <Wrap p="2.5" bgColor="#FF9800" width="full">
       <Flex align="center" width="full">
         <Box>
           <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />
@@ -18,11 +18,7 @@ const ServiceHeader: FC = () => {
         <Spacer />
         <Box alignContent="end" justifyContent="right">
           <Link href="/ApplicationScreen">
-            <Button
-              rightIcon={<BsArrowRight />}
-              borderWidth="1px"
-              borderColor="black"
-              bgColor="purple.600">
+            <Button rightIcon={<BsArrowRight />} colorScheme="purple">
               Enter as Application Owner
             </Button>
           </Link>

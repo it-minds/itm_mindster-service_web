@@ -26,7 +26,7 @@ type Props = {
 };
 
 const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
-  const { currToken } = useContext(AppViewContext);
+  const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
 
   const requestReview = useCallback(async () => {
@@ -51,6 +51,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
         duration: 5000,
         isClosable: true
       });
+      fetchUpdatedToken(currToken.id);
     }
   }, [currToken]);
 
@@ -61,7 +62,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
   if (currToken) {
     return (
       <>
-        <Drawer onClose={() => null} isOpen={Open} size="full">
+        <Drawer onClose={() => setOpen(false)} isOpen={Open} size="full">
           <DrawerOverlay>
             <DrawerContent>
               <DrawerHeader>
@@ -78,13 +79,15 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                   </Box>
                   <Spacer />
                   <Center mb="5">
-                    <SeeTokenStatusDrawer
-                      submitOnOpen={() => {
-                        return requestReview();
-                      }}
-                      buttonText="Request review (Im done browsing services)"
-                      submitOnClose={leaveLibraryDrawer}
-                    />
+                    {currToken.appTokenActions.length > 0 && (
+                      <SeeTokenStatusDrawer
+                        submitOnOpen={() => {
+                          return requestReview();
+                        }}
+                        buttonText="Request review (Im done browsing services)"
+                        submitOnClose={leaveLibraryDrawer}
+                      />
+                    )}
                   </Center>
                   <ThreeStepShower radius={50} stepCounter={2} />
                 </Flex>

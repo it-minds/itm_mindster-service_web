@@ -20,7 +20,7 @@ import { CreateActionCommand } from "services/backend/nswagts";
 
 const CreateActionTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchServices, currService, fetchUpdatedService } = useContext(ServiceViewContext);
+  const { currService, fetchUpdatedService } = useContext(ServiceViewContext);
   const toast = useToast();
 
   const createAction = useCallback(
@@ -51,12 +51,7 @@ const CreateActionTriggerBtn: FC = () => {
   if (currService == null) return null;
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green">
+      <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
         Create new action
       </Button>
 

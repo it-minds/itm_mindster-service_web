@@ -67,15 +67,16 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                   onChange={event => updateLocalForm(event.target.value, "description")}
                 />
               </FormControl>
-              <Button
-                isLoading={isLoading}
-                bgColor="blue.200"
-                variant="outline"
-                width="full"
-                type="submit"
-                mt={6}>
-                Submit
-              </Button>
+              <Center>
+                <Button
+                  isLoading={isLoading}
+                  bgColor="blue.200"
+                  variant="outline"
+                  type="submit"
+                  mt={6}>
+                  Submit
+                </Button>
+              </Center>
             </form>
           </Box>
         </Flex>

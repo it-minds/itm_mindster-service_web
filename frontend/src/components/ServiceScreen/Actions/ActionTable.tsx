@@ -13,7 +13,7 @@ const ActionTable: FC = () => {
   return (
     <VStack w="full" align="left">
       <Heading size="h3">Actions:</Heading>
-      <Table borderWidth="2px" variant="striped" colorScheme="blue" size="md">
+      <Table borderWidth="1px" variant="striped" colorScheme="gray" size="sm">
         <Thead>
           <Tr>
             <Th>ID</Th>

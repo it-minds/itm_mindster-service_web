@@ -6,7 +6,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Spinner,
   Textarea,
   Wrap
 } from "@chakra-ui/react";
@@ -48,7 +47,7 @@ const ActionForm: FC<Props> = ({ submitCallback }) => {
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Title:</FormLabel>
                 <Input
                   value={localFormData.title}
@@ -70,15 +69,11 @@ const ActionForm: FC<Props> = ({ submitCallback }) => {
                   placeholder="admin note"
                   onChange={event => updateLocalForm(event.target.value, "adminNote")}></Input>
               </FormControl>
-              {isLoading ? (
-                <Button variant="outline" width="full" mt={6}>
-                  <Spinner></Spinner>
-                </Button>
-              ) : (
-                <Button variant="outline" width="full" mt={6} type="submit">
+              <Center>
+                <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
                   Submit
                 </Button>
-              )}
+              </Center>
             </form>
           </Box>
         </Flex>

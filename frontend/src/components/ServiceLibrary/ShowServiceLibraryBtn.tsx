@@ -18,7 +18,7 @@ const ShowServiceLibraryBtn: FC = () => {
 
   return (
     <>
-      <Button justifyContent="left" isFullWidth={true} size="sm" variant="ghost" onClick={onOpen}>
+      <Button colorScheme="blue" onClick={onOpen}>
         Browse Services
       </Button>
 

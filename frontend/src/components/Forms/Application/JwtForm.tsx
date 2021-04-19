@@ -53,6 +53,7 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
         appSecret
       );
       setJWT(appResult.jwt);
+      onOpen();
     } catch (error) {
       toast({
         description: `CreateJwt responded: ${error}`,
@@ -69,7 +70,6 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
       setIsLoading(true);
       await CreateJWT();
       setIsLoading(false);
-      onOpen();
     },
     [appSecret]
   );
@@ -80,6 +80,8 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
           <Box width="full" p={6}>
             <form onSubmit={onSubmit}>
               <FormControl isRequired>
+                <Text>Application: {aid}</Text>
+                <Text mb="5">Token: {tokenIdentifier}</Text>
                 <FormLabel>App secret:</FormLabel>
                 <Textarea
                   type="text"
@@ -88,7 +90,7 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
                   onChange={event => setAppSecret(event.target.value)}
                 />
               </FormControl>
-              <Button isLoading={isLoading} variant="outline" width="full" mt={6} type="submit">
+              <Button isLoading={isLoading} colorScheme="blue" width="full" mt={6} type="submit">
                 Submit
               </Button>
             </form>

@@ -53,14 +53,12 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
   return (
     <>
       <Button
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green"
+        colorScheme="blue"
         onClick={async () => {
           await submitOnOpen();
           onOpen();
         }}>
-        Get JWT
+        Generate JWT
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">

@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
 {
-  public class UpdateAppTokenActionsCommandTest : CommandTestBase
+  public class UpdateAppTokenStateCommandTest : CommandTestBase
   {
     [Fact]
     public async Task Handle_GivenValidTokenId_ShouldUpdatePersistedAppTokenState()

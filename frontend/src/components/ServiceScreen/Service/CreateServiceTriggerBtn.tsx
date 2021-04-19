@@ -66,12 +66,7 @@ const CreateServiceTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green"
-        onClick={onOpen}>
+      <Button rightIcon={<BsPlus />} colorScheme="green" onClick={onOpen}>
         Create new Service
       </Button>
 

@@ -3,8 +3,6 @@ import { AppViewContext } from "contexts/AppViewContext";
 import { FC, useContext } from "react";
 import { ApplicationOwnerIdDto } from "services/backend/nswagts";
 
-import AddOwnersTriggerBtn from "./AddOwnersTriggerBtn";
-
 const AppOwnerOverview: FC = () => {
   const { appOwners, currApplication } = useContext(AppViewContext);
 
@@ -18,9 +16,6 @@ const AppOwnerOverview: FC = () => {
             {owner.email}
           </Tag>
         ))}
-      </Box>
-      <Box>
-        <AddOwnersTriggerBtn></AddOwnersTriggerBtn>
       </Box>
     </VStack>
   );
