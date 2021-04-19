@@ -16,7 +16,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
   public class UpdateAppTokenActionsCommandTest : CommandTestBase
   {
     [Fact]
-    public async Task Handle_GivenValidTokenId_AmountOfActions_ShouldUpdatePersistedAppToken()
+    public async Task Handle_GivenValidTokenId_ShouldUpdatePersistedAppTokenState()
     {
       var command = new UpdateAppTokenStateCommand
       {
@@ -41,6 +41,19 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
         NewState = TokenStates.JwtReceived
       };
       var handler = new UpdateAppTokenStateCommand.UpdateAppTokenStateCommandHandler(Context, InvalidUserServiceMock.Object);
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
+    [Fact]
+    public void Handle_InvalidTokenId_ShouldThrowError()
+    {
+      var command = new UpdateAppTokenStateCommand
+      {
+        Id = 99,
+        NewState = TokenStates.JwtReceived
+      };
+      var handler = new UpdateAppTokenStateCommand.UpdateAppTokenStateCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();
