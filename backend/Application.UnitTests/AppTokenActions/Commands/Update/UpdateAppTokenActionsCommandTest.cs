@@ -20,7 +20,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
     {
       var command = new UpdateAppTokenActionsCommand
       {
-        Id = 1,
+        TokenId = 1,
         AppToken = new AppTokenUpdateDto
         {
           AppTokenActions = new List<AppTokenActionUpdateDto>
@@ -44,13 +44,17 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
       action2.Should().NotBe(null);
       action2.State.Should().Be(ServiceStates.Rejected);
       action2.RejectionReason.Should().Be("Test rejected");
+
+      var dbAction = Context.AppTokenActions.Find(2);
+      dbAction.State.Should().Be(ServiceStates.Rejected);
+      dbAction.RejectionReason.Should().Be("Test rejected");
     }
     [Fact]
     public void WithInvalidTokenId_ThrowsException()
     {
       var command = new UpdateAppTokenActionsCommand
       {
-        Id = 99,
+        TokenId = 99,
         AppToken = new AppTokenUpdateDto
         {
           AppTokenActions = new List<AppTokenActionUpdateDto>
@@ -79,7 +83,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
     {
       var command = new UpdateAppTokenActionsCommand
       {
-        Id = 1,
+        TokenId = 1,
         AppToken = new AppTokenUpdateDto
         {
           AppTokenActions = new List<AppTokenActionUpdateDto>
@@ -108,7 +112,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
     {
       var command = new UpdateAppTokenActionsCommand
       {
-        Id = 1,
+        TokenId = 1,
         AppToken = new AppTokenUpdateDto
         {
           AppTokenActions = new List<AppTokenActionUpdateDto>
@@ -132,7 +136,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.Update
       var entityBefore = Context.AppTokens.Find(1);
       var command = new UpdateAppTokenActionsCommand
       {
-        Id = 1,
+        TokenId = 1,
         AppToken = new AppTokenUpdateDto
         {
           AppTokenActions = new List<AppTokenActionUpdateDto>

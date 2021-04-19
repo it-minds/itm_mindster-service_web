@@ -1,7 +1,7 @@
-using System.Data;
+using Application.AppTokens.Commands.UpdateAppTokenActions;
 using FluentValidation;
 
-namespace Application.AppTokens.Commands.UpdateAppTokenActions
+namespace Application.AppTokens.Commands.UpdateAppTokenState
 {
   public class UpdateAppTokenStateCommandValidation : AbstractValidator<UpdateAppTokenStateCommand>
   {

@@ -6,7 +6,7 @@ namespace Application.AppTokenActions.Commands.UpdateAppTokenActions
   {
     public UpdateAppTokenActionsCommandValidator()
     {
-      RuleFor(e => e.Id)
+      RuleFor(e => e.TokenId)
         .NotEmpty();
       RuleFor(e => e.AppToken)
         .NotNull();

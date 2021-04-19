@@ -6,7 +6,7 @@ import {
   AppTokenActionIdDto,
   AppTokenActionUpdateDto,
   AppTokenUpdateDto,
-  UpdateAppTokenCommand
+  UpdateAppTokenActionsCommand
 } from "services/backend/nswagts";
 
 import ReviewTokenFormItem from "./ReviewTokenFormItem";
@@ -20,7 +20,8 @@ const ReviewTokenForm: FC = () => {
       action =>
         new AppTokenActionUpdateDto({
           state: action.state,
-          rejectionReason: action.rejectionReason
+          rejectionReason: action.rejectionReason,
+          id: action.id
         })
     )
   );
@@ -33,7 +34,7 @@ const ReviewTokenForm: FC = () => {
       try {
         await client.updateAppTokenActions(
           currToken.id,
-          new UpdateAppTokenCommand({
+          new UpdateAppTokenActionsCommand({
             appToken: new AppTokenUpdateDto({
               appTokenActions: actions
             })
@@ -78,7 +79,7 @@ const ReviewTokenForm: FC = () => {
           <form onSubmit={() => handleSubmit(event)}>
             {currToken.appTokenActions.map((action: AppTokenActionIdDto) => (
               <Box key={action.id} m="4" p="2" borderWidth="1px" borderRadius="sm">
-                <Heading size="h4">{`ActionId: ${action.actionId} `}</Heading>
+                <Heading size="h4">{`ActionId: ${action.actionId} TokenActionId: ${action.id} `}</Heading>
                 <ReviewTokenFormItem
                   submitCallback={updateAction}
                   index={currToken.appTokenActions.indexOf(action)}

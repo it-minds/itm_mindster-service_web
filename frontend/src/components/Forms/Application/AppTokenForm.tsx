@@ -59,7 +59,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                   onChange={event => updateLocalForm(event.target.value, "tokenIdentifier")}
                 />
               </FormControl>
-              <FormControl mt="6">
+              <FormControl mt="6" isRequired>
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Scope of the AppToken"

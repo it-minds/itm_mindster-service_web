@@ -95,7 +95,7 @@ namespace Web.Controllers
     [HttpPut("AppTokens/{id}/UpdateActions")]
     public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenActionsCommand command)
     {
-      command.Id = id;
+      command.TokenId = id;
       await Mediator.Send(command);
 
       return NoContent();
