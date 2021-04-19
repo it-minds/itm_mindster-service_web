@@ -6,6 +6,7 @@ using Application.Common.Interfaces;
 using Application.Common.Security;
 using AuthService.Client;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -42,6 +43,16 @@ namespace Application.AppTokens.Commands.CreateAuthAppToken
         {
           throw new NotFoundException(nameof(ApplicationEntity), application.Id + "Not authorized for the given Application");
         }
+
+        var appToken = await _context.AppTokens
+          .Where(e => e.ApplicationId == application.Id)
+          .Where(e => e.TokenIdentifier == request.TokenInput.TokenIdentifier).FirstOrDefaultAsync(cancellationToken);
+        if (appToken == null) throw new NotFoundException(nameof(AppToken), key: request.TokenInput.TokenIdentifier + "AppToken doesn't exist");
+
+        appToken.State = TokenStates.JwtReceived;
+
+        _context.AppTokens.Update(appToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         var result =  await _authClient.TokenAsync(
           request.aId,

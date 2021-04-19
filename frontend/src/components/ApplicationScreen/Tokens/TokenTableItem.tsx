@@ -5,7 +5,6 @@ import React, { FC, useContext, useState } from "react";
 import { AppTokenIdDto, TokenStates } from "services/backend/nswagts";
 
 import GetJwtTriggerBtn from "./AuthToken/GetJwtTriggerBtn";
-import TokenActionList from "./TokenActions/TokenActionsList";
 import SeeTokenStatusDrawer from "./TokenStatus/SeeTokenStatusDrawer";
 
 type Props = {
@@ -36,7 +35,11 @@ const TokenTableItem: FC<Props> = ({ token }) => {
             </Button>
           )}
           {token.state == TokenStates.AwaitingReview && (
-            <TokenActionList actions={token.appTokenActions} />
+            <SeeTokenStatusDrawer
+              buttonText="Check status"
+              submitOnOpen={() => fetchUpdatedToken(token.id)}
+              submitOnClose={() => null}
+            />
           )}
           {token.state == TokenStates.Reviewed && (
             <SeeTokenStatusDrawer
@@ -45,7 +48,9 @@ const TokenTableItem: FC<Props> = ({ token }) => {
               submitOnClose={() => null}
             />
           )}
-          {token.state == TokenStates.JwtReceived && <GetJwtTriggerBtn />}
+          {token.state == TokenStates.JwtReceived && (
+            <GetJwtTriggerBtn submitOnOpen={() => fetchUpdatedToken(token.id)} />
+          )}
           <ServiceLibraryDrawer Open={libraryOpen} setOpen={setOpen} />
         </Center>
       </Td>

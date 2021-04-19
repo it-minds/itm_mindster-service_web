@@ -76,9 +76,11 @@ const SeeTokenStatusDrawer: FC<Props> = ({
           <DrawerContent>
             <DrawerHeader>
               <Flex>
-                <Box>
-                  Status of {currToken.id} {currToken.description}
-                </Box>
+                {currToken != null && (
+                  <Box>
+                    Status of {currToken.id} {currToken.description}
+                  </Box>
+                )}
                 <Spacer />
                 <CloseButton
                   onClick={() => {
@@ -95,7 +97,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
                     <TokenStatusList />
                   </Flex>
                   <Center hidden={!isAllApproved} m="5">
-                    <GetJwtTriggerBtn />
+                    <GetJwtTriggerBtn submitOnOpen={() => null} />
                   </Center>
                   <Spacer />
                   <ThreeStepShower radius={50} stepCounter={3} />

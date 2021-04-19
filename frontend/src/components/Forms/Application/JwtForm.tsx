@@ -6,7 +6,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,6 +14,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Textarea,
   useClipboard,
   useDisclosure,
   useToast,
@@ -81,11 +81,12 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
             <form onSubmit={onSubmit}>
               <FormControl isRequired>
                 <FormLabel>App secret:</FormLabel>
-                <Input
+                <Textarea
                   type="text"
                   value={appSecret}
                   placeholder="You received this once when you created your application"
-                  onChange={event => setAppSecret(event.target.value)}></Input>
+                  onChange={event => setAppSecret(event.target.value)}
+                />
               </FormControl>
               <Button isLoading={isLoading} variant="outline" width="full" mt={6} type="submit">
                 Submit
