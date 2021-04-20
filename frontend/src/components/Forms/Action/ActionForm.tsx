@@ -5,12 +5,14 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Textarea,
   Wrap
 } from "@chakra-ui/react";
-import React, { FC, useCallback, useState } from "react";
-import { IActionDto } from "services/backend/nswagts";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { ActionDto, IActionDto } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 type Props = {
   submitCallback: (AppMetaDataForm: IActionDto) => Promise<void>;
@@ -18,56 +20,68 @@ type Props = {
 
 const ActionForm: FC<Props> = ({ submitCallback }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [localFormData, setLocalFormData] = useState<IActionDto>({
-    title: null,
-    description: null,
-    adminNote: null
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [adminNote, setAdminNote] = useState("");
+  const [identifier, setIdentifier] = useState("");
 
   const onSubmit = useCallback(
     async event => {
       setIsLoading(true);
       event.preventDefault();
-      await submitCallback(localFormData);
+      await submitCallback(
+        new ActionDto({
+          title: title,
+          description: description,
+          adminNote: adminNote,
+          actionIdentifier: identifier
+        })
+      );
       setIsLoading(false);
     },
-    [localFormData]
+    [title, description, adminNote, identifier]
   );
 
-  const updateLocalForm = useCallback((value: unknown, key: keyof IActionDto) => {
-    setLocalFormData(form => {
-      (form[key] as unknown) = value;
-      return form;
-    });
-  }, []);
+  useEffect(() => {
+    if (title) {
+      const timeOutId = setTimeout(() => setIdentifier(convertToIdentifier(title)), 700);
+      return () => clearTimeout(timeOutId);
+    }
+  }, [title]);
 
   return (
     <Center>
       <Wrap width="full" justify="center">
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6}>
+            <Heading size="h3">ID: </Heading>
+            {identifier}
             <form onSubmit={onSubmit}>
-              <FormControl isRequired>
+              <FormControl mt="6" isRequired>
                 <FormLabel>Title:</FormLabel>
                 <Input
-                  value={localFormData.title}
+                  type="text"
+                  value={title}
                   placeholder="Title of your action"
-                  onChange={event => updateLocalForm(event.target.value, "title")}></Input>
+                  onChange={event => {
+                    setTitle(event.target.value);
+                  }}></Input>
               </FormControl>
               <FormControl mt="6">
-                <FormLabel>Description: </FormLabel>
+                <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Description of action"
-                  value={localFormData.description}
-                  onChange={event => updateLocalForm(event.target.value, "description")}
+                  value={description}
+                  onChange={event => setDescription(event.target.value)}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel>Admin note: </FormLabel>
+              <FormControl mt="6">
+                <FormLabel>Admin note:</FormLabel>
                 <Input
-                  value={localFormData.adminNote}
+                  value={adminNote}
                   placeholder="admin note"
-                  onChange={event => updateLocalForm(event.target.value, "adminNote")}></Input>
+                  onChange={event => setAdminNote(event.target.value)}
+                />
               </FormControl>
               <Center>
                 <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">

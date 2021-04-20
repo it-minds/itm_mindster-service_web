@@ -5,66 +5,67 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Textarea,
   Wrap
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { IAppTokenCreateDto } from "services/backend/nswagts";
+import { AppTokenCreateDto, IAppTokenCreateDto } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 type Props = {
   submitCallback: (AppMetaDataForm: IAppTokenCreateDto) => Promise<void>;
-  AppMetaData?: IAppTokenCreateDto;
 };
 
-const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
+const AppTokenForm: FC<Props> = ({ submitCallback }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [localFormData, setLocalFormData] = useState<IAppTokenCreateDto>({});
-
-  useEffect(() => {
-    if (AppMetaData) {
-      setLocalFormData(AppMetaData);
-    }
-  }, [AppMetaData]);
+  const [description, setDescription] = useState("");
+  const [identifier, setIdentifier] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
       setIsLoading(true);
-      await submitCallback(localFormData);
+      await submitCallback(
+        new AppTokenCreateDto({ tokenIdentifier: description, description: description })
+      );
       setIsLoading(false);
     },
-    [localFormData]
+    [description, identifier]
   );
 
-  const updateLocalForm = useCallback((value: unknown, key: keyof typeof localFormData) => {
-    setLocalFormData(form => {
-      (form[key] as unknown) = value;
-      return form;
-    });
-  }, []);
+  useEffect(() => {
+    if (title) {
+      const timeOutId = setTimeout(() => setIdentifier(convertToIdentifier(title)), 700);
+      return () => clearTimeout(timeOutId);
+    }
+  }, [title]);
 
   return (
     <Center>
       <Wrap width="full" justify="center">
         <Flex width="full" align="center" justifyContent="center">
           <Box width="full" p={6}>
+            <Heading size="h3">ID: </Heading>
+            {identifier}
             <form onSubmit={() => handleSubmit(event)}>
-              <FormControl isRequired>
+              <FormControl mt="6" isRequired>
                 <FormLabel>Identifier:</FormLabel>
                 <Input
                   type="text"
                   placeholder="Token Identifier"
-                  value={localFormData.tokenIdentifier}
-                  onChange={event => updateLocalForm(event.target.value, "tokenIdentifier")}
+                  value={title}
+                  onChange={event => setTitle(event.target.value)}
                 />
               </FormControl>
               <FormControl mt="6" isRequired>
                 <FormLabel>Description:</FormLabel>
                 <Textarea
                   placeholder="Scope of the AppToken"
-                  value={localFormData.description}
-                  onChange={event => updateLocalForm(event.target.value, "description")}
+                  value={description}
+                  onChange={event => setDescription(event.target.value)}
                 />
               </FormControl>
               <Center>
