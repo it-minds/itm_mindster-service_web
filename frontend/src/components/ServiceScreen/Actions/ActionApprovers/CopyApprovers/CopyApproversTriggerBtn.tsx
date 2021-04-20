@@ -14,23 +14,18 @@ import {
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
-import { IActionApproverDto, IActionIdDto } from "services/backend/nswagts";
+import { IActionApproverDto } from "services/backend/nswagts";
 
 import ActionApproverOverview from "../ActionApproverOverview";
 import CopyActionList from "./CopyActionsList";
 
 type Props = {
-  currAction: IActionIdDto;
   approversToCopy: IActionApproverDto[];
   submitCallback: (actionId: number, OwnerMetaDataForm: IActionApproverDto[]) => Promise<void>;
 };
-const CopyApproverTriggerBtn: FC<Props> = ({ currAction, approversToCopy, submitCallback }) => {
+const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currService } = useContext(ServiceViewContext);
-  const table: IActionIdDto[] = [];
-  currService.actions.forEach(e => {
-    if (e.id != currAction.id) table.push(e);
-  });
+  const { currService, currAction } = useContext(ServiceViewContext);
 
   const handleSubmit = useCallback(
     async (actionIds: number[]) => {
@@ -55,7 +50,10 @@ const CopyApproverTriggerBtn: FC<Props> = ({ currAction, approversToCopy, submit
           <ModalBody>
             <ActionApproverOverview approvers={approversToCopy} />
             <Box p="3">
-              <CopyActionList tableData={table} submitCallback={handleSubmit} />
+              <CopyActionList
+                tableData={currService.actions.filter(e => e.id != currAction.id)}
+                submitCallback={handleSubmit}
+              />
             </Box>
           </ModalBody>
           <Divider />

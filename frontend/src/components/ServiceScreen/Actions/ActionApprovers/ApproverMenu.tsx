@@ -22,11 +22,13 @@ import CopyApproverTriggerBtn from "./CopyApprovers/CopyApproversTriggerBtn";
 import ViewActionApproversTriggerBtn from "./ViewActionApproversTriggerBtn";
 
 type Props = {
-  currAction: IActionIdDto;
+  action: IActionIdDto;
 };
-const ApproverMenu: FC<Props> = ({ currAction }) => {
+const ApproverMenu: FC<Props> = ({ action }) => {
   const [isOpen, setOpen] = useState(false);
-  const { approvers, fetchActionApprovers } = useContext(ServiceViewContext);
+  const { approvers, fetchActionApprovers, currAction, setCurrAction } = useContext(
+    ServiceViewContext
+  );
   const toast = useToast();
 
   const addApprovers = useCallback(async (actionId: number, form: IActionApproverDto[]) => {
@@ -60,25 +62,30 @@ const ApproverMenu: FC<Props> = ({ currAction }) => {
   return (
     <Popover placement="bottom-start">
       <PopoverTrigger>
-        <Button colorScheme="blue" onClick={() => setOpen(!isOpen)}>
+        <Button
+          colorScheme="blue"
+          onClick={() => {
+            setCurrAction(action);
+            setOpen(!isOpen);
+          }}>
           Actions
         </Button>
       </PopoverTrigger>
       <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
         <PopoverArrow />
         <PopoverBody padding="0">
-          <VStack minWidth="full" spacing="0">
-            <ViewActionApproversTriggerBtn
-              currAction={currAction}
-              approvers={approvers.filter(e => e.actionId == currAction.id)}
-            />
-            <AddActionApproverTriggerBtn currAction={currAction} submitCallback={addApprovers} />
-            <CopyApproverTriggerBtn
-              approversToCopy={approvers.filter(e => e.actionId == currAction.id)}
-              currAction={currAction}
-              submitCallback={addApprovers}
-            />
-          </VStack>
+          {currAction != null && (
+            <VStack minWidth="full" spacing="0">
+              <ViewActionApproversTriggerBtn
+                approvers={approvers.filter(e => e.actionId == currAction.id)}
+              />
+              <AddActionApproverTriggerBtn submitCallback={addApprovers} />
+              <CopyApproverTriggerBtn
+                approversToCopy={approvers.filter(e => e.actionId == currAction.id)}
+                submitCallback={addApprovers}
+              />
+            </VStack>
+          )}
         </PopoverBody>
       </PopoverContent>
     </Popover>
