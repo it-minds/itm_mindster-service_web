@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.Configurations
         .IsRequired(true);
       builder.Property(e => e.Description)
         .IsRequired(true)
-        .HasMaxLength(300);
+        .HasMaxLength(800);
       builder.Property(e => e.State)
         .IsRequired(true);
       builder.Property(e => e.TokenIdentifier)

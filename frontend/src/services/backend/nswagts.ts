@@ -2262,6 +2262,7 @@ export class Action implements IAction {
     id?: number;
     title?: string | null;
     description?: string | null;
+    actionIdentifier?: string | null;
     adminNote?: string | null;
     serviceId?: number;
     service?: Service | null;
@@ -2281,6 +2282,7 @@ export class Action implements IAction {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.actionIdentifier = _data["actionIdentifier"] !== undefined ? _data["actionIdentifier"] : <any>null;
             this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
             this.serviceId = _data["serviceId"] !== undefined ? _data["serviceId"] : <any>null;
             this.service = _data["service"] ? Service.fromJS(_data["service"]) : <any>null;
@@ -2299,6 +2301,7 @@ export class Action implements IAction {
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["actionIdentifier"] = this.actionIdentifier !== undefined ? this.actionIdentifier : <any>null;
         data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
         data["serviceId"] = this.serviceId !== undefined ? this.serviceId : <any>null;
         data["service"] = this.service ? this.service.toJSON() : <any>null;
@@ -2310,6 +2313,7 @@ export interface IAction {
     id?: number;
     title?: string | null;
     description?: string | null;
+    actionIdentifier?: string | null;
     adminNote?: string | null;
     serviceId?: number;
     service?: IService | null;

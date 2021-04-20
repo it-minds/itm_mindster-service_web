@@ -14,8 +14,6 @@ namespace Infrastructure.Persistence.Configurations
       builder.Property(e => e.AppIdentifier)
         .HasMaxLength(200)
         .IsRequired(true);
-      builder.Property(e => e.Description)
-        .HasMaxLength(400);
     }
   }
 }
