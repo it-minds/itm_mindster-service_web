@@ -90,9 +90,11 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
                   onChange={event => setAppSecret(event.target.value)}
                 />
               </FormControl>
-              <Button isLoading={isLoading} colorScheme="blue" width="full" mt={6} type="submit">
-                Submit
-              </Button>
+              <Center>
+                <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
+                  Submit
+                </Button>
+              </Center>
             </form>
           </Box>
         </Flex>

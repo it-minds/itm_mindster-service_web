@@ -92,9 +92,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
             <DrawerBody>
               <Box height="full" width="full">
                 <Flex direction="column" p="50" height="full" width="full" align="left">
-                  <Flex height="full" width="full">
-                    <TokenStatusList />
-                  </Flex>
+                  <TokenStatusList />
                   <Center hidden={!isAllApproved} m="5">
                     <GetJwtTriggerBtn submitOnOpen={() => null} />
                   </Center>

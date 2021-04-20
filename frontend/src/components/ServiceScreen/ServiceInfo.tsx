@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -37,7 +37,7 @@ const ServiceInfo: FC = () => {
         <ServiceOwnerOverview />
 
         <Box pt="10" width={0.65}>
-          {localFormData.title}
+          <Heading>{localFormData.title}</Heading>
           <MarkdownViewer value={localFormData.description} />
         </Box>
         <Box pt="10" width="full">

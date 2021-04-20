@@ -40,25 +40,26 @@ const LibraryCard: FC<Props> = ({ service }) => {
         borderWidth="1px"
         borderRadius="lg">
         <Box p="3">
-          <Box mt="1" as="header">
-            <Heading fontSize="xl">{`${service.id} ${service.title}`}</Heading>
+          <Box>
+            <Heading fontSize="xl">{service.title}</Heading>
           </Box>
-          <Box overflowY="scroll" mt="2">
-            <Text maxHeight="220px">
-              <MarkdownViewer value={service.description} />
-            </Text>
+          <Box mt="6">
+            <Heading fontSize="md">{service.serviceIdentifier}</Heading>
+          </Box>
+          <Box mt="6">
+            <Heading fontSize="sm">Amount of actions: {service.actions.length}</Heading>
           </Box>
         </Box>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Service: {service.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box borderWidth="1px" borderRadius="lg" p="5" overflowY="scroll" mt="2">
-              <Text maxHeight="300px">
+            <Box borderWidth="1px" borderRadius="lg" p="5" mt="2">
+              <Text>
                 <MarkdownViewer value={service.description} />
               </Text>
             </Box>

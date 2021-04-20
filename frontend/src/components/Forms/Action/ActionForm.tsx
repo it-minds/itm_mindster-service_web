@@ -34,7 +34,7 @@ const ActionForm: FC<Props> = ({ submitCallback }) => {
           title: title,
           description: description,
           adminNote: adminNote,
-          actionIdentifier: identifier
+          actionIdentifier: title
         })
       );
       setIsLoading(false);

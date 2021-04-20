@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -36,7 +36,7 @@ const ApplicationInfo: FC = () => {
         </Flex>
         <AppOwnerOverview />
         <Box pt="10" width={0.65}>
-          {localFormData.title}
+          <Heading>{localFormData.title}</Heading>
           <MarkdownViewer value={localFormData.description} />
         </Box>
         <Box pt="10" width="full">

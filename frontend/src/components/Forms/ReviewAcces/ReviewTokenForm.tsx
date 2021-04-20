@@ -88,15 +88,11 @@ const ReviewTokenForm: FC = () => {
                   }></ReviewTokenFormItem>
               </Box>
             ))}
-            {isLoading ? (
-              <Button variant="outline" width="full" mt={6}>
-                <Spinner></Spinner>
-              </Button>
-            ) : (
-              <Button variant="outline" width="full" mt={6} type="submit">
+            <Box ml="10" mb="5">
+              <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
                 Submit
               </Button>
-            )}
+            </Box>
           </form>
         </Box>
       </VStack>

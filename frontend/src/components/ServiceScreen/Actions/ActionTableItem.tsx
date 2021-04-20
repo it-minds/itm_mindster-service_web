@@ -10,8 +10,9 @@ type Props = {
 const ActionTableItem: FC<Props> = ({ action }) => {
   return (
     <Tr>
-      <Td>{action.id}</Td>
+      <Td>{action.actionIdentifier}</Td>
       <Td>{action.title}</Td>
+      <Td>{action.description}</Td>
       <Td>
         <ApproverMenu currAction={action} />
       </Td>

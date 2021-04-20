@@ -74,7 +74,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
               </DrawerHeader>
               <DrawerBody>
                 <Flex h="full" flexDirection="column">
-                  <Box mb="5" h="full" overflowY="scroll">
+                  <Box mb="5" h="full" overflowY="auto">
                     <ServiceLibrary />
                   </Box>
                   <Spacer />
