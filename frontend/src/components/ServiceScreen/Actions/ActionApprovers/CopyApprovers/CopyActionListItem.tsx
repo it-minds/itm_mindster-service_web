@@ -9,7 +9,7 @@ type Props = {
 const CopyActionListItem: FC<Props> = ({ action, checked, addAction }) => {
   return (
     <Tr>
-      <Td>{action.id}</Td>
+      <Td>{action.actionIdentifier}</Td>
       <Td>{action.title}</Td>
       <Td>
         <Checkbox

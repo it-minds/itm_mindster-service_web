@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, Spinner, useToast, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, useToast, VStack } from "@chakra-ui/react";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
