@@ -3102,6 +3102,7 @@ export interface IServiceIdDto extends IServiceDto {
 
 export class ActionDto implements IActionDto {
     title?: string | null;
+    actionIdentifier?: string | null;
     description?: string | null;
     adminNote?: string | null;
 
@@ -3117,6 +3118,7 @@ export class ActionDto implements IActionDto {
     init(_data?: any) {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.actionIdentifier = _data["actionIdentifier"] !== undefined ? _data["actionIdentifier"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
         }
@@ -3132,6 +3134,7 @@ export class ActionDto implements IActionDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["actionIdentifier"] = this.actionIdentifier !== undefined ? this.actionIdentifier : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
         return data; 
@@ -3140,6 +3143,7 @@ export class ActionDto implements IActionDto {
 
 export interface IActionDto {
     title?: string | null;
+    actionIdentifier?: string | null;
     description?: string | null;
     adminNote?: string | null;
 }

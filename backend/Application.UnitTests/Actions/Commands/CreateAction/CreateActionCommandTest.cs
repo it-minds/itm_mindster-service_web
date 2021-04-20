@@ -23,6 +23,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
         Action = new ActionDto()
         {
           Title = "Test of createAction",
+          ActionIdentifier = "title_for_three", // this one already exists, but not in Service 1
           Description = "Added to service 1",
           AdminNote = "TEST ACTION"
         }
@@ -38,6 +39,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
       entity.Description.Should().Be(command.Action.Description);
       entity.AdminNote.Should().Be(command.Action.AdminNote);
       entity.ServiceId.Should().Be(command.Id);
+      entity.ActionIdentifier.Should().Be(command.Action.ActionIdentifier);
     }
     [Fact]
     public void WithInValidServiceId_ThrowsException()
@@ -48,6 +50,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
         Action = new ActionDto()
         {
           Title = "Test of createAction",
+          ActionIdentifier = "test_of_create_Action",
           Description = "Added to service 1",
           AdminNote = "TEST ACTION"
         }
@@ -66,12 +69,32 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
         Action = new ActionDto()
         {
           Title = "Test of createAction",
+          ActionIdentifier = "test_of_create_Action",
           Description = "Added to service 1",
           AdminNote = "TEST ACTION"
         }
       };
       var handler = new CreateActionCommand.CreateActionCommandHandler(Context, InvalidUserServiceMock.Object);
 
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
+    [Fact]
+    public void Handle_DuplicateIdentifier_ShouldThrowError()
+    {
+      var command = new CreateActionCommand()
+      {
+        Id = 1,
+        Action = new ActionDto()
+        {
+          Title = "Test of createAction",
+          ActionIdentifier = "title_for_two",
+          Description = "Added to service 1",
+          AdminNote = "TEST ACTION"
+        }
+      };
+      var handler = new CreateActionCommand.CreateActionCommandHandler(Context, InvalidUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();

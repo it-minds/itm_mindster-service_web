@@ -44,10 +44,16 @@ namespace Application.Actions.Commands.CreateAction
         {
           throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
         }
+        if (await _context.Actions.AnyAsync(e => e.ActionIdentifier == request.Action.ActionIdentifier && e.ServiceId == request.Id, cancellationToken))
+        {
+          throw new NotFoundException(nameof(Domain.Entities.AppToken),
+            key: request.Id + "A Action with that identifier already exists");
+        }
 
         var action = new Action
         {
           Title = request.Action.Title,
+          ActionIdentifier = request.Action.ActionIdentifier,
           Description = request.Action.Description,
           AdminNote = request.Action.AdminNote,
           ServiceId = request.Id

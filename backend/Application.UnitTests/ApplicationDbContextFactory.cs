@@ -61,8 +61,8 @@ namespace Application.UnitTests
           ServiceIdentifier = "first",
           Actions = new List<Action>
           {
-            new Action {Id = 1, Title = "Title for 1", Description = "1 desc", ServiceId = 1, AdminNote = "Admin says 1"},
-            new Action {Id = 2, Title = "Title for 2", Description = "2 desc", ServiceId = 1, AdminNote = "Admin says 2"}
+            new Action {Id = 1, Title = "Title for 1",ActionIdentifier = "title_for_one",Description = "1 desc", ServiceId = 1, AdminNote = "Admin says 1"},
+            new Action {Id = 2, Title = "Title for 2", ActionIdentifier = "title_for_two",Description = "2 desc", ServiceId = 1, AdminNote = "Admin says 2"}
           }
         },
         new Service
@@ -74,8 +74,8 @@ namespace Application.UnitTests
           State = ServiceStates.Pending,
           Actions = new List<Action>
           {
-            new Action {Id = 3, Title = "Title for 3", Description = "3 desc", ServiceId = 2, AdminNote = "Admin says 3"},
-            new Action {Id = 4, Title = "Title for 4", Description = "4 desc", ServiceId = 2, AdminNote = "Admin says 4"}
+            new Action {Id = 3, Title = "Title for 3", ActionIdentifier = "title_for_three", Description = "3 desc", ServiceId = 2, AdminNote = "Admin says 3"},
+            new Action {Id = 4, Title = "Title for 4", ActionIdentifier = "title_for_four", Description = "4 desc", ServiceId = 2, AdminNote = "Admin says 4"}
           }
         },
         new Service
@@ -87,8 +87,8 @@ namespace Application.UnitTests
           State = ServiceStates.Rejected,
           Actions = new List<Action>
           {
-            new Action {Id = 5, Title = "Title for 5", Description = "5 desc", ServiceId = 3, AdminNote = "Admin says 5"},
-            new Action {Id = 6, Title = "Title for 6", Description = "6 desc", ServiceId = 3, AdminNote = "Admin says 6"}
+            new Action {Id = 5, Title = "Title for 5", ActionIdentifier = "title_for_six", Description = "5 desc", ServiceId = 3, AdminNote = "Admin says 5"},
+            new Action {Id = 6, Title = "Title for 6", ActionIdentifier = "title_for_seven", Description = "6 desc", ServiceId = 3, AdminNote = "Admin says 6"}
           }
         }
         );
