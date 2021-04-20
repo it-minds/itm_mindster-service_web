@@ -23,8 +23,8 @@ const ServiceTableItem: FC<ServiceTableItemProps> = ({ service }) => {
       <Td>{service.title}</Td>
       <Td>{service.description}</Td>
       <Td>
-        <Tag size="md" variant="subtle" colorScheme={stateColors[service.state]}>
-          <TagLabel>{ServiceStates[service.state]}</TagLabel>
+        <Tag size="md" variant="subtle">
+          <TagLabel></TagLabel>
         </Tag>
       </Td>
       <Td>

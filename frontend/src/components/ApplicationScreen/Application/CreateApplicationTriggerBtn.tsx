@@ -17,10 +17,11 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 const CreateApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setNewCurrApp, convertToIdentifier } = useContext(AppViewContext);
+  const { setNewCurrApp } = useContext(AppViewContext);
   const [value, setValue] = useState("# My Application\n");
   const toast = useToast();
 

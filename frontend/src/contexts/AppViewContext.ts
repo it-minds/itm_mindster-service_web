@@ -21,7 +21,6 @@ type ContextType = {
   fetchApps: () => Promise<void>;
   fetchServices: () => Promise<void>;
   fetchAppTokens: () => Promise<void>;
-  convertToIdentifier(title: string): string;
 };
 
 export const AppViewContext = createContext<ContextType>({
@@ -38,6 +37,5 @@ export const AppViewContext = createContext<ContextType>({
   fetchApps: null,
   fetchServices: null,
   fetchAppOwners: null,
-  fetchAppTokens: null,
-  convertToIdentifier: null
+  fetchAppTokens: null
 });

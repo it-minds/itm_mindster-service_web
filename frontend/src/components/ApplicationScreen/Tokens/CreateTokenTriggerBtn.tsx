@@ -20,12 +20,13 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { AppTokenCreateDto, CreateAppTokenCommand } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 import ThreeStepShower from "../../Common/ThreeStepShower";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication, fetchUpdatedToken, convertToIdentifier } = useContext(AppViewContext);
+  const { currApplication, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
   const [open, setOpen] = useState(false);
 

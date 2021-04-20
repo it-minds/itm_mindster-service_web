@@ -17,23 +17,13 @@ import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import { CreateServiceCommand, ServiceDto } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 const CreateServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { setNewCurrService } = useContext(ServiceViewContext);
   const [value, setValue] = useState("# My Service\n");
   const toast = useToast();
-
-  function convertToIdentifier(title: string): string {
-    //TODO Replace with proper string filtering and regex (Pls help me Martin)
-    console.log(title);
-    title = title.toLowerCase();
-    title = title.replaceAll(/[^a-z .]/g, "");
-    title = title.replaceAll(".", "_");
-    title = title.replaceAll(" ", "_");
-    title = title.replaceAll(/_+/g, "_");
-    return title;
-  }
 
   const addService = useCallback(async (title: string, description: string) => {
     const client = await genServiceClient();
