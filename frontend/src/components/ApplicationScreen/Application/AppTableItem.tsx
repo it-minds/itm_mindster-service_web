@@ -28,7 +28,7 @@ const AppTableItem: FC<Props> = ({ application }) => {
         <HStack>
           <BsCheck visibility={currApplication == application ? "" : "hidden"} />
           <Box onClick={() => setIsFavorite(!isFavorite)} cursor={"pointer"}>
-            {isFavorite ? <BsStarFill color="#ded035" /> : <BsStar />}
+            {isFavorite ? <BsStarFill color="yellow" /> : <BsStar />}
           </Box>
         </HStack>
       </Td>

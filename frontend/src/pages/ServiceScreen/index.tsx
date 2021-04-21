@@ -87,6 +87,18 @@ const ServiceScreen: NextPage = () => {
     }
   }, [currService]);
 
+  const fetchActionApprovers = useCallback(async (actionId: number) => {
+    try {
+      const client = await genServiceClient();
+      const data = await client.getActionApproversByActionId(actionId);
+
+      if (data && data.length >= 0) return data;
+      else logger.info("exampleClient.get no data");
+    } catch (err) {
+      logger.warn("exampleClient.get Error", err);
+    }
+  }, []);
+
   useEffect(() => {
     fetchServices();
   }, [fetchServices]);
@@ -106,7 +118,8 @@ const ServiceScreen: NextPage = () => {
         fetchAppTokens: fetchAppTokens,
         fetchUpdatedService: fetchUpdatedServices,
         fetchOwners: fetchServiceOwners,
-        fetchServices: fetchServices
+        fetchServices: fetchServices,
+        fetchActionApprovers: fetchActionApprovers
       }}>
       <VStack>
         <Box zIndex={1} position="fixed" w="full">

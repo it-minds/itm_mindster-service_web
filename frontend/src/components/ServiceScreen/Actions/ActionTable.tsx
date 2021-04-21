@@ -17,7 +17,8 @@ const ActionTable: FC = () => {
         <Thead>
           <Tr>
             <Th>ID</Th>
-            <Th w={0.9}>Name</Th>
+            <Th w={0.8}>Name</Th>
+            <Th />
           </Tr>
         </Thead>
         <Tbody>

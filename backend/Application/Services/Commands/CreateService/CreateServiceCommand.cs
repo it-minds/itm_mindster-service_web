@@ -32,7 +32,7 @@ namespace Application.Services.Commands.CreateService
 
       public async Task<int> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
       {
-        var service = new Service()
+        var service = new Service
         {
           Title = request.Service.Title,
           Description = request.Service.Description,
@@ -43,12 +43,12 @@ namespace Application.Services.Commands.CreateService
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        var serviceOwner = new ServiceOwner()
+        var serviceOwner = new ServiceOwner
         {
           ServiceId = service.Id,
           Email = _currentUserService.UserEmail
         };
-        _context.ServiceOwners.Add((serviceOwner));
+        _context.ServiceOwners.Add(serviceOwner);
         await _context.SaveChangesAsync(cancellationToken);
 
         return service.Id;

@@ -3,67 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.ApplicationOwners;
-using Application.ApplicationOwners.Commands.CreateApplicationOwners;
-using Application.Applications;
-using Application.Applications.Commands.CreateApplication;
+using Application.ActionApprovers;
+using Application.ActionApprovers.Commands.CreateActionApprovers;
 using Application.Common.Exceptions;
-using Domain.Entities;
+using Application.ServiceOwners;
+using Application.ServiceOwners.Commands.CreateServiceOwners;
 using FluentAssertions;
 using Xunit;
 
-namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwners
+namespace Application.UnitTests.ActionApprovers.Commands.CreateActionApprovers
 {
-  public class CreateApplicationOwnerCommandTest : CommandTestBase
+  public class CreateActionApproversCommandTest : CommandTestBase
   {
     [Fact]
-    public async Task Handle_ShouldPersistApplicationOwner()
+    public async Task Handle_ShouldPersistActionApprovers()
     {
-      var command = new CreateApplicationOwnerCommand
+      var command = new CreateActionApproverCommand
       {
         Id = 1,
-        AppOwners = new List<ApplicationOwnerDto>{
-          new ApplicationOwnerDto
+        ActionApprovers = new List<ActionApproverDto>{
+          new ActionApproverDto
           {
             Email = "mail1@mail.dk"
           },
-          new ApplicationOwnerDto
+          new ActionApproverDto
           {
             Email = "mail2@mail.dk"
           }
         }
       };
 
-      var handler = new CreateApplicationOwnerCommand.CreateApplicationOwnerCommandHandler(Context, CurrentUserServiceMock.Object);
+      var handler = new CreateActionApproverCommand.CreateActionApproverCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
-      var entities = Context.AppOwners.Where(e => e.ApplicationId == command.Id).ToList();
+      var entities = Context.ActionApprovers.Where(e => e.ActionId == command.Id).ToList();
 
       entities.Should().NotBeNullOrEmpty();
       result.Should().Be(2);
-      entities[3].Email.Should().Be(command.AppOwners.ToList()[0].Email);
+      entities[3].Email.Should().Be(command.ActionApprovers.ToList()[0].Email);
     }
     [Fact]
     public async Task Handle_GivenAlreadyExistingUser_ShouldAddNothing()
     {
-      var command = new CreateApplicationOwnerCommand()
+      var command = new CreateActionApproverCommand
       {
         Id = 1,
-        AppOwners = new List<ApplicationOwnerDto>
-        {
-          new ApplicationOwnerDto
+        ActionApprovers = new List<ActionApproverDto>{
+          new ActionApproverDto
           {
             Email = "test@mail.dk"
           },
-          new ApplicationOwnerDto
+          new ActionApproverDto
           {
-            Email = "iAlsoOwnApp1@mail.dk"
+            Email = "iAlsoOwnAction1@mail.dk"
           }
         }
       };
 
-      var handler =
-        new CreateApplicationOwnerCommand.CreateApplicationOwnerCommandHandler(Context, CurrentUserServiceMock.Object);
+      var handler = new CreateActionApproverCommand.CreateActionApproverCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
       var entities = Context.ActionApprovers.Where(e => e.ActionId == command.Id).ToList();
@@ -75,22 +72,22 @@ namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwne
     [Fact]
     public void Handle_GivenInValidId_ThrowsException()
     {
-      var command = new CreateApplicationOwnerCommand
+      var command = new CreateActionApproverCommand
       {
         Id = 99,
-        AppOwners = new List<ApplicationOwnerDto>{
-          new ApplicationOwnerDto
+        ActionApprovers = new List<ActionApproverDto>{
+          new ActionApproverDto
           {
             Email = "mail1@mail.dk"
           },
-          new ApplicationOwnerDto
+          new ActionApproverDto
           {
             Email = "mail2@mail.dk"
           }
         }
       };
 
-      var handler = new CreateApplicationOwnerCommand.CreateApplicationOwnerCommandHandler(Context, CurrentUserServiceMock.Object);
+      var handler = new CreateActionApproverCommand.CreateActionApproverCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();
@@ -98,21 +95,21 @@ namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwne
     [Fact]
     public void Handle_InvalidUser_ShouldThrowError()
     {
-      var command = new CreateApplicationOwnerCommand
+      var command = new CreateActionApproverCommand
       {
         Id = 99,
-        AppOwners = new List<ApplicationOwnerDto>{
-          new ApplicationOwnerDto
+        ActionApprovers = new List<ActionApproverDto>{
+          new ActionApproverDto
           {
             Email = "mail1@mail.dk"
           },
-          new ApplicationOwnerDto
+          new ActionApproverDto
           {
             Email = "mail2@mail.dk"
           }
         }
       };
-      var handler = new CreateApplicationOwnerCommand.CreateApplicationOwnerCommandHandler(Context, InvalidUserServiceMock.Object);
+      var handler = new CreateActionApproverCommand.CreateActionApproverCommandHandler(Context, InvalidUserServiceMock.Object);
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 

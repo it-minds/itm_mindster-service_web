@@ -22,7 +22,7 @@ const ServiceHeader: FC = () => {
               rightIcon={<BsArrowRight />}
               borderWidth="1px"
               borderColor="black"
-              bgColor="#673AB7">
+              bgColor="purple.600">
               Enter as Application Owner
             </Button>
           </Link>

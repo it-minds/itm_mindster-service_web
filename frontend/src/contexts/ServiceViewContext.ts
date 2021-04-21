@@ -1,5 +1,10 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { IAppTokenIdDto, IServiceIdDto, IServiceOwnerIdDto } from "services/backend/nswagts";
+import {
+  ActionApproverIdDto,
+  IAppTokenIdDto,
+  IServiceIdDto,
+  IServiceOwnerIdDto
+} from "services/backend/nswagts";
 
 type ContextType = {
   services: IServiceIdDto[];
@@ -11,6 +16,7 @@ type ContextType = {
   fetchServices: () => Promise<void>;
   fetchOwners: () => Promise<void>;
   fetchAppTokens: () => Promise<void>;
+  fetchActionApprovers: (actionId: number) => Promise<ActionApproverIdDto[]>;
 };
 
 export const ServiceViewContext = createContext<ContextType>({
@@ -22,5 +28,6 @@ export const ServiceViewContext = createContext<ContextType>({
   fetchUpdatedService: null,
   fetchServices: null,
   fetchOwners: null,
-  fetchAppTokens: null
+  fetchAppTokens: null,
+  fetchActionApprovers: null
 });
