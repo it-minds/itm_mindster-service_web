@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Grid, SimpleGrid, VStack } from "@chakra-ui/layout";
 import SelectAppTriggerBtn from "components/ApplicationScreen/Application/SelectAppTriggerBtn";
 import OverviewHeader from "components/OverviewScreen/OverviewHeader";
 import OverviewTable from "components/OverviewScreen/OverviewTable";
@@ -66,17 +66,16 @@ const OverviewScreen: NextPage = () => {
         <Box zIndex={1} position="fixed" w="full">
           <OverviewHeader />
         </Box>
-        <Flex w="full" pt="100px" direction="row">
-          <Box m="5">
-            <OverviewTable tableData={applications} tableHeading="Applications" />
-            <Box mt="5">{/* <SelectAppTriggerBtn /> */}</Box>
-          </Box>
-          <Box m="5">
-            <OverviewTable tableData={services} tableHeading="Services" />
-
-            <Box mt="5">{/* <SelectServiceTriggerBtn /> */}</Box>
-          </Box>
-        </Flex>
+        <Box w="full">
+          <SimpleGrid pt="100" columns={2} minChildWidth="300px" spacingX="40px" spacingY="20px">
+            <Box>
+              <OverviewTable tableData={applications} tableHeading="Applications" />
+            </Box>
+            <Box>
+              <OverviewTable tableData={services} tableHeading="Services" />
+            </Box>
+          </SimpleGrid>
+        </Box>
       </VStack>
     </OverviewScreenContext.Provider>
   );
