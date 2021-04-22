@@ -16,7 +16,8 @@ import ActionForm from "components/Forms/Action/ActionForm";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateActionCommand } from "services/backend/nswagts";
+import { ActionDto, CreateActionCommand } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 const CreateActionTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,10 +25,21 @@ const CreateActionTriggerBtn: FC = () => {
   const toast = useToast();
 
   const createAction = useCallback(
-    async metaData => {
+    async (metaData: ActionDto) => {
       const client = await genServiceClient();
       try {
-        await client.createAction(currService.id, new CreateActionCommand({ action: metaData }));
+        await client.createAction(
+          currService.id,
+          new CreateActionCommand({
+            action: new ActionDto({
+              title: metaData.title,
+              description: metaData.description,
+              adminNote: metaData.adminNote,
+              actionIdentifier: convertToIdentifier(metaData.title)
+            })
+          })
+        );
+
         toast({
           description: "Action was created",
           status: "success",
