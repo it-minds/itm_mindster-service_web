@@ -7,26 +7,22 @@ import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
 const AppHeader: FC = () => {
   return (
-    <Wrap p="3" bgColor="purple.500" width="full">
-      <Flex align="center" width="full">
-        <Box borderWidth="1px" rounded="full" borderColor="black">
-          <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />
-        </Box>
-
-        <Box ml="5" w="max-content">
-          <SelectAppTriggerBtn></SelectAppTriggerBtn>
-        </Box>
-
-        <Spacer />
-        <Box alignContent="end" justifyContent="right">
-          <Link href="/ServiceScreen">
-            <Button rightIcon={<BsArrowRight />} colorScheme="yellow">
-              Enter as Service Provider
-            </Button>
-          </Link>
-        </Box>
-      </Flex>
-    </Wrap>
+    <Flex p="2" bgColor="purple.500" align="center" width="full">
+      <Box borderWidth="1px" rounded="full" borderColor="black">
+        <Image boxSize="50" src="/images/icons/icon-144x144.png" />
+      </Box>
+      <Box ml="2">
+        <SelectAppTriggerBtn />
+      </Box>
+      <Spacer />
+      <Box alignContent="end" justifyContent="right">
+        <Link href="/ServiceScreen">
+          <Button rightIcon={<BsArrowRight />} colorScheme="yellow">
+            Enter as Service Provider
+          </Button>
+        </Link>
+      </Box>
+    </Flex>
   );
 };
 

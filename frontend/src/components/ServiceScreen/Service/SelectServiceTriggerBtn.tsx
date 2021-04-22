@@ -16,6 +16,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   useDisclosure
 } from "@chakra-ui/react";
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
@@ -31,9 +32,12 @@ const SelectServiceTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button colorScheme="gray" onClick={onOpen}>
-        <Box mr="7px">{currService?.title ?? "Select Service"}</Box>
-        <BsChevronDown />
+      <Button
+        width={["150px", "150px", "max-content"]}
+        rightIcon={<BsChevronDown />}
+        colorScheme="gray"
+        onClick={onOpen}>
+        <Text isTruncated>{currService?.title ?? "Select Service"}</Text>
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
