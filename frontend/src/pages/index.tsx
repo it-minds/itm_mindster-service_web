@@ -7,22 +7,25 @@ import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 import React, { useState } from "react";
 
+import OverviewScreen from "./OverviewScreen/Index";
+
 const IndexPage: NextPage = () => {
   const [value, setValue] = useState("# My Service\n");
   return (
     <Center>
-      <Container w="5xl" maxW="unset">
+      <Container w="6xl" maxW="unset">
         {/* <MarkdownTwoInOne
           value={value}
           onValueChange={setValue}
           onSave={(x, y) => Promise.resolve(alert(y))}
         /> */}
-
+        {/* 
         <MarkdownTwoSplit
           value={value}
           onValueChange={setValue}
           onSave={(x, y) => Promise.resolve(alert(y))}
-        />
+        /> */}
+        <OverviewScreen />
       </Container>
     </Center>
   );
