@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Center, Container, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -27,23 +27,25 @@ const ApplicationInfo: FC = () => {
   if (!currApplication) return null;
 
   return (
-    <Box padding="75" width="full">
-      <VStack pl="50" width="full" align="left">
-        <Flex w="full">
-          <AddOwnersTriggerBtn />
-          <Spacer />
-          <CreateTokenTriggerBtn />
-        </Flex>
-        <AppOwnerOverview />
-        <Box pt="10" width={0.65}>
-          <Heading>{localFormData.title}</Heading>
-          <MarkdownViewer value={localFormData.description} />
-        </Box>
-        <Box pt="10" width="full">
-          <TokenTable />
-        </Box>
-      </VStack>
-    </Box>
+    <Center>
+      <Container w="6xl" maxW="unset">
+        <VStack width="full" align="left">
+          <Flex w="full">
+            <AddOwnersTriggerBtn />
+            <Spacer />
+            <CreateTokenTriggerBtn />
+          </Flex>
+          <AppOwnerOverview />
+          <Box pt="10" width={0.65}>
+            <Heading>{localFormData.title}</Heading>
+            <MarkdownViewer value={localFormData.description} />
+          </Box>
+          <Box pt="10" width="full">
+            <TokenTable />
+          </Box>
+        </VStack>
+      </Container>
+    </Center>
   );
 };
 export default ApplicationInfo;

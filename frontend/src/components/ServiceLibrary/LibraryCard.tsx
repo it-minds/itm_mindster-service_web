@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Center,
+  Container,
   Heading,
   Modal,
   ModalBody,
@@ -9,7 +11,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   useDisclosure
 } from "@chakra-ui/react";
 import RequestActions from "components/Forms/RequestActions/RequestActions";
@@ -34,22 +35,19 @@ const LibraryCard: FC<Props> = ({ service }) => {
         _hover={{
           bgColor: hoverBg
         }}
-        w="350px"
-        h="300px"
+        w="250px"
+        h="200px"
         shadow="xl"
         borderWidth="1px"
-        borderRadius="lg">
-        <Box p="3">
-          <Box>
-            <Heading fontSize="xl">{service.title}</Heading>
-          </Box>
-          <Box mt="6">
-            <Heading fontSize="md">{service.serviceIdentifier}</Heading>
-          </Box>
-          <Box mt="6">
-            <Heading fontSize="sm">Amount of actions: {service.actions.length}</Heading>
-          </Box>
-        </Box>
+        borderRadius="lg"
+        p="3">
+        <Heading fontSize="xl">{service.title}</Heading>
+        <Heading mt="6" fontSize="md">
+          {service.serviceIdentifier}
+        </Heading>
+        <Heading mt="6" fontSize="sm">
+          Amount of actions: {service.actions.length}
+        </Heading>
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">
@@ -58,12 +56,12 @@ const LibraryCard: FC<Props> = ({ service }) => {
           <ModalHeader>Service: {service.title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box borderWidth="1px" borderRadius="lg" p="5" mt="2">
-              <Text>
+            <Center>
+              <Container w="4xl" maxW="full">
                 <MarkdownViewer value={service.description} />
-              </Text>
-            </Box>
-            <RequestActions service={service}></RequestActions>
+                <RequestActions service={service}></RequestActions>
+              </Container>
+            </Center>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

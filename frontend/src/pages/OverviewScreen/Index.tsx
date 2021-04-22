@@ -1,8 +1,6 @@
-import { Box, Flex, Grid, SimpleGrid, VStack } from "@chakra-ui/layout";
-import SelectAppTriggerBtn from "components/ApplicationScreen/Application/SelectAppTriggerBtn";
+import { Box, SimpleGrid, VStack } from "@chakra-ui/layout";
 import OverviewHeader from "components/OverviewScreen/OverviewHeader";
 import OverviewTable from "components/OverviewScreen/OverviewTable";
-import SelectServiceTriggerBtn from "components/ServiceScreen/Service/SelectServiceTriggerBtn";
 import { OverviewScreenContext } from "contexts/OverviewScreenContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";

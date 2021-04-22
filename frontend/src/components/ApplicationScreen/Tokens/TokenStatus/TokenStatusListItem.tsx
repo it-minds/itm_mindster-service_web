@@ -24,7 +24,7 @@ const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
       <Box>Action: {tokenAction.actionId}</Box>
       <Box ml="20px">
         {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="30px" />}
-        {tokenAction.state == ServiceStates.Pending && <BsCircle color="grey" size="30px" />}
+        {tokenAction.state == ServiceStates.Pending && <BsCircle color="grey" size="25px" />}
         {tokenAction.state == ServiceStates.Rejected && (
           <Popover>
             <PopoverTrigger>

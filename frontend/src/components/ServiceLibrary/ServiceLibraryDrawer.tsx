@@ -2,6 +2,7 @@ import {
   Box,
   Center,
   CloseButton,
+  Container,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -73,24 +74,28 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                 </Flex>
               </DrawerHeader>
               <DrawerBody>
-                <Flex h="full" flexDirection="column">
-                  <Box mb="5" h="full" overflowY="auto">
-                    <ServiceLibrary />
-                  </Box>
-                  <Spacer />
-                  <Center mb="5">
-                    {currToken.appTokenActions.length > 0 && (
-                      <SeeTokenStatusDrawer
-                        submitOnOpen={() => {
-                          return requestReview();
-                        }}
-                        buttonText="Request review (Im done browsing services)"
-                        submitOnClose={leaveLibraryDrawer}
-                      />
-                    )}
-                  </Center>
-                  <ThreeStepShower radius={50} stepCounter={2} />
-                </Flex>
+                <Center height="full">
+                  <Container height="full" w="7xl" maxW="unset">
+                    <Flex h="full" flexDirection="column">
+                      <Box h="full" overflowY="auto">
+                        <ServiceLibrary />
+                      </Box>
+                      <Spacer />
+                      <Center m="3">
+                        {currToken.appTokenActions.length > 0 && (
+                          <SeeTokenStatusDrawer
+                            submitOnOpen={() => {
+                              return requestReview();
+                            }}
+                            buttonText="Request review (Im done browsing services)"
+                            submitOnClose={leaveLibraryDrawer}
+                          />
+                        )}
+                      </Center>
+                      <ThreeStepShower radius={50} stepCounter={2} />
+                    </Flex>
+                  </Container>
+                </Center>
               </DrawerBody>
             </DrawerContent>
           </DrawerOverlay>

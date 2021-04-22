@@ -1,6 +1,4 @@
 import { Center, Container } from "@chakra-ui/layout";
-import MarkdownTwoInOne from "components/Markdown/MarkdownTwoInOne";
-import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
