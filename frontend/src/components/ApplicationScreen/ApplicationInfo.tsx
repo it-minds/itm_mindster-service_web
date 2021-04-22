@@ -28,7 +28,7 @@ const ApplicationInfo: FC = () => {
 
   return (
     <Center>
-      <Container w="6xl" maxW="unset">
+      <Container pb="15px" w="6xl" maxW="unset">
         <VStack width="full" align="left">
           <Flex w="full">
             <AddOwnersTriggerBtn />

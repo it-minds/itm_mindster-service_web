@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Image, Spacer, Wrap } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
+import ColorModeToggler from "components/Common/ColorModeToggler";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -15,10 +16,11 @@ const ServiceHeader: FC = () => {
         <SelectServiceTriggerBtn />
       </Box>
       <Spacer />
-      <Box alignContent="end" justifyContent="right">
+      <ColorModeToggler />
+      <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ApplicationScreen">
           <Button rightIcon={<BsArrowRight />} colorScheme="purple">
-            Enter as Application Owner
+            Application Page
           </Button>
         </Link>
       </Box>
