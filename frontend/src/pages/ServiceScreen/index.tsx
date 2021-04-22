@@ -3,6 +3,7 @@ import ServiceHeader from "components/ServiceScreen/ServiceHeader";
 import ServiceInfo from "components/ServiceScreen/ServiceInfo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
@@ -25,7 +26,7 @@ const ServiceScreen: NextPage = () => {
   );
   const [currService, setCurrService] = useState<IServiceIdDto>();
   const [currAction, setCurrAction] = useState<IActionIdDto>();
-
+  const { query } = useRouter();
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
@@ -70,7 +71,7 @@ const ServiceScreen: NextPage = () => {
     [services]
   );
 
-  const fetchUpdatedServices = useCallback(async () => {
+  const fetchUpdatedService = useCallback(async () => {
     try {
       const serviceClient = await genServiceClient();
       const data = await serviceClient.getServiceById(currService.id);
@@ -121,6 +122,12 @@ const ServiceScreen: NextPage = () => {
 
   useEffect(() => {
     fetchServices();
+    if (query.Id) {
+      console.log("=========================");
+      console.log(query.Id);
+      const serviceId: number = +query.Id;
+      setNewCurrService(serviceId);
+    }
   }, [fetchServices]);
 
   useEffect(() => {
@@ -146,7 +153,7 @@ const ServiceScreen: NextPage = () => {
         setCurrService: setCurrService,
         setNewCurrService: setNewCurrService,
         fetchAppTokens: fetchAppTokens,
-        fetchUpdatedService: fetchUpdatedServices,
+        fetchUpdatedService: fetchUpdatedService,
         fetchOwners: fetchServiceOwners,
         fetchServices: fetchServices,
         fetchActionApprovers: fetchActionApprovers

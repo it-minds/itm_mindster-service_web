@@ -4,6 +4,7 @@ import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
 import { AppViewContext } from "contexts/AppViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
@@ -23,6 +24,7 @@ const IndexPage: NextPage = () => {
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
   const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
+  const { query } = useRouter();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -123,6 +125,12 @@ const IndexPage: NextPage = () => {
   useEffect(() => {
     fetchApps();
     fetchServices();
+    if (query.Id) {
+      console.log("=========================");
+      console.log(query.Id);
+      const appId: number = +query.Id;
+      setNewCurrApp(appId);
+    }
   }, [fetchApps, fetchServices]);
 
   useEffect(() => {
