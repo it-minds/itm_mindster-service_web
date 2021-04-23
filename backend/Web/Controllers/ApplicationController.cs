@@ -80,6 +80,11 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetAppTokenByIdQuery { Id = id });
     }
+    [HttpGet("/AppTokens/AwaitingMyReview")]
+    public async Task<ActionResult<List<AppTokenIdDto>>> GetAppTokenICanReview()
+    {
+      return await Mediator.Send(new GetAppTokensICanReviewQuery());
+    }
     [HttpGet("{id}/AppTokens")]
     public async Task<ActionResult<List<AppTokenIdDto>>> GetAppTokensByAppId([FromRoute] int id)
     {
