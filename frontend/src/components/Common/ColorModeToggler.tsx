@@ -11,6 +11,7 @@ const ColorModeToggler: FC = () => {
       bgColor="transparent"
       onClick={toggleColorMode}
       aria-label="light / dark toggle"
+      _hover={{ bg: "gray.500" }}
       icon={colorMode === "light" ? <FaMoon color="white" /> : <FaSun color="white" />}
     />
   );
