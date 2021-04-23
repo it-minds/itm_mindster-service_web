@@ -20,7 +20,7 @@ type Props = {
 
 const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication, currToken } = useContext(AppViewContext);
+  const { currApplication, currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const [jwtServices, setJwtServices] = useState<IService2[]>([]);
 
   useEffect(() => {
@@ -74,6 +74,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
                 tokenIdentifier={currToken.tokenIdentifier}
                 submitCallback={() => {
                   onClose();
+                  fetchUpdatedToken(currToken.id);
                 }}
                 services={jwtServices}
               />

@@ -52,6 +52,7 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
         duration: 5000,
         isClosable: true
       });
+    } finally {
       fetchUpdatedToken(currToken.id);
     }
   }, [currToken]);

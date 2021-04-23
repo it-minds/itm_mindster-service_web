@@ -59,7 +59,7 @@ const LibraryCard: FC<Props> = ({ service }) => {
             <Center>
               <Container w="4xl" maxW="full">
                 <MarkdownViewer value={service.description} />
-                <RequestActions service={service}></RequestActions>
+                <RequestActions submitCallBack={() => onClose()} service={service}></RequestActions>
               </Container>
             </Center>
           </ModalBody>
