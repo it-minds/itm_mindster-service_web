@@ -10,7 +10,7 @@ const ThreeStepShower: FC<Props> = ({ radius, stepCounter }) => {
   const textColor = useColorModeValue("black", "white");
   return (
     <Center>
-      <HStack w="full" margin="10px">
+      <HStack maxW="600" w="full" margin="10px">
         <Flex
           borderWidth="1px"
           borderColor="black"
