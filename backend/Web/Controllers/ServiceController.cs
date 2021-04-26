@@ -72,5 +72,10 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetMyServicesQuery());
     }
+    [HttpGet]
+    public async Task<ActionResult<List<ServiceOverviewDto>>> GetMyServicesOverview()
+    {
+      return await Mediator.Send(new GetMyServicesOverviewQuery());
+    }
   }
 }

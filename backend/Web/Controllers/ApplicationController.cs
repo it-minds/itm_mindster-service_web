@@ -46,6 +46,11 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetMyApplicationsQuery());
     }
+    [HttpGet]
+    public async Task<ActionResult<List<AppOverviewDto>>> GetAllMyApplicationsOverview()
+    {
+      return await Mediator.Send(new GetMyAppOverviewQuery());
+    }
     [HttpPost("{id}/ApplicationOwners")]
     public async Task<ActionResult<int>> AddAppOwners([FromRoute] int id, CreateApplicationOwnerCommand command)
     {
