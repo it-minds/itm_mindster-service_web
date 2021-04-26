@@ -1,6 +1,7 @@
 import { Button, Center, Td, Tr } from "@chakra-ui/react";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useState } from "react";
 import { AppTokenIdDto, TokenStates } from "services/backend/nswagts";
 
@@ -13,6 +14,8 @@ type Props = {
 const TokenTableItem: FC<Props> = ({ token }) => {
   const { fetchUpdatedToken } = useContext(AppViewContext);
   const [libraryOpen, setOpen] = useState(false);
+  const { defBtnSize } = useButtonSizes();
+
   return (
     <Tr>
       <Td>{token.tokenIdentifier}</Td>
@@ -21,6 +24,7 @@ const TokenTableItem: FC<Props> = ({ token }) => {
         <Center>
           {token.state == TokenStates.Created && (
             <Button
+              size={defBtnSize}
               colorScheme="blue"
               onClick={async () => {
                 await fetchUpdatedToken(token.id);

@@ -33,7 +33,8 @@ const SelectServiceTriggerBtn: FC = () => {
   return (
     <>
       <Button
-        width={["150px", "150px", "max-content"]}
+        maxW={["100px", "250px", "400px", "full"]}
+        width="max-content"
         rightIcon={<BsChevronDown />}
         colorScheme="gray"
         onClick={onOpen}>

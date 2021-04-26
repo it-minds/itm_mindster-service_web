@@ -9,6 +9,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import {
@@ -30,7 +31,7 @@ const ApproverMenu: FC<Props> = ({ action }) => {
     ServiceViewContext
   );
   const toast = useToast();
-
+  const { defBtnSize } = useButtonSizes();
   const addApprovers = useCallback(async (actionId: number, form: IActionApproverDto[]) => {
     const client = await genServiceClient();
     try {
@@ -63,6 +64,7 @@ const ApproverMenu: FC<Props> = ({ action }) => {
     <Popover placement="bottom-start">
       <PopoverTrigger>
         <Button
+          size={defBtnSize}
           colorScheme="blue"
           onClick={() => {
             setCurrAction(action);

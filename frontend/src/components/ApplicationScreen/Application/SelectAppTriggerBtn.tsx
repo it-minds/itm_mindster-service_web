@@ -33,7 +33,8 @@ const SelectAppTriggerBtn: FC = () => {
   return (
     <>
       <Button
-        width={["175px", "175px", "max-content"]}
+        maxW={["100px", "250px", "400px", "full"]}
+        width="max-content"
         colorScheme="gray"
         rightIcon={<BsChevronDown />}
         onClick={onOpen}>

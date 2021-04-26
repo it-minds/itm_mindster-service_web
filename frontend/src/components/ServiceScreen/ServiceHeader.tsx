@@ -12,8 +12,8 @@ const ServiceHeader: FC = () => {
 
   return (
     <Flex p="2" bgColor={serviceHeaderBg} align="center" width="full">
-      <Box borderWidth="1px" rounded="full" borderColor="black">
-        <Image boxSize="50px" src="/images/icons/icon-144x144.png" />
+      <Box boxSize="50px" borderWidth="1px" rounded="full" borderColor="black">
+        <Image src="/images/icons/icon-144x144.png" />
       </Box>
       <Box ml="2">
         <SelectServiceTriggerBtn />

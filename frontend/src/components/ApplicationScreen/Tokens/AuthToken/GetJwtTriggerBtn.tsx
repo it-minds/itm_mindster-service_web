@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import JwtForm from "components/Forms/Application/JwtForm";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IService2, Service2 } from "services/backend/nswagts";
 type Props = {
@@ -22,6 +23,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currApplication, currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const [jwtServices, setJwtServices] = useState<IService2[]>([]);
+  const { defBtnSize } = useButtonSizes();
 
   useEffect(() => {
     if (currToken != null) {
@@ -53,6 +55,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
   return (
     <>
       <Button
+        size={defBtnSize}
         colorScheme="blue"
         onClick={async () => {
           await submitOnOpen();

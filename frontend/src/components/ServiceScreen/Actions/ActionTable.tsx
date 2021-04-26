@@ -11,14 +11,13 @@ const ActionTable: FC = () => {
   if (currService == null) return null;
   if (currService.actions.length == 0) return null;
   return (
-    <VStack w="full" align="left">
+    <VStack w="full">
       <Heading size="h3">Actions:</Heading>
       <Table borderWidth="1px" variant="striped" colorScheme="gray" size="sm">
         <Thead>
           <Tr>
-            <Th>ID</Th>
-            <Th>Name</Th>
-            <Th w={0.8}>Description</Th>
+            <Th maxW={0.3}>Title</Th>
+            <Th w={0.6}>Description</Th>
             <Th />
           </Tr>
         </Thead>

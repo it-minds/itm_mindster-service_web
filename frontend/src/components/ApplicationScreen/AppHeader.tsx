@@ -11,8 +11,8 @@ const AppHeader: FC = () => {
   const { appHeaderBg } = useColors();
   return (
     <Flex p="2" bgColor={appHeaderBg} align="center" width="full">
-      <Box borderWidth="1px" rounded="full" borderColor="black">
-        <Image boxSize="50" src="/images/icons/icon-144x144.png" />
+      <Box boxSize="50px" borderWidth="1px" rounded="full" borderColor="black">
+        <Image src="/images/icons/icon-144x144.png" />
       </Box>
       <Box ml="2">
         <SelectAppTriggerBtn />

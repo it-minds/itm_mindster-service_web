@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceStates } from "services/backend/nswagts";
 
@@ -34,6 +35,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currToken, currApplication } = useContext(AppViewContext);
   const [isAllApproved, setAllApproved] = useState(false);
+  const { defBtnSize } = useButtonSizes();
 
   /**
    * Checks if all actions of a token are approved. If true the button to
@@ -57,6 +59,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
   return (
     <>
       <Button
+        size={defBtnSize}
         onClick={async () => {
           await submitOnOpen();
           onOpen();

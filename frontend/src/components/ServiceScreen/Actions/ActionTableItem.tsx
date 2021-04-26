@@ -1,4 +1,4 @@
-import { Td, Tr } from "@chakra-ui/react";
+import { Center, Td, Tr } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { IActionIdDto } from "services/backend/nswagts";
 
@@ -10,11 +10,12 @@ type Props = {
 const ActionTableItem: FC<Props> = ({ action }) => {
   return (
     <Tr>
-      <Td>{action.actionIdentifier}</Td>
       <Td>{action.title}</Td>
       <Td>{action.description}</Td>
       <Td>
-        <ApproverMenu action={action} />
+        <Center>
+          <ApproverMenu action={action} />
+        </Center>
       </Td>
     </Tr>
   );
