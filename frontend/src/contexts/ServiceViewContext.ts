@@ -15,8 +15,8 @@ type ContextType = {
   currService: IServiceIdDto;
   currAction: IActionIdDto;
   setCurrService: Dispatch<SetStateAction<IServiceIdDto>>;
+  setNewCurrService: (serviceId: number) => Promise<void>;
   setCurrAction: Dispatch<SetStateAction<IActionIdDto>>;
-  fetchUpdatedService: () => Promise<void>;
   fetchServices: () => Promise<void>;
   fetchOwners: () => Promise<void>;
   fetchAppTokens: () => Promise<void>;
@@ -31,8 +31,8 @@ export const ServiceViewContext = createContext<ContextType>({
   currService: null,
   currAction: null,
   setCurrService: null,
+  setNewCurrService: null,
   setCurrAction: null,
-  fetchUpdatedService: null,
   fetchServices: null,
   fetchOwners: null,
   fetchAppTokens: null,

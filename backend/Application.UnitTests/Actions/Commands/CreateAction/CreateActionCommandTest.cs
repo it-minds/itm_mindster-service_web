@@ -76,6 +76,5 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
 
       action.Should().Throw<NotFoundException>();
     }
-
   }
 }

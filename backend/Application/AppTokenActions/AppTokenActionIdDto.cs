@@ -7,6 +7,7 @@ namespace Application.AppTokenActions
   public class AppTokenActionIdDto : AppTokenActionDto
   {
     public int Id { get; set; }
+    public Action Action { get; set; }
     public ServiceStates State { get; set; }
     public string RejectionReason { get; set; }
 

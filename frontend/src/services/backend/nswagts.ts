@@ -126,7 +126,7 @@ export class ClientBase {
 }
 
 export interface IApplicationClient {
-    createApplication(command: CreateApplicationCommand): Promise<string>;
+    createApplication(command: CreateApplicationCommand): Promise<CreateAppResult>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
     addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number>;
@@ -135,6 +135,7 @@ export interface IApplicationClient {
     getAppTokensByAppId(id: number): Promise<AppTokenIdDto[]>;
     createAppTokenActions(tokenId: number, command: CreateAppTokenActionsCommand): Promise<number>;
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
+    getAppTokenById(id: number): Promise<AppTokenIdDto>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
     updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse>;
 }
@@ -150,7 +151,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createApplication(command: CreateApplicationCommand): Promise<string> {
+    createApplication(command: CreateApplicationCommand): Promise<CreateAppResult> {
         let url_ = this.baseUrl + "/api/Application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -172,14 +173,14 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         });
     }
 
-    protected processCreateApplication(response: Response): Promise<string> {
+    protected processCreateApplication(response: Response): Promise<CreateAppResult> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            result200 = CreateAppResult.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -187,7 +188,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<string>(<any>null);
+        return Promise.resolve<CreateAppResult>(<any>null);
     }
 
     getAllApplications(): Promise<ApplicationIdDto[]> {
@@ -528,6 +529,45 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<AppTokenIdDto[]>(<any>null);
+    }
+
+    getAppTokenById(id: number): Promise<AppTokenIdDto> {
+        let url_ = this.baseUrl + "/AppTokens/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAppTokenById(_response));
+        });
+    }
+
+    protected processGetAppTokenById(response: Response): Promise<AppTokenIdDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AppTokenIdDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AppTokenIdDto>(<any>null);
     }
 
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput> {
@@ -1560,6 +1600,46 @@ export class UserClient extends ClientBase implements IUserClient {
     }
 }
 
+export class CreateAppResult implements ICreateAppResult {
+    appId?: number;
+    appSecret?: string | null;
+
+    constructor(data?: ICreateAppResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appId = _data["appId"] !== undefined ? _data["appId"] : <any>null;
+            this.appSecret = _data["appSecret"] !== undefined ? _data["appSecret"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateAppResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAppResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appId"] = this.appId !== undefined ? this.appId : <any>null;
+        data["appSecret"] = this.appSecret !== undefined ? this.appSecret : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateAppResult {
+    appId?: number;
+    appSecret?: string | null;
+}
+
 export class CreateApplicationCommand implements ICreateApplicationCommand {
     application?: ApplicationDto | null;
 
@@ -2071,17 +2151,22 @@ export interface IAppTokenIdDto extends IAppTokenCreateDto {
 
 export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
     id?: number;
+    action?: Action | null;
     state?: ServiceStates;
     rejectionReason?: string | null;
 
     constructor(data?: IAppTokenActionIdDto) {
         super(data);
+        if (data) {
+            this.action = data.action && !(<any>data.action).toJSON ? new Action(data.action) : <Action>this.action; 
+        }
     }
 
     init(_data?: any) {
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.action = _data["action"] ? Action.fromJS(_data["action"]) : <any>null;
             this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
         }
@@ -2097,6 +2182,7 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["action"] = this.action ? this.action.toJSON() : <any>null;
         data["state"] = this.state !== undefined ? this.state : <any>null;
         data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
         super.toJSON(data);
@@ -2106,8 +2192,133 @@ export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenA
 
 export interface IAppTokenActionIdDto extends IAppTokenActionDto {
     id?: number;
+    action?: IAction | null;
     state?: ServiceStates;
     rejectionReason?: string | null;
+}
+
+export class Action implements IAction {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
+    serviceId?: number;
+    service?: Service | null;
+
+    constructor(data?: IAction) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            this.service = data.service && !(<any>data.service).toJSON ? new Service(data.service) : <Service>this.service; 
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
+            this.serviceId = _data["serviceId"] !== undefined ? _data["serviceId"] : <any>null;
+            this.service = _data["service"] ? Service.fromJS(_data["service"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): Action {
+        data = typeof data === 'object' ? data : {};
+        let result = new Action();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
+        data["serviceId"] = this.serviceId !== undefined ? this.serviceId : <any>null;
+        data["service"] = this.service ? this.service.toJSON() : <any>null;
+        return data; 
+    }
+}
+
+export interface IAction {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    adminNote?: string | null;
+    serviceId?: number;
+    service?: IService | null;
+}
+
+export class Service implements IService {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    actions?: Action[] | null;
+    state?: ServiceStates;
+
+    constructor(data?: IService) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+            if (data.actions) {
+                this.actions = [];
+                for (let i = 0; i < data.actions.length; i++) {
+                    let item = data.actions[i];
+                    this.actions[i] = item && !(<any>item).toJSON ? new Action(item) : <Action>item;
+                }
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            if (Array.isArray(_data["actions"])) {
+                this.actions = [] as any;
+                for (let item of _data["actions"])
+                    this.actions!.push(Action.fromJS(item));
+            }
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): Service {
+        data = typeof data === 'object' ? data : {};
+        let result = new Service();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        if (Array.isArray(this.actions)) {
+            data["actions"] = [];
+            for (let item of this.actions)
+                data["actions"].push(item.toJSON());
+        }
+        data["state"] = this.state !== undefined ? this.state : <any>null;
+        return data; 
+    }
+}
+
+export interface IService {
+    id?: number;
+    title?: string | null;
+    description?: string | null;
+    actions?: IAction[] | null;
+    state?: ServiceStates;
 }
 
 export enum ServiceStates {
@@ -2195,7 +2406,7 @@ export interface ICreateAuthAppTokenCommand {
 
 export class TokenInput implements ITokenInput {
     tokenIdentifier?: string;
-    services?: Service[];
+    services?: Service2[];
 
     constructor(data?: ITokenInput) {
         if (data) {
@@ -2207,7 +2418,7 @@ export class TokenInput implements ITokenInput {
                 this.services = [];
                 for (let i = 0; i < data.services.length; i++) {
                     let item = data.services[i];
-                    this.services[i] = item && !(<any>item).toJSON ? new Service(item) : <Service>item;
+                    this.services[i] = item && !(<any>item).toJSON ? new Service2(item) : <Service2>item;
                 }
             }
         }
@@ -2219,7 +2430,7 @@ export class TokenInput implements ITokenInput {
             if (Array.isArray(_data["services"])) {
                 this.services = [] as any;
                 for (let item of _data["services"])
-                    this.services!.push(Service.fromJS(item));
+                    this.services!.push(Service2.fromJS(item));
             }
         }
     }
@@ -2245,14 +2456,14 @@ export class TokenInput implements ITokenInput {
 
 export interface ITokenInput {
     tokenIdentifier?: string;
-    services?: IService[];
+    services?: IService2[];
 }
 
-export class Service implements IService {
+export class Service2 implements IService2 {
     aud?: string;
     access?: string[];
 
-    constructor(data?: IService) {
+    constructor(data?: IService2) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2272,9 +2483,9 @@ export class Service implements IService {
         }
     }
 
-    static fromJS(data: any): Service {
+    static fromJS(data: any): Service2 {
         data = typeof data === 'object' ? data : {};
-        let result = new Service();
+        let result = new Service2();
         result.init(data);
         return result;
     }
@@ -2291,7 +2502,7 @@ export class Service implements IService {
     }
 }
 
-export interface IService {
+export interface IService2 {
     aud?: string;
     access?: string[];
 }

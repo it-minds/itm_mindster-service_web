@@ -13,11 +13,8 @@ const RequestActions: FC<Props> = ({ service }) => {
     <Center>
       <Wrap width="full" justify="center">
         <Flex direction="column" width="full" align="center" justifyContent="center">
-          <Box width="full" justifyContent="left" fontWeight="semibold" fontSize="lg">
-            {service.title}
-          </Box>
-          <Box p="2" width="full" justifyContent="left">
-            {service.description}
+          <Box mt="10px" width="full" justifyContent="left" fontWeight="semibold" fontSize="lg">
+            Request access to some of the following actions:
           </Box>
           <Box width="full" p={6}>
             <RequestActionList tableData={service.actions}></RequestActionList>

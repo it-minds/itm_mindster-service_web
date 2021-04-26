@@ -19,7 +19,7 @@ type Props = {
   token: AppTokenIdDto;
 };
 
-const ViewTActionTriggerBtn: FC<Props> = ({ token }) => {
+const ViewActionTriggerBtn: FC<Props> = ({ token }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -49,4 +49,4 @@ const ViewTActionTriggerBtn: FC<Props> = ({ token }) => {
   );
 };
 
-export default ViewTActionTriggerBtn;
+export default ViewActionTriggerBtn;

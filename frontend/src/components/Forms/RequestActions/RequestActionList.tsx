@@ -12,7 +12,7 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import { ApplicationContext } from "contexts/ApplicationContext";
+import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
@@ -37,7 +37,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
       checked: false
     }))
   );
-  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
+  const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
 
   const checkAll = useCallback(() => {
@@ -72,7 +72,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
         actions.push(new AppTokenActionDto({ actionId: modal.id }));
       }
     });
-
     const client = await genApplicationClient();
     try {
       await client.createAppTokenActions(
@@ -89,6 +88,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
         duration: 5000,
         isClosable: true
       });
+      fetchUpdatedToken(currToken.id);
     } catch (error) {
       toast({
         description: `PutAppToken responded: ${error}`,
@@ -98,8 +98,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
       });
     }
     setIsLoading(false);
-    fetchAppTokens();
-  }, [checkboxes]);
+  }, [checkboxes, currToken]);
 
   return (
     <Center>
@@ -111,7 +110,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
                 <Th>Id</Th>
                 <Th>Title</Th>
                 <Th>Description</Th>
-                <Th>Admin Note</Th>
                 <Th>
                   <Checkbox
                     isChecked={allChecked}

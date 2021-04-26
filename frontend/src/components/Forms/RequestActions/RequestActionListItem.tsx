@@ -15,7 +15,6 @@ const RequestActionListItem: FC<Props> = ({ action, checked, addAction }) => {
       <Td>{action.id}</Td>
       <Td>{action.title}</Td>
       <Td>{action.description}</Td>
-      <Td>{action.adminNote}</Td>
       <Td>
         <Checkbox
           isChecked={checked}

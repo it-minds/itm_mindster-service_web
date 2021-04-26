@@ -10,10 +10,13 @@ using Application.Applications.Commands.CreateApplication;
 using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
+using Application.AppTokenActions.Commands.CreateAppTokenAction;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Commands.CreateAppToken;
+using Application.AppTokens.Commands.CreateAuthAppToken;
 using Application.AppTokens.Commands.UpdateAppTokenActions;
+using Application.AppTokens.Queries.GetAppToken;
 using Application.AppTokens.Queries.GetAppTokens;
 using Application.Services.Commands.CreateService;
 using AuthService.Client;
@@ -25,7 +28,7 @@ namespace Web.Controllers
   public class ApplicationController : ApiControllerBase
   {
     [HttpPost]
-    public async Task<ActionResult<string>> CreateApplication(CreateApplicationCommand command)
+    public async Task<ActionResult<CreateAppResult>> CreateApplication(CreateApplicationCommand command)
     {
       return await Mediator.Send(command);
     }
@@ -70,6 +73,11 @@ namespace Web.Controllers
     {
 
       return await Mediator.Send(new GetAppTokensQuery {OnlyPending = onlyPending});
+    }
+    [HttpGet("/AppTokens/{id}")]
+    public async Task<ActionResult<AppTokenIdDto>> GetAppTokenById([FromRoute] int id)
+    {
+      return await Mediator.Send(new GetAppTokenByIdQuery { Id = id });
     }
     [HttpGet("{id}/AppTokens")]
     public async Task<ActionResult<List<AppTokenIdDto>>> GetAppTokensByAppId([FromRoute] int id)

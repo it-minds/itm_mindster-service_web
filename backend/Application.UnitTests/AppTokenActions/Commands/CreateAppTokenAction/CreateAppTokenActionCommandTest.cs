@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Actions;
 using Application.Actions.Commands.CreateAction;
+using Application.AppTokenActions;
+using Application.AppTokenActions.Commands.CreateAppTokenAction;
+using Application.AppTokens;
 using Application.Common.Exceptions;
 using FluentAssertions;
 using Xunit;
@@ -12,44 +17,94 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
   public class CreateAppTokenActionCommandTest : CommandTestBase
   {
     [Fact]
-    public async Task WithValidAppToken_ShouldPersistAction()
+    public async Task WithValidAppTokenAndNoDuplicateActions_ShouldPersistAction()
     {
-      var command = new CreateActionCommand()
+      var command = new CreateAppTokenActionsCommand
       {
-        Id = 1,
-        Action = new ActionDto()
+        TokenId = 1,
+        AppToken = new AppTokenDto()
         {
-          Title = "Test of createAction",
-          Description = "Added to service 1",
-          AdminNote = "TEST ACTION"
+          AppTokenActions = new List<AppTokenActionDto>
+          {
+            new AppTokenActionDto{ActionId = 3},
+            new AppTokenActionDto{ActionId = 4}
+          }
         }
       };
-      var handler = new CreateActionCommand.CreateActionCommandHandler(Context, CurrentUserServiceMock.Object);
+      var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
 
-      var entity = Context.Actions.Find(result);
+      var entity = Context.AppTokens.Find(1);
 
+      result.Should().Be(2);
       entity.Should().NotBeNull();
-      entity.Title.Should().Be(command.Action.Title);
-      entity.Description.Should().Be(command.Action.Description);
-      entity.AdminNote.Should().Be(command.Action.AdminNote);
-      entity.ServiceId.Should().Be(command.Id);
+      entity.Id.Should().Be(command.TokenId);
+      entity.AppTokenActions.Count.Should().Be(2 + result);
+      entity.AppTokenActions.ToList().Last().ActionId.Should().Be(command.AppToken.AppTokenActions.Last().ActionId);
     }
     [Fact]
-    public void WithInValidServiceId_ThrowsException()
+    public void WithInValidTokenId_ThrowsException()
     {
-      var command = new CreateActionCommand()
+      var command = new CreateAppTokenActionsCommand
       {
-        Id = 99,
-        Action = new ActionDto()
+        TokenId = 99,
+        AppToken = new AppTokenDto()
         {
-          Title = "Test of createAction",
-          Description = "Added to service 1",
-          AdminNote = "TEST ACTION"
+          AppTokenActions = new List<AppTokenActionDto>
+          {
+            new AppTokenActionDto{ActionId = 3},
+            new AppTokenActionDto{ActionId = 4}
+          }
         }
       };
-      var handler = new CreateActionCommand.CreateActionCommandHandler(Context, CurrentUserServiceMock.Object);
+      var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, CurrentUserServiceMock.Object);
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
+    [Fact]
+    public async Task WithValidAppTokenButOnlyDuplicates_ShouldPersistAction()
+    {
+      var command = new CreateAppTokenActionsCommand
+      {
+        TokenId = 1,
+        AppToken = new AppTokenDto()
+        {
+          AppTokenActions = new List<AppTokenActionDto>
+          {
+            new AppTokenActionDto{ActionId = 1},
+            new AppTokenActionDto{ActionId = 2}
+          }
+        }
+      };
+      var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, CurrentUserServiceMock.Object);
+
+      var result = await handler.Handle(command, CancellationToken.None);
+
+      var entity = Context.AppTokens.Find(1);
+
+      result.Should().Be(0);
+      entity.Should().NotBeNull();
+      entity.Id.Should().Be(command.TokenId);
+      entity.AppTokenActions.Count.Should().Be(2);
+    }
+    [Fact]
+    public void Handle_InvalidUser_ShouldThrowError()
+    {
+      var command = new CreateAppTokenActionsCommand
+      {
+        TokenId = 1,
+        AppToken = new AppTokenDto()
+        {
+          AppTokenActions = new List<AppTokenActionDto>
+          {
+            new AppTokenActionDto{ActionId = 3},
+            new AppTokenActionDto{ActionId = 4}
+          }
+        }
+      };
+      var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, InvalidUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<NotFoundException>();

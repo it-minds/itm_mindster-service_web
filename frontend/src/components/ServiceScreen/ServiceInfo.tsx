@@ -27,6 +27,7 @@ const ServiceInfo: FC = () => {
     <Box padding="100" width="full">
       <VStack pl="50" width="full" align="left">
         <Box width={0.65}>
+          {localFormData.title}
           <MarkdownViewer value={localFormData.description} />
         </Box>
         <Box pt="10" width="full">

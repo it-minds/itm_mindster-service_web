@@ -20,20 +20,20 @@ import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswag
 
 const CreateApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchApps, setCurrApp } = useContext(AppViewContext);
+  const { setNewCurrApp } = useContext(AppViewContext);
   const toast = useToast();
 
   const addApplication = useCallback(async (form: ApplicationDto) => {
     const applicationClient = await genApplicationClient();
     try {
-      await applicationClient.createApplication(
+      const appResult = await applicationClient.createApplication(
         new CreateApplicationCommand({
           application: form
         })
       );
-      setCurrApp(form);
+      setNewCurrApp(appResult.appId);
       toast({
-        description: "Application was added",
+        description: `App created appSecret: ${appResult.appSecret}`,
         status: "success",
         duration: 5000,
         isClosable: true
@@ -46,7 +46,6 @@ const CreateApplicationTriggerBtn: FC = () => {
         isClosable: true
       });
     }
-    fetchApps();
   }, []);
 
   return (

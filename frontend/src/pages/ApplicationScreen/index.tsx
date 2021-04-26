@@ -9,7 +9,6 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
 import {
-  ApplicationIdDto,
   IApplicationIdDto,
   IApplicationOwnerIdDto,
   IAppTokenIdDto,
@@ -22,7 +21,8 @@ const IndexPage: NextPage = () => {
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
   const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
-  const [currApplication, setCurrApp] = useState<ApplicationIdDto>();
+  const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
+  const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -40,6 +40,18 @@ const IndexPage: NextPage = () => {
     }
   }, []);
 
+  const setNewCurrApp = useCallback(
+    async (appId: number) => {
+      await fetchApps();
+      const newApp = applications.find(e => e.id == appId);
+
+      if (newApp) {
+        setCurrApp(newApp);
+      } else logger.info("could not find app ID");
+    },
+    [applications]
+  );
+
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
@@ -55,6 +67,26 @@ const IndexPage: NextPage = () => {
       logger.warn("ApplicationClient.getAppTokensByAppId Error", err);
     }
   }, [currApplication]);
+
+  const fetchUpdatedToken = useCallback(
+    async (tokenId: number) => {
+      try {
+        const client = await genApplicationClient();
+        const data = await client.getAppTokenById(tokenId);
+
+        if (data) {
+          setCurrToken(data);
+          dispatchAppTokens({
+            type: ListReducerActionType.AddOrUpdate,
+            data
+          });
+        } else logger.info("ApplicationClient.getTokenById got no data");
+      } catch (err) {
+        logger.warn("ApplicationClient.getTokenById Error", err);
+      }
+    },
+    [currToken]
+  );
 
   const fetchAppOwners = useCallback(async () => {
     try {
@@ -94,8 +126,10 @@ const IndexPage: NextPage = () => {
   }, [fetchApps, fetchServices]);
 
   useEffect(() => {
-    fetchAppOwners();
-    fetchAppTokens();
+    if (currApplication) {
+      fetchAppOwners();
+      fetchAppTokens();
+    }
   }, [fetchAppOwners, fetchAppTokens, currApplication]);
 
   return (
@@ -106,7 +140,11 @@ const IndexPage: NextPage = () => {
         appTokens: appTokens,
         appOwners: appOwners,
         currApplication: currApplication,
+        currToken: currToken,
         setCurrApp: setCurrApp,
+        setNewCurrApp: setNewCurrApp,
+        setCurrToken: setCurrToken,
+        fetchUpdatedToken: fetchUpdatedToken,
         fetchApps: fetchApps,
         fetchAppTokens: fetchAppTokens,
         fetchServices: fetchServices,

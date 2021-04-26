@@ -12,7 +12,6 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import ServiceForm from "components/Forms/Service/ServiceForm";
 import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
@@ -21,14 +20,14 @@ import { CreateServiceCommand, ServiceDto, ServiceStates } from "services/backen
 
 const CreateServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { fetchServices } = useContext(ServiceViewContext);
+  const { setNewCurrService } = useContext(ServiceViewContext);
   const [value, setValue] = useState("# My Service\n");
   const toast = useToast();
 
   const addService = useCallback(async (title: string, description: string) => {
     const client = await genServiceClient();
     try {
-      await client.createService(
+      const serviceId = await client.createService(
         new CreateServiceCommand({
           service: new ServiceDto({
             title: title,
@@ -37,6 +36,7 @@ const CreateServiceTriggerBtn: FC = () => {
           })
         })
       );
+      setNewCurrService(serviceId);
       toast({
         description: "Service was added",
         status: "success",
@@ -51,7 +51,6 @@ const CreateServiceTriggerBtn: FC = () => {
         isClosable: true
       });
     }
-    fetchServices();
   }, []);
 
   return (
@@ -72,7 +71,6 @@ const CreateServiceTriggerBtn: FC = () => {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            {/* <ServiceForm submitCallback={addService} /> */}
             <MarkdownTwoSplit value={value} onValueChange={setValue} onSave={addService} />
           </ModalBody>
           <Divider />
