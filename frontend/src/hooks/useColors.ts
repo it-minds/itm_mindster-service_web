@@ -7,11 +7,17 @@ export const useColors = () => {
   const activeBg = useColorModeValue("yellow.200", "yellow.700");
   const menuBg = useColorModeValue("gray.100", "gray.700");
   const mainBg = useColorModeValue("gray.200", "gray.800");
+  const appHeaderBg = useColorModeValue("purple.500", "purple.300");
+  const serviceHeaderBg = useColorModeValue("orange.400", "orange.600");
+  const overviewHeaderBg = useColorModeValue("blue.400", "blue.200");
 
   return {
     hoverBg,
     menuBg,
     activeBg,
-    mainBg
+    mainBg,
+    appHeaderBg,
+    serviceHeaderBg,
+    overviewHeaderBg
   };
 };

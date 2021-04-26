@@ -1,14 +1,17 @@
 import { Box, Button, Flex, Image, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
 import ColorModeToggler from "components/Common/ColorModeToggler";
+import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import { FC } from "react";
 
 import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
+  const { serviceHeaderBg } = useColors();
+
   return (
-    <Flex p="2" bgColor="orange.400" align="center" width="full">
+    <Flex p="2" bgColor={serviceHeaderBg} align="center" width="full">
       <Box borderWidth="1px" rounded="full" borderColor="black">
         <Image boxSize="50px" src="/images/icons/icon-144x144.png" />
       </Box>
