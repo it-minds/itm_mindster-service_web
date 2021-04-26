@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Divider,
-  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -17,8 +16,7 @@ import {
   Text,
   useClipboard,
   useDisclosure,
-  useToast,
-  Wrap
+  useToast
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -74,25 +72,21 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
   );
   return (
     <Center>
-      <Wrap width="full" justify="center">
-        <Flex width="full" align="center" justifyContent="center">
-          <Box width="full" p={6}>
-            <form onSubmit={onSubmit}>
-              <FormControl isRequired>
-                <FormLabel>App secret:</FormLabel>
-                <Input
-                  type="text"
-                  value={appSecret}
-                  placeholder="You received this once when you created your application"
-                  onChange={event => setAppSecret(event.target.value)}></Input>
-              </FormControl>
-              <Button isLoading={isLoading} variant="outline" width="full" mt={6} type="submit">
-                Submit
-              </Button>
-            </form>
-          </Box>
-        </Flex>
-      </Wrap>
+      <Box width="full" p={6}>
+        <form onSubmit={onSubmit}>
+          <FormControl isRequired>
+            <FormLabel>App secret:</FormLabel>
+            <Input
+              type="text"
+              value={appSecret}
+              placeholder="You received this once when you created your application"
+              onChange={event => setAppSecret(event.target.value)}></Input>
+          </FormControl>
+          <Button isLoading={isLoading} variant="outline" width="full" mt={6} type="submit">
+            Submit
+          </Button>
+        </form>
+      </Box>
       <Modal
         isOpen={isOpen}
         onClose={() => {

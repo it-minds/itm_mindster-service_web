@@ -59,11 +59,11 @@ const AppTokenForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
                 />
               </FormControl>
               {isLoading ? (
-                <Button bgColor="blue.200" variant="outline" width="full" mt={6}>
+                <Button colorScheme="blue" variant="outline" width="full" mt={6}>
                   <Spinner></Spinner>
                 </Button>
               ) : (
-                <Button bgColor="blue.200" variant="outline" width="full" mt={6} type="submit">
+                <Button colorScheme="blue" variant="outline" width="full" mt={6} type="submit">
                   Submit
                 </Button>
               )}

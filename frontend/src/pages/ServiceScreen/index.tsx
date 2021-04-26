@@ -70,23 +70,6 @@ const ServiceScreen: NextPage = () => {
     [services]
   );
 
-  const fetchUpdatedServices = useCallback(async () => {
-    try {
-      const serviceClient = await genServiceClient();
-      const data = await serviceClient.getServiceById(currService.id);
-
-      if (data) {
-        setCurrService(data);
-        dispatchServices({
-          type: ListReducerActionType.AddOrUpdate,
-          data
-        });
-      } else logger.info("ServiceClient.getServiceById got no data");
-    } catch (err) {
-      logger.warn("ServiceClient.getServiceById Error", err);
-    }
-  }, [currService]);
-
   const fetchServiceOwners = useCallback(async () => {
     try {
       const client = await genServiceClient();
@@ -146,7 +129,6 @@ const ServiceScreen: NextPage = () => {
         setCurrService: setCurrService,
         setNewCurrService: setNewCurrService,
         fetchAppTokens: fetchAppTokens,
-        fetchUpdatedService: fetchUpdatedServices,
         fetchOwners: fetchServiceOwners,
         fetchServices: fetchServices,
         fetchActionApprovers: fetchActionApprovers

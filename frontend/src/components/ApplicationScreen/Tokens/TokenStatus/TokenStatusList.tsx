@@ -13,11 +13,10 @@ const TokenStatusList: FC = () => {
    * Used to divide the different actions into the respective services for
    */
   useEffect(() => {
-    const services = currToken.appTokenActions.map(action => {
-      return action.action.serviceId;
-    });
-    const set = new Set(services);
-    setTokenServices(Array.from(set));
+    const serviceIds = currToken.appTokenActions
+      .map(action => action.action.serviceId)
+      .filter((item, I, arr) => I === arr.indexOf(item));
+    setTokenServices(serviceIds);
   }, [currToken]);
 
   if (currToken == null) return null;
