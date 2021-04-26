@@ -36,7 +36,7 @@ const ServiceTableItem: FC<Props> = ({ service }) => {
           <Box>{service.title}</Box>
         </HStack>
       </Td>
-      <Td>{service.serviceIdentifier}</Td>
+      <Td maxW="100px">{service.serviceIdentifier}</Td>
     </Tr>
   );
 };

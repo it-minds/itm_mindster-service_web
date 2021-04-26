@@ -51,6 +51,8 @@ const CreateTokenTriggerBtn: FC = () => {
           duration: 5000,
           isClosable: true
         });
+        setOpen(true);
+        onClose();
       } catch (error) {
         toast({
           description: `CreateAppToken responded: ${error}`,
@@ -59,8 +61,6 @@ const CreateTokenTriggerBtn: FC = () => {
           isClosable: true
         });
       }
-      setOpen(true);
-      onClose();
     },
     [currApplication]
   );

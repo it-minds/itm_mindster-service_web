@@ -11,7 +11,7 @@ const ActionTable: FC = () => {
   if (currService == null) return null;
   if (currService.actions.length == 0) return null;
   return (
-    <VStack w="full">
+    <VStack w="full" align="left">
       <Heading size="h3">Actions:</Heading>
       <Table borderWidth="1px" variant="striped" colorScheme="gray" size="sm">
         <Thead>

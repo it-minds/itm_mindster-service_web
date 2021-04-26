@@ -18,7 +18,7 @@ const TokenTableItem: FC<Props> = ({ token }) => {
 
   return (
     <Tr>
-      <Td>{token.tokenIdentifier}</Td>
+      <Td maxW="100px">{token.tokenIdentifier}</Td>
       <Td>{token.description}</Td>
       <Td>
         <Center>

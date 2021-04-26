@@ -20,8 +20,7 @@ const RequestActionListItem: FC<Props> = ({ action, checked, addAction }) => {
           onChange={() => handleOnChange()}
         />
       </Td>
-      <Td>{action.actionIdentifier}</Td>
-      <Td>{action.title}</Td>
+      <Td maxW="100px">{action.actionIdentifier}</Td>
       <Td>{action.description}</Td>
     </Tr>
   );

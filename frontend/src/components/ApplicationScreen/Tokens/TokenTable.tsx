@@ -15,8 +15,8 @@ const TokenTable: FC = () => {
       <Table borderWidth="1px" variant="striped" colorScheme="gray" size="sm">
         <Thead>
           <Tr>
-            <Th>Name</Th>
-            <Th w={0.7}>Description</Th>
+            <Th w={0.3}>Name</Th>
+            <Th w={0.6}>Description</Th>
             <Th>
               <Center>Actions</Center>
             </Th>
@@ -24,7 +24,7 @@ const TokenTable: FC = () => {
         </Thead>
         <Tbody>
           {appTokens.map((token: AppTokenIdDto) => (
-            <TokenTableItem key={token.id} token={token}></TokenTableItem>
+            <TokenTableItem key={token.id} token={token} />
           ))}
         </Tbody>
       </Table>

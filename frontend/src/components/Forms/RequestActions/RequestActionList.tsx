@@ -116,7 +116,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData, submitCallBack }) 
                   />
                 </Th>
                 <Th>Id</Th>
-                <Th>Title</Th>
                 <Th w={0.7}>Description</Th>
               </Tr>
             </Thead>
