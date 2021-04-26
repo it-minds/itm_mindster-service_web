@@ -129,6 +129,7 @@ export interface IApplicationClient {
     createApplication(command: CreateApplicationCommand): Promise<CreateAppResult>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
+    getAllMyApplicationsOverview(): Promise<AppOverviewDto[]>;
     addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number>;
     getApplicationOwnersByAppId(id: number): Promise<ApplicationOwnerIdDto[]>;
     createAppToken(id: number, command: CreateAppTokenCommand): Promise<number>;
@@ -272,6 +273,46 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    getAllMyApplicationsOverview(): Promise<AppOverviewDto[]> {
+        let url_ = this.baseUrl + "/api/Application/Overview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetAllMyApplicationsOverview(_response));
+        });
+    }
+
+    protected processGetAllMyApplicationsOverview(response: Response): Promise<AppOverviewDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(AppOverviewDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AppOverviewDto[]>(<any>null);
     }
 
     addAppOwners(id: number, command: CreateApplicationOwnerCommand): Promise<number> {
@@ -1196,6 +1237,7 @@ export interface IServiceClient {
     getActionApproversByActionId(id: number): Promise<ActionApproverIdDto[]>;
     getAllServices(): Promise<ServiceIdDto[]>;
     getMyServices(): Promise<ServiceIdDto[]>;
+    getMyServicesOverview(): Promise<ServiceOverviewDto[]>;
 }
 
 export class ServiceClient extends ClientBase implements IServiceClient {
@@ -1625,6 +1667,46 @@ export class ServiceClient extends ClientBase implements IServiceClient {
         }
         return Promise.resolve<ServiceIdDto[]>(<any>null);
     }
+
+    getMyServicesOverview(): Promise<ServiceOverviewDto[]> {
+        let url_ = this.baseUrl + "/api/Service/Overview";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetMyServicesOverview(_response));
+        });
+    }
+
+    protected processGetMyServicesOverview(response: Response): Promise<ServiceOverviewDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ServiceOverviewDto.fromJS(item));
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ServiceOverviewDto[]>(<any>null);
+    }
 }
 
 export interface IUserClient {
@@ -1871,6 +1953,50 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
 }
 
 export interface IApplicationIdDto extends IApplicationDto {
+    id?: number;
+}
+
+export class AppOverviewDto implements IAppOverviewDto {
+    title?: string | null;
+    appIdentifier?: string | null;
+    id?: number;
+
+    constructor(data?: IAppOverviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.appIdentifier = _data["appIdentifier"] !== undefined ? _data["appIdentifier"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AppOverviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppOverviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["appIdentifier"] = this.appIdentifier !== undefined ? this.appIdentifier : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        return data; 
+    }
+}
+
+export interface IAppOverviewDto {
+    title?: string | null;
+    appIdentifier?: string | null;
     id?: number;
 }
 
@@ -3501,6 +3627,50 @@ export class ActionApproverIdDto extends ActionApproverDto implements IActionApp
 export interface IActionApproverIdDto extends IActionApproverDto {
     id?: number;
     actionId?: number;
+}
+
+export class ServiceOverviewDto implements IServiceOverviewDto {
+    title?: string | null;
+    serviceIdentifier?: string | null;
+    id?: number;
+
+    constructor(data?: IServiceOverviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.serviceIdentifier = _data["serviceIdentifier"] !== undefined ? _data["serviceIdentifier"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ServiceOverviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ServiceOverviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["serviceIdentifier"] = this.serviceIdentifier !== undefined ? this.serviceIdentifier : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        return data; 
+    }
+}
+
+export interface IServiceOverviewDto {
+    title?: string | null;
+    serviceIdentifier?: string | null;
+    id?: number;
 }
 
 export class User implements IUser {

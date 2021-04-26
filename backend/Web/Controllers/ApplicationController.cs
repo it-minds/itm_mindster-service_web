@@ -46,7 +46,7 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetMyApplicationsQuery());
     }
-    [HttpGet]
+    [HttpGet("Overview")]
     public async Task<ActionResult<List<AppOverviewDto>>> GetAllMyApplicationsOverview()
     {
       return await Mediator.Send(new GetMyAppOverviewQuery());
