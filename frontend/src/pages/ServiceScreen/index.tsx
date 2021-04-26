@@ -71,23 +71,6 @@ const ServiceScreen: NextPage = () => {
     [services]
   );
 
-  // const fetchUpdatedService = useCallback(async () => {
-  //   try {
-  //     const serviceClient = await genServiceClient();
-  //     const data = await serviceClient.getServiceById(currService.id);
-
-  //     if (data) {
-  //       setCurrService(data);
-  //       dispatchServices({
-  //         type: ListReducerActionType.AddOrUpdate,
-  //         data
-  //       });
-  //     } else logger.info("ServiceClient.getServiceById got no data");
-  //   } catch (err) {
-  //     logger.warn("ServiceClient.getServiceById Error", err);
-  //   }
-  // }, [currService]);
-
   const fetchServiceOwners = useCallback(async () => {
     try {
       const client = await genServiceClient();
@@ -123,8 +106,6 @@ const ServiceScreen: NextPage = () => {
   useEffect(() => {
     fetchServices();
     if (query.Id) {
-      console.log("=========================");
-      console.log(query.Id);
       const serviceId: number = +query.Id;
       setNewCurrService(serviceId);
     }

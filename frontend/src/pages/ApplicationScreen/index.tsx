@@ -126,8 +126,6 @@ const IndexPage: NextPage = () => {
     fetchApps();
     fetchServices();
     if (query.Id) {
-      console.log("=========================");
-      console.log(query.Id);
       const appId: number = +query.Id;
       setNewCurrApp(appId);
     }
