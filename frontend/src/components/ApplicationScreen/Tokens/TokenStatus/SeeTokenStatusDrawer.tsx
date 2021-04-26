@@ -67,7 +67,6 @@ const SeeTokenStatusDrawer: FC<Props> = ({
 
       <Drawer
         onClose={() => {
-          onClose();
           submitCallback();
         }}
         isOpen={isOpen}

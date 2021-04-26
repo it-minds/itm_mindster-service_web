@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Divider,
-  Flex,
   FormControl,
   FormLabel,
   Modal,
@@ -17,8 +16,7 @@ import {
   Textarea,
   useClipboard,
   useDisclosure,
-  useToast,
-  Wrap
+  useToast
 } from "@chakra-ui/react";
 import React, { FC, useCallback, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -75,30 +73,26 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
   );
   return (
     <Center>
-      <Wrap width="full" justify="center">
-        <Flex width="full" align="center" justifyContent="center">
-          <Box width="full" p={6}>
-            <form onSubmit={onSubmit}>
-              <FormControl isRequired>
-                <Text>Application: {aid}</Text>
-                <Text mb="5">Token: {tokenIdentifier}</Text>
-                <FormLabel>App secret:</FormLabel>
-                <Textarea
-                  type="text"
-                  value={appSecret}
-                  placeholder="You received this once when you created your application"
-                  onChange={event => setAppSecret(event.target.value)}
-                />
-              </FormControl>
-              <Center>
-                <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
-                  Submit
-                </Button>
-              </Center>
-            </form>
-          </Box>
-        </Flex>
-      </Wrap>
+      <Box width="full" p={6}>
+        <form onSubmit={onSubmit}>
+          <FormControl isRequired>
+            <Text>Application: {aid}</Text>
+            <Text mb="5">Token: {tokenIdentifier}</Text>
+            <FormLabel>App secret:</FormLabel>
+            <Textarea
+              type="text"
+              value={appSecret}
+              placeholder="You received this once when you created your application"
+              onChange={event => setAppSecret(event.target.value)}
+            />
+          </FormControl>
+          <Center>
+            <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
+              Submit
+            </Button>
+          </Center>
+        </form>
+      </Box>
       <Modal
         isOpen={isOpen}
         onClose={() => {
