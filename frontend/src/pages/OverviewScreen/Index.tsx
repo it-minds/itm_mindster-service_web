@@ -8,17 +8,17 @@ import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
-import { IApplicationIdDto, IServiceIdDto } from "services/backend/nswagts";
+import { IAppOverviewDto, IServiceOverviewDto } from "services/backend/nswagts";
 import { logger } from "utils/logger";
 
 const OverviewScreen: NextPage = () => {
-  const [applications, dispatchApplications] = useReducer(ListReducer<IApplicationIdDto>("id"), []);
-  const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
+  const [applications, dispatchApplications] = useReducer(ListReducer<IAppOverviewDto>("id"), []);
+  const [services, dispatchServices] = useReducer(ListReducer<IServiceOverviewDto>("id"), []);
 
   const fetchApps = useCallback(async () => {
     try {
       const applicationClient = await genApplicationClient();
-      const data = await applicationClient.getAllApplications();
+      const data = await applicationClient.getAllMyApplicationsOverview();
 
       if (data && data.length > 0)
         dispatchApplications({
@@ -34,7 +34,7 @@ const OverviewScreen: NextPage = () => {
   const fetchServices = useCallback(async () => {
     try {
       const serviceClient = await genServiceClient();
-      const data = await serviceClient.getAllServices();
+      const data = await serviceClient.getMyServicesOverview();
 
       if (data && data.length > 0)
         dispatchServices({

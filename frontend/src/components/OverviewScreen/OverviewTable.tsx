@@ -1,16 +1,16 @@
 import { Box, Heading, Table, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
 import { FC } from "react";
 import {
-  ApplicationIdDto,
-  IApplicationIdDto,
-  IServiceIdDto,
-  ServiceIdDto
+  AppOverviewDto,
+  IAppOverviewDto,
+  IServiceOverviewDto,
+  ServiceOverviewDto
 } from "services/backend/nswagts";
 
 import OverviewTableItem from "./OverviewTableItem";
 
 type Props = {
-  tableData: IApplicationIdDto[] | IServiceIdDto[];
+  tableData: IAppOverviewDto[] | IServiceOverviewDto[];
   tableHeading: string;
 };
 const OverviewTable: FC<Props> = ({ tableData, tableHeading }) => {
@@ -28,7 +28,7 @@ const OverviewTable: FC<Props> = ({ tableData, tableHeading }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {tableData.map((e: ApplicationIdDto | ServiceIdDto) => (
+          {tableData.map((e: AppOverviewDto | ServiceOverviewDto) => (
             <OverviewTableItem key={e.id} item={e} />
           ))}
         </Tbody>

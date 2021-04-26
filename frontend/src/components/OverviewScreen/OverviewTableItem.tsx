@@ -2,14 +2,14 @@ import { Td, Tr } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import React, { FC } from "react";
-import { ApplicationIdDto, ServiceIdDto } from "services/backend/nswagts";
+import { AppOverviewDto, ServiceOverviewDto } from "services/backend/nswagts";
 
 type Props = {
-  item: ApplicationIdDto | ServiceIdDto;
+  item: AppOverviewDto | ServiceOverviewDto;
 };
 const OverviewTableItem: FC<Props> = ({ item }) => {
   const { hoverBg } = useColors();
-  if (item instanceof ApplicationIdDto) {
+  if (item instanceof AppOverviewDto) {
     return (
       <Link href={{ pathname: "/ApplicationScreen", query: { Id: item.id } }} passHref>
         <Tr _hover={{ bgColor: hoverBg }} cursor={"pointer"}>

@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { IApplicationIdDto, IServiceIdDto } from "services/backend/nswagts";
+import { IAppOverviewDto, IServiceOverviewDto } from "services/backend/nswagts";
 
 type ContextType = {
-  applications: IApplicationIdDto[];
-  services: IServiceIdDto[];
+  applications: IAppOverviewDto[];
+  services: IServiceOverviewDto[];
   fetchApps: () => Promise<void>;
   fetchServices: () => Promise<void>;
 };
