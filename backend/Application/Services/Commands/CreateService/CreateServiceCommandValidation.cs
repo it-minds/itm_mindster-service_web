@@ -19,7 +19,7 @@ namespace Application.Services.Commands.CreateService
       RuleFor(e => e.Service.ServiceIdentifier)
         .NotNull()
         .MaximumLength(200)
-        .Matches("[a-z_]+");
+        .Matches("^[a-z_]*$");
     }
   }
 }
