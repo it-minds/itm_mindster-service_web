@@ -33,7 +33,6 @@ export const ServiceViewContext = createContext<ContextType>({
   setCurrService: null,
   setNewCurrService: null,
   setCurrAction: null,
-  fetchUpdatedService: null,
   fetchServices: null,
   fetchOwners: null,
   fetchAppTokens: null,

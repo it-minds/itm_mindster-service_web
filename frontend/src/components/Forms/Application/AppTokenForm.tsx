@@ -71,7 +71,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback }) => {
               <Center>
                 <Button
                   isLoading={isLoading}
-                  bgColor="blue.200"
+                  colorScheme="blue"
                   variant="outline"
                   type="submit"
                   mt={6}>

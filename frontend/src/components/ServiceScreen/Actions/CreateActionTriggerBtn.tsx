@@ -20,7 +20,7 @@ import { CreateActionCommand } from "services/backend/nswagts";
 
 const CreateActionTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currService, fetchUpdatedService } = useContext(ServiceViewContext);
+  const { currService, setNewCurrService } = useContext(ServiceViewContext);
   const toast = useToast();
 
   const createAction = useCallback(
@@ -42,10 +42,10 @@ const CreateActionTriggerBtn: FC = () => {
           isClosable: true
         });
       } finally {
-        fetchUpdatedService();
+        setNewCurrService(currService.id);
       }
     },
-    [currService, fetchUpdatedService]
+    [currService]
   );
 
   if (currService == null) return null;
