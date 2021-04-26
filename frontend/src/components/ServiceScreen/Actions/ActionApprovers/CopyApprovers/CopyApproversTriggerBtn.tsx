@@ -11,34 +11,47 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import PopoverMenuButton from "components/Common/PopoverMenuButton";
-import ActionApproverForm from "components/Forms/Service/ActionApproverForm";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext } from "react";
 import { IActionApproverDto } from "services/backend/nswagts";
 
+import ActionApproverOverview from "../ActionApproverOverview";
+import CopyActionList from "./CopyActionsList";
+
 type Props = {
+  approversToCopy: IActionApproverDto[];
   submitCallback: (actionId: number, OwnerMetaDataForm: IActionApproverDto[]) => Promise<void>;
 };
-const AddActionApproverTriggerBtn: FC<Props> = ({ submitCallback }) => {
+const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currAction } = useContext(ServiceViewContext);
+  const { currService, currAction } = useContext(ServiceViewContext);
 
-  const handleSubmit = useCallback(async (OwnerMetaDataForm: IActionApproverDto[]) => {
-    submitCallback(currAction.id, OwnerMetaDataForm);
-  }, []);
+  const handleSubmit = useCallback(
+    async (actionIds: number[]) => {
+      actionIds.forEach(async actionId => {
+        await submitCallback(actionId, approversToCopy);
+      });
+      onClose();
+    },
+    [approversToCopy]
+  );
 
   return (
     <>
-      <PopoverMenuButton btnText={"Add approvers"} onClickMethod={onOpen} />
+      <PopoverMenuButton btnText={"Copy approvers to another action"} onClickMethod={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="3xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add approvers to: {currAction.title}</ModalHeader>
+          <ModalHeader>Copy the following approvers from: {currAction.title}</ModalHeader>
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ActionApproverForm submitCallback={handleSubmit} />
+            <ActionApproverOverview approvers={approversToCopy} />
+            <CopyActionList
+              tableData={currService.actions.filter(e => e.id != currAction.id)}
+              submitCallback={handleSubmit}
+            />
           </ModalBody>
           <Divider />
           <ModalFooter>
@@ -52,4 +65,4 @@ const AddActionApproverTriggerBtn: FC<Props> = ({ submitCallback }) => {
   );
 };
 
-export default AddActionApproverTriggerBtn;
+export default CopyApproverTriggerBtn;

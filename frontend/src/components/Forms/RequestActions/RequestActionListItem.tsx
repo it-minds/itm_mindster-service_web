@@ -6,7 +6,7 @@ type Props = {
   checked: boolean;
   addAction: (data: number) => void;
 };
-const ActionListItem: FC<Props> = ({ action, checked, addAction }) => {
+const RequestActionListItem: FC<Props> = ({ action, checked, addAction }) => {
   const handleOnChange = useCallback(() => {
     addAction(action.id);
   }, [action]);
@@ -27,4 +27,4 @@ const ActionListItem: FC<Props> = ({ action, checked, addAction }) => {
     </Tr>
   );
 };
-export default ActionListItem;
+export default RequestActionListItem;

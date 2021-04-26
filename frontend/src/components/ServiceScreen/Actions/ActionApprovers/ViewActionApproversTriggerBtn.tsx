@@ -10,23 +10,24 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/react";
-import React, { FC } from "react";
-import { IActionIdDto } from "services/backend/nswagts";
+import PopoverMenuButton from "components/Common/PopoverMenuButton";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
+import React, { FC, useContext } from "react";
+import { IActionApproverIdDto } from "services/backend/nswagts";
 
 import ActionApproverOverview from "./ActionApproverOverview";
 
 type Props = {
-  currAction: IActionIdDto;
+  approvers: IActionApproverIdDto[];
 };
 
-const ViewActionApproversTriggerBtn: FC<Props> = ({ currAction }) => {
+const ViewActionApproversTriggerBtn: FC<Props> = ({ approvers }) => {
+  const { currAction } = useContext(ServiceViewContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button onClick={onOpen} borderWidth="1px" borderColor="black">
-        Approvers
-      </Button>
+      <PopoverMenuButton btnText={"View approvers"} onClickMethod={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
@@ -35,7 +36,7 @@ const ViewActionApproversTriggerBtn: FC<Props> = ({ currAction }) => {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ActionApproverOverview currAction={currAction} />
+            <ActionApproverOverview approvers={approvers} />
           </ModalBody>
           <Divider />
           <ModalFooter>

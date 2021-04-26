@@ -22,13 +22,13 @@ import {
   IAppTokenActionDto
 } from "services/backend/nswagts";
 
-import ActionListItem from "./ActionListItem";
+import RequestActionListItem from "./RequestActionListItem";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
 }
 
-const ActionList: FC<ActionTableProps> = ({ tableData }) => {
+const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
   const [checkboxes, setCheckboxes] = useState(() =>
@@ -124,11 +124,11 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
             </Thead>
             <Tbody>
               {tableData.map((action: ActionIdDto) => (
-                <ActionListItem
+                <RequestActionListItem
                   key={action.id}
                   action={action}
                   checked={checkboxes.find(e => e.id == action.id).checked}
-                  addAction={addAction}></ActionListItem>
+                  addAction={addAction}></RequestActionListItem>
               ))}
             </Tbody>
           </Table>
@@ -151,4 +151,4 @@ const ActionList: FC<ActionTableProps> = ({ tableData }) => {
   );
 };
 
-export default ActionList;
+export default RequestActionList;

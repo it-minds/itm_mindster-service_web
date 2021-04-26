@@ -2,7 +2,7 @@ import { Box, Center, Flex, Wrap } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
 
-import ActionList from "./ActionList";
+import RequestActionList from "./RequestActionList";
 
 type Props = {
   service: ServiceIdDto;
@@ -20,7 +20,7 @@ const RequestActions: FC<Props> = ({ service }) => {
             {service.description}
           </Box>
           <Box width="full" p={6}>
-            <ActionList tableData={service.actions}></ActionList>
+            <RequestActionList tableData={service.actions}></RequestActionList>
           </Box>
         </Flex>
       </Wrap>
