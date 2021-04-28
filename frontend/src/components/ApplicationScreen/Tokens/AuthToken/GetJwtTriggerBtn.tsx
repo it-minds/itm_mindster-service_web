@@ -42,7 +42,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen, buttonColor }) => {
             access: currToken.appTokenActions
               .filter(a => a.action.serviceId == element)
               .map(b => {
-                return b.actionId.toString();
+                return b.action.actionIdentifier;
               })
           })
         );
@@ -57,7 +57,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen, buttonColor }) => {
     <>
       <Button
         size={defBtnSize}
-        colorScheme={buttonColor != null ? buttonColor : "blue"}>
+        colorScheme={buttonColor != null ? buttonColor : "blue"}
         w="full"
         onClick={async () => {
           await submitOnOpen();

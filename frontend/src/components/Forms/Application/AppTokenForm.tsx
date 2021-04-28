@@ -29,7 +29,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback }) => {
       event.preventDefault();
       setIsLoading(true);
       await submitCallback(
-        new AppTokenCreateDto({ tokenIdentifier: description, description: description })
+        new AppTokenCreateDto({ tokenIdentifier: identifier, description: description })
       );
       setIsLoading(false);
     },
