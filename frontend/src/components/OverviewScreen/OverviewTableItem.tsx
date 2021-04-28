@@ -14,7 +14,7 @@ const OverviewTableItem: FC<Props> = ({ item }) => {
       <Link href={{ pathname: "/ApplicationScreen", query: { Id: item.id } }} passHref>
         <Tr _hover={{ bgColor: hoverBg }} cursor={"pointer"}>
           <Td>{item.title}</Td>
-          <Td>{item.appIdentifier}</Td>
+          <Td maxW="200px">{item.appIdentifier}</Td>
         </Tr>
       </Link>
     );
@@ -23,7 +23,7 @@ const OverviewTableItem: FC<Props> = ({ item }) => {
       <Link href={{ pathname: "/ServiceScreen", query: { Id: item.id } }} passHref>
         <Tr _hover={{ bgColor: hoverBg }} cursor={"pointer"}>
           <Td>{item.title}</Td>
-          <Td>{item.serviceIdentifier}</Td>
+          <Td maxW="200px">{item.serviceIdentifier}</Td>
         </Tr>
       </Link>
     );

@@ -9,11 +9,11 @@ type Props = {
 };
 const ActionTableItem: FC<Props> = ({ action }) => {
   return (
-    <Tr>
-      <Td>{action.title}</Td>
+    <Tr overflowY="hidden">
+      <Td maxW="100px">{action.actionIdentifier}</Td>
       <Td>{action.description}</Td>
       <Td>
-        <Center>
+        <Center overflowY="hidden">
           <ApproverMenu action={action} />
         </Center>
       </Td>

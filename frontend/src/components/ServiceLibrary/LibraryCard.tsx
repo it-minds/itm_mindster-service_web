@@ -30,6 +30,7 @@ const LibraryCard: FC<Props> = ({ service }) => {
   return (
     <>
       <Box
+        overflow="hidden"
         onClick={onOpen}
         cursor="pointer"
         _hover={{
@@ -57,7 +58,7 @@ const LibraryCard: FC<Props> = ({ service }) => {
           <ModalCloseButton />
           <ModalBody>
             <Center>
-              <Container w="4xl" maxW="full">
+              <Container w="5xl" maxW="full">
                 <MarkdownViewer value={service.description} />
                 <RequestActions submitCallBack={() => onClose()} service={service}></RequestActions>
               </Container>

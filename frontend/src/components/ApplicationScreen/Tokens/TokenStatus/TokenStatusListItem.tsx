@@ -11,7 +11,6 @@ import {
   Spacer
 } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
-import { BsCircle } from "@react-icons/all-files/bs/BsCircle";
 import { BsX } from "@react-icons/all-files/bs/BsX";
 import { FC } from "react";
 import { IAppTokenActionIdDto, ServiceStates } from "services/backend/nswagts";
@@ -26,7 +25,7 @@ const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
       <Spacer />
       <Box ml="20px">
         {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="30px" />}
-        {tokenAction.state == ServiceStates.Pending && <BsCircle color="grey" size="25px" />}
+        {tokenAction.state == ServiceStates.Pending && <BsX color="grey" size="25px" />}
         {tokenAction.state == ServiceStates.Rejected && (
           <Popover>
             <PopoverTrigger>
