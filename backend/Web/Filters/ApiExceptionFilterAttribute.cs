@@ -21,6 +21,7 @@ namespace Web.Filters
                 {typeof(NotFoundException), HandleNotFoundException},
                 {typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException},
                 {typeof(ForbiddenAccessException), HandleForbiddenAccessException},
+                {typeof(DuplicateIdentifierException), HandleDuplicateIdentifierException}
             };
     }
 
@@ -100,6 +101,7 @@ namespace Web.Filters
       var details = new ProblemDetails()
       {
         Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+        Status = StatusCodes.Status400BadRequest,
         Title = "Duplicate Identifier",
         Detail = exception.Message
       };
