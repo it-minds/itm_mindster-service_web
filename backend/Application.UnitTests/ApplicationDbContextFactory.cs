@@ -142,7 +142,7 @@ namespace Application.UnitTests
 
       context.Applications.AddRange(
         new ApplicationEntity { Id = 1, Title = "App 1", Description = "The First", AppIdentifier = "app_one"},
-        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second", AppIdentifier = "app_two"},
+        new ApplicationEntity { Id = 2, Title = "App 2", Description = "The Second", AppIdentifier = "app_two", AppSecretGenerated = true},
         new ApplicationEntity { Id = 3, Title = "App 3", Description = "The Third" , AppIdentifier = "app_three"}
         );
 

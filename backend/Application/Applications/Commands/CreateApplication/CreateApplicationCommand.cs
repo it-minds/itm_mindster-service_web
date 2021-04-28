@@ -13,26 +13,23 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Applications.Commands.CreateApplication
 {
   [Authorize]
-  public class CreateApplicationCommand : IRequest<CreateAppResult>
+  public class CreateApplicationCommand : IRequest<int>
   {
     public ApplicationDto Application { get; set; }
 
-    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, CreateAppResult>
+    public class CreateApplicationCommandHandler : IRequestHandler<CreateApplicationCommand, int>
     {
       private readonly IApplicationDbContext _context;
 
-      private readonly IAuthClient _authClient;
-
       private readonly ICurrentUserService _currentUserService;
 
-      public CreateApplicationCommandHandler(IApplicationDbContext context, IAuthClient authClient, ICurrentUserService currentUserService)
+      public CreateApplicationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
       {
         _context = context;
-        _authClient = authClient;
         _currentUserService = currentUserService;
       }
 
-      public async Task<CreateAppResult> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
+      public async Task<int> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
       {
         if (await _context.Applications.AnyAsync(e => e.AppIdentifier == request.Application.AppIdentifier, cancellationToken))
         {
@@ -57,12 +54,7 @@ namespace Application.Applications.Commands.CreateApplication
         _context.AppOwners.Add((applicationOwner));
         await _context.SaveChangesAsync(cancellationToken);
 
-        var authResult = await _authClient.AppAsync(new ApplicationInput {
-          AppIdentifer = application.AppIdentifier
-        }, cancellationToken);
-        var result = new CreateAppResult{appId = application.Id, AppSecret = authResult.AppSecret};
-
-        return result;
+        return application.Id;
       }
     }
   }

@@ -126,7 +126,7 @@ export class ClientBase {
 }
 
 export interface IApplicationClient {
-    createApplication(command: CreateApplicationCommand): Promise<CreateAppResult>;
+    createApplication(command: CreateApplicationCommand): Promise<number>;
     getAllApplications(): Promise<ApplicationIdDto[]>;
     updateApplication(id: number, command: UpdateApplicationCommand): Promise<FileResponse>;
     getAllMyApplicationsOverview(): Promise<AppOverviewDto[]>;
@@ -141,6 +141,7 @@ export interface IApplicationClient {
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
     updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse>;
     updateTokenState(id: number, command: UpdateAppTokenStateCommand): Promise<FileResponse>;
+    generateAppSecret(id: number, command: CreateAppSecretCommand): Promise<ApplicationOutput>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -154,7 +155,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    createApplication(command: CreateApplicationCommand): Promise<CreateAppResult> {
+    createApplication(command: CreateApplicationCommand): Promise<number> {
         let url_ = this.baseUrl + "/api/Application";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -176,14 +177,14 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         });
     }
 
-    protected processCreateApplication(response: Response): Promise<CreateAppResult> {
+    protected processCreateApplication(response: Response): Promise<number> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateAppResult.fromJS(resultData200);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -191,7 +192,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<CreateAppResult>(<any>null);
+        return Promise.resolve<number>(<any>null);
     }
 
     getAllApplications(): Promise<ApplicationIdDto[]> {
@@ -777,6 +778,49 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
             });
         }
         return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    generateAppSecret(id: number, command: CreateAppSecretCommand): Promise<ApplicationOutput> {
+        let url_ = this.baseUrl + "/api/Application/{id}/GenerateAppSecret";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGenerateAppSecret(_response));
+        });
+    }
+
+    protected processGenerateAppSecret(response: Response): Promise<ApplicationOutput> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ApplicationOutput.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ApplicationOutput>(<any>null);
     }
 }
 
@@ -1763,46 +1807,6 @@ export class UserClient extends ClientBase implements IUserClient {
         }
         return Promise.resolve<User[]>(<any>null);
     }
-}
-
-export class CreateAppResult implements ICreateAppResult {
-    appId?: number;
-    appSecret?: string | null;
-
-    constructor(data?: ICreateAppResult) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.appId = _data["appId"] !== undefined ? _data["appId"] : <any>null;
-            this.appSecret = _data["appSecret"] !== undefined ? _data["appSecret"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): CreateAppResult {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateAppResult();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["appId"] = this.appId !== undefined ? this.appId : <any>null;
-        data["appSecret"] = this.appSecret !== undefined ? this.appSecret : <any>null;
-        return data; 
-    }
-}
-
-export interface ICreateAppResult {
-    appId?: number;
-    appSecret?: string | null;
 }
 
 export class CreateApplicationCommand implements ICreateApplicationCommand {
@@ -2909,6 +2913,82 @@ export class UpdateAppTokenStateCommand implements IUpdateAppTokenStateCommand {
 
 export interface IUpdateAppTokenStateCommand {
     newState?: TokenStates;
+}
+
+export class ApplicationOutput implements IApplicationOutput {
+    appIdentifer?: string;
+    appSecret?: string;
+
+    constructor(data?: IApplicationOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appIdentifer = _data["appIdentifer"] !== undefined ? _data["appIdentifer"] : <any>null;
+            this.appSecret = _data["appSecret"] !== undefined ? _data["appSecret"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ApplicationOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ApplicationOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appIdentifer"] = this.appIdentifer !== undefined ? this.appIdentifer : <any>null;
+        data["appSecret"] = this.appSecret !== undefined ? this.appSecret : <any>null;
+        return data; 
+    }
+}
+
+export interface IApplicationOutput {
+    appIdentifer?: string;
+    appSecret?: string;
+}
+
+export class CreateAppSecretCommand implements ICreateAppSecretCommand {
+    appId?: number;
+
+    constructor(data?: ICreateAppSecretCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.appId = _data["appId"] !== undefined ? _data["appId"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateAppSecretCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAppSecretCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["appId"] = this.appId !== undefined ? this.appId : <any>null;
+        return data; 
+    }
+}
+
+export interface ICreateAppSecretCommand {
+    appId?: number;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {

@@ -24,14 +24,13 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
           AppIdentifier = "test_application"
         }
       };
-      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient, CurrentUserServiceMock.Object);
+      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, CurrentUserServiceMock.Object);
 
       var result = await handler.Handle(command, CancellationToken.None);
 
-      result.appId.Should().NotBe(null);
-      result.AppSecret.Should().NotBeNullOrEmpty();
+      result.Should().NotBe(null);
 
-      var entity = Context.Applications.Find(result.appId);
+      var entity = Context.Applications.Find(result);
       entity.Should().NotBeNull();
       entity.Title.Should().Be(command.Application.Title);
       entity.Description.Should().Be(command.Application.Description);
@@ -49,7 +48,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
           AppIdentifier = "app_one" //This identifier already exists in the DbContextFactory
         }
       };
-      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient, CurrentUserServiceMock.Object);
+      var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
       action.Should().Throw<DuplicateIdentifierException>();
