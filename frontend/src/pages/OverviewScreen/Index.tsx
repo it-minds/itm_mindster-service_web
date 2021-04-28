@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, VStack } from "@chakra-ui/layout";
+import { Box, Center, Container, Flex, SimpleGrid } from "@chakra-ui/layout";
 import OverviewHeader from "components/OverviewScreen/OverviewHeader";
 import OverviewTable from "components/OverviewScreen/OverviewTable";
 import { OverviewScreenContext } from "contexts/OverviewScreenContext";
@@ -60,21 +60,27 @@ const OverviewScreen: NextPage = () => {
         fetchApps: fetchApps,
         fetchServices: fetchServices
       }}>
-      <VStack>
-        <Box zIndex={1} position="fixed" w="full">
-          <OverviewHeader />
-        </Box>
-        <Box w="full">
-          <SimpleGrid pt="100" columns={2} minChildWidth="300px" spacingX="40px" spacingY="20px">
-            <Box>
-              <OverviewTable tableData={applications} tableHeading="Applications" />
-            </Box>
-            <Box>
-              <OverviewTable tableData={services} tableHeading="Services" />
-            </Box>
-          </SimpleGrid>
-        </Box>
-      </VStack>
+      <Flex h="100vh" maxW="unset" direction="column">
+        <OverviewHeader />
+        <Center>
+          <Container pt="20px" w="6xl" maxW="unset">
+            <SimpleGrid
+              w="full"
+              align="left"
+              columns={2}
+              minChildWidth="300px"
+              spacingX="40px"
+              spacingY="20px">
+              <Box>
+                <OverviewTable tableData={applications} tableHeading="Applications" />
+              </Box>
+              <Box>
+                <OverviewTable tableData={services} tableHeading="Services" />
+              </Box>
+            </SimpleGrid>
+          </Container>
+        </Center>
+      </Flex>
     </OverviewScreenContext.Provider>
   );
 };

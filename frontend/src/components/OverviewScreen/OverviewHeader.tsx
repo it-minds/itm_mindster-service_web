@@ -1,5 +1,6 @@
-import { Box, Flex, Image, Wrap } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 import ColorModeToggler from "components/Common/ColorModeToggler";
+import MLogo from "components/Common/MLogo";
 import { useColors } from "hooks/useColors";
 import { FC } from "react";
 
@@ -7,14 +8,11 @@ const OverviewHeader: FC = () => {
   const { overviewHeaderBg } = useColors();
 
   return (
-    <Wrap p="2" bgColor={overviewHeaderBg} width="full">
-      <Flex align="center" width="full">
-        <Box mr="2px" rounded="full" borderWidth="1px" borderColor="black">
-          <Image boxSize="50px" src="/images/icons/icon-144x144.png" />
-        </Box>
-        <ColorModeToggler />
-      </Flex>
-    </Wrap>
+    <Flex h="70px" pl="50px" pr="50px" bgColor={overviewHeaderBg} align="center" width="full">
+      <MLogo />
+      <Spacer />
+      <ColorModeToggler />
+    </Flex>
   );
 };
 

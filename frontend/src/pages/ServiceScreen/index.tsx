@@ -1,9 +1,11 @@
-import { Box, VStack } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import ServiceHeader from "components/ServiceScreen/ServiceHeader";
 import ServiceInfo from "components/ServiceScreen/ServiceInfo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
-import { NextPage } from "next";
+import { Locale } from "i18n/Locale";
+import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genApplicationClient, genServiceClient } from "services/backend/apiClients";
@@ -138,16 +140,24 @@ const ServiceScreen: NextPage = () => {
         fetchServices: fetchServices,
         fetchActionApprovers: fetchActionApprovers
       }}>
-      <VStack>
-        <Box zIndex={1} position="fixed" w="full">
+      <Flex h="100vh" w="full" direction="column">
+        <Box h="70px" zIndex={1} w="full" position="fixed">
           <ServiceHeader />
         </Box>
-        <Box pt="100px" w="full">
+        <Box maxH="full" w="full">
           <ServiceInfo />
         </Box>
-      </VStack>
+      </Flex>
     </ServiceViewContext.Provider>
   );
 };
+export const getStaticProps: GetStaticProps<I18nProps<Locale>> = async context => {
+  const locale = context.locale || context.defaultLocale;
+  const { table = {} } = await import(`../../i18n/${locale}`);
+  // table = await runTimeTable(locale, table);
 
+  return {
+    props: { table }
+  };
+};
 export default ServiceScreen;

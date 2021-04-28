@@ -1,4 +1,4 @@
-import { Box, Center, Container, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Center, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -28,8 +28,8 @@ const ServiceInfo: FC = () => {
 
   return (
     <Center>
-      <Container pb="15px" w="6xl" maxW="unset">
-        <VStack width="full" align="left">
+      <Container pt="100px" pb="20px" w="6xl" maxW="unset">
+        <Flex direction="column" h="full" width="full" align="left">
           <Flex w="full">
             <AddServiceOwnersTriggerBtn />
             <Spacer />
@@ -43,7 +43,7 @@ const ServiceInfo: FC = () => {
           <Box pt="10" width="full">
             <ActionTable />
           </Box>
-        </VStack>
+        </Flex>
       </Container>
     </Center>
   );

@@ -1,4 +1,3 @@
-import { Center, Container } from "@chakra-ui/layout";
 import { Locale } from "i18n/Locale";
 // import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
@@ -10,22 +9,18 @@ import OverviewScreen from "./OverviewScreen/Index";
 const IndexPage: NextPage = () => {
   const [value, setValue] = useState("# My Service\n");
   return (
-    <Center>
-      <Container w="6xl" maxW="unset">
-        {/* <MarkdownTwoInOne
-          value={value}
-          onValueChange={setValue}
-          onSave={(x, y) => Promise.resolve(alert(y))}
-        /> */}
-        {/* 
-        <MarkdownTwoSplit
-          value={value}
-          onValueChange={setValue}
-          onSave={(x, y) => Promise.resolve(alert(y))}
-        /> */}
-        <OverviewScreen />
-      </Container>
-    </Center>
+    //     <MarkdownTwoInOne
+    //   value={value}
+    //   onValueChange={setValue}
+    //   onSave={(x, y) => Promise.resolve(alert(y))}
+    // />
+
+    // <MarkdownTwoSplit
+    //   value={value}
+    //   onValueChange={setValue}
+    //   onSave={(x, y) => Promise.resolve(alert(y))}
+    // />
+    <OverviewScreen />
   );
 };
 

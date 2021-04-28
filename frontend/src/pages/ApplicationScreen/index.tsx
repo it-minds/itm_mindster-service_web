@@ -1,4 +1,4 @@
-import { Box, VStack } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import AppHeader from "components/ApplicationScreen/AppHeader";
 import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
 import { AppViewContext } from "contexts/AppViewContext";
@@ -156,14 +156,14 @@ const IndexPage: NextPage = () => {
         fetchServices: fetchServices,
         fetchAppOwners: fetchAppOwners
       }}>
-      <VStack>
-        <Box zIndex={1} position="fixed" w="full">
+      <Flex h="100vh" w="full" direction="column">
+        <Box>
           <AppHeader />
         </Box>
-        <Box pt="100px" w="full">
+        <Box maxH="full" w="full" overflowY="auto">
           <ApplicationInfo />
         </Box>
-      </VStack>
+      </Flex>
     </AppViewContext.Provider>
   );
 };
