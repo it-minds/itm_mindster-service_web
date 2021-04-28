@@ -17,9 +17,10 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { IService2, Service2 } from "services/backend/nswagts";
 type Props = {
   submitOnOpen: () => Promise<void>;
+  buttonColor?: string;
 };
 
-const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
+const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen, buttonColor }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currApplication, currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const [jwtServices, setJwtServices] = useState<IService2[]>([]);
@@ -56,7 +57,8 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
     <>
       <Button
         size={defBtnSize}
-        colorScheme="blue"
+        colorScheme={buttonColor != null ? buttonColor : "blue"}>
+        w="full"
         onClick={async () => {
           await submitOnOpen();
           onOpen();

@@ -8,7 +8,8 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Spacer
+  Spacer,
+  Text
 } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
 import { BsX } from "@react-icons/all-files/bs/BsX";
@@ -20,8 +21,10 @@ type Props = {
 };
 const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
   return (
-    <Flex width="sm" m="1" align="center">
-      <Box>{tokenAction.action.actionIdentifier}</Box>
+    <Flex w="xl" m="1" align="center">
+      <Text maxW="500px" overflowWrap="break-word">
+        {tokenAction.action.actionIdentifier}
+      </Text>
       <Spacer />
       <Box ml="20px">
         {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="30px" />}

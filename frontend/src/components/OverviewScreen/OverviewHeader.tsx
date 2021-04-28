@@ -8,7 +8,13 @@ const OverviewHeader: FC = () => {
   const { overviewHeaderBg } = useColors();
 
   return (
-    <Flex h="70px" pl="50px" pr="50px" bgColor={overviewHeaderBg} align="center" width="full">
+    <Flex
+      h="70px"
+      pl={["5px", "5px", "50px", "50px"]}
+      pr={["5px", "5px", "50px", "50px"]}
+      bgColor={overviewHeaderBg}
+      align="center"
+      width="full">
       <MLogo />
       <Spacer />
       <ColorModeToggler />

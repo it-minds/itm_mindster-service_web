@@ -11,9 +11,15 @@ import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 const AppHeader: FC = () => {
   const { appHeaderBg } = useColors();
   return (
-    <Flex h="70px" pl="50px" pr="50px" bgColor={appHeaderBg} align="center" width="full">
+    <Flex
+      h="70px"
+      pl={["5px", "5px", "50px", "50px"]}
+      pr={["5px", "5px", "50px", "50px"]}
+      bgColor={appHeaderBg}
+      align="center"
+      width="full">
       <MLogo />
-      <Box ml="2px">
+      <Box ml="5px">
         <SelectAppTriggerBtn />
       </Box>
       <Spacer />

@@ -83,15 +83,18 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                       </Box>
                       <Spacer />
                       <Center m="3">
-                        {currToken.appTokenActions.length > 0 && (
-                          <SeeTokenStatusDrawer
-                            submitOnOpen={() => {
-                              return requestReview();
-                            }}
-                            buttonText="Request review (Im done browsing services)"
-                            submitOnClose={leaveLibraryDrawer}
-                          />
-                        )}
+                        <Box>
+                          {currToken.appTokenActions.length > 0 && (
+                            <SeeTokenStatusDrawer
+                              submitOnOpen={() => {
+                                return requestReview();
+                              }}
+                              buttonText="Request review (Im done browsing services)"
+                              buttonColor="green"
+                              submitOnClose={leaveLibraryDrawer}
+                            />
+                          )}
+                        </Box>
                       </Center>
                       <ThreeStepShower radius={50} stepCounter={2} />
                     </Flex>

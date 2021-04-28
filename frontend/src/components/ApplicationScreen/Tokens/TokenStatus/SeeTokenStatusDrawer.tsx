@@ -26,11 +26,13 @@ type Props = {
   submitOnClose: () => Promise<void>;
   submitOnOpen: () => Promise<void>;
   buttonText?: string;
+  buttonColor?: string;
 };
 const SeeTokenStatusDrawer: FC<Props> = ({
   submitOnClose: submitCallback,
   submitOnOpen,
-  buttonText
+  buttonText,
+  buttonColor
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currToken, currApplication } = useContext(AppViewContext);
@@ -60,11 +62,12 @@ const SeeTokenStatusDrawer: FC<Props> = ({
     <>
       <Button
         size={defBtnSize}
+        w="full"
         onClick={async () => {
           await submitOnOpen();
           onOpen();
         }}
-        colorScheme="blue">
+        colorScheme={buttonColor != null ? buttonColor : "blue"}>
         {buttonText != null ? buttonText : "See Status"}
       </Button>
 
@@ -98,7 +101,7 @@ const SeeTokenStatusDrawer: FC<Props> = ({
                   <Flex direction="column" height="full" width="full" align="left">
                     <TokenStatusList />
                     <Center hidden={!isAllApproved} m="5">
-                      <GetJwtTriggerBtn submitOnOpen={() => null} />
+                      <GetJwtTriggerBtn buttonColor="green" submitOnOpen={() => null} />
                     </Center>
                     <Spacer />
                     <ThreeStepShower radius={50} stepCounter={3} />
