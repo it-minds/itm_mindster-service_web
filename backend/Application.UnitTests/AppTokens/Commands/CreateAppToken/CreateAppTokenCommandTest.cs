@@ -91,7 +91,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
       var handler = new CreateAppTokenCommand.CreateAppTokenCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<DuplicateIdentifierException>();
     }
   }
 }

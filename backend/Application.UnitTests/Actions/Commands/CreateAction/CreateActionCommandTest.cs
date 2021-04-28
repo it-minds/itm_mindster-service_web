@@ -97,7 +97,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
       var handler = new CreateActionCommand.CreateActionCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<DuplicateIdentifierException>();
     }
   }
 }

@@ -93,6 +93,21 @@ namespace Web.Filters
 
       context.ExceptionHandled = true;
     }
+    private void HandleDuplicateIdentifierException(ExceptionContext context)
+    {
+      var exception = context.Exception as DuplicateIdentifierException;
+
+      var details = new ProblemDetails()
+      {
+        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+        Title = "Duplicate Identifier",
+        Detail = exception.Message
+      };
+
+      context.Result = new NotFoundObjectResult(details);
+
+      context.ExceptionHandled = true;
+    }
 
     private void HandleUnauthorizedAccessException(ExceptionContext context)
     {

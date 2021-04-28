@@ -39,8 +39,8 @@ namespace Application.AppTokens.Commands.CreateAppToken
         }
         if (await _context.AppTokens.AnyAsync(e => e.TokenIdentifier == request.AppToken.TokenIdentifier && e.ApplicationId == request.Id, cancellationToken))
         {
-          throw new NotFoundException(nameof(Domain.Entities.AppToken),
-            key: request.Id + "A Token with that identifier already exists");
+          throw new DuplicateIdentifierException(nameof(Domain.Entities.AppToken),
+            key: request.AppToken.TokenIdentifier);
         }
         
         var appToken = new AppToken()

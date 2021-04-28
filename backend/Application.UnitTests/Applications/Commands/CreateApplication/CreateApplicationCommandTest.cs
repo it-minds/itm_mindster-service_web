@@ -52,7 +52,7 @@ namespace Application.UnitTests.Applications.Commands.CreateApplication
       var handler = new CreateApplicationCommand.CreateApplicationCommandHandler(Context, AuthCient, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<DuplicateIdentifierException>();
     }
   }
 }

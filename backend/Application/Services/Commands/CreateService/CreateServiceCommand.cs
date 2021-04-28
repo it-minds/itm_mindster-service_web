@@ -36,7 +36,7 @@ namespace Application.Services.Commands.CreateService
       {
         if (await _context.Services.AnyAsync(e => e.ServiceIdentifier == request.Service.ServiceIdentifier, cancellationToken))
         {
-          throw new NotFoundException(nameof(Domain.Entities.Service), key: request.Service.ServiceIdentifier + "A Service with that identifier already exists");
+          throw new DuplicateIdentifierException(nameof(Domain.Entities.Service), key: request.Service.ServiceIdentifier);
         }
         var service = new Service
         {
