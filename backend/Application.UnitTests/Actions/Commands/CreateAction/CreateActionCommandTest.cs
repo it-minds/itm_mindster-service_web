@@ -65,7 +65,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
     {
       var command = new CreateActionCommand()
       {
-        Id = 99,
+        Id = 1,
         Action = new ActionDto()
         {
           Title = "Test of createAction",
@@ -78,7 +78,7 @@ namespace Application.UnitTests.Actions.Commands.CreateAction
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
     [Fact]
     public void Handle_DuplicateIdentifier_ShouldThrowError()

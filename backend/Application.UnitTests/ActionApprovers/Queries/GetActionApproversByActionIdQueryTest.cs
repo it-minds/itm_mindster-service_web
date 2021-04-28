@@ -54,7 +54,7 @@ namespace Application.UnitTests.ActionApprovers.Queries
 
       var handler = new GetActionApproversByActionIdQuery.GetActionApproversByActionIdQueryHandler(_context, _mapper, _invalidUserService);
       Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

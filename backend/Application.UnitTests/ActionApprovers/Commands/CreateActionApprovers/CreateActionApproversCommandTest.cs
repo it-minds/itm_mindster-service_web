@@ -97,7 +97,7 @@ namespace Application.UnitTests.ActionApprovers.Commands.CreateActionApprovers
     {
       var command = new CreateActionApproverCommand
       {
-        Id = 99,
+        Id = 1,
         ActionApprovers = new List<ActionApproverDto>{
           new ActionApproverDto
           {
@@ -113,7 +113,7 @@ namespace Application.UnitTests.ActionApprovers.Commands.CreateActionApprovers
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

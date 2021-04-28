@@ -42,7 +42,7 @@ namespace Application.Actions.Commands.CreateAction
         if (!await _context.ServiceOwners.AnyAsync(
           e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
-          throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+          throw new ForbiddenAccessException(nameof(Service), key: request.Id);
         }
         if (await _context.Actions.AnyAsync(e => e.ActionIdentifier == request.Action.ActionIdentifier && e.ServiceId == request.Id, cancellationToken))
         {

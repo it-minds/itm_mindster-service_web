@@ -73,7 +73,7 @@ namespace Application.UnitTests.AppTokens.Commands.CreateAppToken
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
     [Fact]
     public void Handle_DuplicateIdentifier_ShouldThrowError()

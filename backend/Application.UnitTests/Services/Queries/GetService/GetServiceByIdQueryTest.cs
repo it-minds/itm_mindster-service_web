@@ -68,7 +68,7 @@ namespace Application.UnitTests.Services.Queries.GetService
       var handler = new GetServiceByIdQuery.GetServiceByIdQueryHandler(_context, _mapper, _invalidUserService);
       Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
 
     }
   }

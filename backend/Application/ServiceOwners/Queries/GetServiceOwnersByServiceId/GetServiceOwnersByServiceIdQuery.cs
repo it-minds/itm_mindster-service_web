@@ -36,7 +36,7 @@ namespace Application.ServiceOwners.Queries.GetServiceOwnersByServiceId
         var owners = _context.ServiceOwners.Where(e => e.ServiceId == request.Id);
         if (!owners.Any(e => e.Email == _currentUserService.UserEmail))
         {
-          throw new NotFoundException(nameof(ServiceOwner), "You don't have permission for Service:" + request.Id);
+          throw new ForbiddenAccessException(nameof(ServiceOwner), request.Id);
         }
         var result = await owners.ProjectTo<ServiceOwnerIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);

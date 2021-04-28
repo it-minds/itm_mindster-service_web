@@ -36,7 +36,7 @@ namespace Application.AppTokens.Commands.UpdateAppTokenActions
         if (appToken == null) throw new NotFoundException(nameof(Domain.Entities.AppToken), request.Id);
         if (!_context.AppOwners.Any(e => e.ApplicationId == appToken.ApplicationId && e.Email == _currentUserService.UserEmail))
         {
-          throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
+          throw new ForbiddenAccessException(nameof(ApplicationEntity), request.Id);
         }
         appToken.State = request.NewState;
         _context.AppTokens.Update(appToken);

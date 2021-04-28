@@ -107,7 +107,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, InvalidUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
 
   }

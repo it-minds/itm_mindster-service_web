@@ -46,15 +46,16 @@ namespace Application.UnitTests.Services.Queries.GetServices
     }
 
     [Fact]
-    public void Handle_InvalidUser_ShouldThrowError()
+    public async Task Handle_InvalidUser_ShouldThrowError()
     {
       var query = new GetMyServicesOverviewQuery();
 
       var handler = new GetMyServicesOverviewQuery.GetMyServicesOverviewQueryHandler(_context, _mapper, _invalidUserService);
 
-      Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
+      var result = await handler.Handle(query, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      result.Should().BeOfType<List<ServiceOverviewDto>>();
+      result.Count.Should().Be(0); // Invalid user owns no services so should return empty array but not throw error
     }
   }
 }

@@ -100,7 +100,7 @@ namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwne
     {
       var command = new CreateApplicationOwnerCommand
       {
-        Id = 99,
+        Id = 1,
         AppOwners = new List<ApplicationOwnerDto>{
           new ApplicationOwnerDto
           {
@@ -116,7 +116,7 @@ namespace Application.UnitTests.ApplicationOwners.Commands.CreateApplicationOwne
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

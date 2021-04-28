@@ -100,7 +100,7 @@ namespace Application.UnitTests.ServiceOwners.Commands.CreateServiceOwnersComman
     {
       var command = new CreateServiceOwnerCommand
       {
-        Id = 99,
+        Id = 1,
         ServiceOwners = new List<ServiceOwnerDto>{
           new ServiceOwnerDto
           {
@@ -116,7 +116,7 @@ namespace Application.UnitTests.ServiceOwners.Commands.CreateServiceOwnersComman
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

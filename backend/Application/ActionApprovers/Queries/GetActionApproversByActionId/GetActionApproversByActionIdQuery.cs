@@ -36,7 +36,7 @@ namespace Application.ActionApprovers.Queries.GetActionApproversByActionId
         var owners = _context.ActionApprovers.Where(e => e.ActionId == request.Id);
         if (!owners.Any(e => e.Email == _currentUserService.UserEmail))
         {
-          throw new NotFoundException(nameof(ActionApprover), "You don't have permission for action:" + request.Id);
+          throw new ForbiddenAccessException(nameof(Action), key: request.Id);
         }
         var result = await owners.ProjectTo<ActionApproverIdDto>(_mapper.ConfigurationProvider)
           .ToListAsync(cancellationToken);

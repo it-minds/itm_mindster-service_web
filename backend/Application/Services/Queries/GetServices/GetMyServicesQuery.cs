@@ -37,7 +37,6 @@ namespace Application.Services.Queries.GetServices
         var ownedServices = _context.ServiceOwners
           .Where(e => e.Email == _currentUserService.UserEmail)
           .Select(e => e.ServiceId);
-        if (!ownedServices.Any()) throw new NotFoundException(nameof(ServiceOwner), "You have no services");
 
         var services = await _context.Services
           .Where(e => ownedServices.Contains(e.Id))
