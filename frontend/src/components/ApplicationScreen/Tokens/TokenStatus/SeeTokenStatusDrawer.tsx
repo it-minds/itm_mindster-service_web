@@ -101,7 +101,9 @@ const SeeTokenStatusDrawer: FC<Props> = ({
                   <Flex direction="column" height="full" width="full" align="left">
                     <TokenStatusList />
                     <Center hidden={!isAllApproved} m="5">
-                      <GetJwtTriggerBtn buttonColor="green" submitOnOpen={() => null} />
+                      <Box>
+                        <GetJwtTriggerBtn buttonColor="green" submitOnOpen={() => null} />
+                      </Box>
                     </Center>
                     <Spacer />
                     <ThreeStepShower radius={50} stepCounter={3} />
