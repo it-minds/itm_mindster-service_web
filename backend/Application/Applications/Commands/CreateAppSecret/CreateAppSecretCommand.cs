@@ -8,12 +8,14 @@ using AuthService.Client;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Application.Applications.Commands.CreateAppSecret
 {
   [Authorize]
   public class CreateAppSecretCommand : IRequest<ApplicationOutput>
   {
+    [JsonIgnore]
     public int AppId { get; set; }
 
     public class CreateAppSecretCommandHandler : IRequestHandler<CreateAppSecretCommand, ApplicationOutput>

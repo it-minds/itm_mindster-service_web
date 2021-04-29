@@ -1929,6 +1929,7 @@ export interface IUpdateApplicationCommand {
 
 export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDto {
     id?: number;
+    appSecretGenerated?: boolean;
 
     constructor(data?: IApplicationIdDto) {
         super(data);
@@ -1938,6 +1939,7 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.appSecretGenerated = _data["appSecretGenerated"] !== undefined ? _data["appSecretGenerated"] : <any>null;
         }
     }
 
@@ -1951,6 +1953,7 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["appSecretGenerated"] = this.appSecretGenerated !== undefined ? this.appSecretGenerated : <any>null;
         super.toJSON(data);
         return data; 
     }
@@ -1958,6 +1961,7 @@ export class ApplicationIdDto extends ApplicationDto implements IApplicationIdDt
 
 export interface IApplicationIdDto extends IApplicationDto {
     id?: number;
+    appSecretGenerated?: boolean;
 }
 
 export class AppOverviewDto implements IAppOverviewDto {
@@ -2956,7 +2960,6 @@ export interface IApplicationOutput {
 }
 
 export class CreateAppSecretCommand implements ICreateAppSecretCommand {
-    appId?: number;
 
     constructor(data?: ICreateAppSecretCommand) {
         if (data) {
@@ -2968,9 +2971,6 @@ export class CreateAppSecretCommand implements ICreateAppSecretCommand {
     }
 
     init(_data?: any) {
-        if (_data) {
-            this.appId = _data["appId"] !== undefined ? _data["appId"] : <any>null;
-        }
     }
 
     static fromJS(data: any): CreateAppSecretCommand {
@@ -2982,13 +2982,11 @@ export class CreateAppSecretCommand implements ICreateAppSecretCommand {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["appId"] = this.appId !== undefined ? this.appId : <any>null;
         return data; 
     }
 }
 
 export interface ICreateAppSecretCommand {
-    appId?: number;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
