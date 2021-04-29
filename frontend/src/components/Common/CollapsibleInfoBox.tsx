@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 type Props = {
   text: string;
 };
-const TokenStepInfoBox: FC<Props> = ({ text }) => {
+const CollapsibleInfoBox: FC<Props> = ({ text }) => {
   const [show, setShow] = useState(false);
   return (
     <Box>
@@ -19,4 +19,4 @@ const TokenStepInfoBox: FC<Props> = ({ text }) => {
   );
 };
 
-export default TokenStepInfoBox;
+export default CollapsibleInfoBox;

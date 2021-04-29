@@ -13,7 +13,7 @@ import {
   useToast
 } from "@chakra-ui/react";
 import SeeTokenStatusDrawer from "components/ApplicationScreen/Tokens/TokenStatus/SeeTokenStatusDrawer";
-import TokenStepInfoBox from "components/ApplicationScreen/Tokens/TokenStepInfoBox";
+import CollapsibleInfoBox from "components/Common/CollapsibleInfoBox";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
 import { useLocales } from "hooks/useLocales";
@@ -83,7 +83,9 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                     <Flex h="full" flexDirection="column">
                       <Center>
                         <Box mb="5px" maxW="2xl">
-                          <TokenStepInfoBox text={t("applicationScreen.BrowseTokenInfo")} />
+                          <CollapsibleInfoBox
+                            text={t("applicationScreen.infoBoxes.BrowseTokenInfo")}
+                          />
                         </Box>
                       </Center>
                       <Box h="full" overflowY="auto">

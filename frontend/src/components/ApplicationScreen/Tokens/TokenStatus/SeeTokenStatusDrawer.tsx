@@ -20,8 +20,8 @@ import { useLocales } from "hooks/useLocales";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceStates } from "services/backend/nswagts";
 
+import CollapsibleInfoBox from "../../../Common/CollapsibleInfoBox";
 import GetJwtTriggerBtn from "../AuthToken/GetJwtTriggerBtn";
-import TokenStepInfoBox from "../TokenStepInfoBox";
 import TokenStatusList from "./TokenStatusList";
 
 type Props = {
@@ -102,7 +102,9 @@ const SeeTokenStatusDrawer: FC<Props> = ({
               <Center h="full">
                 <Container h="full" w="5xl" maxW="unset">
                   <Flex direction="column" height="full" width="full" align="left">
-                    <TokenStepInfoBox text={t("applicationScreen.SeeTokenStatusInfo")} />
+                    <CollapsibleInfoBox
+                      text={t("applicationScreen.infoBoxes.SeeTokenStatusInfo")}
+                    />
                     <TokenStatusList />
                     <Center hidden={!isAllApproved} m="5">
                       <Box>

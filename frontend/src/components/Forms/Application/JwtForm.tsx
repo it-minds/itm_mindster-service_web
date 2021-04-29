@@ -18,7 +18,7 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
-import TokenStepInfoBox from "components/ApplicationScreen/Tokens/TokenStepInfoBox";
+import CollapsibleInfoBox from "components/Common/CollapsibleInfoBox";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -80,7 +80,7 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
         <form onSubmit={onSubmit}>
           <FormControl isRequired>
             <Box>
-              <TokenStepInfoBox text={t("applicationScreen.GenerateJwtInfo")} />
+              <CollapsibleInfoBox text={t("applicationScreen.infoBoxes.GenerateJwtInfo")} />
             </Box>
             <FormLabel>App secret:</FormLabel>
             <Textarea
