@@ -20,18 +20,21 @@ import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { AppTokenCreateDto, CreateAppTokenCommand } from "services/backend/nswagts";
 import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 import ThreeStepShower from "../../Common/ThreeStepShower";
+import TokenStepInfoBox from "./TokenStepInfoBox";
 
 const CreateTokenTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currApplication, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
   const [open, setOpen] = useState(false);
+  const { t } = useLocales();
 
   const createAppToken = useCallback(
     async (metaData: AppTokenCreateDto) => {
@@ -103,6 +106,8 @@ const CreateTokenTriggerBtn: FC = () => {
               <Center height="full">
                 <Container height="full" w="4xl" maxW="unset">
                   <Flex direction="column" width="full" height="full">
+                    <TokenStepInfoBox
+                      text={t("applicationScreen.createTokenInfo")}></TokenStepInfoBox>
                     <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
                     <Spacer />
                     <ThreeStepShower radius={50} stepCounter={1} />

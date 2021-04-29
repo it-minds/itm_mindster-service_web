@@ -18,6 +18,8 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
+import TokenStepInfoBox from "components/ApplicationScreen/Tokens/TokenStepInfoBox";
+import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { CreateAuthAppTokenCommand, IService2, TokenInput } from "services/backend/nswagts";
@@ -35,6 +37,7 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
   const [JWT, setJWT] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { hasCopied, onCopy } = useClipboard(JWT);
+  const { t } = useLocales();
   const toast = useToast();
 
   const CreateJWT = useCallback(async () => {
@@ -76,8 +79,9 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
       <Box width="full" p={6}>
         <form onSubmit={onSubmit}>
           <FormControl isRequired>
-            <Text>Application: {aid}</Text>
-            <Text mb="5">Token: {tokenIdentifier}</Text>
+            <Box>
+              <TokenStepInfoBox text={t("applicationScreen.GenerateJwtInfo")} />
+            </Box>
             <FormLabel>App secret:</FormLabel>
             <Textarea
               type="text"

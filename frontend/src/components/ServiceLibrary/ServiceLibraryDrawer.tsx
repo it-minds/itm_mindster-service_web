@@ -13,8 +13,10 @@ import {
   useToast
 } from "@chakra-ui/react";
 import SeeTokenStatusDrawer from "components/ApplicationScreen/Tokens/TokenStatus/SeeTokenStatusDrawer";
+import TokenStepInfoBox from "components/ApplicationScreen/Tokens/TokenStepInfoBox";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useLocales } from "hooks/useLocales";
 import React, { Dispatch, FC, SetStateAction, useCallback, useContext } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { TokenStates, UpdateAppTokenStateCommand } from "services/backend/nswagts";
@@ -28,6 +30,7 @@ type Props = {
 
 const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
   const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
+  const { t } = useLocales();
   const toast = useToast();
 
   const requestReview = useCallback(async () => {
@@ -75,9 +78,14 @@ const ServiceLibraryDrawer: FC<Props> = ({ Open, setOpen }) => {
                 </Flex>
               </DrawerHeader>
               <DrawerBody>
-                <Center height="full">
+                <Center w="full" height="full">
                   <Container height="full" w="7xl" maxW="unset">
                     <Flex h="full" flexDirection="column">
+                      <Center>
+                        <Box mb="5px" maxW="2xl">
+                          <TokenStepInfoBox text={t("applicationScreen.BrowseTokenInfo")} />
+                        </Box>
+                      </Center>
                       <Box h="full" overflowY="auto">
                         <ServiceLibrary />
                       </Box>
