@@ -36,9 +36,7 @@ const GenerateAppSecretTriggerBtn: FC = () => {
         size="3xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            Are you sure you a ready to generate your Applications AppSecret?
-          </ModalHeader>
+          <ModalHeader>Are you sure you want to generate your Applications AppSecret?</ModalHeader>
           <ModalCloseButton isDisabled={isLoading} />
           <Divider />
           <ModalBody>

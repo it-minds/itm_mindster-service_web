@@ -18,8 +18,8 @@ const AppSecretBanner: FC = () => {
         bg={appSecretBannerBg}>
         <HStack spacing="3">
           <Text fontWeight="medium" marginEnd="2">
-            You have not generated you AppSecret for this Application. This is required to generate
-            your JWT
+            You have not generated your AppSecret for this Application. This is required to generate
+            your AppTokens and JWT
           </Text>
         </HStack>
         <GenerateAppSecretTriggerBtn />
