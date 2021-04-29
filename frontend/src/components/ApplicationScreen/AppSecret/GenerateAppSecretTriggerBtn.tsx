@@ -12,13 +12,14 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
 
 import AppSecretResult from "./AppSecretResult";
 
 const GenerateAppSecretTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication, fetchApps } = useContext(AppViewContext);
+  const { currApplication, setNewCurrApp } = useContext(AppViewContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -26,28 +27,36 @@ const GenerateAppSecretTriggerBtn: FC = () => {
         Generate AppSecret
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="3xl">
+      <Modal
+        closeOnEsc={!isLoading}
+        closeOnOverlayClick={!isLoading}
+        isOpen={isOpen}
+        onClose={onClose}
+        scrollBehavior="inside"
+        size="3xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             Are you sure you a ready to generate your Applications AppSecret?
           </ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton isDisabled={isLoading} />
           <Divider />
           <ModalBody>
             <Box>
               <AppSecretResult
                 currAppId={currApplication.id}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 submitCallback={() => {
                   onClose();
-                  fetchApps();
+                  setNewCurrApp(currApplication.id);
                 }}
               />
             </Box>
           </ModalBody>
           <Divider />
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button isDisabled={isLoading} colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
           </ModalFooter>

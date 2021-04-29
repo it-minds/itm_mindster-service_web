@@ -21,12 +21,13 @@ import { CreateAppSecretCommand } from "services/backend/nswagts";
 
 type Props = {
   currAppId: number;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   submitCallback: () => void;
 };
 
-const AppSecretResult: FC<Props> = ({ submitCallback, currAppId }) => {
+const AppSecretResult: FC<Props> = ({ submitCallback, currAppId, isLoading, setIsLoading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoading, setIsLoading] = useState(false);
   const [appSecret, setAppSecret] = useState("");
   const { hasCopied, onCopy } = useClipboard(appSecret);
   const toast = useToast();
@@ -69,6 +70,8 @@ const AppSecretResult: FC<Props> = ({ submitCallback, currAppId }) => {
         </Button>
       </Box>
       <Modal
+        closeOnOverlayClick={false}
+        closeOnEsc={false}
         isOpen={isOpen}
         onClose={() => {
           onClose();
