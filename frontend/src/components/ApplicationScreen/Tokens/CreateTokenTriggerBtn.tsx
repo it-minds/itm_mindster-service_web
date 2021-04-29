@@ -11,6 +11,8 @@ import {
   DrawerOverlay,
   Flex,
   Spacer,
+  Tag,
+  Tooltip,
   useDisclosure,
   useToast
 } from "@chakra-ui/react";
@@ -66,11 +68,25 @@ const CreateTokenTriggerBtn: FC = () => {
   );
 
   if (currApplication == null) return null;
+  // The Create new token Btn is wrapped in a transparent Tag because of
+  //and issue with tooltips not showing on disabled buttons
   return (
     <>
-      <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
-        Create new token
-      </Button>
+      <Tooltip
+        isDisabled={currApplication.appSecretGenerated}
+        hasArrow
+        label="Generate AppSecret First">
+        <Tag bgColor="transparent">
+          <Button
+            isDisabled={!currApplication.appSecretGenerated}
+            onClick={onOpen}
+            rightIcon={<BsPlus />}
+            colorScheme="green">
+            Create new token
+          </Button>
+        </Tag>
+      </Tooltip>
+
       <ServiceLibraryDrawer Open={open} setOpen={setOpen} />
 
       <Drawer onClose={onClose} isOpen={isOpen} size="full">
