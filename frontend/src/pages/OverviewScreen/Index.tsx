@@ -1,9 +1,11 @@
-import { Box, Center, Container, Flex, SimpleGrid } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
+import { Box, Center, Container, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/layout";
 import OverviewHeader from "components/OverviewScreen/OverviewHeader";
 import OverviewTable from "components/OverviewScreen/OverviewTable";
 import { OverviewScreenContext } from "contexts/OverviewScreenContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
@@ -71,12 +73,44 @@ const OverviewScreen: NextPage = () => {
               minChildWidth="300px"
               spacingX="40px"
               spacingY="20px">
-              <Box>
-                <OverviewTable tableData={applications} tableHeading="Applications" />
-              </Box>
-              <Box>
-                <OverviewTable tableData={services} tableHeading="Services" />
-              </Box>
+              {applications.length != 0 ? (
+                <Box>
+                  <OverviewTable tableData={applications} tableHeading="Applications" />
+                </Box>
+              ) : (
+                <Flex direction="column">
+                  <Heading mb="10" size="h3">
+                    Applications:
+                  </Heading>
+                  <Text fontSize="lg">
+                    You have no applications yet, go to Application Page to create one
+                  </Text>
+                  <Link href="/ApplicationScreen">
+                    <Button mt="10px" w="max-content" colorScheme="blue">
+                      Application Page
+                    </Button>
+                  </Link>
+                </Flex>
+              )}
+              {services.length != 0 ? (
+                <Box>
+                  <OverviewTable tableData={services} tableHeading="Services" />
+                </Box>
+              ) : (
+                <Flex direction="column">
+                  <Heading mb="10" size="h3">
+                    Services:
+                  </Heading>
+                  <Text fontSize="lg">
+                    You have no services yet, go to Service Page to create one
+                  </Text>
+                  <Link href="/ServiceScreen">
+                    <Button mt="10px" w="max-content" colorScheme="blue">
+                      Service Page
+                    </Button>
+                  </Link>
+                </Flex>
+              )}
             </SimpleGrid>
           </Container>
         </Center>
