@@ -72,7 +72,7 @@ const CreateTokenTriggerBtn: FC = () => {
 
   if (currApplication == null) return null;
   // The Create new token Btn is wrapped in a transparent Tag because of
-  //and issue with tooltips not showing on disabled buttons
+  //a issue with tooltips not showing on disabled buttons
   return (
     <>
       <Tooltip

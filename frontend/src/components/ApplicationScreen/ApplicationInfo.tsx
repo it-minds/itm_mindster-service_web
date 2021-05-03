@@ -28,30 +28,28 @@ const ApplicationInfo: FC = () => {
   if (!currApplication) return null;
 
   return (
-    <>
+    <Box>
       <Flex>{!currApplication.appSecretGenerated && <AppSecretBanner />}</Flex>
-      <Center w="full">
-        <VStack>
-          <Container pt="30px" pb="15px" w="6xl" maxW="unset">
-            <VStack width="full" align="left">
-              <Flex w="full">
-                <AddOwnersTriggerBtn />
-                <Spacer />
-                <CreateTokenTriggerBtn />
-              </Flex>
-              <AppOwnerOverview />
-              <Box pt="10" width={0.65}>
-                <Heading>{localFormData.title}</Heading>
-                <MarkdownViewer value={localFormData.description} />
-              </Box>
-              <Box pt="10" width="full">
-                <TokenTable />
-              </Box>
-            </VStack>
-          </Container>
-        </VStack>
+      <Center>
+        <Container pt="30px" pb="15px" w="6xl" maxW="unset">
+          <VStack width="full" align="left">
+            <Flex w="full">
+              <AddOwnersTriggerBtn />
+              <Spacer />
+              <CreateTokenTriggerBtn />
+            </Flex>
+            <AppOwnerOverview />
+            <Box pt="10" width={0.65}>
+              <Heading>{localFormData.title}</Heading>
+              <MarkdownViewer value={localFormData.description} />
+            </Box>
+            <Box pt="10" width="full">
+              <TokenTable />
+            </Box>
+          </VStack>
+        </Container>
       </Center>
-    </>
+    </Box>
   );
 };
 export default ApplicationInfo;

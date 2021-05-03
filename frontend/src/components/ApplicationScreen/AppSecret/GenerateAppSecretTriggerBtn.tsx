@@ -22,8 +22,8 @@ const GenerateAppSecretTriggerBtn: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <>
-      <Button colorScheme="green" onClick={onOpen}>
+    <Box>
+      <Button w="max-content" colorScheme="green" onClick={onOpen}>
         Generate AppSecret
       </Button>
 
@@ -60,7 +60,7 @@ const GenerateAppSecretTriggerBtn: FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 };
 
