@@ -11,7 +11,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { FC, useCallback, useContext, useState } from "react";
+import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   ActionIdDto,
@@ -24,12 +24,18 @@ import RequestActionListItem from "./RequestActionListItem";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
+  existingActions: number[];
   submitCallBack?: () => void;
 }
 
-const RequestActionList: FC<ActionTableProps> = ({ tableData, submitCallBack }) => {
+const RequestActionList: FC<ActionTableProps> = ({
+  tableData,
+  submitCallBack,
+  existingActions
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
+  // const [checkboxes, setCheckboxes] = useState<{ id: number; checked: boolean }[]>([]);
   const [checkboxes, setCheckboxes] = useState(() =>
     tableData.map(action => ({
       id: action.id,
@@ -38,6 +44,22 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData, submitCallBack }) 
   );
   const { currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const toast = useToast();
+
+  useEffect(() => {
+    setCheckboxes(
+      checkboxes.map(x => {
+        if (existingActions.includes(x.id)) x.checked = !x.checked;
+        return x;
+      })
+    );
+    setAllChecked(checkboxes.every(e => e.checked == true));
+  }, [tableData]);
+
+  useEffect(() => {
+    if (checkboxes) {
+      setAllChecked(checkboxes.every(e => e.checked == true));
+    }
+  }, [checkboxes]);
 
   const checkAll = useCallback(() => {
     setCheckboxes(
