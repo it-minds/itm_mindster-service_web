@@ -23,6 +23,7 @@ const RequestActions: FC<Props> = ({ service, submitCallBack, existingActions })
               submitCallBack={submitCallBack}
               tableData={service.actions}
               existingActions={existingActions}
+              service={service}
             />
           </Box>
         </Flex>

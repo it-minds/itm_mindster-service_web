@@ -107,7 +107,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
 
       var entity = Context.AppTokens.Find(1);
 
-      result.Should().Be(0);
+      result.Should().Be(2);
       entity.Should().NotBeNull();
       entity.Id.Should().Be(command.TokenId);
       entity.AppTokenActions.Count.Should().Be(3);

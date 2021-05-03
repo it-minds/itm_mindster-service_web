@@ -13,25 +13,22 @@ import {
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useEffect, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
-import {
-  ActionIdDto,
-  AppTokenActionDto,
-  CreateAppTokenActionsCommand,
-  IAppTokenActionDto
-} from "services/backend/nswagts";
+import { ActionIdDto, CreateAppTokenActionsCommand, IServiceIdDto } from "services/backend/nswagts";
 
 import RequestActionListItem from "./RequestActionListItem";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
   existingActions: number[];
+  service: IServiceIdDto;
   submitCallBack?: () => void;
 }
 
 const RequestActionList: FC<ActionTableProps> = ({
   tableData,
   submitCallBack,
-  existingActions
+  existingActions,
+  service
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
@@ -87,19 +84,20 @@ const RequestActionList: FC<ActionTableProps> = ({
   const onSubmit = useCallback(async () => {
     setIsLoading(true);
 
-    const actions: IAppTokenActionDto[] = [];
+    const actions: number[] = [];
     checkboxes.forEach(modal => {
       if (modal.checked) {
-        actions.push(new AppTokenActionDto({ actionId: modal.id }));
+        actions.push(modal.id);
       }
     });
     const client = await genApplicationClient();
     try {
-      await client.createAppTokenActions(
+      await client.requestServiceActions(
         currToken.id,
         new CreateAppTokenActionsCommand({
-          appToken: {
-            appTokenActions: actions
+          service: {
+            serviceId: service.id,
+            actionIds: actions
           }
         })
       );

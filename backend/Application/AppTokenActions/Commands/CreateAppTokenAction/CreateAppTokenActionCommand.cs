@@ -32,9 +32,17 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
         _context = context;
         _currentUserService = currentUserService;
       }
+      /**
+       * Method responsible for requesting access to a Service and x of its actions. The method can also receive empty arrays of actionsIds and in this case it
+       * will see this as a request to remove all AppTokenActions that's connected to the given service. Therefor the method both handles create and delete off affected
+       * appTokenActions. The returned result is the amount of actions of the given service that the AppToken currently wants access too.
+       */
       public async Task<int> Handle(CreateAppTokenActionsCommand request, CancellationToken cancellationToken)
       {
-        var token = await _context.AppTokens.FindAsync(request.TokenId);
+        var token = await _context.AppTokens
+          .Where(e => e.Id == request.TokenId)
+          .Include(e => e.AppTokenActions)
+          .FirstOrDefaultAsync(cancellationToken);
         if (token == null)
         {
           throw new NotFoundException(nameof(AppToken), request.TokenId);
@@ -44,7 +52,10 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
           throw new ForbiddenAccessException(nameof(Domain.Entities.AppToken), request.TokenId);
         }
 
-        var service = await _context.Services.FindAsync(request.Service.ServiceId);
+        var service = await _context.Services
+          .Where(e => e.Id == request.Service.ServiceId)
+          .Include(e => e.Actions)
+          .FirstOrDefaultAsync(cancellationToken);
         if (service == null)
         {
           throw new NotFoundException(nameof(Domain.Entities.Service), request.Service.ServiceId);
@@ -52,7 +63,6 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
 
         var alreadyRequested = token.AppTokenActions
           .Where(e => service.Actions.Any(d => d.Id == e.ActionId)).ToList();
-        if (alreadyRequested.Count == service.Actions.Count) return 0;
 
         var newAdditions = request.Service.ActionIds
           .Where(a => alreadyRequested.All(e => e.ActionId != a))
@@ -61,8 +71,9 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
             ActionId = e,
             AppTokenId = request.TokenId
           });
+
         var removedActions = alreadyRequested
-          .Where(e => !request.Service.ActionIds.Any(a => a == e.ActionId));
+          .Where(e => request.Service.ActionIds.All(a => a != e.ActionId));
 
         var result = newAdditions.Count() + alreadyRequested.Count - removedActions.Count();
 
@@ -71,10 +82,8 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
 
         await _context.SaveChangesAsync(cancellationToken);
 
-
         return result;
       }
-
     }
   }
 }
