@@ -32,7 +32,6 @@ const RequestActionList: FC<ActionTableProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
-  // const [checkboxes, setCheckboxes] = useState<{ id: number; checked: boolean }[]>([]);
   const [checkboxes, setCheckboxes] = useState(() =>
     tableData.map(action => ({
       id: action.id,
