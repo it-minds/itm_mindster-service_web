@@ -71,14 +71,16 @@ const LibraryCard: FC<Props> = ({ service }) => {
           Amount of actions: {service.actions.length}
         </Heading>
         <Spacer />
-        <Flex mt="6" align="center">
-          <Heading fontSize="sm">
-            Already requested: {`${existingActions.length} / ${service.actions.length}`}
-          </Heading>
-          <Box ml="2px">
-            <BsPencilSquare />
-          </Box>
-        </Flex>
+        {existingActions.length != 0 && (
+          <Flex mt="6" align="center">
+            <Heading fontSize="sm">
+              Requested: {`${existingActions.length} / ${service.actions.length}`}
+            </Heading>
+            <Box ml="2px">
+              <BsPencilSquare />
+            </Box>
+          </Flex>
+        )}
       </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">

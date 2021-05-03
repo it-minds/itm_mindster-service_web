@@ -20,7 +20,7 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
   {
     [JsonIgnore]
     public int TokenId { get; set; }
-    public AppTokenDto AppToken { get; set; }
+    public RequestServiceActionsDto Service { get; set; }
 
     public class CreateAppTokenActionsCommandHandler : IRequestHandler<CreateAppTokenActionsCommand, int>
     {
@@ -34,7 +34,7 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
       }
       public async Task<int> Handle(CreateAppTokenActionsCommand request, CancellationToken cancellationToken)
       {
-        var token = _context.AppTokens.Find(request.TokenId);
+        var token = await _context.AppTokens.FindAsync(request.TokenId);
         if (token == null)
         {
           throw new NotFoundException(nameof(AppToken), request.TokenId);
@@ -44,20 +44,30 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
           throw new ForbiddenAccessException(nameof(Domain.Entities.AppToken), request.TokenId);
         }
 
-        var serviceActions = _context.Actions;
-        var existingActions = _context.AppTokenActions.Where(e => e.AppTokenId == request.TokenId);
-        var newActions = request.AppToken.AppTokenActions
-          .Where(a => !existingActions.Any(e => e.ActionId == a.ActionId))
-          .Where(a => serviceActions.Any(e => e.Id == a.ActionId))
+        var service = await _context.Services.FindAsync(request.Service.ServiceId);
+        if (service == null)
+        {
+          throw new NotFoundException(nameof(Domain.Entities.Service), request.Service.ServiceId);
+        }
+
+        var alreadyRequested = token.AppTokenActions
+          .Where(e => service.Actions.Any(d => d.Id == e.ActionId)).ToList();
+        if (alreadyRequested.Count == service.Actions.Count) return 0;
+
+        var newAdditions = request.Service.ActionIds
+          .Where(a => alreadyRequested.All(e => e.ActionId != a))
           .Select(e => new AppTokenAction
           {
-            ActionId = e.ActionId,
+            ActionId = e,
             AppTokenId = request.TokenId
           });
+        var removedActions = alreadyRequested
+          .Where(e => !request.Service.ActionIds.Any(a => a == e.ActionId));
 
-        var result = newActions.Count();
+        var result = newAdditions.Count() + alreadyRequested.Count - removedActions.Count();
 
-        _context.AppTokenActions.AddRange(newActions);
+        _context.AppTokenActions.AddRange(newAdditions);
+        _context.AppTokenActions.RemoveRange(removedActions);
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -10,7 +10,7 @@ namespace Application.AppTokenActions.Commands
     {
       RuleFor(e => e.TokenId)
         .NotEmpty();
-      RuleFor(e => e.AppToken)
+      RuleFor(e => e.Service)
         .NotNull();
 
     }
