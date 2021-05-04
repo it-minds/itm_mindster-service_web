@@ -18,8 +18,8 @@ import {
 import { BsFillBellFill } from "@react-icons/all-files/Bs/BsFillBellFill";
 import PendingList from "components/PendingApprovals/PendingList";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { SignalRContext } from "contexts/SignalRContext";
 import React, { FC, useContext } from "react";
-
 const NotificationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { pendingTokens, fetchPendingTokens } = useContext(ServiceViewContext);

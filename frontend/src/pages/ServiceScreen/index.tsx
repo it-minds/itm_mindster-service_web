@@ -1,7 +1,9 @@
 import { Box, Flex } from "@chakra-ui/layout";
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import ServiceHeader from "components/ServiceScreen/ServiceHeader";
 import ServiceInfo from "components/ServiceScreen/ServiceInfo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { SignalRContext } from "contexts/SignalRContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -142,14 +144,22 @@ const ServiceScreen: NextPage = () => {
         fetchServices: fetchServices,
         fetchActionApprovers: fetchActionApprovers
       }}>
-      <Flex h="100vh" w="full" direction="column">
-        <Box h="70px" zIndex={1} w="full" position="fixed">
-          <ServiceHeader />
-        </Box>
-        <Box maxH="full" w="full">
-          <ServiceInfo />
-        </Box>
-      </Flex>
+      <SignalRContext.Provider
+        value={{
+          connection: new HubConnectionBuilder()
+            .withUrl(`https://localhost:5001/pendingTokensHub`)
+            .configureLogging(LogLevel.Information)
+            .build()
+        }}>
+        <Flex h="100vh" w="full" direction="column">
+          <Box h="70px" zIndex={1} w="full" position="fixed">
+            <ServiceHeader />
+          </Box>
+          <Box maxH="full" w="full">
+            <ServiceInfo />
+          </Box>
+        </Flex>
+      </SignalRContext.Provider>
     </ServiceViewContext.Provider>
   );
 };

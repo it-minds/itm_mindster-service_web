@@ -2,15 +2,31 @@ import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
 import ColorModeToggler from "components/Common/ColorModeToggler";
 import MLogo from "components/Common/MLogo";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { SignalRContext } from "contexts/SignalRContext";
 import { useColors } from "hooks/useColors";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
 
 import NotificationTriggerBtn from "./Notifications/NotificationTriggerBtn";
 import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
   const { serviceHeaderBg } = useColors();
+  const { fetchPendingTokens } = useContext(ServiceViewContext);
+  const { connection } = useContext(SignalRContext);
+
+  useEffect(() => {
+    connection
+      .start()
+      .then(() => console.log(`SignalR connection started on ${connection.baseUrl}`))
+      .catch(err => console.log("Error connecting SignalR :" + err));
+
+    connection.on("TokensUpdated", () => {
+      console.log("Received TokenUpdated and fetchedPendingTokens");
+      fetchPendingTokens();
+    });
+  }, [fetchPendingTokens]);
 
   return (
     <Flex
