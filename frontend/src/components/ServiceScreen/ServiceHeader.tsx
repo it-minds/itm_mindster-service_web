@@ -6,7 +6,7 @@ import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import { FC } from "react";
 
-import NotificationTriggerBtn from "./Notifications/NotificationTriggerbtn";
+import NotificationTriggerBtn from "./Notifications/NotificationTriggerBtn";
 import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
