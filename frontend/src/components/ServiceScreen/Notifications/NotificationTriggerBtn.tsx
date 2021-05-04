@@ -16,9 +16,9 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { BsFillBellFill } from "@react-icons/all-files/Bs/BsFillBellFill";
+import NotificationBellWithCounter from "components/Common/NotificationBellWithCounter";
 import PendingList from "components/PendingApprovals/PendingList";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
-import { SignalRContext } from "contexts/SignalRContext";
 import React, { FC, useContext } from "react";
 const NotificationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,16 +26,7 @@ const NotificationTriggerBtn: FC = () => {
 
   return (
     <>
-      <Flex w="22px" mx="4px" mb="13px" justify="right" direction="column">
-        <Flex visibility={pendingTokens.length == 0 ? "hidden" : "visible"}>
-          <Spacer />
-          <Circle bgColor="red" size="12px">
-            <Text fontSize="x-small">{pendingTokens.length > 9 ? "+9" : pendingTokens.length}</Text>
-          </Circle>
-        </Flex>
-        <Icon onClick={onOpen} cursor="pointer" _hover={{ bg: "gray.500" }} as={BsFillBellFill} />
-      </Flex>
-
+      <NotificationBellWithCounter counter={pendingTokens.length} submitOnClick={onOpen} />
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="4xl">
         <ModalOverlay />
         <ModalContent>

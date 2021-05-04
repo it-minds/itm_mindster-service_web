@@ -31,8 +31,7 @@ const ServiceHeader: FC = () => {
   return (
     <Flex
       h="70px"
-      pl={["5px", "5px", "50px", "50px"]}
-      pr={["5px", "5px", "50px", "50px"]}
+      px={["5px", "5px", "50px", "50px"]}
       bgColor={serviceHeaderBg}
       align="center"
       width="full">
