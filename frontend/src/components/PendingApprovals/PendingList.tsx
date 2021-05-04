@@ -1,4 +1,4 @@
-import { Box, Center, Heading, VStack, Wrap } from "@chakra-ui/react";
+import { Box, Center, Container, VStack } from "@chakra-ui/react";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
@@ -10,18 +10,15 @@ const PendingList: FC = () => {
 
   return (
     <Center>
-      <Wrap width="full" justify="center" margin="50">
-        <VStack width="full">
-          <VStack mb="40px">
-            <Heading>Pending applications</Heading>
-            <Box w="full" borderRadius="md" borderWidth="2px">
-              {pendingTokens.map((appToken: AppTokenIdDto) => (
-                <PendingListItem key={appToken.id} appToken={appToken}></PendingListItem>
-              ))}
-            </Box>
-          </VStack>
+      <Container w="6xl" maxW="unset">
+        <VStack>
+          <Box w="full">
+            {pendingTokens.map((appToken: AppTokenIdDto) => (
+              <PendingListItem key={appToken.id} appToken={appToken}></PendingListItem>
+            ))}
+          </Box>
         </VStack>
-      </Wrap>
+      </Container>
     </Center>
   );
 };

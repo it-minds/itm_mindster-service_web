@@ -1,9 +1,6 @@
 import {
   Button,
-  Circle,
   Divider,
-  Flex,
-  Icon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,18 +8,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
-  Text,
   useDisclosure
 } from "@chakra-ui/react";
-import { BsFillBellFill } from "@react-icons/all-files/Bs/BsFillBellFill";
 import NotificationBellWithCounter from "components/Common/NotificationBellWithCounter";
 import PendingList from "components/PendingApprovals/PendingList";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext } from "react";
 const NotificationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { pendingTokens, fetchPendingTokens } = useContext(ServiceViewContext);
+  const { pendingTokens } = useContext(ServiceViewContext);
 
   return (
     <>
@@ -31,7 +25,6 @@ const NotificationTriggerBtn: FC = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Pending actions </ModalHeader>
-          <Button onClick={() => fetchPendingTokens()}>Refresh</Button>
           <ModalCloseButton />
           <Divider />
           <ModalBody>

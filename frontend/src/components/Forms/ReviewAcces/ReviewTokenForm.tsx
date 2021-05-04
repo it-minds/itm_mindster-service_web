@@ -79,21 +79,21 @@ const ReviewTokenForm: FC<Props> = ({ token }) => {
   return (
     <Center>
       <VStack width="full">
-        <Box w="full" borderRadius="md" borderWidth="2px">
+        <Box w="full">
           <form onSubmit={() => handleSubmit(event)}>
-            {token.appTokenActions.map((action: AppTokenActionIdDto) => (
-              <Box key={action.id} m="4" p="2" borderWidth="1px" borderRadius="sm">
-                <Heading size="h4">{`ActionId: ${action.actionId} TokenActionId: ${action.id} `}</Heading>
+            {token.appTokenActions.map((tokenAction: AppTokenActionIdDto) => (
+              <Box key={tokenAction.id} m="4" p="2" borderWidth="1px" borderRadius="lg">
+                <Heading size="h4">{`Action: ${tokenAction.action.actionIdentifier}`}</Heading>
                 <ReviewTokenFormItem
                   submitCallback={updateAction}
-                  index={token.appTokenActions.indexOf(action)}
+                  index={token.appTokenActions.indexOf(tokenAction)}
                   localFormData={
-                    actions[token.appTokenActions.indexOf(action)]
+                    actions[token.appTokenActions.indexOf(tokenAction)]
                   }></ReviewTokenFormItem>
               </Box>
             ))}
             <Box ml="10" mb="5">
-              <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
+              <Button isLoading={isLoading} size="lg" colorScheme="blue" mt={6} type="submit">
                 Submit
               </Button>
             </Box>
