@@ -6,6 +6,7 @@ import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import { FC } from "react";
 
+import NotificationTriggerBtn from "./Notifications/NotificationTriggerbtn";
 import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
@@ -24,6 +25,7 @@ const ServiceHeader: FC = () => {
         <SelectServiceTriggerBtn />
       </Box>
       <Spacer />
+      <NotificationTriggerBtn />
       <ColorModeToggler />
       <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ApplicationScreen">
