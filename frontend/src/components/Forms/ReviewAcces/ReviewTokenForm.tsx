@@ -1,22 +1,26 @@
 import { Box, Button, Center, Heading, useToast, VStack } from "@chakra-ui/react";
 import { ApplicationContext } from "contexts/ApplicationContext";
+import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import {
   AppTokenActionIdDto,
   AppTokenActionUpdateDto,
+  AppTokenIdDto,
   AppTokenUpdateDto,
   UpdateAppTokenActionsCommand
 } from "services/backend/nswagts";
 
 import ReviewTokenFormItem from "./ReviewTokenFormItem";
-
-const ReviewTokenForm: FC = () => {
-  const { currToken, fetchAppTokens } = useContext(ApplicationContext);
+type Props = {
+  token: AppTokenIdDto;
+};
+const ReviewTokenForm: FC<Props> = ({ token }) => {
+  const { fetchPendingTokens } = useContext(ServiceViewContext);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const [actions, setActions] = useState<AppTokenActionUpdateDto[]>(() =>
-    currToken.appTokenActions.map(
+    token.appTokenActions.map(
       action =>
         new AppTokenActionUpdateDto({
           state: action.state,
@@ -33,7 +37,7 @@ const ReviewTokenForm: FC = () => {
       const client = await genApplicationClient();
       try {
         await client.updateAppTokenActions(
-          currToken.id,
+          token.id,
           new UpdateAppTokenActionsCommand({
             appToken: new AppTokenUpdateDto({
               appTokenActions: actions
@@ -54,10 +58,10 @@ const ReviewTokenForm: FC = () => {
           isClosable: true
         });
       }
-      fetchAppTokens();
+      fetchPendingTokens();
       setIsLoading(false);
     },
-    [actions, currToken]
+    [actions, token]
   );
 
   const updateAction = useCallback(
@@ -69,7 +73,7 @@ const ReviewTokenForm: FC = () => {
         })
       );
     },
-    [currToken, actions]
+    [token, actions]
   );
 
   return (
@@ -77,14 +81,14 @@ const ReviewTokenForm: FC = () => {
       <VStack width="full">
         <Box w="full" borderRadius="md" borderWidth="2px">
           <form onSubmit={() => handleSubmit(event)}>
-            {currToken.appTokenActions.map((action: AppTokenActionIdDto) => (
+            {token.appTokenActions.map((action: AppTokenActionIdDto) => (
               <Box key={action.id} m="4" p="2" borderWidth="1px" borderRadius="sm">
                 <Heading size="h4">{`ActionId: ${action.actionId} TokenActionId: ${action.id} `}</Heading>
                 <ReviewTokenFormItem
                   submitCallback={updateAction}
-                  index={currToken.appTokenActions.indexOf(action)}
+                  index={token.appTokenActions.indexOf(action)}
                   localFormData={
-                    actions[currToken.appTokenActions.indexOf(action)]
+                    actions[token.appTokenActions.indexOf(action)]
                   }></ReviewTokenFormItem>
               </Box>
             ))}

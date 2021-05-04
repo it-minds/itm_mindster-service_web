@@ -10,8 +10,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import ReviewTokenForm from "components/Forms/ReviewAcces/ReviewTokenForm";
-import { ApplicationContext } from "contexts/ApplicationContext";
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
 
 type Props = {
@@ -20,16 +19,10 @@ type Props = {
 
 const ReviewTokenModalTrigger: FC<Props> = ({ token }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setCurrToken } = useContext(ApplicationContext);
 
   return (
     <>
-      <Button
-        size="sm"
-        onClick={() => {
-          onOpen();
-          setCurrToken(token);
-        }}>
+      <Button size="sm" onClick={onOpen}>
         Review
       </Button>
 
@@ -39,7 +32,7 @@ const ReviewTokenModalTrigger: FC<Props> = ({ token }) => {
           <ModalHeader>Approve or decline actions for token: {token.id} </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ReviewTokenForm></ReviewTokenForm>
+            <ReviewTokenForm token={token} />
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>

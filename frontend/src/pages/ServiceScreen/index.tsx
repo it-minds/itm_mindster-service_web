@@ -20,7 +20,7 @@ import { logger } from "utils/logger";
 
 const ServiceScreen: NextPage = () => {
   const [services, dispatchServices] = useReducer(ListReducer<IServiceIdDto>("id"), []);
-  const [appTokens, dispatchAppTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
+  const [pendingTokens, dispatchPendingTokens] = useReducer(ListReducer<IAppTokenIdDto>("id"), []);
   const [approvers, dispatchApprovers] = useReducer(ListReducer<IActionApproverIdDto>("id"), []);
   const [serviceOwners, dispatchServiceOwners] = useReducer(
     ListReducer<IServiceOwnerIdDto>("id"),
@@ -29,17 +29,18 @@ const ServiceScreen: NextPage = () => {
   const [currService, setCurrService] = useState<IServiceIdDto>();
   const [currAction, setCurrAction] = useState<IActionIdDto>();
   const { query } = useRouter();
-  const fetchAppTokens = useCallback(async () => {
+
+  const fetchPendingTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens(true);
+      const data = await client.getAppTokenICanReview();
 
       if (data && data.length >= 0) {
-        dispatchAppTokens({
+        dispatchPendingTokens({
           type: ListReducerActionType.Reset,
           data
         });
-      } else logger.info("ApplicationClient.getAppToken got no data");
+      } else logger.info("ApplicationClient.getAppTokensICanReview got no data");
     } catch (err) {
       logger.warn("ApplicationClient.getAppToken Error", err);
     }
@@ -107,6 +108,7 @@ const ServiceScreen: NextPage = () => {
 
   useEffect(() => {
     fetchServices();
+    fetchPendingTokens();
     if (query.Id) {
       const serviceId: number = +query.Id;
       setNewCurrService(serviceId);
@@ -127,7 +129,7 @@ const ServiceScreen: NextPage = () => {
     <ServiceViewContext.Provider
       value={{
         services: services,
-        appTokens: appTokens,
+        pendingTokens: pendingTokens,
         serviceOwners: serviceOwners,
         currService: currService,
         approvers: approvers,
@@ -135,7 +137,7 @@ const ServiceScreen: NextPage = () => {
         setCurrAction: setCurrAction,
         setCurrService: setCurrService,
         setNewCurrService: setNewCurrService,
-        fetchAppTokens: fetchAppTokens,
+        fetchPendingTokens: fetchPendingTokens,
         fetchOwners: fetchServiceOwners,
         fetchServices: fetchServices,
         fetchActionApprovers: fetchActionApprovers
