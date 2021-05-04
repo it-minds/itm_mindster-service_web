@@ -1,9 +1,8 @@
 import { Box, Flex, Spacer } from "@chakra-ui/react";
 import CollapsibleInfoBox from "components/Common/CollapsibleInfoBox";
+import ReviewTokenModalTrigger from "components/Forms/ReviewAcces/ReviewTokenModalTrigger";
 import React, { FC } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
-
-import ReviewTokenModalTrigger from "../Forms/ReviewAcces/ReviewTokenModalTrigger";
 
 type Props = {
   appToken: AppTokenIdDto;

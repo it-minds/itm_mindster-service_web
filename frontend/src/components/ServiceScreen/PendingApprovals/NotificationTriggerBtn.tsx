@@ -11,7 +11,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import NotificationBellWithCounter from "components/Common/NotificationBellWithCounter";
-import PendingList from "components/PendingApprovals/PendingList";
+import PendingList from "components/ServiceScreen/PendingApprovals/PendingList";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext } from "react";
 const NotificationTriggerBtn: FC = () => {

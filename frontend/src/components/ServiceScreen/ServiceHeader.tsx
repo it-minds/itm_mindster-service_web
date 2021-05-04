@@ -8,7 +8,7 @@ import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import { FC, useContext, useEffect } from "react";
 
-import NotificationTriggerBtn from "./Notifications/NotificationTriggerBtn";
+import NotificationTriggerBtn from "./PendingApprovals/NotificationTriggerBtn";
 import SelectServiceTriggerBtn from "./Service/SelectServiceTriggerBtn";
 
 const ServiceHeader: FC = () => {
@@ -40,7 +40,9 @@ const ServiceHeader: FC = () => {
         <SelectServiceTriggerBtn />
       </Box>
       <Spacer />
-      <NotificationTriggerBtn />
+      <Box mr="2px">
+        <NotificationTriggerBtn />
+      </Box>
       <ColorModeToggler />
       <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ApplicationScreen">
