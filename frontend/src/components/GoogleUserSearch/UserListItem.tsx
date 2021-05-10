@@ -1,18 +1,19 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
 import React, { FC } from "react";
-import { User } from "services/backend/nswagts";
+import { IUser, User } from "services/backend/nswagts";
 
 type Props = {
   user: User;
+  submitCallback: (user: IUser) => void;
 };
-
-const UserListItem: FC<Props> = ({ user }) => {
+const UserListItem: FC<Props> = ({ user, submitCallback }) => {
   const { hoverBg } = useColors();
 
   if (!user || !user.name) return null;
   return (
     <Flex
+      onClick={() => submitCallback(user)}
       _hover={{
         bgColor: hoverBg
       }}
