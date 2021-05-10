@@ -1,3 +1,5 @@
+import { Center, Container, Flex, VStack } from "@chakra-ui/layout";
+import GoogleSearchBar from "components/GoogleUserSearch/GoogleSearchBar";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
@@ -40,6 +42,13 @@ const PendingApprovalPage: NextPage = () => {
         fetchServices: null,
         fetchAppTokens: fetchAppTokens
       }}>
+      <Center>
+        <Container pt="30px" pb="15px" w="xl" maxW="unset">
+          <VStack width="full" align="left">
+            <GoogleSearchBar />
+          </VStack>
+        </Container>
+      </Center>
       {/* <PendingList /> */}
     </ApplicationContext.Provider>
   );
