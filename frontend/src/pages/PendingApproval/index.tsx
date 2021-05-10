@@ -45,7 +45,7 @@ const PendingApprovalPage: NextPage = () => {
       <Center>
         <Container pt="30px" pb="15px" w="xl" maxW="unset">
           <VStack width="full" align="left">
-            <GoogleSearchBar />
+            <GoogleSearchBar submitUsers={null} />
           </VStack>
         </Container>
       </Center>

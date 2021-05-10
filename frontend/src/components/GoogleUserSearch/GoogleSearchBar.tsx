@@ -92,7 +92,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
             <Tag borderRadius="full" m="5px" key={user.primaryEmail}>
               <Flex align="center">
                 {user.name.fullName}
-                <BsX onClick={() => removeUser(user)} />
+                <BsX cursor={"pointer"} onClick={() => removeUser(user)} />
               </Flex>
             </Tag>
           ))}
