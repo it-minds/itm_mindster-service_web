@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/no-autofocus */
+// The popover of users shouldn't be auto focused since it stops the user from typing in search bar
+// User should instead click a userCard if they want to.
 import { SearchIcon } from "@chakra-ui/icons";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
-import { Box, Flex } from "@chakra-ui/layout";
+import { Flex } from "@chakra-ui/layout";
+import { Popover, PopoverBody, PopoverContent } from "@chakra-ui/popover";
 import React, { FC, useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genGoogleUserClient } from "services/backend/apiClients";
@@ -12,7 +16,7 @@ import UserList from "./UserList";
 const GoogleSearchBar: FC = () => {
   const [keyword, setKeyword] = useState("");
   const [users, dispatchUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
-  const [filteredUsers, setFilteredUsers] = useState<IUser[]>(users);
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
 
   const fetchGoogleUsers = useCallback(async () => {
     try {
@@ -47,7 +51,7 @@ const GoogleSearchBar: FC = () => {
       }, 200);
       return () => clearTimeout(timeOutId);
     }
-    if (keyword === "") setFilteredUsers(users);
+    if (keyword === "") setFilteredUsers([]);
   }, [keyword]);
 
   return (
@@ -60,13 +64,17 @@ const GoogleSearchBar: FC = () => {
           w="full"
           borderRadius="full"
           value={keyword}
-          placeholder={"search for service"}
+          placeholder={"Search for an It-Minds Employee"}
           onChange={e => setKeyword(e.target.value)}
         />
       </InputGroup>
-      <Box>
-        <UserList users={filteredUsers} />
-      </Box>
+      <Popover autoFocus={false} isOpen={filteredUsers.length != 0}>
+        <PopoverContent>
+          <PopoverBody px="0px">
+            <UserList users={filteredUsers} />
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
     </Flex>
   );
 };
