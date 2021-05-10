@@ -12,8 +12,7 @@ import UserList from "./UserList";
 const GoogleSearchBar: FC = () => {
   const [keyword, setKeyword] = useState("");
   const [users, dispatchUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
-
-  useState();
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>(users);
 
   const fetchGoogleUsers = useCallback(async () => {
     try {
@@ -35,6 +34,22 @@ const GoogleSearchBar: FC = () => {
     fetchGoogleUsers();
   }, [fetchGoogleUsers]);
 
+  useEffect(() => {
+    if (keyword.length > 0 && users) {
+      const timeOutId = setTimeout(() => {
+        const filtered = users.filter(user => {
+          return (
+            user.name.fullName.toLowerCase().includes(keyword.toLowerCase()) ||
+            user.primaryEmail.toLowerCase().includes(keyword.toLowerCase())
+          );
+        });
+        setFilteredUsers(filtered);
+      }, 200);
+      return () => clearTimeout(timeOutId);
+    }
+    if (keyword === "") setFilteredUsers(users);
+  }, [keyword]);
+
   return (
     <Flex direction="column">
       <InputGroup>
@@ -50,7 +65,7 @@ const GoogleSearchBar: FC = () => {
         />
       </InputGroup>
       <Box>
-        <UserList users={users} />
+        <UserList users={filteredUsers} />
       </Box>
     </Flex>
   );

@@ -1,4 +1,4 @@
-import { Center, Container, Flex, VStack } from "@chakra-ui/layout";
+import { Center, Container, VStack } from "@chakra-ui/layout";
 import GoogleSearchBar from "components/GoogleUserSearch/GoogleSearchBar";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { Locale } from "i18n/Locale";

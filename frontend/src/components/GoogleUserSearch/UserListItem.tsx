@@ -1,6 +1,5 @@
-import { Box, Flex, Heading, Image, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { useColors } from "hooks/useColors";
-import Head from "next/head";
 import React, { FC } from "react";
 import { User } from "services/backend/nswagts";
 
@@ -11,6 +10,7 @@ type Props = {
 const UserListItem: FC<Props> = ({ user }) => {
   const { hoverBg } = useColors();
 
+  if (!user || !user.name) return null;
   return (
     <Flex
       _hover={{
