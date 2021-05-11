@@ -21,6 +21,8 @@ const UserList: FC<Props> = ({ users, submitCallback, keyword }) => {
           <Button
             w="full"
             rounded="none "
+            fontSize="14px"
+            fontWeight="normal"
             variant="ghost"
             _hover={{
               bgColor: hoverBg
