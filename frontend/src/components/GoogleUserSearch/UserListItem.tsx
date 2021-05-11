@@ -1,15 +1,12 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { useColors } from "hooks/useColors";
+import { Box, Flex as Flex, Image, Text } from "@chakra-ui/react";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { IUser, User } from "services/backend/nswagts";
+import { User } from "services/backend/nswagts";
 
 type Props = {
   user: User;
-  submitCallback: (user: IUser) => void;
   keyword: string;
 };
-const UserListItem: FC<Props> = ({ user, submitCallback, keyword }) => {
-  const { hoverBg } = useColors();
+const UserListItem: FC<Props> = ({ user, keyword }) => {
   const [nameMatches, setNameMatches] = useState<{ text: string; bold: boolean }[]>([]);
   const [emailMatches, setEmailMatches] = useState<{ text: string; bold: boolean }[]>([]);
 
@@ -46,15 +43,7 @@ const UserListItem: FC<Props> = ({ user, submitCallback, keyword }) => {
 
   if (!user || !user.name) return null;
   return (
-    <Flex
-      onClick={() => submitCallback(user)}
-      _hover={{
-        bgColor: hoverBg
-      }}
-      cursor={"pointer"}
-      align="center"
-      w="320px"
-      h="50px">
+    <Flex cursor={"pointer"} align="center" w="320px" h="50px">
       <Box ml="10px">
         <Image
           rounded="full"
