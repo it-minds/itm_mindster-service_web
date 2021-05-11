@@ -13,7 +13,6 @@ const PendingApprovalPage: NextPage = () => {
   const [appTokens, setAppTokens] = useState<AppTokenIdDto[]>([]);
   const [currToken, setCurrToken] = useState<AppTokenIdDto>();
 
-  //GetAllAppTokens(true) only returns tokens that have the pending state in them
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
@@ -45,7 +44,7 @@ const PendingApprovalPage: NextPage = () => {
       <Center>
         <Container pt="30px" pb="15px" w="xl" maxW="unset">
           <VStack width="full" align="left">
-            <GoogleSearchBar submitUsers={null} />
+            <GoogleSearchBar submitUsers={() => null} />
           </VStack>
         </Container>
       </Center>

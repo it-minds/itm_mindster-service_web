@@ -7,13 +7,14 @@ const maxResults = 7;
 type Props = {
   users: IUser[];
   submitCallback: (user: IUser) => void;
+  keyword: string;
 };
-const UserList: FC<Props> = ({ users, submitCallback }) => {
+const UserList: FC<Props> = ({ users, submitCallback, keyword }) => {
   return (
     <Box height="full" width="full" justify="center">
       {users.slice(0, maxResults).map((user: User) => (
         <Center key={user.primaryEmail}>
-          <UserListItem submitCallback={submitCallback} user={user} />
+          <UserListItem keyword={keyword} submitCallback={submitCallback} user={user} />
         </Center>
       ))}
     </Box>

@@ -73,8 +73,9 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
       const timeOutId = setTimeout(() => {
         const filtered = users.filter(user => {
           return (
+            user.name.givenName.toLowerCase().includes(keyword.toLocaleLowerCase()) ||
             user.name.fullName.toLowerCase().includes(keyword.toLowerCase()) ||
-            user.primaryEmail.toLowerCase().includes(keyword.toLowerCase())
+            user.primaryEmail.slice(0, 3).toLowerCase().includes(keyword.toLowerCase())
           );
         });
         setFilteredUsers(filtered);
@@ -108,7 +109,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
       <Popover autoFocus={false} isOpen={filteredUsers.length != 0}>
         <PopoverContent>
           <PopoverBody px="0px">
-            <UserList submitCallback={addUser} users={filteredUsers} />
+            <UserList submitCallback={addUser} users={filteredUsers} keyword={keyword} />
           </PopoverBody>
         </PopoverContent>
       </Popover>
