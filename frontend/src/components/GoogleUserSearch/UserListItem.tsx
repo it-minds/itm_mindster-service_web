@@ -52,35 +52,25 @@ const UserListItem: FC<Props> = ({ user, keyword }) => {
           rounded="50%"
           boxSize="35px"
           src={user.thumbnailPhotoUrl}
-          fallbackSrc="https://via.placeholder.com/150"
+          fallbackSrc="/images/silhouette-200x200.png"
         />
       </Box>
       <Flex py="3px" ml="10px" direction="column">
         <Flex>
           {nameMatches.map(o => (
             <Box key={nameMatches.indexOf(o)}>
-              {o.bold ? (
-                <Text fontWeight="bold" whiteSpace="break-spaces">
-                  {o.text}
-                </Text>
-              ) : (
-                <Text whiteSpace="break-spaces">{o.text}</Text>
-              )}
+              <Text fontWeight={o.bold ? "bold" : "normal"} whiteSpace="break-spaces">
+                {o.text}
+              </Text>
             </Box>
           ))}
         </Flex>
         <Flex>
           {emailMatches.map(o => (
             <Box key={emailMatches.indexOf(o)}>
-              {o.bold ? (
-                <Text fontWeight="bold" fontSize="sm" whiteSpace="break-spaces">
-                  {o.text}
-                </Text>
-              ) : (
-                <Text fontSize="sm" whiteSpace="break-spaces">
-                  {o.text}
-                </Text>
-              )}
+              <Text fontWeight={o.bold ? "bold" : "normal"} fontSize="sm" whiteSpace="break-spaces">
+                {o.text}
+              </Text>
             </Box>
           ))}
         </Flex>
