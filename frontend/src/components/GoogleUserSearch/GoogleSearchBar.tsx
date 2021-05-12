@@ -39,10 +39,6 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchGoogleUsers();
-  }, [fetchGoogleUsers]);
-
   // Tells parent component that the local userList has been changed
   useEffect(() => {
     submitUsers(addedUsers);
@@ -86,26 +82,25 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
   }, [keyword]);
 
   return (
-    <>
-      <Flex p="2px" borderRadius="lg" direction="column">
-        <Box>
-          {addedUsers.map(user => (
-            <Tag borderRadius="full" m="5px" key={user.primaryEmail}>
-              <Flex align="center">
-                {user.name.fullName}
-                <BsX cursor={"pointer"} onClick={() => removeUser(user)} />
-              </Flex>
-            </Tag>
-          ))}
-          <Input
-            width="full"
-            borderWidth="1px"
-            value={keyword}
-            placeholder={"Search for an It-Minds Employee"}
-            onChange={e => setKeyword(e.target.value)}
-          />
-        </Box>
-      </Flex>
+    <Flex minH={370} p="2px" borderRadius="lg" direction="column">
+      <Box>
+        {addedUsers.map(user => (
+          <Tag borderRadius="full" m="5px" key={user.primaryEmail}>
+            <Flex align="center">
+              {user.name.fullName}
+              <BsX cursor={"pointer"} onClick={() => removeUser(user)} />
+            </Flex>
+          </Tag>
+        ))}
+        <Input
+          width="full"
+          borderWidth="1px"
+          value={keyword}
+          onFocus={() => fetchGoogleUsers()}
+          placeholder={"Search for an It-Minds Employee"}
+          onChange={e => setKeyword(e.target.value)}
+        />
+      </Box>
       <Popover autoFocus={false} isOpen={filteredUsers.length != 0}>
         <PopoverContent>
           <PopoverBody px="0px">
@@ -113,7 +108,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
-    </>
+    </Flex>
   );
 };
 
