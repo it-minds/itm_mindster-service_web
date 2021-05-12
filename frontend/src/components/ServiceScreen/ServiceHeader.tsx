@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
 import ColorModeToggler from "components/Common/ColorModeToggler";
+import LanguageSelector from "components/Common/LanguageSelector";
 import MLogo from "components/Common/MLogo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { SignalRContext } from "contexts/SignalRContext";
@@ -43,6 +44,7 @@ const ServiceHeader: FC = () => {
       <Box mr="2px">
         <NotificationTriggerBtn />
       </Box>
+      <LanguageSelector />
       <ColorModeToggler />
       <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ApplicationScreen">

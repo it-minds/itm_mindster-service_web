@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
 import ColorModeToggler from "components/Common/ColorModeToggler";
+import LanguageSelector from "components/Common/LanguageSelector";
 import MLogo from "components/Common/MLogo";
 import { useColors } from "hooks/useColors";
 import Link from "next/link";
@@ -23,6 +24,7 @@ const AppHeader: FC = () => {
         <SelectAppTriggerBtn />
       </Box>
       <Spacer />
+      <LanguageSelector />
       <ColorModeToggler />
       <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ServiceScreen">
