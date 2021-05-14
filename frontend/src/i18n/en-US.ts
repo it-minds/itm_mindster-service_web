@@ -23,6 +23,7 @@ export const table: Locale = {
     close: "Close",
     submit: "Submit",
     showMore: "Show more",
+    showLess: "Show less",
     copy: "Copy",
     yes: "Yes",
     no: "No"
@@ -156,6 +157,21 @@ export const table: Locale = {
       copyApproversToAnotherAction: "Copy approvers to another action",
       copyApproversHeader: "Copy the following approvers from: {{title}}",
       copyApprovers: "Copy approvers"
+    },
+    pendingTokens: {
+      header: "Pending tokens",
+      cardTitle: "Token: {{identifier}} with {{count}} actions",
+      reviewToken: "Review",
+      reviewModal: {
+        header: "Approve or decline actions for token: {{identifier}}",
+        responses: {
+          pending: "Pending",
+          approved: "Approve",
+          rejected: "Reject"
+        },
+        response: "Response",
+        rejectionReason: "Rejection reason"
+      }
     }
   }
 };

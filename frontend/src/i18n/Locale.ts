@@ -13,6 +13,7 @@ export interface Locale {
     close: string;
     submit: string;
     showMore: string;
+    showLess: string;
     copy: string;
     yes: string;
     no: string;
@@ -129,6 +130,21 @@ export interface Locale {
       copyApproversToAnotherAction: string;
       copyApproversHeader: string;
       copyApprovers: string;
+    };
+    pendingTokens: {
+      header: string;
+      cardTitle: string;
+      reviewToken: string;
+      reviewModal: {
+        header: string;
+        responses: {
+          pending: string;
+          approved: string;
+          rejected: string;
+        };
+        response: string;
+        rejectionReason: string;
+      };
     };
   };
 

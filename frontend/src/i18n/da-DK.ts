@@ -24,6 +24,7 @@ export const table: Locale = {
     close: "Luk",
     submit: "Indsend",
     showMore: "Vis mere",
+    showLess: "Vis mindre",
     copy: "Kopier",
     yes: "Ja",
     no: "Nej"
@@ -159,6 +160,21 @@ export const table: Locale = {
       copyApproversToAnotherAction: "Kopier godkendere til en anden handling",
       copyApproversHeader: "Kopier følgende godkendere fra: {{title}}",
       copyApprovers: "Kopier godkendere"
+    },
+    pendingTokens: {
+      header: "Tokens der afventer svar",
+      cardTitle: "Token: {{identifier}} med {{count}} handlinger",
+      reviewToken: "Gennemgå",
+      reviewModal: {
+        header: "Godkend eller afvis handlingerne for token: {{identifier}}",
+        responses: {
+          pending: "Afventer",
+          approved: "Godkendt",
+          rejected: "Afvist"
+        },
+        response: "Svar",
+        rejectionReason: "Årsag til afvisning"
+      }
     }
   }
 };
