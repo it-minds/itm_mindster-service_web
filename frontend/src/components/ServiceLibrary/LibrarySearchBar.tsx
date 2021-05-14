@@ -1,13 +1,11 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 type Props = {
   keyword: string;
   setKeyword: React.Dispatch<React.SetStateAction<string>>;
 };
 const LibrarySearchBar: FC<Props> = ({ keyword, setKeyword }) => {
-  useState();
-
   return (
     <InputGroup>
       <InputLeftElement pointerEvents="none">
