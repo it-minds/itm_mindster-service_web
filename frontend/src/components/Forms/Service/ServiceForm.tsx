@@ -29,8 +29,7 @@ const ServiceForm: FC<Props> = ({ submitCallback, serviceMetaData }) => {
   const [service, setService] = useState<IServiceDto>(
     new ServiceDto({
       title: null,
-      description: null,
-      state: 0
+      description: null
     })
   );
   const { isOpen, onOpen, onClose } = useDisclosure();

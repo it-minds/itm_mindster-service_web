@@ -5,7 +5,6 @@ import {
   Divider,
   FormControl,
   FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,6 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Textarea,
   useClipboard,
   useDisclosure,
   useToast
@@ -24,11 +24,12 @@ import { CreateAuthAppTokenCommand, IService2, TokenInput } from "services/backe
 
 type Props = {
   aid: string;
+  tokenIdentifier: string;
   submitCallback: () => void;
   services: IService2[];
 };
 
-const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
+const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [appSecret, setAppSecret] = useState("");
   const [JWT, setJWT] = useState("");
@@ -43,13 +44,14 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
         aid,
         new CreateAuthAppTokenCommand({
           tokenInput: new TokenInput({
-            tokenIdentifier: "bla bla",
+            tokenIdentifier: tokenIdentifier,
             services: services
           })
         }),
         appSecret
       );
       setJWT(appResult.jwt);
+      onOpen();
     } catch (error) {
       toast({
         description: `CreateJwt responded: ${error}`,
@@ -66,7 +68,6 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
       setIsLoading(true);
       await CreateJWT();
       setIsLoading(false);
-      onOpen();
     },
     [appSecret]
   );
@@ -75,16 +76,21 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
       <Box width="full" p={6}>
         <form onSubmit={onSubmit}>
           <FormControl isRequired>
+            <Text>Application: {aid}</Text>
+            <Text mb="5">Token: {tokenIdentifier}</Text>
             <FormLabel>App secret:</FormLabel>
-            <Input
+            <Textarea
               type="text"
               value={appSecret}
               placeholder="You received this once when you created your application"
-              onChange={event => setAppSecret(event.target.value)}></Input>
+              onChange={event => setAppSecret(event.target.value)}
+            />
           </FormControl>
-          <Button isLoading={isLoading} variant="outline" width="full" mt={6} type="submit">
-            Submit
-          </Button>
+          <Center>
+            <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
+              Submit
+            </Button>
+          </Center>
         </form>
       </Box>
       <Modal
@@ -123,4 +129,4 @@ const AuthTokenForm: FC<Props> = ({ aid, submitCallback, services }) => {
     </Center>
   );
 };
-export default AuthTokenForm;
+export default JwtForm;

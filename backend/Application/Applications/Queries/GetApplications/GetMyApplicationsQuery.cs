@@ -18,16 +18,16 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Applications.Queries.GetApplications
 {
   [Authorize]
-  public class GetApplicationsQuery : IRequest<List<ApplicationIdDto>>
+  public class GetMyApplicationsQuery : IRequest<List<ApplicationIdDto>>
   {
-    public class GetApplicationQueryHandler : IRequestHandler<GetApplicationsQuery, List<ApplicationIdDto>>
+    public class GetMyApplicationQueryHandler : IRequestHandler<GetMyApplicationsQuery, List<ApplicationIdDto>>
     {
       private readonly IApplicationDbContext _context;
       private readonly IMapper _mapper;
       private readonly ICurrentUserService _currentUserService;
 
 
-      public GetApplicationQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService)
+      public GetMyApplicationQueryHandler(IApplicationDbContext context, IMapper mapper, ICurrentUserService currentUserService)
       {
         _context = context;
         _mapper = mapper;
@@ -35,7 +35,7 @@ namespace Application.Applications.Queries.GetApplications
 
       }
 
-      public async Task<List<ApplicationIdDto>> Handle(GetApplicationsQuery request, CancellationToken cancellationToken)
+      public async Task<List<ApplicationIdDto>> Handle(GetMyApplicationsQuery request, CancellationToken cancellationToken)
       {
         var ownedApps = _context.AppOwners.Where(e => e.Email == _currentUserService.UserEmail)
           .Select(e => e.ApplicationId).ToList();

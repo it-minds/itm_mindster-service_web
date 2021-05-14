@@ -17,14 +17,19 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceStates } from "services/backend/nswagts";
 
-import GetAuthTokenTriggerBtn from "../AuthToken/GetAuthTokenTriggerBtn";
+import GetJwtTriggerBtn from "../AuthToken/GetJwtTriggerBtn";
 import TokenStatusList from "./TokenStatusList";
 
 type Props = {
   submitOnClose: () => Promise<void>;
   submitOnOpen: () => Promise<void>;
+  buttonText?: string;
 };
-const SeeTokenStatusDrawer: FC<Props> = ({ submitOnClose: submitCallback, submitOnOpen }) => {
+const SeeTokenStatusDrawer: FC<Props> = ({
+  submitOnClose: submitCallback,
+  submitOnOpen,
+  buttonText
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currToken, currApplication } = useContext(AppViewContext);
   const [isAllApproved, setAllApproved] = useState(false);
@@ -55,54 +60,49 @@ const SeeTokenStatusDrawer: FC<Props> = ({ submitOnClose: submitCallback, submit
           await submitOnOpen();
           onOpen();
         }}
-        borderWidth="1px"
-        borderColor="black">
-        See Status
+        colorScheme="blue">
+        {buttonText != null ? buttonText : "See Status"}
       </Button>
 
-      {currToken == null ? (
-        <Box></Box>
-      ) : (
-        <Drawer
-          onClose={() => {
-            submitCallback();
-          }}
-          isOpen={isOpen}
-          size="full">
-          <DrawerOverlay>
-            <DrawerContent>
-              <DrawerHeader>
-                <Flex>
+      <Drawer
+        onClose={() => {
+          submitCallback();
+        }}
+        isOpen={isOpen}
+        size="full">
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerHeader>
+              <Flex>
+                {currToken != null && (
                   <Box>
                     Status of {currToken.id} {currToken.description}
                   </Box>
+                )}
+                <Spacer />
+                <CloseButton
+                  onClick={() => {
+                    onClose();
+                    submitCallback();
+                  }}
+                />
+              </Flex>
+            </DrawerHeader>
+            <DrawerBody>
+              <Box height="full" width="full">
+                <Flex direction="column" p="50" height="full" width="full" align="left">
+                  <TokenStatusList />
+                  <Center hidden={!isAllApproved} m="5">
+                    <GetJwtTriggerBtn submitOnOpen={() => null} />
+                  </Center>
                   <Spacer />
-                  <CloseButton
-                    onClick={() => {
-                      onClose();
-                      submitCallback();
-                    }}
-                  />
+                  <ThreeStepShower radius={50} stepCounter={3} />
                 </Flex>
-              </DrawerHeader>
-              <DrawerBody>
-                <Box height="full" width="full">
-                  <Flex direction="column" p="50" height="full" width="full" align="left">
-                    <Flex height="full" width="full">
-                      <TokenStatusList />
-                    </Flex>
-                    <Center hidden={!isAllApproved} m="5">
-                      <GetAuthTokenTriggerBtn />
-                    </Center>
-                    <Spacer />
-                    <ThreeStepShower radius={50} stepCounter={3} />
-                  </Flex>
-                </Box>
-              </DrawerBody>
-            </DrawerContent>
-          </DrawerOverlay>
-        </Drawer>
-      )}
+              </Box>
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
     </>
   );
 };

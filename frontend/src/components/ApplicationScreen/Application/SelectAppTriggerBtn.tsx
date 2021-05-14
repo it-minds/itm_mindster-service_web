@@ -3,9 +3,9 @@ import {
   Button,
   Divider,
   Flex,
-  IconButton,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -19,7 +19,6 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
-import { BsX } from "@react-icons/all-files/bs/BsX";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext } from "react";
 
@@ -32,7 +31,7 @@ const SelectAppTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button borderWidth="1px" borderColor="black" bgColor="white" onClick={onOpen}>
+      <Button borderWidth="1px" colorScheme="gray" onClick={onOpen}>
         <Box mr="7px">{currApplication?.title ?? "Select Application"}</Box>
         <BsChevronDown />
       </Button>
@@ -43,17 +42,10 @@ const SelectAppTriggerBtn: FC = () => {
           <Flex align="center" justify="center">
             <ModalHeader minWidth="max-content">Select Project</ModalHeader>
             <Spacer></Spacer>
-            <Box>
+            <Box mr="20">
               <CreateApplicationTriggerBtn />
             </Box>
-            <Box>
-              <IconButton
-                marginLeft="10px"
-                size="lg"
-                bgColor="transparent"
-                aria-label="Close"
-                icon={<BsX />}></IconButton>
-            </Box>
+            <ModalCloseButton />
           </Flex>
 
           <Divider />

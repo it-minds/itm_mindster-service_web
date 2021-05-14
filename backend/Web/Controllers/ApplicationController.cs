@@ -11,6 +11,7 @@ using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
 using Application.AppTokenActions.Commands.CreateAppTokenAction;
+using Application.AppTokenActions.Commands.UpdateAppTokenActions;
 using Application.AppTokens;
 using Application.AppTokens.Commands;
 using Application.AppTokens.Commands.CreateAppToken;
@@ -43,7 +44,7 @@ namespace Web.Controllers
     [HttpGet]
     public async Task<ActionResult<List<ApplicationIdDto>>> GetAllApplications()
     {
-      return await Mediator.Send(new GetApplicationsQuery());
+      return await Mediator.Send(new GetMyApplicationsQuery());
     }
     [HttpPost("{id}/ApplicationOwners")]
     public async Task<ActionResult<int>> AddAppOwners([FromRoute] int id, CreateApplicationOwnerCommand command)
@@ -92,11 +93,18 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpPut("AppTokens/{id}/UpdateActions")]
-    public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenCommand command)
+    public async Task<ActionResult> UpdateAppTokenActions([FromRoute] int id, UpdateAppTokenActionsCommand command)
+    {
+      command.TokenId = id;
+      await Mediator.Send(command);
+
+      return NoContent();
+    }
+    [HttpPut("AppTokens/{id}/UpdateState")]
+    public async Task<ActionResult> UpdateTokenState([FromRoute] int id, UpdateAppTokenStateCommand command)
     {
       command.Id = id;
       await Mediator.Send(command);
-
       return NoContent();
     }
   }

@@ -1,5 +1,7 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Services;
 using Application.Services.Commands.CreateService;
 using Domain.Enums;
@@ -19,7 +21,7 @@ namespace Application.UnitTests.Services.Commands.CreateService
         {
           Title = "Approved Service",
           Description = "Test of CreateService",
-          State = ServiceStates.Approved
+          ServiceIdentifier = "approved_service"
         }
       };
       var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context, CurrentUserServiceMock.Object);
@@ -31,7 +33,23 @@ namespace Application.UnitTests.Services.Commands.CreateService
       entity.Should().NotBeNull();
       entity.Title.Should().Be(command.Service.Title);
       entity.Description.Should().Be(command.Service.Description);
-      entity.State.Should().Be(command.Service.State);
+    }
+    [Fact]
+    public void Handle_DuplicateIdentifier_ShouldThrowError()
+    {
+      var command = new CreateServiceCommand()
+      {
+        Service = new ServiceDto
+        {
+          Title = "Approved Service",
+          Description = "Test of CreateService",
+          ServiceIdentifier = "first" // This already exists in Db
+        }
+      };
+      var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context, CurrentUserServiceMock.Object);
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
     }
   }
 }

@@ -2,8 +2,9 @@ import { Button, Center, Td, Tr } from "@chakra-ui/react";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useState } from "react";
-import { AppTokenIdDto } from "services/backend/nswagts";
+import { AppTokenIdDto, TokenStates } from "services/backend/nswagts";
 
+import GetJwtTriggerBtn from "./AuthToken/GetJwtTriggerBtn";
 import SeeTokenStatusDrawer from "./TokenStatus/SeeTokenStatusDrawer";
 
 type Props = {
@@ -14,33 +15,38 @@ const TokenTableItem: FC<Props> = ({ token }) => {
   const [libraryOpen, setOpen] = useState(false);
   return (
     <Tr>
-      <Td>
-        <Center>{token.id}</Center>
-      </Td>
-      <Td>
-        <Center> {token.description}</Center>
-      </Td>
+      <Td>{token.tokenIdentifier}</Td>
+      <Td>{token.description}</Td>
       <Td>
         <Center>
-          {token.appTokenActions.length != 0 ? (
+          {token.state == TokenStates.Created && (
+            <Button
+              colorScheme="blue"
+              onClick={async () => {
+                await fetchUpdatedToken(token.id);
+                setOpen(true);
+              }}>
+              Browse Services
+            </Button>
+          )}
+          {token.state == TokenStates.AwaitingReview && (
             <SeeTokenStatusDrawer
+              buttonText="Check status"
               submitOnOpen={() => fetchUpdatedToken(token.id)}
               submitOnClose={() => null}
             />
-          ) : (
-            <>
-              <Button
-                borderWidth="1px"
-                borderColor="black"
-                onClick={async () => {
-                  await fetchUpdatedToken(token.id);
-                  setOpen(true);
-                }}>
-                Browse Services
-              </Button>
-              <ServiceLibraryDrawer Open={libraryOpen} setOpen={setOpen} />
-            </>
           )}
+          {token.state == TokenStates.Reviewed && (
+            <SeeTokenStatusDrawer
+              buttonText="Check status"
+              submitOnOpen={() => fetchUpdatedToken(token.id)}
+              submitOnClose={() => null}
+            />
+          )}
+          {token.state == TokenStates.JwtReceived && (
+            <GetJwtTriggerBtn submitOnOpen={() => fetchUpdatedToken(token.id)} />
+          )}
+          <ServiceLibraryDrawer Open={libraryOpen} setOpen={setOpen} />
         </Center>
       </Td>
     </Tr>

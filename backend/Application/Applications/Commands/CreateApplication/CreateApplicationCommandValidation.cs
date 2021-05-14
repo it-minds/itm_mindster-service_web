@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentValidation;
 
 namespace Application.Applications.Commands.CreateApplication
@@ -17,6 +11,10 @@ namespace Application.Applications.Commands.CreateApplication
       RuleFor(e => e.Application.Title)
         .MaximumLength(200)
         .NotEmpty();
+      RuleFor(e => e.Application.AppIdentifier)
+        .NotEmpty()
+        .MaximumLength(200)
+        .Matches("[a-z_]+");
     }
   }
 }

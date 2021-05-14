@@ -16,7 +16,8 @@ import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
-import { CreateServiceCommand, ServiceDto, ServiceStates } from "services/backend/nswagts";
+import { CreateServiceCommand, ServiceDto } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 const CreateServiceTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,7 +33,7 @@ const CreateServiceTriggerBtn: FC = () => {
           service: new ServiceDto({
             title: title,
             description: description,
-            state: ServiceStates.Pending
+            serviceIdentifier: convertToIdentifier(title)
           })
         })
       );
@@ -55,12 +56,7 @@ const CreateServiceTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green"
-        onClick={onOpen}>
+      <Button rightIcon={<BsPlus />} colorScheme="green" onClick={onOpen}>
         Create new Service
       </Button>
 

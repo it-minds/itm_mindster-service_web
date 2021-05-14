@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading, VStack, Wrap } from "@chakra-ui/react";
+import { Box, Center, Heading, VStack, Wrap } from "@chakra-ui/react";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useContext } from "react";
 import { AppTokenIdDto } from "services/backend/nswagts";
@@ -20,7 +20,6 @@ const PendingList: FC = () => {
               ))}
             </Box>
           </VStack>
-          <Flex width="full"></Flex>
         </VStack>
       </Wrap>
     </Center>

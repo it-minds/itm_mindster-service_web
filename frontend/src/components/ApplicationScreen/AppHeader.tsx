@@ -7,7 +7,7 @@ import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
 const AppHeader: FC = () => {
   return (
-    <Wrap p="5" bgColor="purple.500" width="full">
+    <Wrap p="2.5" bgColor="purple.500" width="full">
       <Flex align="center" width="full">
         <Box>
           <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />
@@ -20,11 +20,7 @@ const AppHeader: FC = () => {
         <Spacer />
         <Box alignContent="end" justifyContent="right">
           <Link href="/ServiceScreen">
-            <Button
-              rightIcon={<BsArrowRight />}
-              borderWidth="1px"
-              borderColor="black"
-              bgColor="orange">
+            <Button rightIcon={<BsArrowRight />} colorScheme="yellow">
               Enter as Service Provider
             </Button>
           </Link>

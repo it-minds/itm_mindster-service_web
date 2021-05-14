@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Divider,
   Modal,
@@ -48,10 +49,12 @@ const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) 
           <Divider />
           <ModalBody>
             <ActionApproverOverview approvers={approversToCopy} />
-            <CopyActionList
-              tableData={currService.actions.filter(e => e.id != currAction.id)}
-              submitCallback={handleSubmit}
-            />
+            <Box p="3">
+              <CopyActionList
+                tableData={currService.actions.filter(e => e.id != currAction.id)}
+                submitCallback={handleSubmit}
+              />
+            </Box>
           </ModalBody>
           <Divider />
           <ModalFooter>

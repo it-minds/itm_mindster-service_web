@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, Spinner, useToast, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, useToast, VStack } from "@chakra-ui/react";
 import { ApplicationContext } from "contexts/ApplicationContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -6,7 +6,7 @@ import {
   AppTokenActionIdDto,
   AppTokenActionUpdateDto,
   AppTokenUpdateDto,
-  UpdateAppTokenCommand
+  UpdateAppTokenActionsCommand
 } from "services/backend/nswagts";
 
 import ReviewTokenFormItem from "./ReviewTokenFormItem";
@@ -20,7 +20,8 @@ const ReviewTokenForm: FC = () => {
       action =>
         new AppTokenActionUpdateDto({
           state: action.state,
-          rejectionReason: action.rejectionReason
+          rejectionReason: action.rejectionReason,
+          id: action.id
         })
     )
   );
@@ -33,7 +34,7 @@ const ReviewTokenForm: FC = () => {
       try {
         await client.updateAppTokenActions(
           currToken.id,
-          new UpdateAppTokenCommand({
+          new UpdateAppTokenActionsCommand({
             appToken: new AppTokenUpdateDto({
               appTokenActions: actions
             })
@@ -78,7 +79,7 @@ const ReviewTokenForm: FC = () => {
           <form onSubmit={() => handleSubmit(event)}>
             {currToken.appTokenActions.map((action: AppTokenActionIdDto) => (
               <Box key={action.id} m="4" p="2" borderWidth="1px" borderRadius="sm">
-                <Heading size="h4">{`ActionId: ${action.actionId} `}</Heading>
+                <Heading size="h4">{`ActionId: ${action.actionId} TokenActionId: ${action.id} `}</Heading>
                 <ReviewTokenFormItem
                   submitCallback={updateAction}
                   index={currToken.appTokenActions.indexOf(action)}
@@ -87,15 +88,11 @@ const ReviewTokenForm: FC = () => {
                   }></ReviewTokenFormItem>
               </Box>
             ))}
-            {isLoading ? (
-              <Button variant="outline" width="full" mt={6}>
-                <Spinner></Spinner>
-              </Button>
-            ) : (
-              <Button variant="outline" width="full" mt={6} type="submit">
+            <Box ml="10" mb="5">
+              <Button isLoading={isLoading} colorScheme="blue" mt={6} type="submit">
                 Submit
               </Button>
-            )}
+            </Box>
           </form>
         </Box>
       </VStack>

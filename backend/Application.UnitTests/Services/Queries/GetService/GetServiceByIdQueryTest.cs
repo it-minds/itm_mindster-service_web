@@ -44,7 +44,6 @@ namespace Application.UnitTests.Services.Queries.GetService
       result.Should().BeOfType<ServiceIdDto>();
       result.Title.Should().Be(entity.Title);
       result.Description.Should().Be(entity.Description);
-      result.State.Should().Be(entity.State);
       result.Actions.Count.Should().Be(entity.Actions.Count);
       result.Actions.First().Title.Should().Be(entity.Actions.First().Title);
     }

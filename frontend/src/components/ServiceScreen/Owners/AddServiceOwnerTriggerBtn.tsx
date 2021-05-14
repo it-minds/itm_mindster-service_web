@@ -56,12 +56,7 @@ const AddServiceOwnersTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green">
+      <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
         Add owners
       </Button>
 

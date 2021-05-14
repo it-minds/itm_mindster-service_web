@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Security;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Commands.CreateService
 {
@@ -32,11 +34,15 @@ namespace Application.Services.Commands.CreateService
 
       public async Task<int> Handle(CreateServiceCommand request, CancellationToken cancellationToken)
       {
+        if (await _context.Services.AnyAsync(e => e.ServiceIdentifier == request.Service.ServiceIdentifier, cancellationToken))
+        {
+          throw new NotFoundException(nameof(Domain.Entities.Service), key: request.Service.ServiceIdentifier + "A Service with that identifier already exists");
+        }
         var service = new Service
         {
           Title = request.Service.Title,
           Description = request.Service.Description,
-          State = request.Service.State
+          ServiceIdentifier = request.Service.ServiceIdentifier
         };
 
         _context.Services.Add(service);

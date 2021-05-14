@@ -2,11 +2,13 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Security;
 using AuthService.Client;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Applications.Commands.CreateApplication
 {
@@ -32,10 +34,16 @@ namespace Application.Applications.Commands.CreateApplication
 
       public async Task<CreateAppResult> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
       {
+        if (await _context.Applications.AnyAsync(e => e.AppIdentifier == request.Application.AppIdentifier, cancellationToken))
+        {
+          throw new NotFoundException(nameof(ApplicationEntity),
+            key: request.Application.AppIdentifier + "A App with that identifier already exists");
+        }
         var application = new ApplicationEntity
         {
           Title = request.Application.Title,
-          Description = request.Application.Description
+          Description = request.Application.Description,
+          AppIdentifier = request.Application.AppIdentifier
         };
 
         _context.Applications.Add(application);
@@ -51,7 +59,7 @@ namespace Application.Applications.Commands.CreateApplication
         await _context.SaveChangesAsync(cancellationToken);
 
         var authResult = await _authClient.AppAsync(new ApplicationInput {
-          AppIdentifer = application.Title
+          AppIdentifer = application.AppIdentifier
         }, cancellationToken);
         var result = new CreateAppResult{appId = application.Id, AppSecret = authResult.AppSecret};
 

@@ -12,23 +12,29 @@ import {
   useToast
 } from "@chakra-ui/react";
 import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
-import ApplicationForm from "components/Forms/Application/ApplicationForm";
+import MarkdownTwoSplit from "components/Markdown/MarkdownTwoSplit";
 import { AppViewContext } from "contexts/AppViewContext";
-import React, { FC, useCallback, useContext } from "react";
+import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { ApplicationDto, CreateApplicationCommand } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 const CreateApplicationTriggerBtn: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { setNewCurrApp } = useContext(AppViewContext);
+  const [value, setValue] = useState("# My Application\n");
   const toast = useToast();
 
-  const addApplication = useCallback(async (form: ApplicationDto) => {
+  const addApplication = useCallback(async (title: string, description: string) => {
     const applicationClient = await genApplicationClient();
     try {
       const appResult = await applicationClient.createApplication(
         new CreateApplicationCommand({
-          application: form
+          application: new ApplicationDto({
+            title: title,
+            description: description,
+            appIdentifier: convertToIdentifier(title)
+          })
         })
       );
       setNewCurrApp(appResult.appId);
@@ -50,23 +56,23 @@ const CreateApplicationTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green"
-        onClick={onOpen}>
+      <Button rightIcon={<BsPlus />} colorScheme="green" onClick={onOpen}>
         Create new project
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create a new application</ModalHeader>
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <ApplicationForm submitCallback={addApplication}></ApplicationForm>
+            <MarkdownTwoSplit
+              startTitle="my Application.md"
+              value={value}
+              onValueChange={setValue}
+              onSave={addApplication}
+            />
           </ModalBody>
           <Divider />
           <ModalFooter>

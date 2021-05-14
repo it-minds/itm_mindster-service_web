@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Center,
   Checkbox,
-  Spinner,
   Table,
   Tbody,
   Th,
@@ -101,15 +99,12 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
   }, [checkboxes, currToken]);
 
   return (
-    <Center>
+    <Box>
       {tableData.length != 0 ? (
         <VStack width="full">
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th>Id</Th>
-                <Th>Title</Th>
-                <Th>Description</Th>
                 <Th>
                   <Checkbox
                     isChecked={allChecked}
@@ -118,6 +113,9 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
                     colorScheme="green"
                   />
                 </Th>
+                <Th>Id</Th>
+                <Th>Title</Th>
+                <Th w={0.7}>Description</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -130,22 +128,23 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
               ))}
             </Tbody>
           </Table>
-          {isLoading ? (
-            <Button variant="outline" width="full" mt={10}>
-              <Spinner></Spinner>
+          <Box w="full">
+            <Button
+              isLoading={isLoading}
+              onClick={() => onSubmit()}
+              colorScheme="blue"
+              mt={6}
+              type="submit">
+              Request actions
             </Button>
-          ) : (
-            <Button onClick={() => onSubmit()} variant="outline" width="full" mt={20} type="submit">
-              {`Request actions`}
-            </Button>
-          )}
+          </Box>
         </VStack>
       ) : (
         <Box w="full" justifyContent="center">
           No Actions in this Service yet
         </Box>
       )}
-    </Center>
+    </Box>
   );
 };
 

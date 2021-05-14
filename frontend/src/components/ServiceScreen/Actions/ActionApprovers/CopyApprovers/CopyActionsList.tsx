@@ -57,7 +57,7 @@ const CopyActionList: FC<Props> = ({ tableData, submitCallback }) => {
 
   return (
     <VStack width="full">
-      <Table variant="simple">
+      <Table variant="simple" size="sm">
         <Thead>
           <Tr>
             <Th>Id</Th>
@@ -86,11 +86,10 @@ const CopyActionList: FC<Props> = ({ tableData, submitCallback }) => {
       <Button
         onClick={() => onSubmit()}
         isLoading={isLoading}
-        variant="outline"
-        width="full"
-        mt={20}
+        colorScheme="blue"
+        mt="20"
         type="submit">
-        {`Copy approvers`}
+        Copy approvers
       </Button>
     </VStack>
   );

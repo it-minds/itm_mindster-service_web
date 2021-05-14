@@ -43,7 +43,7 @@ namespace Application.UnitTests.AppTokens.Queries
       var result = await handler.Handle(query, CancellationToken.None);
 
       result.Should().BeOfType<List<AppTokenIdDto>>();
-      result.ToList()[0].AppTokenActions.Count.Should().Be(2);
+      result.ToList()[0].AppTokenActions.Count.Should().Be(3);
       result.ToList()[0].Description.Should().Be("Den første appToken");
       result.ToList()[0].Id.Should().Be(1);
       result.Count.Should().Be(1); // Application 1 currently has 1 token with 2 actions

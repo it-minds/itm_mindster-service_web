@@ -63,7 +63,7 @@ const ApproverMenu: FC<Props> = ({ action }) => {
     <Popover placement="bottom-start">
       <PopoverTrigger>
         <Button
-          w="full"
+          colorScheme="blue"
           onClick={() => {
             setCurrAction(action);
             setOpen(!isOpen);

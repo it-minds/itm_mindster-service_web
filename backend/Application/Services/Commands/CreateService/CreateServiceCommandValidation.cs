@@ -16,9 +16,10 @@ namespace Application.Services.Commands.CreateService
       RuleFor(e => e.Service.Title)
         .MaximumLength(200)
         .NotEmpty();
-      RuleFor(e => e.Service.State)
-        .IsInEnum()
-        .NotNull();
+      RuleFor(e => e.Service.ServiceIdentifier)
+        .NotNull()
+        .MaximumLength(200)
+        .Matches("[a-z_]+");
     }
   }
 }

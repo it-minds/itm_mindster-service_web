@@ -8,12 +8,12 @@ import {
   AlertDialogOverlay,
   Box,
   Button,
+  Center,
   FormControl,
   FormLabel,
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Tag,
   useDisclosure
 } from "@chakra-ui/react";
@@ -62,18 +62,14 @@ const ActionApproverForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
 
   return (
     <Box width="full" p={6}>
-      {approvers.length == 0 ? (
-        <Box> Add approvers with the Add button and click add Approvers when finished</Box>
-      ) : (
-        <Box>
-          {approvers.map(owner => (
-            <Tag m="5px" key={owner.email}>
-              {owner.email}
-            </Tag>
-          ))}
-        </Box>
-      )}
-
+      <Box> Add approvers with the Add button and click add Approvers when finished</Box>
+      <Box>
+        {approvers.map(owner => (
+          <Tag m="5px" key={owner.email}>
+            {owner.email}
+          </Tag>
+        ))}
+      </Box>
       <form onSubmit={onSubmit}>
         <FormControl isRequired>
           <FormLabel>Email:</FormLabel>
@@ -84,26 +80,22 @@ const ActionApproverForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
               placeholder="Write the email of the user you want to add"
               onChange={event => setNewApprover({ email: event.target.value })}></Input>
             <InputRightElement>
-              <Button minWidth="50" colorScheme="blue" type="submit">
+              <Button colorScheme="blue" type="submit">
                 Add
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        {isLoading ? (
-          <Button variant="outline" width="full" mt={6}>
-            <Spinner></Spinner>
-          </Button>
-        ) : (
+        <Center>
           <Button
             isDisabled={approvers.length == 0}
+            isLoading={isLoading}
             colorScheme="blue"
-            width="full"
             onClick={onOpen}
             mt={6}>
             Add Approvers
           </Button>
-        )}
+        </Center>
         <AlertDialog
           motionPreset="slideInBottom"
           leastDestructiveRef={cancelRef}

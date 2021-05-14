@@ -20,6 +20,7 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
 import { AppTokenCreateDto, CreateAppTokenCommand } from "services/backend/nswagts";
+import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
 import ThreeStepShower from "../../Common/ThreeStepShower";
 
@@ -35,7 +36,12 @@ const CreateTokenTriggerBtn: FC = () => {
       try {
         const result = await client.createAppToken(
           currApplication.id,
-          new CreateAppTokenCommand({ appToken: metaData })
+          new CreateAppTokenCommand({
+            appToken: new AppTokenCreateDto({
+              description: metaData.description,
+              tokenIdentifier: convertToIdentifier(metaData.tokenIdentifier)
+            })
+          })
         );
         fetchUpdatedToken(result);
         toast({
@@ -52,8 +58,8 @@ const CreateTokenTriggerBtn: FC = () => {
           isClosable: true
         });
       }
-      onClose();
       setOpen(true);
+      onClose();
     },
     [currApplication]
   );
@@ -61,12 +67,7 @@ const CreateTokenTriggerBtn: FC = () => {
   if (currApplication == null) return null;
   return (
     <>
-      <Button
-        onClick={onOpen}
-        rightIcon={<BsPlus />}
-        borderWidth="1px"
-        borderColor="black"
-        bgColor="green">
+      <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
         Create new token
       </Button>
       <ServiceLibraryDrawer Open={open} setOpen={setOpen} />

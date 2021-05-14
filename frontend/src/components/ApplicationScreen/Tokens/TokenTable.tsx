@@ -12,16 +12,11 @@ const TokenTable: FC = () => {
   return (
     <VStack w="full" align="left">
       <Heading size="h3">Tokens:</Heading>
-      <Table borderWidth="2px" variant="striped" colorScheme="blue" size="md">
+      <Table borderWidth="1px" variant="striped" colorScheme="gray" size="sm">
         <Thead>
           <Tr>
-            <Th>
-              {/* (currently id since token doesn't have name */}
-              <Center>Name</Center>
-            </Th>
-            <Th w={0.7}>
-              <Center>Description</Center>
-            </Th>
+            <Th>Name</Th>
+            <Th w={0.7}>Description</Th>
             <Th>
               <Center>Actions</Center>
             </Th>

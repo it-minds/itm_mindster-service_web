@@ -14,7 +14,7 @@ const AppTable: FC = () => {
         <Tr>
           <Th></Th>
           <Th w={0.49}>Name</Th>
-          <Th w={0.49}>ID</Th>
+          <Th w={0.49}>Identifier</Th>
         </Tr>
       </Thead>
       <Tbody>

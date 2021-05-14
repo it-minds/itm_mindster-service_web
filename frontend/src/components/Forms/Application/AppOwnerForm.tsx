@@ -8,12 +8,12 @@ import {
   AlertDialogOverlay,
   Box,
   Button,
+  Center,
   FormControl,
   FormLabel,
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Tag,
   useDisclosure
 } from "@chakra-ui/react";
@@ -62,17 +62,14 @@ const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
 
   return (
     <Box width="full" p={6}>
-      {appOwners.length == 0 ? (
-        <Box> Add owners with the Add button and click add owners when finished</Box>
-      ) : (
-        <Box>
-          {appOwners.map(owner => (
-            <Tag m="5px" key={owner.email}>
-              {owner.email}
-            </Tag>
-          ))}
-        </Box>
-      )}
+      <Box> Add owners with the Add button and click add owners when finished</Box>
+      <Box>
+        {appOwners.map(owner => (
+          <Tag m="5px" key={owner.email}>
+            {owner.email}
+          </Tag>
+        ))}
+      </Box>
 
       <form onSubmit={onSubmit}>
         <FormControl isRequired>
@@ -82,28 +79,26 @@ const AppOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
               type="email"
               value={newOwner?.email ?? ""}
               placeholder="Write the email of the user you want to add"
-              onChange={event => setNewOwner({ email: event.target.value })}></Input>
+              onChange={event => setNewOwner({ email: event.target.value })}
+            />
             <InputRightElement>
-              <Button minWidth="50" colorScheme="blue" type="submit">
+              <Button colorScheme="blue" type="submit">
                 Add
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        {isLoading ? (
-          <Button variant="outline" width="full" mt={6}>
-            <Spinner></Spinner>
-          </Button>
-        ) : (
+        <Center>
           <Button
             isDisabled={appOwners.length == 0}
+            isLoading={isLoading}
             colorScheme="blue"
-            width="full"
             onClick={onOpen}
             mt={6}>
             add owners
           </Button>
-        )}
+        </Center>
+
         <AlertDialog
           motionPreset="slideInBottom"
           leastDestructiveRef={cancelRef}

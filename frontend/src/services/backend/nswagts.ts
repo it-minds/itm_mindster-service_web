@@ -137,7 +137,8 @@ export interface IApplicationClient {
     getAllAppTokens(onlyPending?: boolean | undefined): Promise<AppTokenIdDto[]>;
     getAppTokenById(id: number): Promise<AppTokenIdDto>;
     createAuthAppToken(aid: string | null, command: CreateAuthAppTokenCommand, xToken?: string | null | undefined): Promise<TokenOutput>;
-    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse>;
+    updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse>;
+    updateTokenState(id: number, command: UpdateAppTokenStateCommand): Promise<FileResponse>;
 }
 
 export class ApplicationClient extends ClientBase implements IApplicationClient {
@@ -614,7 +615,7 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
         return Promise.resolve<TokenOutput>(<any>null);
     }
 
-    updateAppTokenActions(id: number, command: UpdateAppTokenCommand): Promise<FileResponse> {
+    updateAppTokenActions(id: number, command: UpdateAppTokenActionsCommand): Promise<FileResponse> {
         let url_ = this.baseUrl + "/api/Application/AppTokens/{id}/UpdateActions";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -640,6 +641,47 @@ export class ApplicationClient extends ClientBase implements IApplicationClient 
     }
 
     protected processUpdateAppTokenActions(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(<any>null);
+    }
+
+    updateTokenState(id: number, command: UpdateAppTokenStateCommand): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Application/AppTokens/{id}/UpdateState";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ = <RequestInit>{
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateTokenState(_response));
+        });
+    }
+
+    protected processUpdateTokenState(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -1680,6 +1722,7 @@ export interface ICreateApplicationCommand {
 export class ApplicationDto implements IApplicationDto {
     title?: string | null;
     description?: string | null;
+    appIdentifier?: string | null;
 
     constructor(data?: IApplicationDto) {
         if (data) {
@@ -1694,6 +1737,7 @@ export class ApplicationDto implements IApplicationDto {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.appIdentifier = _data["appIdentifier"] !== undefined ? _data["appIdentifier"] : <any>null;
         }
     }
 
@@ -1708,6 +1752,7 @@ export class ApplicationDto implements IApplicationDto {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["appIdentifier"] = this.appIdentifier !== undefined ? this.appIdentifier : <any>null;
         return data; 
     }
 }
@@ -1715,6 +1760,7 @@ export class ApplicationDto implements IApplicationDto {
 export interface IApplicationDto {
     title?: string | null;
     description?: string | null;
+    appIdentifier?: string | null;
 }
 
 export class UpdateApplicationCommand implements IUpdateApplicationCommand {
@@ -1946,6 +1992,7 @@ export interface ICreateAppTokenCommand {
 
 export class AppTokenCreateDto implements IAppTokenCreateDto {
     description?: string | null;
+    tokenIdentifier?: string | null;
 
     constructor(data?: IAppTokenCreateDto) {
         if (data) {
@@ -1959,6 +2006,7 @@ export class AppTokenCreateDto implements IAppTokenCreateDto {
     init(_data?: any) {
         if (_data) {
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.tokenIdentifier = _data["tokenIdentifier"] !== undefined ? _data["tokenIdentifier"] : <any>null;
         }
     }
 
@@ -1972,12 +2020,14 @@ export class AppTokenCreateDto implements IAppTokenCreateDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["tokenIdentifier"] = this.tokenIdentifier !== undefined ? this.tokenIdentifier : <any>null;
         return data; 
     }
 }
 
 export interface IAppTokenCreateDto {
     description?: string | null;
+    tokenIdentifier?: string | null;
 }
 
 export class CreateAppTokenActionsCommand implements ICreateAppTokenActionsCommand {
@@ -2106,6 +2156,7 @@ export interface IAppTokenActionDto {
 
 export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
     id?: number;
+    state?: TokenStates;
     appTokenActions?: AppTokenActionIdDto[] | null;
 
     constructor(data?: IAppTokenIdDto) {
@@ -2116,6 +2167,7 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
         super.init(_data);
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             if (Array.isArray(_data["appTokenActions"])) {
                 this.appTokenActions = [] as any;
                 for (let item of _data["appTokenActions"])
@@ -2134,6 +2186,7 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["state"] = this.state !== undefined ? this.state : <any>null;
         if (Array.isArray(this.appTokenActions)) {
             data["appTokenActions"] = [];
             for (let item of this.appTokenActions)
@@ -2146,7 +2199,15 @@ export class AppTokenIdDto extends AppTokenCreateDto implements IAppTokenIdDto {
 
 export interface IAppTokenIdDto extends IAppTokenCreateDto {
     id?: number;
+    state?: TokenStates;
     appTokenActions?: AppTokenActionIdDto[] | null;
+}
+
+export enum TokenStates {
+    Created = 0,
+    AwaitingReview = 1,
+    Reviewed = 2,
+    JwtReceived = 3,
 }
 
 export class AppTokenActionIdDto extends AppTokenActionDto implements IAppTokenActionIdDto {
@@ -2201,6 +2262,7 @@ export class Action implements IAction {
     id?: number;
     title?: string | null;
     description?: string | null;
+    actionIdentifier?: string | null;
     adminNote?: string | null;
     serviceId?: number;
     service?: Service | null;
@@ -2220,6 +2282,7 @@ export class Action implements IAction {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.actionIdentifier = _data["actionIdentifier"] !== undefined ? _data["actionIdentifier"] : <any>null;
             this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
             this.serviceId = _data["serviceId"] !== undefined ? _data["serviceId"] : <any>null;
             this.service = _data["service"] ? Service.fromJS(_data["service"]) : <any>null;
@@ -2238,6 +2301,7 @@ export class Action implements IAction {
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["actionIdentifier"] = this.actionIdentifier !== undefined ? this.actionIdentifier : <any>null;
         data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
         data["serviceId"] = this.serviceId !== undefined ? this.serviceId : <any>null;
         data["service"] = this.service ? this.service.toJSON() : <any>null;
@@ -2249,6 +2313,7 @@ export interface IAction {
     id?: number;
     title?: string | null;
     description?: string | null;
+    actionIdentifier?: string | null;
     adminNote?: string | null;
     serviceId?: number;
     service?: IService | null;
@@ -2257,6 +2322,7 @@ export interface IAction {
 export class Service implements IService {
     id?: number;
     title?: string | null;
+    serviceIdentifier?: string | null;
     description?: string | null;
     actions?: Action[] | null;
     state?: ServiceStates;
@@ -2281,6 +2347,7 @@ export class Service implements IService {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.serviceIdentifier = _data["serviceIdentifier"] !== undefined ? _data["serviceIdentifier"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             if (Array.isArray(_data["actions"])) {
                 this.actions = [] as any;
@@ -2302,6 +2369,7 @@ export class Service implements IService {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["serviceIdentifier"] = this.serviceIdentifier !== undefined ? this.serviceIdentifier : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         if (Array.isArray(this.actions)) {
             data["actions"] = [];
@@ -2316,6 +2384,7 @@ export class Service implements IService {
 export interface IService {
     id?: number;
     title?: string | null;
+    serviceIdentifier?: string | null;
     description?: string | null;
     actions?: IAction[] | null;
     state?: ServiceStates;
@@ -2507,10 +2576,10 @@ export interface IService2 {
     access?: string[];
 }
 
-export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
+export class UpdateAppTokenActionsCommand implements IUpdateAppTokenActionsCommand {
     appToken?: AppTokenUpdateDto | null;
 
-    constructor(data?: IUpdateAppTokenCommand) {
+    constructor(data?: IUpdateAppTokenActionsCommand) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2526,9 +2595,9 @@ export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
         }
     }
 
-    static fromJS(data: any): UpdateAppTokenCommand {
+    static fromJS(data: any): UpdateAppTokenActionsCommand {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateAppTokenCommand();
+        let result = new UpdateAppTokenActionsCommand();
         result.init(data);
         return result;
     }
@@ -2540,7 +2609,7 @@ export class UpdateAppTokenCommand implements IUpdateAppTokenCommand {
     }
 }
 
-export interface IUpdateAppTokenCommand {
+export interface IUpdateAppTokenActionsCommand {
     appToken?: IAppTokenUpdateDto | null;
 }
 
@@ -2598,6 +2667,7 @@ export interface IAppTokenUpdateDto {
 export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
     state?: ServiceStates;
     rejectionReason?: string | null;
+    id?: number;
 
     constructor(data?: IAppTokenActionUpdateDto) {
         if (data) {
@@ -2612,6 +2682,7 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
         if (_data) {
             this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
             this.rejectionReason = _data["rejectionReason"] !== undefined ? _data["rejectionReason"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
         }
     }
 
@@ -2626,6 +2697,7 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
         data = typeof data === 'object' ? data : {};
         data["state"] = this.state !== undefined ? this.state : <any>null;
         data["rejectionReason"] = this.rejectionReason !== undefined ? this.rejectionReason : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
         return data; 
     }
 }
@@ -2633,6 +2705,43 @@ export class AppTokenActionUpdateDto implements IAppTokenActionUpdateDto {
 export interface IAppTokenActionUpdateDto {
     state?: ServiceStates;
     rejectionReason?: string | null;
+    id?: number;
+}
+
+export class UpdateAppTokenStateCommand implements IUpdateAppTokenStateCommand {
+    newState?: TokenStates;
+
+    constructor(data?: IUpdateAppTokenStateCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.newState = _data["newState"] !== undefined ? _data["newState"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateAppTokenStateCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateAppTokenStateCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["newState"] = this.newState !== undefined ? this.newState : <any>null;
+        return data; 
+    }
+}
+
+export interface IUpdateAppTokenStateCommand {
+    newState?: TokenStates;
 }
 
 export class CreateExampleChildCommand implements ICreateExampleChildCommand {
@@ -2905,7 +3014,7 @@ export interface ICreateServiceCommand {
 export class ServiceDto implements IServiceDto {
     title?: string | null;
     description?: string | null;
-    state?: ServiceStates;
+    serviceIdentifier?: string | null;
 
     constructor(data?: IServiceDto) {
         if (data) {
@@ -2920,7 +3029,7 @@ export class ServiceDto implements IServiceDto {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
-            this.state = _data["state"] !== undefined ? _data["state"] : <any>null;
+            this.serviceIdentifier = _data["serviceIdentifier"] !== undefined ? _data["serviceIdentifier"] : <any>null;
         }
     }
 
@@ -2935,7 +3044,7 @@ export class ServiceDto implements IServiceDto {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
-        data["state"] = this.state !== undefined ? this.state : <any>null;
+        data["serviceIdentifier"] = this.serviceIdentifier !== undefined ? this.serviceIdentifier : <any>null;
         return data; 
     }
 }
@@ -2943,7 +3052,7 @@ export class ServiceDto implements IServiceDto {
 export interface IServiceDto {
     title?: string | null;
     description?: string | null;
-    state?: ServiceStates;
+    serviceIdentifier?: string | null;
 }
 
 export class ServiceIdDto extends ServiceDto implements IServiceIdDto {
@@ -2993,6 +3102,7 @@ export interface IServiceIdDto extends IServiceDto {
 
 export class ActionDto implements IActionDto {
     title?: string | null;
+    actionIdentifier?: string | null;
     description?: string | null;
     adminNote?: string | null;
 
@@ -3008,6 +3118,7 @@ export class ActionDto implements IActionDto {
     init(_data?: any) {
         if (_data) {
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.actionIdentifier = _data["actionIdentifier"] !== undefined ? _data["actionIdentifier"] : <any>null;
             this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
             this.adminNote = _data["adminNote"] !== undefined ? _data["adminNote"] : <any>null;
         }
@@ -3023,6 +3134,7 @@ export class ActionDto implements IActionDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["actionIdentifier"] = this.actionIdentifier !== undefined ? this.actionIdentifier : <any>null;
         data["description"] = this.description !== undefined ? this.description : <any>null;
         data["adminNote"] = this.adminNote !== undefined ? this.adminNote : <any>null;
         return data; 
@@ -3031,6 +3143,7 @@ export class ActionDto implements IActionDto {
 
 export interface IActionDto {
     title?: string | null;
+    actionIdentifier?: string | null;
     description?: string | null;
     adminNote?: string | null;
 }
