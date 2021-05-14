@@ -24,7 +24,32 @@ export const table: Locale = {
     close: "Luk",
     submit: "Indsend",
     showMore: "Vis mere",
-    copy: "Kopier"
+    copy: "Kopier",
+    yes: "Ja",
+    no: "Nej"
+  },
+  googleSearch: {
+    addOwner: "Tilføj ejer",
+    addOwnerText:
+      "Tilføj en ny ejer ved at søge efter personen nedenunder og derefter trykke på deres navn",
+    addApprover: "Tilføj godkender",
+    addApproverText:
+      "Tilføj en godkender ved at søge efter personen nedenunder og derefter trykke på deres navn",
+    searchPlaceholder: "Søg efter en It-Minds medarbejder"
+  },
+  alerts: {
+    approvers: {
+      header: "Bekræft godkendere der skal tilføjes",
+      text: "Er du sikker på at du vill tilføje disse godkendere til din action?"
+    },
+    serviceOwners: {
+      header: "Bekræft ejere der skal tilføjes",
+      text: "Er du sikker på at du vill tilføje disse godkendere til din service?"
+    },
+    appOwners: {
+      header: "Bekræft ejere der skal tilføjes",
+      text: "Er du sikker på at du vill tilføje disse godkendere til din applikation?"
+    }
   },
   entityNames: {
     single: {
@@ -116,21 +141,21 @@ export const table: Locale = {
   },
   serviceScreen: {
     modalHeaders: {
-      selectService: "Vælg Service"
+      selectService: "Vælg Service",
+      addOwners: "Tilføj ejere til: {{service}}",
+      addAction: "Opret ny handling"
     },
     buttons: {
-      createNewService: "Opret ny service",
+      createNewService: "Opret service",
       toAppPage: "Applikation side",
       addOwners: "Tilføj ejere",
-      createNewAction: "Opret ny handling;"
+      createNewAction: "Opret handling"
     },
     actions: {
-      viewApprovers: "Hvis godkendere",
+      viewApprovers: "Vis godkendere",
       viewApproversHeader: "Handlings godkendere for: {{title}}",
       addApprovers: "Tilføj godkendere",
       addApproversHeader: "Tilføj godkendere til: {{title}}",
-      addApproversInfo:
-        "Tilføj approvers ved at søge efter dem nedenunder og derefter trykke på deres navn. Når du er færdig tryk på knappen til højre",
       copyApproversToAnotherAction: "Kopier godkendere til en anden handling",
       copyApproversHeader: "Kopier følgende godkendere fra: {{title}}",
       copyApprovers: "Kopier godkendere"

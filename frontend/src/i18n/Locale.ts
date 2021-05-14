@@ -14,6 +14,29 @@ export interface Locale {
     submit: string;
     showMore: string;
     copy: string;
+    yes: string;
+    no: string;
+  };
+  googleSearch: {
+    addOwner: string;
+    addOwnerText: string;
+    addApprover: string;
+    addApproverText: string;
+    searchPlaceholder: string;
+  };
+  alerts: {
+    approvers: {
+      header: string;
+      text: string;
+    };
+    serviceOwners: {
+      header: string;
+      text: string;
+    };
+    appOwners: {
+      header: string;
+      text: string;
+    };
   };
   entityNames: {
     single: {
@@ -89,6 +112,8 @@ export interface Locale {
   serviceScreen: {
     modalHeaders: {
       selectService: string;
+      addOwners: string;
+      addAction: string;
     };
     buttons: {
       createNewService: string;
@@ -101,7 +126,6 @@ export interface Locale {
       viewApproversHeader: string;
       addApprovers: string;
       addApproversHeader: string;
-      addApproversInfo: string;
       copyApproversToAnotherAction: string;
       copyApproversHeader: string;
       copyApprovers: string;

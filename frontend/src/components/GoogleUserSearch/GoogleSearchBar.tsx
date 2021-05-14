@@ -6,6 +6,7 @@ import { Box, Flex } from "@chakra-ui/layout";
 import { Popover, PopoverBody, PopoverContent } from "@chakra-ui/popover";
 import { Tag } from "@chakra-ui/tag";
 import { BsX } from "@react-icons/all-files/bs/BsX";
+import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
 import { genGoogleUserClient } from "services/backend/apiClients";
@@ -22,6 +23,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
   const [users, dispatchUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
   const [addedUsers, dispatchAddedUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const { t } = useLocales();
 
   const fetchGoogleUsers = useCallback(async () => {
     try {
@@ -97,7 +99,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
           borderWidth="1px"
           value={keyword}
           onFocus={() => fetchGoogleUsers()}
-          placeholder={"Search for an It-Minds Employee"}
+          placeholder={t("googleSearch.searchPlaceholder")}
           onChange={e => setKeyword(e.target.value)}
         />
       </Box>

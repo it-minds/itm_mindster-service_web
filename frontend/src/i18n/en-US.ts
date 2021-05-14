@@ -4,52 +4,74 @@ export const table: Locale = {
   locale: "English (US)",
 
   example: {
-    title: "Service tabel",
-    byLine: "Når dataen er indhentet vises den her",
-    dataLine: "{{type}} Barn {{id}} ",
-
+    title: "Service Table",
+    byLine: "When data is loading it is displayed below",
+    dataLine: "{{type}} Child {{id}} ",
     actions: {
-      addNew: "Tilføj et nyt barn"
+      addNew: "Add new Child"
     }
   },
   entityVariables: {
-    name: "Navn",
-    identifier: "Identifikator",
-    description: "Beskrivelse",
-    title: "Titel",
-    actions: "Handlinger",
+    name: "Name",
+    identifier: "Identifier",
+    description: "Description",
+    title: "Title",
+    actions: "Actions",
     adminNote: "Admin note"
   },
   commonButtons: {
-    close: "Luk",
-    submit: "Indsend",
-    showMore: "Vis mere",
-    copy: "Kopier"
+    close: "Close",
+    submit: "Submit",
+    showMore: "Show more",
+    copy: "Copy",
+    yes: "Yes",
+    no: "No"
+  },
+  googleSearch: {
+    addOwner: "Add owner",
+    addOwnerText: "Add owners below by searching for the person and clicking their name",
+    addApprover: "Add approver",
+    addApproverText: "Add approvers below by searching for the person and clicking their name",
+    searchPlaceholder: "Search for an It-Minds employee"
+  },
+  alerts: {
+    approvers: {
+      header: "Confirm approvers to be added",
+      text: "Are you sure you want to add these approvers to your action?"
+    },
+    serviceOwners: {
+      header: "Confirm owners to be added",
+      text: "Are you sure you want to add these owners to your service?"
+    },
+    appOwners: {
+      header: "Confirm owners to be added",
+      text: "Are you sure you want to add these owners to your application?"
+    }
   },
   entityNames: {
     single: {
-      application: "Applikation",
+      application: "Application",
       service: "Service",
-      action: "Handling",
+      action: "Action",
       token: "Token",
-      user: "Bruger",
-      approver: "Godkender",
-      owner: "Ejer"
+      user: "User",
+      approver: "Approver",
+      owner: "Owner"
     },
     plural: {
-      applications: "Applikationer",
+      applications: "Applications",
       services: "Services",
-      actions: "Handlinger",
+      actions: "Actions",
       tokens: "Tokens",
-      users: "Brugere",
-      approvers: "Godkendere",
-      owners: "Ejere"
+      users: "Users",
+      approvers: "Approvers",
+      owners: "Owners"
     }
   },
   SelectorTabs: {
-    recent: "Nylige",
-    starred: "Stjernemærket",
-    all: "Alle"
+    recent: "Recent",
+    starred: "Starred",
+    all: "All"
   },
   applicationScreen: {
     serviceLibrary: {
@@ -116,24 +138,24 @@ export const table: Locale = {
   },
   serviceScreen: {
     modalHeaders: {
-      selectService: "Vælg Service"
+      selectService: "Select Service",
+      addOwners: "Add owners to: {{service}}",
+      addAction: "Add action"
     },
     buttons: {
-      createNewService: "Opret ny service",
-      toAppPage: "Applikation side",
-      addOwners: "Tilføj ejere",
-      createNewAction: "Opret ny handling;"
+      createNewService: "Create new service",
+      toAppPage: "Application Page",
+      addOwners: "Add owners",
+      createNewAction: "Create action"
     },
     actions: {
-      viewApprovers: "Hvis godkendere",
-      viewApproversHeader: "Handlings godkendere for: {{title}}",
-      addApprovers: "Tilføj godkendere",
-      addApproversHeader: "Tilføj godkendere til: {{title}}",
-      addApproversInfo:
-        "Tilføj approvers ved at søge efter dem nedenunder og derefter trykke på deres navn. Når du er færdig tryk på knappen til højre",
-      copyApproversToAnotherAction: "Kopier godkendere til en anden handling",
-      copyApproversHeader: "Kopier følgende godkendere fra: {{title}}",
-      copyApprovers: "Kopier godkendere"
+      viewApprovers: "View approvers",
+      viewApproversHeader: "Action approvers for: {{title}}",
+      addApprovers: "Add approvers",
+      addApproversHeader: "Add approvers to: {{title}}",
+      copyApproversToAnotherAction: "Copy approvers to another action",
+      copyApproversHeader: "Copy the following approvers from: {{title}}",
+      copyApprovers: "Copy approvers"
     }
   }
 };

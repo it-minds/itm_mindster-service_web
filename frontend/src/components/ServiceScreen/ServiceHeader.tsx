@@ -6,6 +6,7 @@ import MLogo from "components/Common/MLogo";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { SignalRContext } from "contexts/SignalRContext";
 import { useColors } from "hooks/useColors";
+import { useLocales } from "hooks/useLocales";
 import Link from "next/link";
 import { FC, useContext, useEffect } from "react";
 
@@ -16,6 +17,7 @@ const ServiceHeader: FC = () => {
   const { serviceHeaderBg } = useColors();
   const { fetchPendingTokens } = useContext(ServiceViewContext);
   const { connection } = useContext(SignalRContext);
+  const { t } = useLocales();
 
   useEffect(() => {
     connection
@@ -49,7 +51,7 @@ const ServiceHeader: FC = () => {
       <Box ml="2px" alignContent="end" justifyContent="right">
         <Link href="/ApplicationScreen">
           <Button rightIcon={<BsArrowRight />} colorScheme="purple">
-            Application Page
+            {t("serviceScreen.buttons.toAppPage")}
           </Button>
         </Link>
       </Box>

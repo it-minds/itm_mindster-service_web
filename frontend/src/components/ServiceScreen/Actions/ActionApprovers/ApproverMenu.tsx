@@ -11,6 +11,7 @@ import {
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import { useButtonSizes } from "hooks/useButtonSizes";
+import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import {
@@ -28,6 +29,7 @@ type Props = {
 };
 const ApproverMenu: FC<Props> = ({ action }) => {
   const [isOpen, setOpen] = useState(false);
+  const { t } = useLocales();
   const { approvers, fetchActionApprovers, currAction, setCurrAction } = useContext(
     ServiceViewContext
   );
@@ -72,7 +74,7 @@ const ApproverMenu: FC<Props> = ({ action }) => {
             setCurrAction(action);
             setOpen(!isOpen);
           }}>
-          Actions
+          {t("entityVariables.actions")}
         </Button>
       </PopoverTrigger>
       <PopoverContent minWidth="200" padding="0" boxSize="min-content" margin="0">
