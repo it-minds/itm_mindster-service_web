@@ -25,7 +25,8 @@ export const table: Locale = {
     submit: "Indsend",
     showMore: "Vis mere",
     showLess: "Vis mindre",
-    copy: "Kopier",
+    copy: "Kopiér",
+    copied: "Kopieret",
     yes: "Ja",
     no: "Nej"
   },
@@ -85,7 +86,7 @@ export const table: Locale = {
       requestAccess: "Anmod om adgang"
     },
     modalHeaders: {
-      addOwners: "Tilføj ejere",
+      addOwners: "Tilføj ejere til: {{application}}",
       selectApp: "Vælg applikation",
       createNewToken: "Opret ny Token",
       serviceLibrary: "Service Bibliotek",
@@ -97,8 +98,8 @@ export const table: Locale = {
     buttons: {
       createApp: "Opret ny applikation",
       toServicePage: "Service siden",
-      addOwners: "Tilføj ejerer;",
-      createToken: "Opret ny token;"
+      addOwners: "Tilføj ejerer",
+      createToken: "Opret ny token"
     },
     tokens: {
       actions: {

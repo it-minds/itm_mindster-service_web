@@ -25,6 +25,7 @@ export const table: Locale = {
     showMore: "Show more",
     showLess: "Show less",
     copy: "Copy",
+    copied: "Copied",
     yes: "Yes",
     no: "No"
   },
@@ -76,34 +77,34 @@ export const table: Locale = {
   },
   applicationScreen: {
     serviceLibrary: {
-      searchForService: "Søg efter en Service",
-      amountOfActions: "Antal handlinger",
-      requested: "Anmodet",
-      requestAccess: "Anmod om adgang"
+      searchForService: "Search for a service",
+      amountOfActions: "Amount of actions: {{}}",
+      requested: "Requested: {{x}}/{{y}} ",
+      requestAccess: "Request actions"
     },
     modalHeaders: {
-      addOwners: "Tilføj ejere",
-      selectApp: "Vælg applikation",
-      createNewToken: "Opret ny Token",
-      serviceLibrary: "Service Bibliotek",
-      tokenStatus: "Status for: ",
-      getJwt: "Få JWT'en for din godkendte token;",
-      generateAppSecret: "Er du sikker på at du gerne vil generere din applikations AppSecret?",
-      hereIsYourAppSecret: "Her er din AppSecret"
+      addOwners: "Add owners to: {{application}}",
+      selectApp: "Select application",
+      createNewToken: "Create new token",
+      serviceLibrary: "Service Library",
+      tokenStatus: "Status of: ",
+      getJwt: "Get JWT for your approved token;",
+      generateAppSecret: "Are you sure you want to generate the AppSecret for your application",
+      hereIsYourAppSecret: "Here is your AppSecret"
     },
     buttons: {
-      createApp: "Opret ny applikation",
-      toServicePage: "Service siden",
-      addOwners: "Tilføj ejerer;",
-      createToken: "Opret ny token;"
+      createApp: "Create new application",
+      toServicePage: "Service Page",
+      addOwners: "Add owners",
+      createToken: "Create new token"
     },
     tokens: {
       actions: {
-        browseServices: "Find services",
-        requestReview: "Anmod om gennemgang",
-        checkStatus: "Se status",
-        generateJwt: "Generer JWT",
-        requestActions: "Andmod om handlinger"
+        browseServices: "Browse services",
+        requestReview: "Request review",
+        checkStatus: "Check status",
+        generateJwt: "Generate JWT",
+        requestActions: "Request actions"
       },
       infoBoxes: {
         createTokenInfo: `(Danish)Here you can create a AppToken for your application. AppTokens are used to define a scope of services that your
@@ -129,11 +130,11 @@ export const table: Locale = {
       },
       appSecret: {
         appSecretPlaceholder: "Du fik denne da du oprettede applikationen",
-        appSecretWarningBar: `Du har ikke generet en AppSecret til denne applikation. Dette er nødvendigt før du kan oprette tokens
-        og derfra JWT's`,
-        appSecretWarning: `Dette kan kun gøres en gang og du er selv ansvarlig for at holde din secret sikker og hemmelig.
-        Du bruger AppSecret'en til at signere dine tokens for derefter at få genereret en JWT`,
-        generateSecret: "Generer AppSecret"
+        appSecretWarningBar: `You have not generated your AppSecret for this Application.
+         This is required to generate your AppTokens and JWT`,
+        appSecretWarning: `This can only be done once and you are responsible for keeping it safe and secure. The
+        AppSecret is used for signing your AppTokens in order to generate a JWT.`,
+        generateSecret: "Generate AppSecret"
       }
     }
   },

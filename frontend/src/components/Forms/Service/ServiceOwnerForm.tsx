@@ -83,10 +83,10 @@ const ServiceOwnerForm: FC<Props> = ({ submitCallback, AppMetaData }) => {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>{t("alerts.approvers.header")}</AlertDialogHeader>
+          <AlertDialogHeader>{t("alerts.serviceOwners.header")}</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            {t("alerts.approvers.text")}
+            {t("alerts.serviceOwners.text")}
             <Box>
               {serviceOwners.map(owner => (
                 <Tag m="5px" key={owner.email}>

@@ -15,6 +15,7 @@ export interface Locale {
     showMore: string;
     showLess: string;
     copy: string;
+    copied: string;
     yes: string;
     no: string;
   };
