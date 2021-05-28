@@ -23,10 +23,12 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
   const [users, dispatchUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
   const [addedUsers, dispatchAddedUsers] = useReducer(ListReducer<IUser>("primaryEmail"), []);
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useLocales();
 
   const fetchGoogleUsers = useCallback(async () => {
     try {
+      setIsLoading(true);
       const client = await genGoogleUserClient();
       const data = await client.getAllUsers();
 
@@ -38,6 +40,8 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
       else logger.info("UserClient.getAllUsers got no data");
     } catch (err) {
       logger.warn("UserClient.getAllUsers Error", err);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -103,7 +107,7 @@ const GoogleSearchBar: FC<Props> = ({ submitUsers }) => {
           onChange={e => setKeyword(e.target.value)}
         />
       </Box>
-      <Popover autoFocus={false} isOpen={filteredUsers.length != 0}>
+      <Popover autoFocus={false} isOpen={filteredUsers.length != 0 || isLoading}>
         <PopoverContent>
           <PopoverBody px="0px">
             <UserList submitCallback={addUser} users={filteredUsers} keyword={keyword} />
