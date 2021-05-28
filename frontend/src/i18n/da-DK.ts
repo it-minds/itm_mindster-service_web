@@ -180,5 +180,19 @@ export const table: Locale = {
         rejectionReason: "Årsag til afvisning"
       }
     }
+  },
+  toasts: {
+    success: "Success",
+    error: "Fejl",
+    submitted: "Indsendt",
+    submittedE: "Indsendelse fejlede:",
+    xCreated: `{{x}} opretted`,
+    xCreatedE: "{{x}} blev ikke oprettet, fejl:",
+    xAdded: `{{x}} blev tilføjet`,
+    xAddedE: "{{x}} blev ikke tilføjet, fejl:",
+    accessRequested: "Anmod om adgang",
+    accessRequestedE: "Anmod om adgang fejlede: ",
+    reviewRequested: "Gennemgang efterspurgt",
+    reviewRequestedE: "Efterspørgsel på gennemgang fejlede:"
   }
 };

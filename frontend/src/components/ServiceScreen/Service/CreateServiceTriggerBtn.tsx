@@ -41,14 +41,16 @@ const CreateServiceTriggerBtn: FC = () => {
       );
       setNewCurrService(serviceId);
       toast({
-        description: "Service was added",
+        description: t("toasts.xCreated", { x: t("entityNames.single.service") }),
         status: "success",
         duration: 5000,
         isClosable: true
       });
     } catch (error) {
       toast({
-        description: `PostService responded: ${error}`,
+        description: `${t("toasts.xCreatedE", {
+          x: t("entityNames.single.service")
+        })} ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true

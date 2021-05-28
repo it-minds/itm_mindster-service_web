@@ -46,7 +46,7 @@ const AppSecretResult: FC<Props> = ({ submitCallback, currAppId, isLoading, setI
       onOpen();
     } catch (error) {
       toast({
-        description: `GenerateAppSecret responded: ${error}`,
+        description: `${t("toasts.error")} ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true

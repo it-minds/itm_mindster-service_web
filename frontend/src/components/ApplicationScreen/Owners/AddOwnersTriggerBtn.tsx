@@ -37,14 +37,17 @@ const AddOwnersTriggerBtn: FC = () => {
           })
         );
         toast({
-          description: "Owners were added",
+          description: t("toasts.xAdded", { x: t("entityNames.plural.owners") }),
           status: "success",
           duration: 5000,
           isClosable: true
         });
       } catch (error) {
         toast({
-          description: `PostAppOwners responded: ${error}`,
+          description: `${t("toasts.xAddedE", {
+            x: t("entityNames.plural.owners")
+          })} ${error}`,
+
           status: "error",
           duration: 5000,
           isClosable: true

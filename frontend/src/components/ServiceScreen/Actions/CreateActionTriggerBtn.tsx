@@ -43,14 +43,16 @@ const CreateActionTriggerBtn: FC = () => {
         );
 
         toast({
-          description: "Action was created",
+          description: t("toasts.xCreated", { x: t("entityNames.single.action") }),
           status: "success",
           duration: 5000,
           isClosable: true
         });
       } catch (error) {
         toast({
-          description: `CreateAction responded: ${error}`,
+          description: `${t("toasts.xCreatedE", {
+            x: t("entityNames.single.action")
+          })} ${error}`,
           status: "error",
           duration: 5000,
           isClosable: true

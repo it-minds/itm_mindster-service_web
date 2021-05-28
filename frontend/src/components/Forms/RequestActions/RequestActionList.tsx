@@ -103,7 +103,8 @@ const RequestActionList: FC<ActionTableProps> = ({
         })
       );
       toast({
-        description: "Access was requested",
+        description: t("toasts.accessRequested"),
+
         status: "success",
         duration: 5000,
         isClosable: true
@@ -112,7 +113,8 @@ const RequestActionList: FC<ActionTableProps> = ({
       submitCallBack();
     } catch (error) {
       toast({
-        description: `PutAppToken responded: ${error}`,
+        description: `${t("toasts.accessRequestedE")} ${error}`,
+
         status: "error",
         duration: 5000,
         isClosable: true

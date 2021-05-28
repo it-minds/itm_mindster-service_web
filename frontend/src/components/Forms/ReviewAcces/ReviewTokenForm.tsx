@@ -47,14 +47,14 @@ const ReviewTokenForm: FC<Props> = ({ token }) => {
           })
         );
         toast({
-          description: "Submission was received",
+          description: t("toasts.submitted"),
           status: "success",
           duration: 5000,
           isClosable: true
         });
       } catch (error) {
         toast({
-          description: `UpdateAppToken responded: ${error}`,
+          description: `${t("toast.submittedE")} ${error}`,
           status: "error",
           duration: 5000,
           isClosable: true

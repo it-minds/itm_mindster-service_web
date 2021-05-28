@@ -177,5 +177,19 @@ export const table: Locale = {
         rejectionReason: "Rejection reason"
       }
     }
+  },
+  toasts: {
+    success: "success",
+    error: "Error",
+    submitted: "Submitted",
+    submittedE: "Submission failed:",
+    xCreated: `{{x}} created`,
+    xCreatedE: "{{x}} was not created, error:",
+    xAdded: `{{x}} was not added`,
+    xAddedE: "{{x}} was not added, error:",
+    accessRequested: "Access was requested",
+    accessRequestedE: "Access request failed:",
+    reviewRequested: "Review requested",
+    reviewRequestedE: "Review request failed:"
   }
 };

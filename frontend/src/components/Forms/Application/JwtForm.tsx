@@ -57,7 +57,10 @@ const JwtForm: FC<Props> = ({ aid, submitCallback, services, tokenIdentifier }) 
       onOpen();
     } catch (error) {
       toast({
-        description: `CreateJwt responded: ${error}`,
+        description: `${t("toasts.xCreatedE", {
+          x: "JWT"
+        })} ${error}`,
+
         status: "error",
         duration: 5000,
         isClosable: true

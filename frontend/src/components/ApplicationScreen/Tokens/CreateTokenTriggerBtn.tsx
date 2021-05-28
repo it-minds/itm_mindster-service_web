@@ -20,7 +20,6 @@ import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
-import { UnsavedChangesContext } from "contexts/UnsavedChangesContext";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -52,7 +51,7 @@ const CreateTokenTriggerBtn: FC = () => {
         );
         fetchUpdatedToken(result);
         toast({
-          description: "AppToken was created",
+          description: t("toasts.xCreated", { x: t("entityNames.single.token") }),
           status: "success",
           duration: 5000,
           isClosable: true
@@ -61,7 +60,9 @@ const CreateTokenTriggerBtn: FC = () => {
         onClose();
       } catch (error) {
         toast({
-          description: `CreateAppToken responded: ${error}`,
+          description: `${t("toasts.xCreatedE", {
+            x: t("entityNames.single.token")
+          })} ${error}`,
           status: "error",
           duration: 5000,
           isClosable: true

@@ -41,14 +41,16 @@ const CreateApplicationTriggerBtn: FC = () => {
       );
       setNewCurrApp(appId);
       toast({
-        description: `Application created`,
+        description: t("toasts.xCreated", { x: t("entityNames.single.application") }),
         status: "success",
         duration: 5000,
         isClosable: true
       });
     } catch (error) {
       toast({
-        description: `PostApplication responded: ${error}`,
+        description: `${t("toasts.xCreatedE", {
+          x: t("entityNames.single.application")
+        })} ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true

@@ -45,14 +45,16 @@ const ApproverMenu: FC<Props> = ({ action }) => {
         })
       );
       toast({
-        description: "Approvers were added",
+        description: t("toasts.xAdded", { x: t("entityNames.plural.approvers") }),
         status: "success",
         duration: 5000,
         isClosable: true
       });
     } catch (error) {
       toast({
-        description: `PostApprovers responded: ${error}`,
+        description: `${t("toasts.xAddedE", {
+          x: t("entityNames.plural.approvers")
+        })} ${error}`,
         status: "error",
         duration: 5000,
         isClosable: true

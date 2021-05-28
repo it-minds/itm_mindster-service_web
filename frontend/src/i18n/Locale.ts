@@ -151,6 +151,20 @@ export interface Locale {
       };
     };
   };
+  toasts: {
+    error: string;
+    success: string;
+    submitted: string;
+    submittedE: string;
+    xCreated: string;
+    xCreatedE: string;
+    xAdded: string;
+    xAddedE: string;
+    accessRequested: string;
+    accessRequestedE: string;
+    reviewRequested: string;
+    reviewRequestedE: string;
+  };
 
   example: {
     title: string;
