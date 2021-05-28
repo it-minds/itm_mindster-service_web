@@ -71,6 +71,8 @@ export interface Locale {
       amountOfActions: string;
       requested: string;
       requestAccess: string;
+      requestAccessExplain: string;
+      noActions: string;
     };
 
     modalHeaders: {

@@ -20,6 +20,7 @@ import { BsPlus } from "@react-icons/all-files/bs/BsPlus";
 import AppTokenForm from "components/Forms/Application/AppTokenForm";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
+import { UnsavedChangesContext } from "contexts/UnsavedChangesContext";
 import { useLocales } from "hooks/useLocales";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genApplicationClient } from "services/backend/apiClients";
@@ -85,7 +86,7 @@ const CreateTokenTriggerBtn: FC = () => {
             onClick={onOpen}
             rightIcon={<BsPlus />}
             colorScheme="green">
-            Create new token
+            {t("applicationScreen.buttons.createToken")}
           </Button>
         </Tag>
       </Tooltip>
@@ -97,9 +98,9 @@ const CreateTokenTriggerBtn: FC = () => {
           <DrawerContent>
             <DrawerHeader>
               <Flex>
-                <Box>Create a new token</Box>
+                <Box>{t("applicationScreen.modalHeaders.createNewToken")}</Box>
                 <Spacer />
-                <CloseButton onClick={onClose} />
+                <CloseButton onClick={() => onClose()} />
               </Flex>
             </DrawerHeader>
             <DrawerBody>
@@ -107,7 +108,9 @@ const CreateTokenTriggerBtn: FC = () => {
                 <Container height="full" w="4xl" maxW="unset">
                   <Flex direction="column" width="full" height="full">
                     <CollapsibleInfoBox
-                      text={t("applicationScreen.infoBoxes.createTokenInfo")}></CollapsibleInfoBox>
+                      text={t(
+                        "applicationScreen.tokens.infoBoxes.createTokenInfo"
+                      )}></CollapsibleInfoBox>
                     <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
                     <Spacer />
                     <ThreeStepShower radius={50} stepCounter={1} />

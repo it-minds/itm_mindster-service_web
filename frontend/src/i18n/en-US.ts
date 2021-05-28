@@ -78,9 +78,11 @@ export const table: Locale = {
   applicationScreen: {
     serviceLibrary: {
       searchForService: "Search for a service",
-      amountOfActions: "Amount of actions: {{}}",
+      amountOfActions: "Amount of actions: {{x}}",
       requested: "Requested: {{x}}/{{y}} ",
-      requestAccess: "Request actions"
+      requestAccess: "Request actions",
+      requestAccessExplain: "Request access to some of the following actions:",
+      noActions: "No actions in this service yet"
     },
     modalHeaders: {
       addOwners: "Add owners to: {{application}}",

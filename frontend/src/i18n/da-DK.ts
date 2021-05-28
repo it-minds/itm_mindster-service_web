@@ -81,9 +81,11 @@ export const table: Locale = {
   applicationScreen: {
     serviceLibrary: {
       searchForService: "Søg efter en Service",
-      amountOfActions: "Antal handlinger",
-      requested: "Anmodet",
-      requestAccess: "Anmod om adgang"
+      amountOfActions: "Antal handlinger: {{x}}",
+      requested: "Anmodet {{x}}/{{y}} ",
+      requestAccess: "Anmod om adgang",
+      requestAccessExplain: "Anmod om adgang til 1 eller flere af de følgende handlinger:",
+      noActions: "Denne service har ikke nogen handlinger endnu"
     },
     modalHeaders: {
       addOwners: "Tilføj ejere til: {{application}}",
@@ -93,7 +95,7 @@ export const table: Locale = {
       tokenStatus: "Status for: ",
       getJwt: "Få JWT'en for din godkendte token;",
       generateAppSecret: "Er du sikker på at du gerne vil generere din applikations AppSecret?",
-      hereIsYourAppSecret: "Her er din AppSecret"
+      hereIsYourAppSecret: "Her er din AppSecret til"
     },
     buttons: {
       createApp: "Opret ny applikation",
