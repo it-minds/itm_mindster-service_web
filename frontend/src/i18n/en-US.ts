@@ -106,7 +106,8 @@ export const table: Locale = {
         requestReview: "Request review",
         checkStatus: "Check status",
         generateJwt: "Generate JWT",
-        requestActions: "Request actions"
+        requestActions: "Request actions",
+        details: "Details"
       },
       infoBoxes: {
         createTokenInfo: `(Danish)Here you can create a AppToken for your application. AppTokens are used to define a scope of services that your

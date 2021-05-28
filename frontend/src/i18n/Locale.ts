@@ -98,6 +98,7 @@ export interface Locale {
         checkStatus: string;
         generateJwt: string;
         requestActions: string;
+        details: string;
       };
       infoBoxes: {
         createTokenInfo: string;
