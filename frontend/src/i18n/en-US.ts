@@ -112,7 +112,7 @@ export const table: Locale = {
       infoBoxes: {
         createTokenInfo: `(Danish)Here you can create a AppToken for your application. AppTokens are used to define a scope of services that your
         application wants to use. To create a AppToken you must first write a name that needs to be unique for the given application.
-        The name will be converted into a identifer string which will be used throughout the application. Next you must write a 
+        The name will be converted into a identifier string which will be used throughout the application. Next you must write a 
         description of your tokens scope. Here you should describe what actions you are going to need as well as to what purpose.`,
         BrowseTokenInfo: `(DANISH)This is the service library where you can see all the available services and their actions.
         Use the search bar to filter the library based on service titles. To request and view further details about a service
@@ -123,8 +123,8 @@ export const table: Locale = {
         or from the token table on the Application Screen.`,
         SeeTokenStatusInfo: `(DANISH)Here you can see what actions your token contains as well as their current status. Next to each actions is a symbol showing if
         your request has been approved, rejected or still pending for review. Mouse over rejected actions to see the rejection reason.
-        If all your actions have been approved you can generate your JWT. The JWT is based on your unique Application identifer and your
-        unique token identifer and its approved service actions. Finally you will also need to input your App Secret in order to sign the JWT.`,
+        If all your actions have been approved you can generate your JWT. The JWT is based on your unique Application identifier and your
+        unique token identifier and its approved service actions. Finally you will also need to input your App Secret in order to sign the JWT.`,
         GenerateJwtInfo: `(DANISH)Here you can generate your JWT if you have your AppSecret at hand. Your AppSecret is a special
         string that only can be fetched once. Mostly the AppSecret is generated shortly after your application has been made.
         If you don't have your AppSecret try and check with your fellow ApplicationOwners to see if perhaps they've already generated it. If you've lost 
