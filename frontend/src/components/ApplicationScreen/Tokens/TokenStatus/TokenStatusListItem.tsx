@@ -7,10 +7,12 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger
+  PopoverTrigger,
+  Spacer,
+  Text
 } from "@chakra-ui/react";
 import { BsCheck } from "@react-icons/all-files/bs/BsCheck";
-import { BsCircle } from "@react-icons/all-files/bs/BsCircle";
+import { BsThreeDots } from "@react-icons/all-files/bs/BsThreeDots";
 import { BsX } from "@react-icons/all-files/bs/BsX";
 import { FC } from "react";
 import { IAppTokenActionIdDto, ServiceStates } from "services/backend/nswagts";
@@ -20,11 +22,14 @@ type Props = {
 };
 const TokenStatusListItem: FC<Props> = ({ tokenAction }) => {
   return (
-    <Flex m="1" align="center">
-      <Box>Action: {tokenAction.actionId}</Box>
+    <Flex w="xl" m="1" align="center">
+      <Text maxW="500px" overflowWrap="break-word">
+        {tokenAction.action.actionIdentifier}
+      </Text>
+      <Spacer />
       <Box ml="20px">
         {tokenAction.state == ServiceStates.Approved && <BsCheck color="green" size="30px" />}
-        {tokenAction.state == ServiceStates.Pending && <BsCircle color="grey" size="30px" />}
+        {tokenAction.state == ServiceStates.Pending && <BsThreeDots color="grey" size="25px" />}
         {tokenAction.state == ServiceStates.Rejected && (
           <Popover>
             <PopoverTrigger>

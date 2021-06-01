@@ -46,6 +46,11 @@ namespace Web.Controllers
     {
       return await Mediator.Send(new GetMyApplicationsQuery());
     }
+    [HttpGet("Overview")]
+    public async Task<ActionResult<List<AppOverviewDto>>> GetAllMyApplicationsOverview()
+    {
+      return await Mediator.Send(new GetMyAppOverviewQuery());
+    }
     [HttpPost("{id}/ApplicationOwners")]
     public async Task<ActionResult<int>> AddAppOwners([FromRoute] int id, CreateApplicationOwnerCommand command)
     {
@@ -79,6 +84,11 @@ namespace Web.Controllers
     public async Task<ActionResult<AppTokenIdDto>> GetAppTokenById([FromRoute] int id)
     {
       return await Mediator.Send(new GetAppTokenByIdQuery { Id = id });
+    }
+    [HttpGet("/AppTokens/AwaitingMyReview")]
+    public async Task<ActionResult<List<AppTokenIdDto>>> GetAppTokenICanReview()
+    {
+      return await Mediator.Send(new GetAppTokensICanReviewQuery());
     }
     [HttpGet("{id}/AppTokens")]
     public async Task<ActionResult<List<AppTokenIdDto>>> GetAppTokensByAppId([FromRoute] int id)

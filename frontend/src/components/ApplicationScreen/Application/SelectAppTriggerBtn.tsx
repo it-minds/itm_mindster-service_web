@@ -16,6 +16,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   useDisclosure
 } from "@chakra-ui/react";
 import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
@@ -31,9 +32,13 @@ const SelectAppTriggerBtn: FC = () => {
 
   return (
     <>
-      <Button borderWidth="1px" colorScheme="gray" onClick={onOpen}>
-        <Box mr="7px">{currApplication?.title ?? "Select Application"}</Box>
-        <BsChevronDown />
+      <Button
+        maxW={["100px", "250px", "400px", "full"]}
+        width="max-content"
+        colorScheme="gray"
+        rightIcon={<BsChevronDown />}
+        onClick={onOpen}>
+        <Text isTruncated>{currApplication?.title ?? "Select Application"}</Text>
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">

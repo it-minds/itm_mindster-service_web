@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   CloseButton,
+  Container,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -50,6 +51,8 @@ const CreateTokenTriggerBtn: FC = () => {
           duration: 5000,
           isClosable: true
         });
+        setOpen(true);
+        onClose();
       } catch (error) {
         toast({
           description: `CreateAppToken responded: ${error}`,
@@ -58,8 +61,6 @@ const CreateTokenTriggerBtn: FC = () => {
           isClosable: true
         });
       }
-      setOpen(true);
-      onClose();
     },
     [currApplication]
   );
@@ -83,18 +84,15 @@ const CreateTokenTriggerBtn: FC = () => {
               </Flex>
             </DrawerHeader>
             <DrawerBody>
-              <Box p="10" height="full" width="full">
-                <Flex direction="column" width="full" height="full" align="left">
-                  <Center>
-                    <Box w="70%">
-                      <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
-                    </Box>
-                  </Center>
-
-                  <Spacer />
-                  <ThreeStepShower radius={50} stepCounter={1} />
-                </Flex>
-              </Box>
+              <Center height="full">
+                <Container height="full" w="4xl" maxW="unset">
+                  <Flex direction="column" width="full" height="full">
+                    <AppTokenForm submitCallback={createAppToken}></AppTokenForm>
+                    <Spacer />
+                    <ThreeStepShower radius={50} stepCounter={1} />
+                  </Flex>
+                </Container>
+              </Center>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

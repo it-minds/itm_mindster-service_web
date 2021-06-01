@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   CloseButton,
+  Container,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -14,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import ThreeStepShower from "components/Common/ThreeStepShower";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceStates } from "services/backend/nswagts";
 
@@ -24,15 +26,18 @@ type Props = {
   submitOnClose: () => Promise<void>;
   submitOnOpen: () => Promise<void>;
   buttonText?: string;
+  buttonColor?: string;
 };
 const SeeTokenStatusDrawer: FC<Props> = ({
   submitOnClose: submitCallback,
   submitOnOpen,
-  buttonText
+  buttonText,
+  buttonColor
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currToken, currApplication } = useContext(AppViewContext);
   const [isAllApproved, setAllApproved] = useState(false);
+  const { defBtnSize } = useButtonSizes();
 
   /**
    * Checks if all actions of a token are approved. If true the button to
@@ -56,11 +61,13 @@ const SeeTokenStatusDrawer: FC<Props> = ({
   return (
     <>
       <Button
+        size={defBtnSize}
+        w="full"
         onClick={async () => {
           await submitOnOpen();
           onOpen();
         }}
-        colorScheme="blue">
+        colorScheme={buttonColor != null ? buttonColor : "blue"}>
         {buttonText != null ? buttonText : "See Status"}
       </Button>
 
@@ -89,16 +96,20 @@ const SeeTokenStatusDrawer: FC<Props> = ({
               </Flex>
             </DrawerHeader>
             <DrawerBody>
-              <Box height="full" width="full">
-                <Flex direction="column" p="50" height="full" width="full" align="left">
-                  <TokenStatusList />
-                  <Center hidden={!isAllApproved} m="5">
-                    <GetJwtTriggerBtn submitOnOpen={() => null} />
-                  </Center>
-                  <Spacer />
-                  <ThreeStepShower radius={50} stepCounter={3} />
-                </Flex>
-              </Box>
+              <Center h="full">
+                <Container h="full" w="5xl" maxW="unset">
+                  <Flex direction="column" height="full" width="full" align="left">
+                    <TokenStatusList />
+                    <Center hidden={!isAllApproved} m="5">
+                      <Box>
+                        <GetJwtTriggerBtn buttonColor="green" submitOnOpen={() => null} />
+                      </Box>
+                    </Center>
+                    <Spacer />
+                    <ThreeStepShower radius={50} stepCounter={3} />
+                  </Flex>
+                </Container>
+              </Center>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

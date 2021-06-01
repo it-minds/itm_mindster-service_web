@@ -41,7 +41,7 @@ const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) 
     <>
       <PopoverMenuButton btnText={"Copy approvers to another action"} onClickMethod={onOpen} />
 
-      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="3xl">
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="5xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Copy the following approvers from: {currAction.title}</ModalHeader>

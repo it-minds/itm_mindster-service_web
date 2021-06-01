@@ -1,6 +1,7 @@
-import { Button, Center, Td, Tr } from "@chakra-ui/react";
+import { Box, Button, Td, Tr } from "@chakra-ui/react";
 import ServiceLibraryDrawer from "components/ServiceLibrary/ServiceLibraryDrawer";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useState } from "react";
 import { AppTokenIdDto, TokenStates } from "services/backend/nswagts";
 
@@ -13,14 +14,18 @@ type Props = {
 const TokenTableItem: FC<Props> = ({ token }) => {
   const { fetchUpdatedToken } = useContext(AppViewContext);
   const [libraryOpen, setOpen] = useState(false);
+  const { defBtnSize } = useButtonSizes();
+
   return (
     <Tr>
-      <Td>{token.tokenIdentifier}</Td>
+      <Td maxW="100px">{token.tokenIdentifier}</Td>
       <Td>{token.description}</Td>
       <Td>
-        <Center>
+        <Box w="full">
           {token.state == TokenStates.Created && (
             <Button
+              size={defBtnSize}
+              w="full"
               colorScheme="blue"
               onClick={async () => {
                 await fetchUpdatedToken(token.id);
@@ -46,8 +51,9 @@ const TokenTableItem: FC<Props> = ({ token }) => {
           {token.state == TokenStates.JwtReceived && (
             <GetJwtTriggerBtn submitOnOpen={() => fetchUpdatedToken(token.id)} />
           )}
-          <ServiceLibraryDrawer Open={libraryOpen} setOpen={setOpen} />
-        </Center>
+        </Box>
+
+        <ServiceLibraryDrawer Open={libraryOpen} setOpen={setOpen} />
       </Td>
     </Tr>
   );

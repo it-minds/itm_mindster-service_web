@@ -14,7 +14,8 @@ namespace Application.Applications.Commands.CreateApplication
       RuleFor(e => e.Application.AppIdentifier)
         .NotEmpty()
         .MaximumLength(200)
-        .Matches("[a-z_]+");
+        .Matches("^[a-z_]*$");
+
     }
   }
 }

@@ -12,16 +12,19 @@ import {
 } from "@chakra-ui/react";
 import JwtForm from "components/Forms/Application/JwtForm";
 import { AppViewContext } from "contexts/AppViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { IService2, Service2 } from "services/backend/nswagts";
 type Props = {
   submitOnOpen: () => Promise<void>;
+  buttonColor?: string;
 };
 
-const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
+const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen, buttonColor }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { currApplication, currToken } = useContext(AppViewContext);
+  const { currApplication, currToken, fetchUpdatedToken } = useContext(AppViewContext);
   const [jwtServices, setJwtServices] = useState<IService2[]>([]);
+  const { defBtnSize } = useButtonSizes();
 
   useEffect(() => {
     if (currToken != null) {
@@ -39,7 +42,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
             access: currToken.appTokenActions
               .filter(a => a.action.serviceId == element)
               .map(b => {
-                return b.actionId.toString();
+                return b.action.actionIdentifier;
               })
           })
         );
@@ -53,7 +56,9 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
   return (
     <>
       <Button
-        colorScheme="blue"
+        size={defBtnSize}
+        colorScheme={buttonColor ?? "blue"}
+        w="full"
         onClick={async () => {
           await submitOnOpen();
           onOpen();
@@ -74,6 +79,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen }) => {
                 tokenIdentifier={currToken.tokenIdentifier}
                 submitCallback={() => {
                   onClose();
+                  fetchUpdatedToken(currToken.id);
                 }}
                 services={jwtServices}
               />

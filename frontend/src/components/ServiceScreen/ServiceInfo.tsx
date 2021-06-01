@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spacer, VStack } from "@chakra-ui/react";
+import { Box, Center, Container, Flex, Heading, Spacer } from "@chakra-ui/react";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
@@ -27,24 +27,25 @@ const ServiceInfo: FC = () => {
   if (!currService) return null;
 
   return (
-    <Box padding="75" width="full">
-      <VStack pl="50" width="full" align="left">
-        <Flex w="full">
-          <AddServiceOwnersTriggerBtn />
-          <Spacer />
-          <CreateActionTriggerBtn />
+    <Center>
+      <Container pt="100px" pb="20px" w="6xl" maxW="unset">
+        <Flex direction="column" h="full" width="full" align="left">
+          <Flex w="full">
+            <AddServiceOwnersTriggerBtn />
+            <Spacer />
+            <CreateActionTriggerBtn />
+          </Flex>
+          <ServiceOwnerOverview />
+          <Box pt="10" width={0.65}>
+            <Heading>{localFormData.title}</Heading>
+            <MarkdownViewer value={localFormData.description} />
+          </Box>
+          <Box pt="10" width="full">
+            <ActionTable />
+          </Box>
         </Flex>
-        <ServiceOwnerOverview />
-
-        <Box pt="10" width={0.65}>
-          <Heading>{localFormData.title}</Heading>
-          <MarkdownViewer value={localFormData.description} />
-        </Box>
-        <Box pt="10" width="full">
-          <ActionTable />
-        </Box>
-      </VStack>
-    </Box>
+      </Container>
+    </Center>
   );
 };
 export default ServiceInfo;

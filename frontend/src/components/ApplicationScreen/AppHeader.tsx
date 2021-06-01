@@ -1,32 +1,37 @@
-import { Box, Button, Flex, Image, Spacer, Wrap } from "@chakra-ui/react";
+import { Box, Button, Flex, Spacer } from "@chakra-ui/react";
 import { BsArrowRight } from "@react-icons/all-files/bs/BsArrowRight";
+import ColorModeToggler from "components/Common/ColorModeToggler";
+import MLogo from "components/Common/MLogo";
+import { useColors } from "hooks/useColors";
 import Link from "next/link";
 import { FC } from "react";
 
 import SelectAppTriggerBtn from "./Application/SelectAppTriggerBtn";
 
 const AppHeader: FC = () => {
+  const { appHeaderBg } = useColors();
   return (
-    <Wrap p="2.5" bgColor="purple.500" width="full">
-      <Flex align="center" width="full">
-        <Box>
-          <Image borderRadius="full" boxSize="50px" src="/images/icons/icon-144x144.png" />
-        </Box>
-
-        <Box m="5" w="max-content">
-          <SelectAppTriggerBtn></SelectAppTriggerBtn>
-        </Box>
-
-        <Spacer />
-        <Box alignContent="end" justifyContent="right">
-          <Link href="/ServiceScreen">
-            <Button rightIcon={<BsArrowRight />} colorScheme="yellow">
-              Enter as Service Provider
-            </Button>
-          </Link>
-        </Box>
-      </Flex>
-    </Wrap>
+    <Flex
+      h="70px"
+      pl={["5px", "5px", "50px", "50px"]}
+      pr={["5px", "5px", "50px", "50px"]}
+      bgColor={appHeaderBg}
+      align="center"
+      width="full">
+      <MLogo />
+      <Box ml="5px">
+        <SelectAppTriggerBtn />
+      </Box>
+      <Spacer />
+      <ColorModeToggler />
+      <Box ml="2px" alignContent="end" justifyContent="right">
+        <Link href="/ServiceScreen">
+          <Button rightIcon={<BsArrowRight />} colorScheme="yellow">
+            Service Page
+          </Button>
+        </Link>
+      </Box>
+    </Flex>
   );
 };
 

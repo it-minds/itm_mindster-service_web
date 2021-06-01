@@ -1,9 +1,10 @@
-import { Box, VStack } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import AppHeader from "components/ApplicationScreen/AppHeader";
 import ApplicationInfo from "components/ApplicationScreen/ApplicationInfo";
 import { AppViewContext } from "contexts/AppViewContext";
 import { Locale } from "i18n/Locale";
 import { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import ListReducer, { ListReducerActionType } from "react-list-reducer";
@@ -23,6 +24,7 @@ const IndexPage: NextPage = () => {
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
   const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
+  const { query } = useRouter();
 
   const fetchApps = useCallback(async () => {
     try {
@@ -123,6 +125,10 @@ const IndexPage: NextPage = () => {
   useEffect(() => {
     fetchApps();
     fetchServices();
+    if (query.Id) {
+      const appId: number = +query.Id;
+      setNewCurrApp(appId);
+    }
   }, [fetchApps, fetchServices]);
 
   useEffect(() => {
@@ -150,14 +156,14 @@ const IndexPage: NextPage = () => {
         fetchServices: fetchServices,
         fetchAppOwners: fetchAppOwners
       }}>
-      <VStack>
-        <Box zIndex={1} position="fixed" w="full">
-          <AppHeader></AppHeader>
+      <Flex h="100vh" w="full" direction="column">
+        <Box>
+          <AppHeader />
         </Box>
-        <Box pt="100px" w="full">
-          <ApplicationInfo></ApplicationInfo>
+        <Box maxH="full" w="full" overflowY="auto">
+          <ApplicationInfo />
         </Box>
-      </VStack>
+      </Flex>
     </AppViewContext.Provider>
   );
 };

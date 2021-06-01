@@ -8,7 +8,9 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
+import { BsChevronDown } from "@react-icons/all-files/bs/BsChevronDown";
 import { ServiceViewContext } from "contexts/ServiceViewContext";
+import { useButtonSizes } from "hooks/useButtonSizes";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { genServiceClient } from "services/backend/apiClients";
 import {
@@ -30,7 +32,7 @@ const ApproverMenu: FC<Props> = ({ action }) => {
     ServiceViewContext
   );
   const toast = useToast();
-
+  const { defBtnSize } = useButtonSizes();
   const addApprovers = useCallback(async (actionId: number, form: IActionApproverDto[]) => {
     const client = await genServiceClient();
     try {
@@ -63,7 +65,9 @@ const ApproverMenu: FC<Props> = ({ action }) => {
     <Popover placement="bottom-start">
       <PopoverTrigger>
         <Button
+          size={defBtnSize}
           colorScheme="blue"
+          rightIcon={<BsChevronDown />}
           onClick={() => {
             setCurrAction(action);
             setOpen(!isOpen);

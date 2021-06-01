@@ -1,6 +1,5 @@
 import { ApplicationContext } from "contexts/ApplicationContext";
 import { Locale } from "i18n/Locale";
-// import { runTimeTable } from "i18n/runtimeTable";
 import { GetStaticProps, NextPage } from "next";
 import { I18nProps } from "next-rosetta";
 import { useCallback, useEffect, useState } from "react";
@@ -18,9 +17,9 @@ const PendingApprovalPage: NextPage = () => {
   const fetchAppTokens = useCallback(async () => {
     try {
       const client = await genApplicationClient();
-      const data = await client.getAllAppTokens(true);
+      const data = await client.getAppTokenICanReview();
 
-      if (data && data.length > 0) setAppTokens(data);
+      if (data && data.length >= 0) setAppTokens(data);
       else logger.info("exampleClient.get no data");
     } catch (err) {
       logger.warn("exampleClient.get Error", err);

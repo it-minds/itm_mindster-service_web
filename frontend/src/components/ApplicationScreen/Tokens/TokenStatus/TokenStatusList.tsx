@@ -22,7 +22,7 @@ const TokenStatusList: FC = () => {
   if (currToken == null) return null;
 
   return (
-    <Box overflowY="auto" h="full" p="5" w="full" borderWidth="1px" align="left">
+    <Box overflowY="auto" h="full" p="5" w="full" align="left">
       {services.map((x: number) => (
         <Box key={x}>
           <Heading size="md">Service: {x}</Heading>

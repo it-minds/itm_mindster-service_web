@@ -29,7 +29,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback }) => {
       event.preventDefault();
       setIsLoading(true);
       await submitCallback(
-        new AppTokenCreateDto({ tokenIdentifier: description, description: description })
+        new AppTokenCreateDto({ tokenIdentifier: identifier, description: description })
       );
       setIsLoading(false);
     },
@@ -69,12 +69,7 @@ const AppTokenForm: FC<Props> = ({ submitCallback }) => {
                 />
               </FormControl>
               <Center>
-                <Button
-                  isLoading={isLoading}
-                  colorScheme="blue"
-                  variant="outline"
-                  type="submit"
-                  mt={6}>
+                <Button isLoading={isLoading} colorScheme="blue" type="submit" mt={6}>
                   Submit
                 </Button>
               </Center>

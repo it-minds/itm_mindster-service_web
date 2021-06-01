@@ -18,6 +18,10 @@ namespace Application.Actions.Commands.CreateAction
         .NotEmpty();
       RuleFor(e => e.Id)
         .NotNull();
+      RuleFor(e => e.Action.ActionIdentifier)
+        .MaximumLength(200)
+        .NotEmpty()
+        .Matches("^[a-z_]*$");
     }
   }
 }

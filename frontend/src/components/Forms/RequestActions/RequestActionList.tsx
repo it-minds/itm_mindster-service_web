@@ -24,9 +24,10 @@ import RequestActionListItem from "./RequestActionListItem";
 
 interface ActionTableProps {
   tableData: ActionIdDto[];
+  submitCallBack?: () => void;
 }
 
-const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
+const RequestActionList: FC<ActionTableProps> = ({ tableData, submitCallBack }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allChecked, setAllChecked] = useState(false);
   const [checkboxes, setCheckboxes] = useState(() =>
@@ -87,6 +88,7 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
         isClosable: true
       });
       fetchUpdatedToken(currToken.id);
+      submitCallBack();
     } catch (error) {
       toast({
         description: `PutAppToken responded: ${error}`,
@@ -114,7 +116,6 @@ const RequestActionList: FC<ActionTableProps> = ({ tableData }) => {
                   />
                 </Th>
                 <Th>Id</Th>
-                <Th>Title</Th>
                 <Th w={0.7}>Description</Th>
               </Tr>
             </Thead>
