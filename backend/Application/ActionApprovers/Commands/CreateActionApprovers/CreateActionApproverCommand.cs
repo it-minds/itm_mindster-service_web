@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,6 +10,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Action = Domain.Entities.Action;
 
 namespace Application.ActionApprovers.Commands.CreateActionApprovers
 {
@@ -38,7 +40,7 @@ namespace Application.ActionApprovers.Commands.CreateActionApprovers
         }
         if (!await _context.ActionApprovers.AnyAsync(e => e.ActionId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
-          throw new NotFoundException(nameof(Action), request.Id + "Not authorized for the given Action");
+          throw new ForbiddenAccessException(nameof(Action), key: request.Id);
         }
         var existingApprovers = _context.ActionApprovers.Where(e => e.ActionId == request.Id);
         var newApprovers = request.ActionApprovers

@@ -35,11 +35,6 @@ namespace Application.Services.Queries
 
       public async Task<ServiceIdDto> Handle(GetServiceByIdQuery request, CancellationToken cancellationToken)
       {
-        if (!_context.ServiceOwners.Any(e => e.Email == _currentUserService.UserEmail && e.ServiceId == request.Id))
-        {
-          throw new NotFoundException(nameof(ServiceOwner), "You don't own the requested service");
-        }
-
         var service = await _context.Services
           .Where(e => e.Id == request.Id)
           .Include(e => e.Actions)
@@ -49,7 +44,11 @@ namespace Application.Services.Queries
         {
           throw new NotFoundException(nameof(service), request.Id);
         }
-        
+        if (!_context.ServiceOwners.Any(e => e.Email == _currentUserService.UserEmail && e.ServiceId == request.Id))
+        {
+          throw new ForbiddenAccessException(nameof(ServiceOwner), request.Id);
+        }
+
         return service;
       }
     }

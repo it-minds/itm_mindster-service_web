@@ -21,6 +21,7 @@ namespace Web.Filters
                 {typeof(NotFoundException), HandleNotFoundException},
                 {typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException},
                 {typeof(ForbiddenAccessException), HandleForbiddenAccessException},
+                {typeof(DuplicateIdentifierException), HandleDuplicateIdentifierException}
             };
     }
 
@@ -86,6 +87,22 @@ namespace Web.Filters
       {
         Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
         Title = "The specified resource was not found.",
+        Detail = exception.Message
+      };
+
+      context.Result = new NotFoundObjectResult(details);
+
+      context.ExceptionHandled = true;
+    }
+    private void HandleDuplicateIdentifierException(ExceptionContext context)
+    {
+      var exception = context.Exception as DuplicateIdentifierException;
+
+      var details = new ProblemDetails()
+      {
+        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+        Status = StatusCodes.Status400BadRequest,
+        Title = "Duplicate Identifier",
         Detail = exception.Message
       };
 

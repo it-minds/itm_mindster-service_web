@@ -49,7 +49,7 @@ namespace Application.UnitTests.Services.Commands.CreateService
       var handler = new CreateServiceCommand.CreateServiceCommandHandler(Context, CurrentUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<DuplicateIdentifierException>();
     }
   }
 }

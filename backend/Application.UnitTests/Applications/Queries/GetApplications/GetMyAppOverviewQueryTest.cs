@@ -46,15 +46,16 @@ namespace Application.UnitTests.Applications.Queries.GetApplications
       result.Count.Should().Be(2); // The test user currenlty owns 2 out of 3 Applications
     }
     [Fact]
-    public void Handle_InvalidUser_ShouldThrowError()
+    public async Task Handle_InvalidUser_ShouldReturnEmptyArray()
     {
       var query = new GetMyAppOverviewQuery();
 
       var handler = new GetMyAppOverviewQuery.GetMyAppOverviewQueryHandler(_context, _mapper, _invalidUserService);
 
-      Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
+      var result = await handler.Handle(query, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      result.Should().BeOfType<List<AppOverviewDto>>();
+      result.Count.Should().Be(0); // invalidUser owns no applications
     }
   }
 }

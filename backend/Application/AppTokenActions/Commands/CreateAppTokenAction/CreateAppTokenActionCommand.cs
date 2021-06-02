@@ -41,7 +41,7 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
         }
         if (!_context.AppOwners.Any(e => e.ApplicationId == token.ApplicationId && e.Email == _currentUserService.UserEmail))
         {
-          throw new NotFoundException(nameof(Domain.Entities.AppToken), request.TokenId + "Not authorized for the given Token");
+          throw new ForbiddenAccessException(nameof(Domain.Entities.AppToken), request.TokenId);
         }
 
         var serviceActions = _context.Actions;

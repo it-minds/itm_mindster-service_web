@@ -36,8 +36,7 @@ namespace Application.Applications.Commands.CreateApplication
       {
         if (await _context.Applications.AnyAsync(e => e.AppIdentifier == request.Application.AppIdentifier, cancellationToken))
         {
-          throw new NotFoundException(nameof(ApplicationEntity),
-            key: request.Application.AppIdentifier + "A App with that identifier already exists");
+          throw new DuplicateIdentifierException(nameof(ApplicationEntity), key: request.Application.AppIdentifier);
         }
         var application = new ApplicationEntity
         {

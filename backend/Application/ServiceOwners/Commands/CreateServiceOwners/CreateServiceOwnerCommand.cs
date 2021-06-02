@@ -39,7 +39,7 @@ namespace Application.ServiceOwners.Commands.CreateServiceOwners
         }
         if (!await _context.ServiceOwners.AnyAsync(e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
-          throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
+          throw new ForbiddenAccessException(nameof(ApplicationEntity), request.Id);
         }
 
         var existingOwners = _context.ServiceOwners.Where(e => e.ServiceId == request.Id);

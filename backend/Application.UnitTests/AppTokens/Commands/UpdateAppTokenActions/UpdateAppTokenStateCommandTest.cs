@@ -43,7 +43,7 @@ namespace Application.UnitTests.AppTokens.Commands.UpdateAppTokenActions
       var handler = new UpdateAppTokenStateCommand.UpdateAppTokenStateCommandHandler(Context, InvalidUserServiceMock.Object);
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
     [Fact]
     public void Handle_InvalidTokenId_ShouldThrowError()

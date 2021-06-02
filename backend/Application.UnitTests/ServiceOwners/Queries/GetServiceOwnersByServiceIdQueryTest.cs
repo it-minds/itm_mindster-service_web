@@ -56,7 +56,7 @@ namespace Application.UnitTests.ServiceOwners.Queries
 
       Func<Task> action = async () => await handler.Handle(query, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

@@ -71,7 +71,7 @@ namespace Application.UnitTests.Applications.Commands.UpdateApplication
 
       Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
 
-      action.Should().Throw<NotFoundException>();
+      action.Should().Throw<ForbiddenAccessException>();
     }
   }
 }

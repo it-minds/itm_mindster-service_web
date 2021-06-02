@@ -35,12 +35,12 @@ namespace Application.AppTokens.Commands.CreateAppToken
         if (!await _context.Applications.AnyAsync(e => e.Id == request.Id, cancellationToken)) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
         if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
-          throw new NotFoundException(nameof(ApplicationEntity), request.Id + "Not authorized for the given Application");
+          throw new ForbiddenAccessException(nameof(ApplicationEntity), request.Id);
         }
         if (await _context.AppTokens.AnyAsync(e => e.TokenIdentifier == request.AppToken.TokenIdentifier && e.ApplicationId == request.Id, cancellationToken))
         {
-          throw new NotFoundException(nameof(Domain.Entities.AppToken),
-            key: request.Id + "A Token with that identifier already exists");
+          throw new DuplicateIdentifierException(nameof(Domain.Entities.AppToken),
+            key: request.AppToken.TokenIdentifier);
         }
         
         var appToken = new AppToken()

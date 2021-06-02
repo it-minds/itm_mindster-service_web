@@ -34,14 +34,16 @@ namespace Application.Applications.Commands.UpdateApplication
 
       public async Task<Unit> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
       {
-        if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
-        {
-          throw new NotFoundException(nameof(ApplicationOwner), request.Id);
 
-        }
         var application = await _context.Applications.FindAsync(request.Id);
 
         if (application == null) throw new NotFoundException(nameof(ApplicationEntity), request.Id);
+
+        if (!await _context.AppOwners.AnyAsync(e => e.ApplicationId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
+        {
+          throw new ForbiddenAccessException(nameof(ApplicationEntity), request.Id);
+
+        }
 
         application.Title = request.Application.Title;
         application.Description = request.Application.Description;

@@ -42,13 +42,13 @@ namespace Application.Actions.Commands.CreateAction
         if (!await _context.ServiceOwners.AnyAsync(
           e => e.ServiceId == request.Id && e.Email == _currentUserService.UserEmail, cancellationToken))
         {
-          throw new NotFoundException(nameof(Service), request.Id+"Not authorized");
+          throw new ForbiddenAccessException(nameof(Service), key: request.Id);
         }
         if (await _context.Actions.AnyAsync(e => e.ActionIdentifier == request.Action.ActionIdentifier && e.ServiceId == request.Id, cancellationToken))
         {
-          throw new NotFoundException(nameof(Domain.Entities.AppToken),
-            key: request.Id + "A Action with that identifier already exists");
+          throw new DuplicateIdentifierException(nameof(Domain.Entities.Action), key: request.Action.ActionIdentifier);
         }
+
 
         var action = new Action
         {
