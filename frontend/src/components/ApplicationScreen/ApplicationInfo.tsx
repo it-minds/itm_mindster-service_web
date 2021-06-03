@@ -4,6 +4,7 @@ import { AppViewContext } from "contexts/AppViewContext";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { ApplicationDto, IApplicationDto } from "services/backend/nswagts";
 
+import AppSecretBanner from "./AppSecret/AppSecretBanner";
 import AddOwnersTriggerBtn from "./Owners/AddOwnersTriggerBtn";
 import AppOwnerOverview from "./Owners/AppOwnerOverview";
 import CreateTokenTriggerBtn from "./Tokens/CreateTokenTriggerBtn";
@@ -27,25 +28,30 @@ const ApplicationInfo: FC = () => {
   if (!currApplication) return null;
 
   return (
-    <Center>
-      <Container pt="30px" pb="15px" w="6xl" maxW="unset">
-        <VStack width="full" align="left">
-          <Flex w="full">
-            <AddOwnersTriggerBtn />
-            <Spacer />
-            <CreateTokenTriggerBtn />
-          </Flex>
-          <AppOwnerOverview />
-          <Box pt="10" width={0.65}>
-            <Heading>{localFormData.title}</Heading>
-            <MarkdownViewer value={localFormData.description} />
-          </Box>
-          <Box pt="10" width="full">
-            <TokenTable />
-          </Box>
+    <>
+      <Flex>{!currApplication.appSecretGenerated && <AppSecretBanner />}</Flex>
+      <Center w="full">
+        <VStack>
+          <Container pt="30px" pb="15px" w="6xl" maxW="unset">
+            <VStack width="full" align="left">
+              <Flex w="full">
+                <AddOwnersTriggerBtn />
+                <Spacer />
+                <CreateTokenTriggerBtn />
+              </Flex>
+              <AppOwnerOverview />
+              <Box pt="10" width={0.65}>
+                <Heading>{localFormData.title}</Heading>
+                <MarkdownViewer value={localFormData.description} />
+              </Box>
+              <Box pt="10" width="full">
+                <TokenTable />
+              </Box>
+            </VStack>
+          </Container>
         </VStack>
-      </Container>
-    </Center>
+      </Center>
+    </>
   );
 };
 export default ApplicationInfo;

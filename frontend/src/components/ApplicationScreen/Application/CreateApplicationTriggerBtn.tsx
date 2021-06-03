@@ -28,7 +28,7 @@ const CreateApplicationTriggerBtn: FC = () => {
   const addApplication = useCallback(async (title: string, description: string) => {
     const applicationClient = await genApplicationClient();
     try {
-      const appResult = await applicationClient.createApplication(
+      const appId = await applicationClient.createApplication(
         new CreateApplicationCommand({
           application: new ApplicationDto({
             title: title,
@@ -37,9 +37,9 @@ const CreateApplicationTriggerBtn: FC = () => {
           })
         })
       );
-      setNewCurrApp(appResult.appId);
+      setNewCurrApp(appId);
       toast({
-        description: `App created appSecret: ${appResult.appSecret}`,
+        description: `Application created`,
         status: "success",
         duration: 5000,
         isClosable: true

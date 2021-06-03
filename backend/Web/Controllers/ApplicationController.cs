@@ -7,6 +7,7 @@ using Application.ApplicationOwners.Commands.CreateApplicationOwners;
 using Application.ApplicationOwners.Queries.GetAppOwnersByAppId;
 using Application.Applications;
 using Application.Applications.Commands.CreateApplication;
+using Application.Applications.Commands.CreateAppSecret;
 using Application.Applications.Commands.UpdateApplication;
 using Application.Applications.Queries.GetApplications;
 using Application.AppTokenActions.Commands;
@@ -29,7 +30,7 @@ namespace Web.Controllers
   public class ApplicationController : ApiControllerBase
   {
     [HttpPost]
-    public async Task<ActionResult<CreateAppResult>> CreateApplication(CreateApplicationCommand command)
+    public async Task<ActionResult<int>> CreateApplication(CreateApplicationCommand command)
     {
       return await Mediator.Send(command);
     }
@@ -116,6 +117,13 @@ namespace Web.Controllers
       command.Id = id;
       await Mediator.Send(command);
       return NoContent();
+    }
+    [HttpPost("{id}/GenerateAppSecret")]
+    public async Task<ActionResult<ApplicationOutput>> GenerateAppSecret([FromRoute] int id, CreateAppSecretCommand command)
+    {
+      command.AppId = id;
+
+      return await Mediator.Send(command);
     }
   }
 }

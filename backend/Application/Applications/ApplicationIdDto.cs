@@ -11,6 +11,7 @@ namespace Application.Applications
   public class ApplicationIdDto : ApplicationDto
   {
     public int Id { get; set; }
+    public bool AppSecretGenerated { get; set; }
 
     public void Mapping(Profile profile)
     {

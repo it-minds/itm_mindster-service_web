@@ -15,8 +15,7 @@ namespace Infrastructure.Persistence.Configurations
         .HasForeignKey(e => e.AppTokenId)
         .IsRequired(true);
       builder.Property(e => e.Description)
-        .IsRequired(true)
-        .HasMaxLength(800);
+        .IsRequired(true);
       builder.Property(e => e.State)
         .IsRequired(true);
       builder.Property(e => e.TokenIdentifier)

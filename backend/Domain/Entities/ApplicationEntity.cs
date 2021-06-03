@@ -12,5 +12,6 @@ namespace Domain.Entities
     public string Title { get; set; }
     public string Description { get; set; }
     public string AppIdentifier { get; set; }
+    public bool AppSecretGenerated { get; set; } = false;
   }
 }
