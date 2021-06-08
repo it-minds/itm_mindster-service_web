@@ -30,7 +30,7 @@ const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currService, currAction } = useContext(ServiceViewContext);
   const { t } = useLocales();
-  const { setUnsavedChanges, alertOpen, setAlertOpen, unsavedChanged } = useUnsavedAlert();
+  const { alertOpen, setAlertOpen, unsavedChanged } = useUnsavedAlert();
 
   const handleSubmit = useCallback(
     async (actionIds: number[]) => {
@@ -48,7 +48,6 @@ const CopyApproverTriggerBtn: FC<Props> = ({ approversToCopy, submitCallback }) 
         btnText={t("serviceScreen.actions.copyApproversToAnotherAction")}
         onClickMethod={onOpen}
       />
-
       <Modal
         isOpen={isOpen}
         onClose={() => {

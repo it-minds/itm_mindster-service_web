@@ -10,10 +10,9 @@ import {
   Textarea,
   Wrap
 } from "@chakra-ui/react";
-import { UnsavedChangesContext } from "contexts/UnsavedChangesContext";
 import { useLocales } from "hooks/useLocales";
 import { useUnsavedAlert } from "hooks/useUnsavedAlert";
-import React, { FC, useCallback, useContext, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { ActionDto, IActionDto } from "services/backend/nswagts";
 import { convertToIdentifier } from "utils/convertTitleToIdentifier";
 
