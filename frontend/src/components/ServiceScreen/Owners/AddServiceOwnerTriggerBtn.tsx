@@ -62,6 +62,10 @@ const AddServiceOwnersTriggerBtn: FC = () => {
     [currService, fetchOwners]
   );
 
+  const closeMe = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
   return (
     <>
       <Button onClick={onOpen} rightIcon={<BsPlus />} colorScheme="green">
@@ -87,11 +91,7 @@ const AddServiceOwnersTriggerBtn: FC = () => {
           <ModalCloseButton />
           <Divider />
           <ModalBody>
-            <UnsavedChangesAlert
-              isOpen={alertOpen}
-              setIsOpen={setAlertOpen}
-              onClick={() => onclose}
-            />
+            <UnsavedChangesAlert isOpen={alertOpen} setIsOpen={setAlertOpen} onClick={closeMe} />
             <ServiceOwnerForm submitCallback={addOwners} />
           </ModalBody>
           <Divider />

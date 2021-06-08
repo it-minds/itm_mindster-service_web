@@ -24,7 +24,12 @@ const UnsavedChangesAlert: FC<Props> = ({ isOpen, setIsOpen, onClick, text }) =>
     <AlertDialog
       motionPreset="slideInBottom"
       leastDestructiveRef={cancelRef}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {
+        alert("onClick");
+
+        onClick();
+        setIsOpen(false);
+      }}
       isOpen={isOpen}
       isCentered>
       <AlertDialogOverlay />
@@ -44,8 +49,8 @@ const UnsavedChangesAlert: FC<Props> = ({ isOpen, setIsOpen, onClick, text }) =>
             ml={3}
             onClick={() => {
               setUnsavedChanges(false);
-              setIsOpen(false);
               onClick();
+              setIsOpen(false);
             }}>
             Leave
           </Button>
