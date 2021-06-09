@@ -100,6 +100,7 @@ const AppSecretResult: FC<Props> = ({ submitCallback, currAppId, isLoading, setI
               text={t("applicationScreen.tokens.appSecret.haveYouSavedAppSecret")}
               onClick={() => {
                 onClose();
+                submitCallback();
               }}
             />
             <Text>{appSecret}</Text>
