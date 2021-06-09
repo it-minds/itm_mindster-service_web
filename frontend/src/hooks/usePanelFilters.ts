@@ -34,25 +34,11 @@ export const usePanelFilters = (storageType: string) => {
   );
   const pushStarred = useCallback(
     (id: number) => {
-      if (!starred.find(o => o == id)) {
-        starred.push(id);
-        localStorage.setItem(localStoragePaths.starred, JSON.stringify(starred));
-        console.log(starred);
-        setStarred(starred);
-      }
-    },
-    [starred]
-  );
-  const removeStarred = useCallback(
-    (id: number) => {
       const index = starred.indexOf(id);
-      if (index > -1) {
-        starred.splice(index, 1);
-        localStorage.setItem(localStoragePaths.starred, JSON.stringify(starred));
-        console.log(starred);
-
-        setStarred(starred);
-      }
+      if (index > -1) starred.splice(index, 1);
+      else starred.push(id);
+      localStorage.setItem(localStoragePaths.starred, JSON.stringify(starred));
+      setStarred(starred);
     },
     [starred]
   );
@@ -61,7 +47,6 @@ export const usePanelFilters = (storageType: string) => {
     starred,
     recent,
     pushRecent,
-    pushStarred,
-    removeStarred
+    pushStarred
   };
 };

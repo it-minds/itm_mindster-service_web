@@ -32,7 +32,7 @@ const ServiceScreen: NextPage = () => {
   const [currService, setCurrService] = useState<IServiceIdDto>();
   const [currAction, setCurrAction] = useState<IActionIdDto>();
   const { query } = useRouter();
-  const { starred, recent, pushStarred, pushRecent, removeStarred } = usePanelFilters(
+  const { starred, recent, pushStarred, pushRecent } = usePanelFilters(
     "Services" // Sets the prefix of where to save the recent and starred items
   );
 
@@ -150,8 +150,7 @@ const ServiceScreen: NextPage = () => {
         recentServices: recent,
         starredServices: starred,
         pushRecent: pushRecent,
-        pushStarred: pushStarred,
-        removeStarred: removeStarred
+        pushStarred: pushStarred
       }}>
       <SignalRContext.Provider
         value={{

@@ -25,7 +25,6 @@ type ContextType = {
   starredServices: number[];
   pushRecent: (id: number) => void;
   pushStarred: (id: number) => void;
-  removeStarred: (id: number) => void;
 };
 
 export const ServiceViewContext = createContext<ContextType>({
@@ -45,6 +44,5 @@ export const ServiceViewContext = createContext<ContextType>({
   recentServices: [],
   starredServices: [],
   pushStarred: null,
-  pushRecent: null,
-  removeStarred: null
+  pushRecent: null
 });

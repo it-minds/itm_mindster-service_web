@@ -13,14 +13,9 @@ type Props = {
 };
 const ServiceTableItem: FC<Props> = ({ service }) => {
   const { hoverBg } = useColors();
-  const {
-    currService,
-    setCurrService,
-    starredServices,
-    pushRecent,
-    pushStarred,
-    removeStarred
-  } = useContext(ServiceViewContext);
+  const { currService, setCurrService, starredServices, pushRecent, pushStarred } = useContext(
+    ServiceViewContext
+  );
   const [isFavorite, setIsFavorite] = useState(
     starredServices.find(o => o == service.id) ? true : false
   );
@@ -28,8 +23,7 @@ const ServiceTableItem: FC<Props> = ({ service }) => {
 
   const onFavoriteClick = useCallback(
     event => {
-      if (isFavorite) removeStarred(service.id);
-      else pushStarred(service.id);
+      pushStarred(service.id); // If it already exists in the starred array it is removed instead.
       setIsFavorite(!isFavorite);
       event.stopPropagation();
     },

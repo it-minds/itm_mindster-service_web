@@ -25,7 +25,7 @@ const IndexPage: NextPage = () => {
   const [appOwners, dispatchAppOwners] = useReducer(ListReducer<IApplicationOwnerIdDto>("id"), []);
   const [currApplication, setCurrApp] = useState<IApplicationIdDto>();
   const [currToken, setCurrToken] = useState<IAppTokenIdDto>();
-  const { starred, recent, pushStarred, pushRecent, removeStarred } = usePanelFilters(
+  const { starred, recent, pushStarred, pushRecent } = usePanelFilters(
     "Applications" // Sets the prefix of where to save the recent and starred items
   );
 
@@ -163,8 +163,7 @@ const IndexPage: NextPage = () => {
         recentApps: recent,
         starredApps: starred,
         pushRecent: pushRecent,
-        pushStarred: pushStarred,
-        removeStarred: removeStarred
+        pushStarred: pushStarred
       }}>
       <Flex h="100vh" w="full" direction="column">
         <Box>

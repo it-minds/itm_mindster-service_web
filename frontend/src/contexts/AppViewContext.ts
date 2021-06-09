@@ -25,7 +25,6 @@ type ContextType = {
   starredApps: number[];
   pushRecent: (id: number) => void;
   pushStarred: (id: number) => void;
-  removeStarred: (id: number) => void;
 };
 
 export const AppViewContext = createContext<ContextType>({
@@ -46,6 +45,5 @@ export const AppViewContext = createContext<ContextType>({
   recentApps: [],
   starredApps: [],
   pushStarred: null,
-  pushRecent: null,
-  removeStarred: null
+  pushRecent: null
 });
