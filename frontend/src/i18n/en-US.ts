@@ -137,7 +137,9 @@ export const table: Locale = {
          This is required to generate your AppTokens and JWT`,
         appSecretWarning: `This can only be done once and you are responsible for keeping it safe and secure. The
         AppSecret is used for signing your AppTokens in order to generate a JWT.`,
-        generateSecret: "Generate AppSecret"
+        generateSecret: "Generate AppSecret",
+        haveYouSavedAppSecret: `Are you sure you have stored the AppSecret? This can't be retrieved
+        again later, and without it you can't generate new JWT's`
       }
     }
   },
