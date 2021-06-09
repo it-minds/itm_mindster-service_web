@@ -185,7 +185,7 @@ export const table: Locale = {
     submittedE: "Submission failed:",
     xCreated: `{{x}} created`,
     xCreatedE: "{{x}} was not created, error:",
-    xAdded: `{{x}} was not added`,
+    xAdded: `{{x}} was added`,
     xAddedE: "{{x}} was not added, error:",
     accessRequested: "Access was requested",
     accessRequestedE: "Access request failed:",

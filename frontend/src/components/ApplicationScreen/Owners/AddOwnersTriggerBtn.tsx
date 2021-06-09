@@ -90,7 +90,7 @@ const AddOwnersTriggerBtn: FC = () => {
             <UnsavedChangesAlert
               isOpen={alertOpen}
               setIsOpen={setAlertOpen}
-              onClick={() => onclose}
+              onClick={() => onClose()}
             />
             <AppOwnerForm submitCallback={addOwners}></AppOwnerForm>
           </ModalBody>
