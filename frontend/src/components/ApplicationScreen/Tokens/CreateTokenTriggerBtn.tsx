@@ -37,7 +37,7 @@ const CreateTokenTriggerBtn: FC = () => {
   const toast = useToast();
   const [open, setOpen] = useState(false);
   const { t } = useLocales();
-  const { setUnsavedChanges, alertOpen, setAlertOpen, unsavedChanged } = useUnsavedAlert();
+  const { alertOpen, setAlertOpen, unsavedChanged } = useUnsavedAlert();
 
   const createAppToken = useCallback(
     async (metaData: AppTokenCreateDto) => {
