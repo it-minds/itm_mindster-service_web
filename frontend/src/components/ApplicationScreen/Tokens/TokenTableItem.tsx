@@ -49,7 +49,12 @@ const TokenTableItem: FC<Props> = ({ token }) => {
             />
           )}
           {token.state == TokenStates.JwtReceived && (
-            <GetJwtTriggerBtn submitOnOpen={() => fetchUpdatedToken(token.id)} />
+            // <GetJwtTriggerBtn submitOnOpen={() => fetchUpdatedToken(token.id)} />
+            <SeeTokenStatusDrawer
+              buttonText="Details"
+              submitOnOpen={() => fetchUpdatedToken(token.id)}
+              submitOnClose={() => null}
+            />
           )}
         </Box>
 

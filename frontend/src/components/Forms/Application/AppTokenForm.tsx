@@ -47,12 +47,12 @@ const AppTokenForm: FC<Props> = ({ submitCallback }) => {
     <Center>
       <Wrap width="full" justify="center">
         <Flex width="full" align="center" justifyContent="center">
-          <Box width="full" p={6}>
-            <Heading size="h3">ID: </Heading>
+          <Box width="full">
+            <Heading fontSize="sm">Identifier: </Heading>
             {identifier}
             <form onSubmit={() => handleSubmit(event)}>
               <FormControl mt="6" isRequired>
-                <FormLabel>Identifier:</FormLabel>
+                <FormLabel>Name:</FormLabel>
                 <Input
                   type="text"
                   placeholder="Token Identifier"

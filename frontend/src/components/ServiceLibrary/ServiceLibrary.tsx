@@ -28,9 +28,9 @@ const ServiceLibrary: FC = () => {
     <Box height="full" width="full" justify="center">
       <LibrarySearchBar keyword={keyword} setKeyword={setKeyWord} />
       <SimpleGrid mt="5px" width="full" minChildWidth="200px" spacing="25px">
-        {filteredServices.map((Service: ServiceIdDto) => (
-          <Center key={Service.id}>
-            <LibraryCard service={Service}></LibraryCard>
+        {filteredServices.map((service: ServiceIdDto) => (
+          <Center key={service.id}>
+            <LibraryCard service={service}></LibraryCard>
           </Center>
         ))}
       </SimpleGrid>

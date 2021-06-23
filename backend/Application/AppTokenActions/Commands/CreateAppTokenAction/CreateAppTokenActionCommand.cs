@@ -20,7 +20,7 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
   {
     [JsonIgnore]
     public int TokenId { get; set; }
-    public AppTokenDto AppToken { get; set; }
+    public RequestServiceActionsDto Service { get; set; }
 
     public class CreateAppTokenActionsCommandHandler : IRequestHandler<CreateAppTokenActionsCommand, int>
     {
@@ -32,9 +32,17 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
         _context = context;
         _currentUserService = currentUserService;
       }
+      /**
+       * Method responsible for requesting access to a Service and x of its actions. The method can also receive empty arrays of actionsIds and in this case it
+       * will see this as a request to remove all AppTokenActions that's connected to the given service. Therefor the method both handles create and delete off affected
+       * appTokenActions. The returned result is the amount of actions of the given service that the AppToken currently wants access too.
+       */
       public async Task<int> Handle(CreateAppTokenActionsCommand request, CancellationToken cancellationToken)
       {
-        var token = _context.AppTokens.Find(request.TokenId);
+        var token = await _context.AppTokens
+          .Where(e => e.Id == request.TokenId)
+          .Include(e => e.AppTokenActions)
+          .FirstOrDefaultAsync(cancellationToken);
         if (token == null)
         {
           throw new NotFoundException(nameof(AppToken), request.TokenId);
@@ -44,27 +52,38 @@ namespace Application.AppTokenActions.Commands.CreateAppTokenAction
           throw new ForbiddenAccessException(nameof(Domain.Entities.AppToken), request.TokenId);
         }
 
-        var serviceActions = _context.Actions;
-        var existingActions = _context.AppTokenActions.Where(e => e.AppTokenId == request.TokenId);
-        var newActions = request.AppToken.AppTokenActions
-          .Where(a => !existingActions.Any(e => e.ActionId == a.ActionId))
-          .Where(a => serviceActions.Any(e => e.Id == a.ActionId))
+        var service = await _context.Services
+          .Where(e => e.Id == request.Service.ServiceId)
+          .Include(e => e.Actions)
+          .FirstOrDefaultAsync(cancellationToken);
+        if (service == null)
+        {
+          throw new NotFoundException(nameof(Domain.Entities.Service), request.Service.ServiceId);
+        }
+
+        var alreadyRequested = token.AppTokenActions
+          .Where(e => service.Actions.Any(d => d.Id == e.ActionId)).ToList();
+
+        var newAdditions = request.Service.ActionIds
+          .Where(a => alreadyRequested.All(e => e.ActionId != a))
           .Select(e => new AppTokenAction
           {
-            ActionId = e.ActionId,
+            ActionId = e,
             AppTokenId = request.TokenId
           });
 
-        var result = newActions.Count();
+        var removedActions = alreadyRequested
+          .Where(e => request.Service.ActionIds.All(a => a != e.ActionId));
 
-        _context.AppTokenActions.AddRange(newActions);
+        var result = newAdditions.Count() + alreadyRequested.Count - removedActions.Count();
+
+        _context.AppTokenActions.AddRange(newAdditions);
+        _context.AppTokenActions.RemoveRange(removedActions);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-
         return result;
       }
-
     }
   }
 }

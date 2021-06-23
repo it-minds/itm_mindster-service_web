@@ -1,8 +1,6 @@
-using Application.AppTokenActions.Commands.CreateAppTokenAction;
-using Application.Services.Commands.CreateService;
 using FluentValidation;
 
-namespace Application.AppTokenActions.Commands
+namespace Application.AppTokenActions.Commands.CreateAppTokenAction
 {
   public class CreateAppTokenActionsCommandValidation : AbstractValidator<CreateAppTokenActionsCommand>
   {
@@ -10,9 +8,8 @@ namespace Application.AppTokenActions.Commands
     {
       RuleFor(e => e.TokenId)
         .NotEmpty();
-      RuleFor(e => e.AppToken)
+      RuleFor(e => e.Service)
         .NotNull();
-
     }
   }
 }

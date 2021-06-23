@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Actions;
-using Application.Actions.Commands.CreateAction;
 using Application.AppTokenActions;
 using Application.AppTokenActions.Commands.CreateAppTokenAction;
-using Application.AppTokens;
 using Application.Common.Exceptions;
 using FluentAssertions;
 using Xunit;
@@ -22,12 +19,13 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       var command = new CreateAppTokenActionsCommand
       {
         TokenId = 1,
-        AppToken = new AppTokenDto()
+        Service = new RequestServiceActionsDto()
         {
-          AppTokenActions = new List<AppTokenActionDto>
+          ServiceId = 2,
+          ActionIds = new List<int>
           {
-            new AppTokenActionDto{ActionId = 3},
-            new AppTokenActionDto{ActionId = 4}
+            3,
+            4
           }
         }
       };
@@ -35,13 +33,13 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
 
       var result = await handler.Handle(command, CancellationToken.None);
 
-      var entity = Context.AppTokens.Find(1);
+      var entity = Context.AppTokens.Find(command.TokenId);
 
       result.Should().Be(2);
       entity.Should().NotBeNull();
       entity.Id.Should().Be(command.TokenId);
       entity.AppTokenActions.Count.Should().Be(3 + result);
-      entity.AppTokenActions.ToList().Last().ActionId.Should().Be(command.AppToken.AppTokenActions.Last().ActionId);
+      entity.AppTokenActions.ToList().Last().ActionId.Should().Be(command.Service.ActionIds.Last());
     }
     [Fact]
     public void WithInValidTokenId_ThrowsException()
@@ -49,12 +47,36 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       var command = new CreateAppTokenActionsCommand
       {
         TokenId = 99,
-        AppToken = new AppTokenDto()
+
+        Service = new RequestServiceActionsDto()
         {
-          AppTokenActions = new List<AppTokenActionDto>
+          ServiceId = 1,
+          ActionIds = new List<int>
           {
-            new AppTokenActionDto{ActionId = 3},
-            new AppTokenActionDto{ActionId = 4}
+            3,
+            4
+          }
+        }
+      };
+      var handler = new CreateAppTokenActionsCommand.CreateAppTokenActionsCommandHandler(Context, CurrentUserServiceMock.Object);
+      Func<Task> action = async () => await handler.Handle(command, CancellationToken.None);
+
+      action.Should().Throw<NotFoundException>();
+    }
+    [Fact]
+    public void WithInValidServiceId_ThrowsException()
+    {
+      var command = new CreateAppTokenActionsCommand
+      {
+        TokenId = 1,
+
+        Service = new RequestServiceActionsDto()
+        {
+          ServiceId = 99,
+          ActionIds = new List<int>
+          {
+            3,
+            4
           }
         }
       };
@@ -69,12 +91,13 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       var command = new CreateAppTokenActionsCommand
       {
         TokenId = 1,
-        AppToken = new AppTokenDto()
+        Service = new RequestServiceActionsDto()
         {
-          AppTokenActions = new List<AppTokenActionDto>
+          ServiceId = 1,
+          ActionIds = new List<int>
           {
-            new AppTokenActionDto{ActionId = 1},
-            new AppTokenActionDto{ActionId = 2}
+            1,
+            2
           }
         }
       };
@@ -84,7 +107,7 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
 
       var entity = Context.AppTokens.Find(1);
 
-      result.Should().Be(0);
+      result.Should().Be(2);
       entity.Should().NotBeNull();
       entity.Id.Should().Be(command.TokenId);
       entity.AppTokenActions.Count.Should().Be(3);
@@ -95,12 +118,13 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
       var command = new CreateAppTokenActionsCommand
       {
         TokenId = 1,
-        AppToken = new AppTokenDto()
+        Service = new RequestServiceActionsDto()
         {
-          AppTokenActions = new List<AppTokenActionDto>
+          ServiceId = 1,
+          ActionIds = new List<int>
           {
-            new AppTokenActionDto{ActionId = 3},
-            new AppTokenActionDto{ActionId = 4}
+            3,
+            4
           }
         }
       };
@@ -109,6 +133,5 @@ namespace Application.UnitTests.AppTokenActions.Commands.CreateAppTokenAction
 
       action.Should().Throw<ForbiddenAccessException>();
     }
-
   }
 }

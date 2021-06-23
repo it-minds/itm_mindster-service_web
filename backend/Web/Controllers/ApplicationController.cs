@@ -70,7 +70,7 @@ namespace Web.Controllers
       return await Mediator.Send(command);
     }
     [HttpPost("AppTokens/{tokenId}/AppTokenActions")]
-    public async Task<ActionResult<int>> CreateAppTokenActions([FromRoute] int tokenId, CreateAppTokenActionsCommand command)
+    public async Task<ActionResult<int>> RequestServiceActions([FromRoute] int tokenId, CreateAppTokenActionsCommand command)
     {
       command.TokenId = tokenId;
       return await Mediator.Send(command);

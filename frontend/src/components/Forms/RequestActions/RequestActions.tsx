@@ -7,9 +7,10 @@ import RequestActionList from "./RequestActionList";
 type Props = {
   service: ServiceIdDto;
   submitCallBack?: () => void;
+  existingActions: number[];
 };
 
-const RequestActions: FC<Props> = ({ service, submitCallBack }) => {
+const RequestActions: FC<Props> = ({ service, submitCallBack, existingActions }) => {
   return (
     <Center>
       <Wrap width="full" justify="center">
@@ -20,7 +21,10 @@ const RequestActions: FC<Props> = ({ service, submitCallBack }) => {
           <Box width="full" p={6}>
             <RequestActionList
               submitCallBack={submitCallBack}
-              tableData={service.actions}></RequestActionList>
+              tableData={service.actions}
+              existingActions={existingActions}
+              service={service}
+            />
           </Box>
         </Flex>
       </Wrap>

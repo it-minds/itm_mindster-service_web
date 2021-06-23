@@ -10,4 +10,12 @@ export interface Locale {
       addNew: string;
     };
   };
+  applicationScreen: {
+    infoBoxes: {
+      createTokenInfo: string;
+      BrowseTokenInfo: string;
+      SeeTokenStatusInfo: string;
+      GenerateJwtInfo: string;
+    };
+  };
 }

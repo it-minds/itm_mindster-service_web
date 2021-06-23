@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Container,
+  Flex,
   Heading,
   Modal,
   ModalBody,
@@ -11,12 +12,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   useDisclosure
 } from "@chakra-ui/react";
+import { BsPencilSquare } from "@react-icons/all-files/bs/BsPencilSquare";
 import RequestActions from "components/Forms/RequestActions/RequestActions";
 import MarkdownViewer from "components/Markdown/MarkdownViewer";
+import { AppViewContext } from "contexts/AppViewContext";
 import { useColors } from "hooks/useColors";
-import React, { FC } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { ServiceIdDto } from "services/backend/nswagts";
 
 type Props = {
@@ -26,10 +30,25 @@ type Props = {
 const LibraryCard: FC<Props> = ({ service }) => {
   const { hoverBg } = useColors();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { currToken } = useContext(AppViewContext);
+  const [existingActions, setExistingActions] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (currToken) {
+      setExistingActions(
+        currToken.appTokenActions
+          .filter(e => e.action.serviceId == service.id)
+          .map(element => {
+            return element.actionId;
+          })
+      );
+    }
+  }, [currToken]);
 
   return (
     <>
-      <Box
+      <Flex
+        direction="column"
         overflow="hidden"
         onClick={onOpen}
         cursor="pointer"
@@ -43,13 +62,26 @@ const LibraryCard: FC<Props> = ({ service }) => {
         borderRadius="lg"
         p="3">
         <Heading fontSize="xl">{service.title}</Heading>
+        <Spacer />
         <Heading mt="6" fontSize="md">
           {service.serviceIdentifier}
         </Heading>
+        <Spacer />
         <Heading mt="6" fontSize="sm">
           Amount of actions: {service.actions.length}
         </Heading>
-      </Box>
+        <Spacer />
+        {existingActions.length != 0 && (
+          <Flex mt="6" align="center">
+            <Heading fontSize="sm">
+              Requested: {`${existingActions.length} / ${service.actions.length}`}
+            </Heading>
+            <Box ml="2px">
+              <BsPencilSquare />
+            </Box>
+          </Flex>
+        )}
+      </Flex>
 
       <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="full">
         <ModalOverlay />
@@ -60,7 +92,10 @@ const LibraryCard: FC<Props> = ({ service }) => {
             <Center>
               <Container w="5xl" maxW="full">
                 <MarkdownViewer value={service.description} />
-                <RequestActions submitCallBack={() => onClose()} service={service}></RequestActions>
+                <RequestActions
+                  submitCallBack={() => onClose()}
+                  service={service}
+                  existingActions={existingActions}></RequestActions>
               </Container>
             </Center>
           </ModalBody>
