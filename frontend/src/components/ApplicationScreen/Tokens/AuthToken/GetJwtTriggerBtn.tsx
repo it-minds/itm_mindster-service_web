@@ -59,7 +59,7 @@ const GetJwtTriggerBtn: FC<Props> = ({ submitOnOpen, buttonColor }) => {
     <>
       <Button
         size={defBtnSize}
-        colorScheme={buttonColor != null ? buttonColor : "blue"}
+        colorScheme={buttonColor ?? "blue"}
         w="full"
         onClick={async () => {
           await submitOnOpen();
